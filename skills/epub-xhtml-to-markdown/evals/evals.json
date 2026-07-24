@@ -1,0 +1,23 @@
+{
+  "skill_name": "epub-xhtml-to-markdown",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把 /books/三体.epub 转成同目录的 Markdown。不要 OCR，直接读取书里的 XHTML，每章单独生成 md，再建一个用 Obsidian include 方式加载所有章节的总装文件。",
+      "expected_output": "Uses the bundled XHTML converter, writes ordered chapter notes, extracts images, and creates an Obsidian assembly note with ![[chapter]] embeds.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Convert novel.epub to notes/novel.md. The EPUB has footnotes, nested lists, and one spine item marked linear=no; leave non-linear content out.",
+      "expected_output": "Creates separate chapter Markdown files plus an Obsidian assembly note from linear XHTML spine items, preserving semantic formatting while excluding linear=no content.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "这个 fixed-layout EPUB 每页其实都是一张扫描图，帮我用 epub-xhtml-to-markdown 转成可编辑文字。",
+      "expected_output": "Recognizes that direct XHTML extraction is unsuitable for an image-only fixed-layout EPUB and explains the limitation instead of pretending to OCR it.",
+      "files": []
+    }
+  ]
+}

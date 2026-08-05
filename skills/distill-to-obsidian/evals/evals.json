@@ -1,0 +1,62 @@
+{
+  "skill_name": "distill-to-obsidian",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我刚读了 inputs/retry-client.ts，并讨论了它为什么用 full jitter 和 Retry-After。把这些相关内容蒸馏到我的知识库中。只允许使用当前运行目录里的 mock-vault 作为 vault；它已经包含 ai-wiki/AGENTS.md。不要访问或修改任何真实 vault。",
+      "expected_output": "在模拟 vault 中把重试知识合并进已有概念页，保留代码 provenance，按本地规则更新必要日志，不复制整个源码。",
+      "files": [
+        "evals/files/code-case/mock-vault",
+        "evals/files/code-case/inputs/retry-client.ts"
+      ],
+      "expectations": [
+        "Uses only the explicitly supplied mock-vault and does not access the configured real vault",
+        "Reads and follows mock-vault/ai-wiki/AGENTS.md before writing",
+        "Updates the existing retry concept page instead of creating a duplicate source-summary page",
+        "Records source-code provenance including file path and symbol name without copying the full source file",
+        "Appends an ingest log entry and leaves the existing log history intact"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "下面是我刚读完的一篇内部技术文章，标题是《缓存失效不是删除问题》，正文在 inputs/cache-article.md。请把文章里值得长期复用的内容提取到我的 Obsidian 知识库。只允许使用当前运行目录里的 mock-vault 作为 vault；不要访问任何真实 vault。",
+      "expected_output": "在模拟 vault 中保存紧凑、可追溯的临时来源快照，并将机制、边界和反例蒸馏到 Wiki 层，而不是只生成文章摘要。",
+      "files": [
+        "evals/files/article-case/mock-vault",
+        "evals/files/article-case/inputs/cache-article.md"
+      ],
+      "expectations": [
+        "Preserves a compact immutable source snapshot because the internal article cannot otherwise be recovered",
+        "Creates or updates a reusable concept note containing mechanism, applicability boundaries, and uncertainty rather than a plain article summary",
+        "Adds valid Obsidian properties and provenance links required by the mock vault rules",
+        "Updates navigation only when required and appends an ingest log entry"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "把我们刚才讨论的 event sourcing 取舍蒸馏到我的知识库。本次测试只允许使用 inputs/missing-vault-locations.md 作为候选路径配置，不要读取 skill 内的真实设备路径列表；该文件里的候选路径全部不存在，也没有给你另一个 vault 路径。不要创建任何 vault 或 ai-wiki 目录。",
+      "expected_output": "在写入前停止，明确请求用户提供 vault 根目录，不猜测或创建替代目录。",
+      "files": [
+        "evals/files/missing-vault-case/inputs/missing-vault-locations.md"
+      ],
+      "expectations": [
+        "Does not create a vault, ai-wiki directory, note, or log",
+        "Asks the user for a vault root after all configured candidates fail validation",
+        "Explains that a valid target must contain ai-wiki/AGENTS.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "只帮我总结 inputs/architecture-note.md 的主要观点，给我一段临时说明就行，不要保存到 Obsidian 或任何知识库。",
+      "expected_output": "识别为不应进入知识库的近似请求，仅返回临时总结，不执行 vault 定位或写入。",
+      "files": [
+        "evals/files/non-trigger-case/inputs/architecture-note.md"
+      ],
+      "expectations": [
+        "Does not locate, read, or write any vault",
+        "Returns a temporary summary of the supplied note",
+        "Does not claim that durable knowledge-base changes were made"
+      ]
+    }
+  ]
+}

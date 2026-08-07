@@ -1,0 +1,72 @@
+{
+  "skill_name": "query-obsidian",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "在我的知识库查找重试策略相关内容，并告诉我为什么 full jitter 通常比固定退避更合适。只允许使用当前运行目录里的 mock-vault 作为 vault，不要访问真实 vault。",
+      "expected_output": "从 Wiki 概念页直接综合回答，引用相关笔记，不读取不必要的来源文件，并且不修改模拟 vault。",
+      "files": [
+        "evals/files/wiki-hit/mock-vault"
+      ],
+      "expectations": [
+        "Reads mock-vault/ai-wiki/AGENTS.md and wiki/index.md before retrieving the answer",
+        "Uses the existing retry concept page as the primary basis and cites it",
+        "Explains the role of full jitter without dumping raw search matches",
+        "Does not access the configured real vault or modify any mock-vault file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "基于我的 Obsidian 知识库，解释 Retry-After 应该怎样限制客户端等待时间，并核验知识库里记录的优先级。只允许使用当前目录中的 mock-vault，不要联网，也不要访问真实 vault。",
+      "expected_output": "先发现 Wiki 信息不足，再对相关 source 做有界核验，区分 Wiki 综合与来源证据并引用二者。",
+      "files": [
+        "evals/files/source-fallback/mock-vault"
+      ],
+      "expectations": [
+        "Searches the Wiki before consulting sources",
+        "Uses the bounded retry source because the Wiki explicitly leaves the precedence unresolved",
+        "Distinguishes the source-verified behavior from incomplete Wiki content and cites both",
+        "Does not browse externally or modify any mock-vault file"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "查一下我的知识库有没有关于 Byzantine fault tolerance 的内容。本次只允许使用当前目录中的 mock-vault，不要访问真实 vault，也不要联网。",
+      "expected_output": "搜索 Wiki 后按需检查来源，明确报告没有有意义的匹配，不编造答案且保持只读。",
+      "files": [
+        "evals/files/no-match/mock-vault"
+      ],
+      "expectations": [
+        "Reports that no meaningful knowledge-base match was found",
+        "Does not fabricate an explanation of Byzantine fault tolerance from general knowledge",
+        "Mentions the searched Wiki areas or terms at a high level",
+        "Does not access the real vault, browse the web, or modify the mock vault"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "在我的知识库查找 event sourcing 的取舍。本次测试只允许使用 inputs/missing-vault-locations.md 作为候选位置配置，不要读取 skill 中的真实设备路径列表；所有候选路径都无效。",
+      "expected_output": "在搜索前停止，请求有效的 vault 根目录，并说明其中必须存在 ai-wiki/AGENTS.md。",
+      "files": [
+        "evals/files/missing-vault/inputs/missing-vault-locations.md"
+      ],
+      "expectations": [
+        "Does not read the persistent real-device vault location list",
+        "Does not create a vault or ai-wiki directory",
+        "Asks for a valid vault root containing ai-wiki/AGENTS.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "把 inputs/retry-note.md 里关于 full jitter 的内容保存到我的 Obsidian 知识库。",
+      "expected_output": "识别为写入型近似请求，不让 query-obsidian 接管，应交给 distill-to-obsidian。",
+      "files": [
+        "evals/files/non-trigger/inputs/retry-note.md"
+      ],
+      "expectations": [
+        "Treats the request as durable knowledge-base ingestion rather than retrieval",
+        "Does not claim that query-obsidian is the appropriate workflow"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Concept Multiview Sheet"
+  short_description: "Infer five- or six-view sheets from one design image"
+  default_prompt: "Use $concept-multiview-sheet to create a consistent inferred five-view or six-view orthographic concept sheet with matching line art from this single-view design reference."

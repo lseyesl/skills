@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "task_id": "replace_with_stable_task_id",
+  "target_stage": "final",
+  "modules": [
+    {
+      "id": "main_hull",
+      "name": "Main hull",
+      "evidence": "observed",
+      "source_views": ["front", "side", "top"],
+      "priority": "primary",
+      "required": true,
+      "expected_instances": 1,
+      "implemented_instances": 0,
+      "signature_features": [
+        "Replace with the visible features that make this module recognizable"
+      ],
+      "matched_signature_features": [],
+      "status": "missing",
+      "implementation_objects": [],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": ""
+    }
+  ]
+}

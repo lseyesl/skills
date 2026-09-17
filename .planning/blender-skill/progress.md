@@ -1,0 +1,55 @@
+# Blender Skill 进度
+
+## 2026-09-17
+
+- 已读取 `skill-creator`、`planning-with-files-zh` 与 `defuddle` 的完整说明。
+- 已检查本地 skill 仓库结构和 Git 状态；未发现已有 Blender skill，工作树无未提交变更。
+- 规划文件首次创建被中断，仅 `task_plan.md` 落盘；已补齐 `findings.md` 与 `progress.md`。
+- 已将三个参考项目浅克隆至 `.tmp/blender-claude-plugin`、`.tmp/cc-blender-skill`、`.tmp/AI-SKILL-blender`。
+- 已阅读三个参考项目的核心 skill、MCP 对齐文档、最佳实践与 gotchas。
+- 已从当前可用工具元数据确认本机 Blender MCP 的真实工具名、参数和关键约束。
+- 已完成调研阶段，进入 skill 结构与内容设计阶段。
+- 已用官方初始化器创建 `skills/blender-python-modeling/`。
+- 已完成入口 `SKILL.md`、MCP 工作流、Python 建模规范、验证清单、可复制脚本模板和 UI/MCP 依赖元数据。
+- 已将 `.tmp/` 加入项目 `.gitignore`，避免参考仓库被误提交。
+- 官方 `quick_validate.py` 已通过（PyYAML 仅临时下载到 `/private/tmp`）。
+- Python 模板已通过语法检查，并在 Blender 4.5.12 LTS 的 factory-startup 后台会话中成功执行。
+- 实测复审发现旧对象删除后会残留 task-owned mesh datablock，已修复并准备验证连续重跑。
+- 已在同一 Blender factory-startup 会话连续运行模板两次；对象与 mesh datablock 均保持单例，幂等性验证通过。
+- 已复跑官方 skill 验证器、YAML 检查、内部链接检查、占位符检查和尾随空白检查，全部通过。
+- 任务全部阶段完成，待向用户交付。
+- 用户要求继续补充具体制作内容，并审计参考资料偏 Blender 5.x 可能造成的 4.x 不兼容；已追加阶段 6–9。
+- 已完成 Blender 5.x 参考内容审计，识别并隔离 5.x-only 节点、输出格式与 operator 假设。
+- 已新增建模、材质/Geometry Nodes、场景/灯光/渲染、动画/绑定、输出目标和兼容性六份领域参考。
+- 已新增 `scripts/validate_blender_compat.py`，首次在 Blender 4.5.12 LTS 运行通过；确认 EEVEE 为 `BLENDER_EEVEE_NEXT`、无 AVIF、基础节点与核心 modifier 可用。
+- 已扩展烟测覆盖 BMesh bevel、约束、driver、世界节点和具体 shader/Geometry Nodes 节点类型，第二轮 Blender 4.5.12 测试通过。
+- 当前实时 Blender MCP add-on 未运行，连接状态检查失败；已保留后台实测作为兼容性证据，并将在交付中明确区分。
+- 已完成第三轮 Blender 4.5.12 factory-startup 实测，全部 required recipes 通过且返回 `ok: true`。
+- 原任务模板连续执行两次的幂等性测试再次通过。
+- 更新后的官方 skill validator、Python 语法、YAML、内部链接、TODO/尾随空白检查全部通过。
+- 阶段 6–9 全部完成。
+- 用户要求按“AI 参考图提取相对比例并渲染迭代”的思路继续优化；已追加阶段 10–13。
+- 已新增 `reference-image-analysis.md`、`analyze_reference_images.py`、隔离依赖清单和合成测试脚本。
+- 分析器实现主体分割、归一化轮廓、对称性、主方向、色板、正交多视图比例融合、矛盾残差和渲染候选对比。
+- 未提供尺度锚点时 schema 强制标记为 normalized，并明确绝对尺度不可知。
+- 新增脚本已通过 Python 语法编译；OpenCV/NumPy 临时安装未获批准，本机无现成 cv2，因此合成行为测试尚未运行。
+- 静态复审修复了 KMeans 随机种子、缩放图像 debug overlay 坐标和 anchored scale 元数据一致性。
+- 已按用户要求新增 skill-local `pyproject.toml` 和 `.gitignore`，改为由 uv 管理 OpenCV/NumPy，并移除重复的 requirements 文件。
+- 已生成并保留 `uv.lock`；`uv run` 创建 skill-local `.venv` 后，合成图行为测试通过。
+- 已用 `uv run --offline` 复跑测试并通过，确认环境可离线复用且 `.venv` 被 Git 忽略。
+- 已在 Blender 4.5.12 实测比例融合的正常/矛盾输入和 reference blockout 模板幂等性。
+- 最终复验通过：官方 skill validator、uv lock check、离线 uv 合成测试、Python/TOML/YAML、内部链接、Git ignore 和 Blender 4.5.12 兼容性烟测均成功。
+- 阶段 10–13 全部完成。
+- 已完成 UV/贴图烘焙、导出/资源打包文档，并新增 Blender 4.5.12 UV 与 GLB 实际回环验证。
+- 用户要求继续补齐审计发现的其余领域缺口；已追加阶段 14–17。
+- 已新增游戏资产、角色交付、资产库复用、合成/渲染通道、物理模拟五份按需参考，并更新主路由和交叉链接。
+- 兼容性烟测已扩展到蒙皮数据、Asset Browser 元数据、合成节点/通道、刚体和 Cloth 缓存；Blender 4.5.12 全部 required tests 返回 `ok: true`。
+- 最终复验完成：官方 Skill validator、全部 Python 语法、Markdown 内链/尾随空白、`uv lock --check`、离线参考图分析回归均通过。
+- 阶段 14–17 全部完成。
+- 用户确认新建单视图补全三视图的独立 Skill；已追加阶段 18–20。
+- 已初始化并实现 `skills/concept-multiview-sheet/`，包含单视图推断契约、两阶段 ImageGen 提示词和跨视图一致性验收。
+- 已在 `blender-python-modeling` 增加单视图二维补全的衔接路由。
+- `concept-multiview-sheet` 与 `blender-python-modeling` 均通过官方 Skill validator；新 Skill 的内链、占位符、UI 默认提示和核心行为边界检查通过。
+- 阶段 18–20 全部完成。
+- 已将 `concept-multiview-sheet` 从固定三视图升级为对称五视图/非对称六视图，并同步更新提示词、验收、UI 元数据和 Blender 衔接。
+- 新旧两个 Skill 的官方 validator 与五/六视图行为边界检查均通过；阶段 21 完成。

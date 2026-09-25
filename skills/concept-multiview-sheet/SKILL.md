@@ -44,17 +44,22 @@ Asymmetric six-view layout:
 | Line row 1 | front | left | right |
 | Line row 2 | back | top | bottom |
 
-Keep the subject centered, fully visible, similarly scaled, and aligned across panels. Use a uniform solid isolation background that clearly contrasts with the subject: default to saturated magenta, but choose another high-contrast chroma colour when magenta appears prominently in the model. The background must remain distinct from every outer-edge colour and material so the silhouette is easy to identify or mask. Use orthographic-looking projection, subdued studio lighting on renders, and high-contrast line art below. Omit dimensions, branding, watermarks, decorative scenery, and prose unless requested.
+Keep the subject centered, fully visible, at one common orthographic scale, and aligned by stable semantic anchors across panels. Do not normalize each panel independently to its own bounding box when an appendage, weapon, tail, or other movable part changes the extent. Use a uniform solid isolation background that clearly contrasts with the subject: default to saturated magenta, but choose another high-contrast chroma colour when magenta appears prominently in the model. The background must remain distinct from every outer-edge colour and material so the silhouette is easy to identify or mask. Use orthographic-looking projection, subdued studio lighting on renders, and high-contrast line art below. Omit dimensions, branding, watermarks, decorative scenery, and prose unless requested.
 
-For a directional subject, establish one canonical orientation before generation, for example “side and top views point nose-left, tail-right.” For a character, establish forward direction, neutral pose, limb spacing, clothing state, and whether accessories are included.
+For a directional subject, establish one canonical orientation before generation, for example “side and top views point nose-left, tail-right.” For a character or articulated object, read [references/pose-and-configuration-normalization.md](references/pose-and-configuration-normalization.md) and lock one modeling pose or mechanical configuration before generation. Every controlling view must depict that same state as if only the orthographic camera moved; never re-pose a limb, joint, tail, wing, control surface, door, or tool to improve visibility in one panel.
+
+Treat normalization readiness explicitly:
+
+- **Preview-only:** small pose, configuration, scale, or anchor drift may remain if disclosed.
+- **Blender-blockout-ready:** pose/configuration, axes, ground or origin, semantic anchors, and orthographic scale must pass the consistency review. If they do not, deliver the sheet only as design evidence.
 
 ## Workflow
 
 1. **Inspect the input.** Treat the source as a reference image, not an edit target. If it exists only as a local file, load it with `view_image` before generation. Record whether it is front, side, rear, top, or three-quarter/perspective.
-2. **Separate evidence from invention.** Read [references/inference-contract.md](references/inference-contract.md). Summarize observed features, inferred hidden features, unknowns, canonical orientation, symmetry, repeated-part counts, and invariants.
+2. **Separate evidence from invention.** Read [references/inference-contract.md](references/inference-contract.md). Summarize observed features, inferred hidden features, unknowns, canonical orientation, symmetry, repeated-part counts, pose or configuration state, semantic alignment anchors, and invariants.
 3. **Choose view count and fidelity.** Use five views only when bilateral symmetry is supported or explicitly chosen; otherwise use six. Default to one coherent interpretation. Generate alternatives only when hidden structure has multiple materially different plausible solutions or the user asks for variants.
 4. **Generate the rendered view set.** Use the input image as a design reference. Before prompting, inspect the subject palette and choose a single solid isolation-background colour. Prefer saturated magenta; if it overlaps the subject palette, choose a strongly separated colour in both hue and value. Ask for all five or six orthographic-looking views in one 2×3 render sheet so the model sees them together. Apply [references/prompt-recipes.md](references/prompt-recipes.md).
-5. **Review before line art.** Check part count, placement, silhouette, proportions, colour blocking, symmetry, orientation, and whether any panel is actually three-quarter. Regenerate or make one targeted edit if a controlling inconsistency remains.
+5. **Review before line art.** Check part count, placement, silhouette, proportions, colour blocking, symmetry, orientation, pose/configuration, anchor alignment, common orthographic scale, and whether any panel is actually three-quarter. Regenerate or make one targeted edit if a controlling inconsistency remains.
 6. **Create the combined sheet.** Edit the approved 2×3 render sheet into the 4×3 layout. Preserve the first two rows exactly and add matching line-art rows. Do not ask for a dense fake topology mesh.
 7. **Validate.** Apply [references/consistency-review.md](references/consistency-review.md). Iterate with one explicit correction at a time; stop when further image edits cause component drift rather than improvement.
 8. **Deliver.** For preview-only work, display the result inline. For project work, copy the approved image into the workspace and preserve the render-only source when useful. Report final paths, prompt summary, generation mode, and important inferred/unknown structure.
@@ -78,7 +83,8 @@ Report:
 - source-view classification;
 - final sheet and render-only paths when saved;
 - canonical orientation and symmetry assumption;
+- normalized pose or mechanical configuration, coordinate convention, and alignment anchors;
 - whether five or six controlling views were used and which side is canonical;
 - the most consequential inferred features and unresolved unknowns;
 - whether the line art is image-generated or model-derived;
-- whether the result is preview-only or ready for Blender blockout.
+- whether the result is preview-only or Blender-blockout-ready, including any normalization conflicts that prevent the latter label.

@@ -7,7 +7,8 @@ Inspect the image itself; a successful generation call is not acceptance evidenc
 - exactly five controlling views for an accepted symmetric design, or six for an asymmetric/uncertain design;
 - front, back, top, and bottom are always present; five-view mode has one documented canonical side, while six-view mode has both left and right;
 - the combined sheet has two render rows and two matching line-art rows in the required order;
-- every subject is fully visible, centered, similarly scaled, and aligned;
+- every subject is fully visible, centered, and aligned;
+- every panel uses one common orthographic scale and semantic anchors; apparent scale is not independently fitted to each panel's bounding box;
 - every controlling view is an elevation rather than a three-quarter variation;
 - directional subjects use the chosen orientation consistently;
 - the background is one uniform solid isolation colour across every panel and does not create a false horizon or perspective floor;
@@ -28,6 +29,19 @@ Compare views component by component:
 - no panel invents a second design language, extra limb, different tail, changed roof, or missing mechanism.
 
 Prefer the original supplied view as the controlling evidence for visible features. For hidden features, prefer the recorded inference ledger rather than whichever generated panel looks most detailed.
+
+## Pose and configuration normalization
+
+For a character or articulated subject, compare the views as projections of one frozen state:
+
+- head, spine, pelvis, shoulder, elbow, wrist, hand, hip, knee, ankle, foot, tail, and wing states agree wherever applicable;
+- left/right joint relationships remain intentional and do not change merely to expose a component;
+- feet or other supports share the recorded ground plane, while the root/centerline and landmark heights remain compatible across elevations;
+- hair, clothing, soft appendages, held props, and accessories use one recorded resting state rather than a different convenient silhouette per panel;
+- steering, suspension, doors, hatches, hinges, pistons, robot joints, control surfaces, and deployable tools remain in the recorded mechanical configuration;
+- an occluded part stays occluded when geometry requires it; visibility is not evidence that the pose was preserved.
+
+Any disagreement that changes a joint center, attachment origin, rest silhouette, or inferred volume blocks the **Blender-blockout-ready** label. The result may still be delivered as **preview-only** design evidence with the conflict disclosed.
 
 ## Render-to-line correspondence
 
@@ -59,8 +73,9 @@ For later modeling, provide:
 - approved five- or six-view render-only sheet;
 - approved combined render/line sheet;
 - canonical orientation;
+- normalized pose or mechanical configuration, coordinate convention, ground/origin, and semantic alignment anchors;
 - observed/inferred/unknown ledger;
 - any trusted scale anchor;
-- unresolved cross-view conflicts.
+- unresolved cross-view conflicts, including any pose/configuration drift that prevents Blender readiness.
 
 The Blender stage should use real orthographic cameras and derive final line/wire views from one model, replacing image-generated geometry claims with model-backed evidence.

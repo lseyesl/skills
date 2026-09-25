@@ -73,9 +73,15 @@ If the user supplies one trusted dimension, preserve it as metadata for later mo
 
 For characters, also lock:
 
-- neutral A-pose/T-pose/standing pose as requested;
+- one explicit neutral A-pose/T-pose/standing pose as requested, including head, spine, pelvis, shoulder, elbow, wrist, hip, knee, ankle, hand, tail, and wing state where applicable;
 - face identity, hairstyle silhouette, age, body proportions, outfit layers, footwear and accessories;
 - left/right asymmetry that is actually observed;
 - uncovered view of hands, feet, tail, wings, props, or equipment needed for modeling.
 
+Use the same joint state, ground plane, centerline, and semantic landmark heights in every controlling view. A perspective source may guide the chosen pose, but converting it into a normalized modeling pose is an inference and must be labeled as such. Read [pose-and-configuration-normalization.md](pose-and-configuration-normalization.md) for the Blender-readiness contract.
+
 Do not invent anatomy hidden by clothing as if it were documented design.
+
+## Articulated props and machines
+
+Lock one mechanical configuration before generation: steering angle, suspension state, doors and hatches, hinges, pistons, robot joints, control surfaces, deployable tools, and other movable assemblies. Unless the source or user requires an active state, prefer a neutral closed or zero configuration suitable for blockout. Do not use different configurations to expose otherwise hidden parts in separate views.

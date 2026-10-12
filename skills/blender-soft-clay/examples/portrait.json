@@ -1,0 +1,5 @@
+{
+  "camera": {"position": [7.5, -10.5, 6.5], "lens": 45, "dof": true, "fstop": 8},
+  "render": {"engine": "EEVEE", "width": 360, "height": 640, "samples": 16},
+  "animation": {"hold_frames": 2}
+}

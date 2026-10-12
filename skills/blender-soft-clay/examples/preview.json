@@ -1,0 +1,4 @@
+{
+  "render": {"engine": "CYCLES", "device": "CPU", "width": 640, "height": 360, "samples": 24},
+  "animation": {"hold_frames": 2}
+}

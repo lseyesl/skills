@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-12",
+  "blender": "4.5.12 LTS",
+  "python": "3.11.11",
+  "integration_ok": true,
+  "final_structural_regression": {"ok": true, "passed": 21, "total": 21},
+  "passed": 25,
+  "total": 25,
+  "checks": {
+    "demo_structural_quality": {
+      "ok": true
+    },
+    "three_reruns_no_datablock_growth": {
+      "ok": true
+    },
+    "unrelated_data_preserved": {
+      "ok": true
+    },
+    "color_space_conversion": {
+      "ok": true
+    },
+    "invalid_profiles_rejected": {
+      "ok": true
+    },
+    "shader_nodes_and_links": {
+      "ok": true
+    },
+    "24fps_two_frame_hold_and_loop": {
+      "ok": true
+    },
+    "smooth_timing_restored": {
+      "ok": true
+    },
+    "shared_authored_action_copy": {
+      "ok": true
+    },
+    "constraints_and_unowned_collisions_rejected": {
+      "ok": true
+    },
+    "modifier_conflict_preserves_motion": {
+      "ok": true
+    },
+    "shared_demo_object_preserved": {
+      "ok": true
+    },
+    "bad_scale_and_loop_fail_quality": {
+      "ok": true
+    },
+    "project_dimension_manifest": {
+      "ok": true
+    },
+    "armature_weights_and_pose_loop": {
+      "ok": true
+    },
+    "actual_shader_drift_detected": {
+      "ok": true
+    },
+    "independent_scene_palette_scale_and_portrait": {
+      "ok": true
+    },
+    "shot_profiles_and_actual_exposure": {
+      "ok": true
+    },
+    "native_12fps_configuration": {
+      "ok": true
+    },
+    "save_and_overwrite_guard": {
+      "ok": true
+    },
+    "corrupt_image_rejected": {
+      "ok": true
+    },
+    "cycles_cpu_landscape_render": {
+      "ok": true
+    },
+    "eevee_portrait_render": {
+      "ok": true
+    },
+    "24_frame_png_sequence": {
+      "ok": true
+    },
+    "native_h264_video": {
+      "ok": true
+    }
+  },
+  "standalone_cli": {
+    "materials": true,
+    "lighting": true,
+    "animation": true,
+    "render_setup": true,
+    "quality": true
+  },
+  "video": {
+    "codec_name": "h264",
+    "width": 160,
+    "height": 90,
+    "avg_frame_rate": "24/1",
+    "duration": "1.000000",
+    "nb_frames": "24"
+  },
+  "full_video_decode_ok": true,
+  "visual_review": {
+    "reviewed": [
+      "cycles_still",
+      "eevee_portrait",
+      "six_frame_contact_sheet"
+    ],
+    "production_visual_approval": false,
+    "notes": [
+      "Low-resolution test renders",
+      "Portrait backdrop edge and weak contact detail need shot refinement"
+    ]
+  },
+  "runtime_artifacts": ".tmp/blender-soft-clay/verified",
+  "limitations": [
+    "Only Blender 4.5.12 executed",
+    "No GPU Cycles/custom OCIO/EXR render test",
+    "Object-space noise can swim on deforming surfaces",
+    "No collision/foot-lock certification"
+  ]
+}

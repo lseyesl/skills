@@ -1,0 +1,26 @@
+{
+  "skill_name": "blender-soft-clay",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a generic soft low-poly clay still with an abstract multipart model, several props and a floor. Use CPU Cycles and a reusable style profile; preserve the existing startup scene. Rerun without duplicate resources.",
+      "expected_output": "Editable project recipe and profile, clay node palette, soft area-light rig, rendered still, read-only QA and stable counts across reruns.",
+      "files": [],
+      "assertions": ["Existing scene data retained", "Owned resources reused on rerun", "Render decodes at configured dimensions"]
+    },
+    {
+      "id": 2,
+      "prompt": "Apply the same clay tooling to a different Blender project with a new two-color palette, twice the reference scale and portrait EEVEE output. Keep the project independent of any action library.",
+      "expected_output": "Independent scene-scoped materials/world/camera/lights, quadratic light-power scaling, portrait framing, no A.blend or project-specific runtime dependency.",
+      "files": [],
+      "assertions": ["Scene resources independent", "Power scales with reference length squared", "Portrait image decodes"]
+    },
+    {
+      "id": 3,
+      "prompt": "Make a 24fps clay preview loop with 12 pose updates per second. Preserve a shared source Action, exclude the duplicate endpoint from delivery, render a PNG sequence and H.264 preview, and reject conflicting artistic modifiers before editing.",
+      "expected_output": "Source Action retained, separate owned action with two-frame hold, evaluated loop QA, 24 ordered image frames and a 1-second 24fps video.",
+      "files": [],
+      "assertions": ["Shared Action remains unchanged", "Pose holds and loop endpoint pass", "Video decoder confirms frame count and FPS"]
+    }
+  ]
+}

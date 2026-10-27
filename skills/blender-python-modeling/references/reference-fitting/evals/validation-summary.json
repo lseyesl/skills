@@ -1,0 +1,186 @@
+{
+  "blender": "4.5.12 LTS",
+  "host_unit_tests": {
+    "passed": 49,
+    "total": 49
+  },
+  "blender_integration": {
+    "blender": "4.5.12 LTS",
+    "checks": {
+      "source_preservation_and_packed_references": {
+        "ok": true,
+        "result": {
+          "references": 2,
+          "owned_meshes": 65
+        }
+      },
+      "repeatable_build_no_datablock_growth": {
+        "ok": true,
+        "result": {
+          "objects": 71,
+          "meshes": 66,
+          "materials": 8
+        }
+      },
+      "actual_local_edit_preserves_locked_materials_and_geometry": {
+        "ok": true,
+        "result": [
+          "clay_girl_fit::arm_L::limb"
+        ]
+      },
+      "locked_component_rebuild_rejected": {
+        "ok": true,
+        "result": true
+      },
+      "head_shape_reprojects_face_preserves_hair": {
+        "ok": true,
+        "result": [
+          "brow_L",
+          "brow_R",
+          "eye_L",
+          "eye_R",
+          "head",
+          "nose",
+          "smile"
+        ]
+      },
+      "evaluated_topology_normals_depth_and_connections": {
+        "ok": true,
+        "result": {
+          "meshes_checked": 65
+        }
+      },
+      "flattened_head_rejected": {
+        "ok": true,
+        "result": true
+      },
+      "actual_four_limb_weight_and_bend_probe": {
+        "ok": true,
+        "result": {
+          "ok": true,
+          "limbs": [
+            {
+              "component": "arm_L",
+              "ok": true,
+              "max_displacement": 0.010246822192389028,
+              "angle_radians": 0.45
+            },
+            {
+              "component": "leg_L",
+              "ok": true,
+              "max_displacement": 0.011623629287823381,
+              "angle_radians": 0.45
+            },
+            {
+              "component": "arm_R",
+              "ok": true,
+              "max_displacement": 0.008476504323126306,
+              "angle_radians": 0.45
+            },
+            {
+              "component": "leg_R",
+              "ok": true,
+              "max_displacement": 0.012058197797179428,
+              "angle_radians": 0.45
+            }
+          ],
+          "scope": "Disposable two-bone skinning/bend smoke test only. Production rig, shoulder/cloth deformation and all poses unvalidated."
+        }
+      },
+      "shared_material_change_rejected_in_local_edit": {
+        "ok": true,
+        "result": true
+      },
+      "actual_socket_surface_check": {
+        "ok": true,
+        "result": true
+      },
+      "actual_render_channels_restore_original_materials": {
+        "ok": true,
+        "result": {
+          "decoded_channels": 5,
+          "model_materials_restored": true
+        }
+      },
+      "per_region_three_band_surface_shader": {
+        "ok": true,
+        "result": {
+          "region_materials": 6,
+          "micro_and_medium_separate": true
+        }
+      }
+    },
+    "ok": true
+  },
+  "end_to_end": {
+    "ok": true,
+    "checks": {
+      "same_reference_and_annotation_hashes": true,
+      "same_fixed_camera": true,
+      "actual_model_snapshots": true,
+      "24_real_required_images_decode": true,
+      "at_least_one_accepted_local_change": true,
+      "at_least_one_rejected_candidate": true,
+      "measured_global_improvement": true,
+      "unknown_torso_stays_not_evaluable": true,
+      "3d_initial_and_final_pass": true,
+      "actual_rig_probe_pass": true,
+      "final_is_last_selected_geometry_materials": true,
+      "round-00_reopens_last_accepted": true,
+      "round-01_reopens_last_accepted": true,
+      "round-02_reopens_last_accepted": true,
+      "round-03_reopens_last_accepted": true,
+      "candidate_local_regression_hashes_checked": true
+    },
+    "global_iou": {
+      "old": 0.8616956077630235,
+      "initial": 0.873020557819577,
+      "final": 0.8836653476285499
+    },
+    "accepted_iterations": 4,
+    "stop_reason": "iteration_limit"
+  },
+  "delivery_round_trip": {
+    "ok": true,
+    "checks": {
+      "active_orthographic_camera": true,
+      "saved_geometry_materials_match_last_selected": true,
+      "references_packed": true,
+      "reference_upright_and_pixel_scale": true,
+      "evaluated_structural_checks": true
+    },
+    "blender": "4.5.12 LTS",
+    "actual_file": "output/clay-fit-system/delivery/model.blend",
+    "file_not_modified": true
+  },
+  "legacy_blender_regression": {
+    "passed": 25,
+    "total": 25,
+    "includes": [
+      "Cycles CPU",
+      "EEVEE",
+      "24 PNG frames",
+      "video",
+      "existing animation/rig/material checks"
+    ]
+  },
+  "legacy_host_regression": [
+    "reference_image_analysis: passed",
+    "module_ledger: passed"
+  ],
+  "extra_leg_candidates": {
+    "parameters": [
+      0.92,
+      1.08
+    ],
+    "accepted": 0,
+    "action": "retained last accepted geometry"
+  },
+  "limitations": [
+    "Visible 2D metrics only",
+    "Head shape improvement not demonstrated",
+    "Hair and handmade surface remain visually unmatched",
+    "Left leg below original baseline",
+    "No production rig or arbitrary collision certification"
+  ]
+}

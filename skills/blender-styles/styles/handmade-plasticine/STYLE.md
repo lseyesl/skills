@@ -6,6 +6,8 @@
 
 先遵守 [共用流程与验收](../../references/workflow-and-review.md)。软黏土基础工具现统一位于 `blender-styles/scripts/`，它们只是可选基础。
 
+反复拟合角色参考时，使用 [可执行评估与局部修正系统](../../../blender-python-modeling/references/reference-fitting/workflow.md)。其中 [handmade_surface.py](../../scripts/handmade_surface.py) 提供分区、固定种子的三频表面，复用原材质工厂；通用建模层负责遮罩、相机、参数搜索和回滚。已有案例验证了闭环运行，手捏风格的视觉校准仍未通过，不能用 IoU 代替艺术验收。
+
 ## 风格目标与边界
 
 - **体积像手捏的。** 有轻微压扁、局部鼓起、按接处的挤边；主要轮廓不会因为贴了噪声材质就自动成立。

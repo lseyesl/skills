@@ -1,7 +1,8 @@
 ---
 name: blender-styles
 description: Select and apply Blender art styles through a shared workflow and on-demand style index. Use for soft low-poly clay (柔和低多边形黏土风), rough naive handmade plasticine (稚拙手捏橡皮泥风), or a requested combination of their geometry, surface, lighting and animation traits. Routes to only the relevant style rules and reuses shared material, lighting, timing, rendering and QA tools. Use blender-python-modeling for general modeling and reference alignment. Do not use for 2D-only image generation or physical clay simulation.
-compatibility: Blender with bpy, bmesh and mathutils. Shared clay helpers were tested on Blender 4.5.12 LTS; other builds require capability checks. The handmade-plasticine style remains visually uncalibrated. Generic modeling/reference workflows require blender-python-modeling.
+metadata:
+  compatibility: Blender with bpy, bmesh and mathutils. Shared clay helpers were tested on Blender 4.5.12 LTS; other builds require capability checks. The handmade-plasticine style remains visually uncalibrated. Generic modeling/reference workflows require blender-python-modeling.
 ---
 
 # Blender Styles
@@ -42,6 +43,8 @@ compatibility: Blender with bpy, bmesh and mathutils. Shared clay helpers were t
 明确用户约束与可信参考优先。某层出现相互冲突的规则时，为这一层选择一个主规则并记录理由；不能将不规则度、噪声或灯光强度简单相加。无法判断且影响目标外观的冲突，请用户选择，其余已明确部分继续。新混合结果需要自己的小样证据，不能自动继承各风格单独的验证状态。
 
 ## 共用工具索引
+
+需要参考评估与自动局部修正时，使用 [通用拟合流程](../blender-python-modeling/references/reference-fitting/workflow.md)。可选 [handmade_surface.py](scripts/handmade_surface.py) 复用基础材质工厂，分区控制低频几何、中频局部压痕/浮雕、高频细颗粒；不改变旧工具默认配置。
 
 | 工具 | 用途和边界 |
 |---|---|

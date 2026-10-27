@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "image_size": [
+    512,
+    536
+  ],
+  "components": {
+    "head": {
+      "mask": "masks/head.png",
+      "confidence": 0.75,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "hair": {
+      "mask": "masks/hair.png",
+      "confidence": 0.75,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "dress": {
+      "mask": "masks/dress.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "arm_L": {
+      "mask": "masks/arm_L.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "arm_R": {
+      "mask": "masks/arm_R.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "leg_L": {
+      "mask": "masks/leg_L.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "shoe_L": {
+      "mask": "masks/shoe_L.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "leg_R": {
+      "mask": "masks/leg_R.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "shoe_R": {
+      "mask": "masks/shoe_R.png",
+      "confidence": 0.8,
+      "source": "case-specific HSV plus localized boundary annotation; reviewed overlay, approximate occlusion edges",
+      "status": "measured"
+    },
+    "torso": {
+      "status": "not_evaluable",
+      "confidence": 0,
+      "reason": "Covered by opaque dress in controlling front reference"
+    }
+  },
+  "landmarks": {
+    "chin": {
+      "xy": [
+        278,
+        232
+      ],
+      "confidence": 0.85
+    },
+    "hand_L": {
+      "xy": [
+        117,
+        343
+      ],
+      "confidence": 0.8
+    },
+    "hand_R": {
+      "xy": [
+        431,
+        344
+      ],
+      "confidence": 0.8
+    }
+  },
+  "limitations": [
+    "Boundary annotations include uncertainty at skin/hair occlusion and garment straps.",
+    "Torso is not evaluable. No measured back/depth reference.",
+    "Head localization expanded to include forehead/neck; removed artificial crop boundary after visual mask review. Annotation reliability values are qualitative, not calibrated probabilities."
+  ],
+  "revision": 2
+}

@@ -42,6 +42,8 @@ Build Blender work as an inspectable pipeline: inspect the live file, write a pe
 
 ## Loading a persistent script through MCP
 
+For repeated character/reference fitting, use the executable [reference-fitting workflow](references/reference-fitting/workflow.md) and `scripts/fit_character.py`: reviewed semantic masks/anchors, fixed render channels, component metrics, configurable builders, bounded local candidates, locks, immutable snapshots and rollback. Read the [architecture audit](references/reference-fitting/architecture.md) before extending it. Keep subject-specific coordinates in JSON and reuse existing geometry/style helpers. A 2D threshold or temporary limb rig test does not satisfy final 3D/animation acceptance.
+
 Send only this style of bootstrap through `execute_blender_code`, substituting an absolute path safely:
 
 ```python

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blender Styles"
+  short_description: "Apply indexed Blender styles with shared tools and visual review"
+  default_prompt: "Use $blender-styles to select the appropriate style from the index, load only its relevant rules, and create or restyle this Blender asset. Calibrate references with blender-python-modeling, record any mixed-style choices, and verify reference fidelity and style appearance separately."

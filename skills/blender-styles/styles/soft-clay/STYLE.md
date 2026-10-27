@@ -1,16 +1,12 @@
----
-name: blender-soft-clay
-description: Create or restyle Blender models, miniature scenes, stills, and 3D animation in Soft Low-Poly Clay Style (柔和低多边形黏土风). Use for matte clay shaders, rounded economical geometry, soft studio lighting, miniature camera composition, stop-motion timing, consistent shot profiles, and configurable EEVEE/Cycles rendering. Do not use for physical clay simulation, soft-body dynamics, or a request that only needs a 2D generated image.
-compatibility: Blender with bpy, bmesh and mathutils; no third-party Python packages. Blender 4.5.12 LTS is the executed baseline; other builds require capability checks and a smoke test. Live editing can use the existing blender-python-modeling MCP workflow; standalone scripts work without MCP.
----
-
-# Blender Soft Clay
+# Soft Clay Style
 
 Produce an editable, reproducible scene plus visually reviewed render evidence. This is an art-direction layer over general Blender modeling, not a character generator or a physics simulator.
 
+All `scripts/...` paths refer to the shared `blender-styles/` root. Style examples and historical results stay in this style directory. Read the [shared workflow](../../references/workflow-and-review.md) before applying this profile.
+
 ## Workflow
 
-1. Inspect the project and current scene. Resolve asset scale, owned targets, static/animation delivery, aspect ratio, render engine, playback FPS and pose cadence. Preserve unrelated data and source `.blend` files. For live MCP work, use [blender-python-modeling](../blender-python-modeling/SKILL.md) for inspection, execution and save/export conventions; its rigging and reference-analysis procedures remain authoritative.
+1. Inspect the project and current scene. Resolve asset scale, owned targets, static/animation delivery, aspect ratio, render engine, playback FPS and pose cadence. Preserve unrelated data and source `.blend` files. For live MCP work, use [blender-python-modeling](../../../blender-python-modeling/SKILL.md) for inspection, execution and save/export conventions; its rigging and reference-analysis procedures remain authoritative.
 2. Write a project-local Python recipe and JSON style profile. Load only the references needed below. Use [examples/preview.json](examples/preview.json) or [examples/portrait.json](examples/portrait.json) as partial overrides of `scripts/clay_common.py::DEFAULTS`. Keep one palette/material/color-management profile across shots. Do not copy the example character or scene layout into a production project unless requested.
 3. Build economical, rounded silhouettes and modular assets. Preserve rig topology and unapplied deformation stacks. Choose smooth organic surfaces and flat broad planar faces deliberately; keep bevels small relative to each part. Review silhouettes before materials.
 4. Import the bundled tools from their absolute `scripts/` directory in the project recipe. Call `create_palette`, `setup_lighting`, `setup_render`, and, for explicit animated targets, `setup_animation`. Material generation does not replace existing material slots. Lighting replaces the active world and, by default, camera references, while retaining prior datablocks; use `with_camera=False` to preserve a shot camera. Existing lights remain active and need review.
@@ -45,8 +41,8 @@ From the repository root, replacing `blender` with the host's executable:
 
 ```bash
 blender --background --factory-startup --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/build_demo.py -- \
-  --config skills/blender-soft-clay/examples/preview.json \
+  --python skills/blender-styles/scripts/build_demo.py -- \
+  --config skills/blender-styles/styles/soft-clay/examples/preview.json \
   --output .tmp/clay-smoke --render still
 ```
 

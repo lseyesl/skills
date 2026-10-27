@@ -12,7 +12,7 @@ Changing scene FPS changes the duration of existing keys. To preserve a key's ti
 
 ## Keyframe and hold helper
 
-Create keyframes using `keyframe_insert`, following the [general animation workflow](../../blender-python-modeling/references/animation-and-rigging.md). `setup_clay_animation.py` accepts explicit object names and an existing active Action. It:
+Create keyframes using `keyframe_insert`, following the [general animation workflow](../../../../blender-python-modeling/references/animation-and-rigging.md). `setup_clay_animation.py` accepts explicit object names and an existing active Action. It:
 
 1. refuses linked/override objects, objects shared between scenes, NLA tracks, drivers and object/pose constraints;
 2. copies a non-owned/shared Action and preserves the source via fake user;
@@ -27,7 +27,7 @@ Existing unnamed artistic Cycles/Stepped modifiers cause an explicit conflict er
 
 ## Rigging and topology
 
-Use [character delivery](../../blender-python-modeling/references/character-delivery.md) for rest transforms, deform/control bone separation, normalized weights and root motion. Favor rigid parts with parent/bone attachment for toys or mechanical shapes; use skinning for bendable limbs. Place joints at functional pivots, keep edge loops and avoid bevel/decimation that disrupts articulation. Check maximum bend and opposing poses before final shading.
+Use [character delivery](../../../../blender-python-modeling/references/character-delivery.md) for rest transforms, deform/control bone separation, normalized weights and root motion. Favor rigid parts with parent/bone attachment for toys or mechanical shapes; use skinning for bendable limbs. Place joints at functional pivots, keep edge loops and avoid bevel/decimation that disrupts articulation. Check maximum bend and opposing poses before final shading.
 
 For constrained production rigs, bake the evaluated pose into a **new** Action at the intended sample rate using the project's validated bake workflow. Preserve the source Action, rig and constraints; use a render duplicate for constraint-free playback. The timing helper intentionally does not disable constraints or rewrite NLA/driver relationships.
 

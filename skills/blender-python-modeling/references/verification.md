@@ -25,6 +25,21 @@ Put detailed checks in the persistent script and print a compact pass/fail summa
 
 ## Visual checks
 
+For reference-driven work, first inspect the imported, calibrated Image Empty
+workspace in the corresponding orthographic views: source images, orientation,
+scale, landmark alignment, opacity/front display, view filtering and locked
+transforms. Reopen the derived file to confirm images are packed or resolve
+through portable paths. Merely finding reference objects is not a visual pass.
+
+At each geometry stage, retain a matched-view reference/model overlay or
+side-by-side comparison and inspect local features as well as the outer contour.
+For characters, check face landmarks relative to the head, skull depth from the
+side, and limb width/continuity through joints; use equivalent functional
+landmarks for props. Fix major position/proportion errors before material polish.
+Explain any AI artifact rejected on structural evidence, or seek human judgment
+when a material ambiguity remains unresolved. Mesh integrity, expression-switch
+success and ledger validation do not certify reference fidelity.
+
 Call `get_viewport_screenshot` after each meaningful visual stage. Inspect at least:
 
 - silhouette and proportions;

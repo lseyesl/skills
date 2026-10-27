@@ -6,8 +6,8 @@ From this repository root:
 
 ```bash
 blender --background --factory-startup --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/build_demo.py -- \
-  --config skills/blender-soft-clay/examples/preview.json \
+  --python skills/blender-styles/scripts/build_demo.py -- \
+  --config skills/blender-styles/styles/soft-clay/examples/preview.json \
   --output .tmp/clay-example --render still
 ```
 
@@ -26,7 +26,7 @@ import sys
 import bpy
 
 # Supply the installed Skill's scripts location; no project-specific path is in the Skill.
-tool_dir = Path("/absolute/installed/blender-soft-clay/scripts")
+tool_dir = Path("/absolute/installed/blender-styles/scripts")
 sys.path.insert(0, str(tool_dir))
 from clay_common import merge_config, save_new
 from create_clay_material import create_palette
@@ -59,7 +59,7 @@ All stages accept `--config`, `--scene`, `--owner` after Blender's `--`. They on
 
 ```bash
 blender --background /absolute/project/source.blend --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/create_clay_material.py -- \
+  --python skills/blender-styles/scripts/create_clay_material.py -- \
   --config /absolute/project/style.json --owner project-style
 ```
 
@@ -71,7 +71,7 @@ This checks material creation but does not persist it. To combine CLI stages, ei
 
 ```bash
 blender --background --factory-startup -t 2 --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/test_soft_clay.py -- \
+  --python skills/blender-styles/scripts/test_soft_clay.py -- \
   --output .tmp/clay-tests --render
 ```
 

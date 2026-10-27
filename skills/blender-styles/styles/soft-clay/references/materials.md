@@ -24,7 +24,7 @@ Principled.BSDF → Material Output.Surface
 
 Noise scales are divided by `scale`; bump distance is multiplied by `scale`. This preserves the approximate look when geometry coordinates and light/camera layout are scaled by the same factor. Geometry should be constructed at intended local dimensions with identity object scale when safe. Arbitrary unapplied per-object scaling stretches object-coordinate noise; a style pass must not apply rig transforms to solve that.
 
-Object-space coordinates follow rigid object transforms but can swim across deformed surfaces. For a production skinned character, use a stable UV/rest-position shader or bake the procedural textures. The bundled tool is a rigid-asset and preview baseline, not a guarantee of deformation-stable texturing. Use the [existing UV/baking workflow](../../blender-python-modeling/references/uv-and-texture-baking.md) when needed.
+Object-space coordinates follow rigid object transforms but can swim across deformed surfaces. For a production skinned character, use a stable UV/rest-position shader or bake the procedural textures. The bundled tool is a rigid-asset and preview baseline, not a guarantee of deformation-stable texturing. Use the [existing UV/baking workflow](../../../../blender-python-modeling/references/uv-and-texture-baking.md) when needed.
 
 ## Colors and assignment
 

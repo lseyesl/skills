@@ -1,4 +1,0 @@
-interface:
-  display_name: "Blender Soft Clay"
-  short_description: "Create soft clay scenes and animation with reusable bpy tools"
-  default_prompt: "Use $blender-soft-clay to create or restyle this Blender scene with matte clay materials, soft lighting, consistent animation timing, and verified renders."

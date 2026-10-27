@@ -28,7 +28,7 @@ For expensive animation, prefer PNG/EXR sequences: isolated frames are resumable
 ```bash
 # Existing configured .blend; commands shown from repository root.
 blender --background /absolute/output/demo.blend --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/setup_render.py -- \
+  --python skills/blender-styles/scripts/setup_render.py -- \
   --config /absolute/project/style.json --output /absolute/output/frame- \
   --render animation
 ```

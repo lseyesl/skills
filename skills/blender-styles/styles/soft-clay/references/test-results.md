@@ -1,12 +1,14 @@
 # Executed tests and known limits
 
+This is the historical soft-clay baseline, originally executed before the unified `blender-styles` directory migration. Reproduction commands below use current paths; the dates, results and artifact locations retain their original provenance. Migration-specific checks are recorded separately in [migration validation](../../../references/migration-validation.md).
+
 ## Baseline and reproduction
 
 Executed on **2026-10-12**, macOS, **Blender 4.5.12 LTS** (build `84afd5f785f7`), bundled Python 3.11.11. No third-party Python dependency or GPU preference change was needed. The shipped suite uses CPU Cycles and the installed graphics backend for EEVEE.
 
 ```bash
 blender --background --factory-startup -t 2 --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/test_soft_clay.py -- \
+  --python skills/blender-styles/scripts/test_soft_clay.py -- \
   --output .tmp/clay-tests --render
 ```
 
@@ -54,6 +56,6 @@ EEVEE's low-sample portrait has weaker contact detail and a distant floor/backgr
 
 ## Existing-Skill boundaries
 
-`blender-python-modeling` supplies general modeling, reference analysis, rigging, export and live MCP conventions. This Skill adds the clay palette/shader, scaled studio rig, timing adapter, render presets and focused QA. It imports no Python code from another Skill, so the executable tools can be installed independently. Sibling documentation links provide optional deeper workflow guidance.
+`blender-python-modeling` supplies general modeling, reference analysis, rigging, export and live MCP conventions. This style uses the clay palette/shader, scaled studio rig, timing adapter, render presets and focused QA now housed in the unified `blender-styles/scripts/` directory. Those tools import no Python code from another Skill, so the unified executable tool directory remains self-contained. Documentation links provide deeper workflow guidance.
 
 `continuous-action` remains responsible for its `A.blend`-based keyframe/image-reference workflow. `concept-multiview-sheet` remains responsible for inferred 2D design views. Neither is a runtime dependency; no assets from those Skills are copied into this one.

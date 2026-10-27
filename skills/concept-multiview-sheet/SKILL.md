@@ -62,7 +62,7 @@ Treat normalization readiness explicitly:
 5. **Review before line art.** Check part count, placement, silhouette, proportions, colour blocking, symmetry, orientation, pose/configuration, anchor alignment, common orthographic scale, and whether any panel is actually three-quarter. Regenerate or make one targeted edit if a controlling inconsistency remains.
 6. **Create the combined sheet.** Edit the approved 2×3 render sheet into the 4×3 layout. Preserve the first two rows exactly and add matching line-art rows. Do not ask for a dense fake topology mesh.
 7. **Validate.** Apply [references/consistency-review.md](references/consistency-review.md). Iterate with one explicit correction at a time; stop when further image edits cause component drift rather than improvement.
-8. **Deliver.** For preview-only work, display the result inline. For project work, copy the approved image into the workspace and preserve the render-only source when useful. Report final paths, prompt summary, generation mode, and important inferred/unknown structure.
+8. **Deliver and hand off.** For preview-only work, display the result inline. For project work, copy the reviewed image into the workspace and preserve the render-only source when useful. When Blender modeling follows, provide separate uncropped view images (or exact crop regions), view/axis labels, shared scale/origin and semantic alignment anchors, plus per-region reliability and unresolved conflicts. Report final paths, prompt summary, generation mode, and important inferred/unknown structure. The Blender Skill establishes and visually checks its imported reference workspace before geometry; a generated sheet alone is not a calibrated Blender reference setup.
 
 ## Escalate to a model-backed sheet
 
@@ -75,6 +75,8 @@ Use `blender-python-modeling` after this Skill when the user needs:
 - exportable `.blend`, GLB, FBX, OBJ, or STL output.
 
 In that handoff, treat the generated sheet as inferred design evidence. Build a normalized blockout, render actual orthographic cameras, compare silhouettes, and replace image-generated line art with contours or wireframe derived from the same model.
+
+Do not force a model to reproduce an isolated AI depiction error. Pass observed/inferred/unknown distinctions and contradictory regions to `blender-python-modeling`, where source evidence and coherent anatomy/mechanics guide local corrections. If materially different plausible designs cannot be distinguished, request human judgment on that choice; otherwise record the smallest reasoned correction and continue.
 
 ## Completion report
 

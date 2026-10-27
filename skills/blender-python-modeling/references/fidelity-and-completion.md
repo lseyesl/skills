@@ -63,6 +63,28 @@ resolution and account for:
 
 ## Completion stages
 
+### Evidence required for `matched`
+
+An object being present, named correctly, or editable does not make its module
+matched. Before assigning that status, record the controlling view/region,
+comparison screenshot or overlay, relevant landmarks/proportions and local
+profiles, observed differences, and the reason those differences are acceptable
+for the requested target. Use the module's `notes` and a linked comparison record
+without changing the ledger schema.
+
+Include reference-specific shape and placement in signature features. Conditions
+such as "has two eyes", "round head" or "two thin legs" are insufficient when
+eye spacing, head depth or limb thickness is visible and defines the design.
+Compare those features explicitly; do not batch-copy every expected signature
+into `matched_signature_features` or infer matches from implemented counts.
+Known shape/placement errors keep a present module at `blockout` or an honestly
+explained `simplified` status until corrected or the tradeoff is authorized.
+
+For contradictory AI depictions, use the interpretation and human-judgment policy
+in [reference-image-analysis.md](reference-image-analysis.md). Record the selected
+constraint and why it overrides a panel. Do not invent measurement certainty or
+silently lower the target to turn a discrepancy into a pass.
+
 Use stage names literally. Never present an earlier stage as a finished model.
 
 ### Blockout
@@ -74,6 +96,9 @@ Gate:
 
 - every required primary module exists at least as `blockout`;
 - matching orthographic renders have been inspected;
+- the calibrated in-Blender reference workspace and front/side comparisons
+  have been inspected; known primary proportion failures are reported as
+  unresolved, not described as "primary proportions pass";
 - report missing secondary and tertiary modules explicitly.
 
 Allowed report language: "blockout complete" or "primary proportions pass".
@@ -119,6 +144,14 @@ Always report both:
 
 - `presence_coverage = (matched + simplified + blockout) / required`;
 - `full_fidelity_coverage = matched / required`.
+
+These are ledger-label statistics, not measured image similarity or reconstruction
+accuracy. Identify them as such if included in a report; do not advertise a model
+as "94% matched" because 16 of 17 labels were set to `matched`. Unsupported labels
+invalidate the coverage conclusion even when the validator returns `ok: true`.
+Local failures such as wrong facial placement, head depth or limb width cannot be
+averaged away by many unrelated present modules. Retract affected matches and
+the claimed stage when review reveals them.
 
 Also report absolute counts for `matched`, `simplified`, `blockout`, and
 `missing`. A model with 18 of 20 modules present but only 12 matched is not

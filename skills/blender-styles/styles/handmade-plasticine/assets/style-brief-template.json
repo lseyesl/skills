@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "purpose": "Human/agent style brief; not executable Blender or shared clay-tool configuration",
+  "style_id": "handmade-plasticine",
+  "validation_status": "unverified",
+  "reference_images": [],
+  "reference_setup_record": null,
+  "coordinate_frame": {"forward": null, "up": null, "origin": null, "scale_basis": null},
+  "proportion_constraints": {"head_width_height_depth": null, "face_landmarks_record": null, "limb_width_profiles_record": null},
+  "construction": {"base_form_record": null, "pressed_volume_regions": [], "slab_parts": [], "assembly_seams": [], "protected_regions": []},
+  "surface": {"finger_contact_regions": [], "smear_directions": [], "quiet_regions": [], "color_transfer_regions": [], "geometric_marks": [], "shader_marks": [], "random_seed": null},
+  "face": {"mode": null, "fixed_parts": [], "replaceable_parts": [], "surface_attachment_method": null, "expressions": []},
+  "render_profile_path": null,
+  "interpretations": [],
+  "human_decisions": [],
+  "calibration_evidence": [],
+  "review": {"reference_shape": "not_reviewed", "handmade_style": "not_reviewed", "structure_and_delivery": "not_reviewed", "limitations": []}
+}

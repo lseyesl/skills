@@ -6,7 +6,7 @@ The requested scene must be active because evaluated geometry uses its dependenc
 
 ```bash
 blender --background /absolute/output/demo.blend --python-exit-code 1 \
-  --python skills/blender-soft-clay/scripts/validate_clay_scene.py -- \
+  --python skills/blender-styles/scripts/validate_clay_scene.py -- \
   --config /absolute/project/style.json --frames 1 7 13 19 24 25 \
   --images '/absolute/output/frame-*.png' --report /absolute/output/quality.json
 ```
@@ -28,7 +28,7 @@ blender --background /absolute/output/demo.blend --python-exit-code 1 \
 
 Background meshes intentionally outside the camera may be marked `soft_clay_background=True`; this bypasses only crop checking, not topology/material validation. Bounding-box framing is conservative and can report a crop for an intentionally cropped foreground: record that shot-specific exception in review rather than hiding other objects from QA.
 
-When enforcing real proportions, pass `--expectations /absolute/project/asset-dimensions.json`: a mapping such as `{"actual object name": {"dimensions": [1.0, 0.8, 1.5], "tolerance": 0.01}}`. Dimensions and absolute tolerance are Blender units and are evaluated at the current frame. Keep ratio/design evidence in the project manifest too. The generic shader/rig cannot infer which proportions are correct. For reference-driven projects reuse the existing [module ledger and fidelity workflow](../../blender-python-modeling/references/fidelity-and-completion.md).
+When enforcing real proportions, pass `--expectations /absolute/project/asset-dimensions.json`: a mapping such as `{"actual object name": {"dimensions": [1.0, 0.8, 1.5], "tolerance": 0.01}}`. Dimensions and absolute tolerance are Blender units and are evaluated at the current frame. Keep ratio/design evidence in the project manifest too. The generic shader/rig cannot infer which proportions are correct. For reference-driven projects reuse the existing [module ledger and fidelity workflow](../../../../blender-python-modeling/references/fidelity-and-completion.md).
 
 ## Manual review record
 

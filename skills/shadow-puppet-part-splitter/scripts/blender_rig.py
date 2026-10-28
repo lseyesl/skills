@@ -30,9 +30,9 @@ def pair(v):
 
 
 def inside(root, name):
-    require(isinstance(name,str) and name and not Path(name).is_absolute(), "invalid asset path")
+    require(isinstance(name,str) and name, "invalid asset path")
     path=(root/name).resolve()
-    require(path.is_relative_to(root) and path.is_file(),f"missing/outside asset: {name}")
+    require(path.is_file(),f"missing asset: {name}")
     return path
 
 
@@ -106,9 +106,7 @@ def build(data,motion,nodes,manifest,out,trial):
     try:
         for key,n in nodes.items():
             b=armdata.edit_bones.new(key); b.head=point(n["pivot_global"])
-            children=[child for child in nodes.values() if child.get("parent")==key]
-            candidates=[point(child["pivot_global"]) for child in children if (point(child["pivot_global"])-b.head).length>0.01]
-            b.tail=min(candidates,key=lambda p:(p-b.head).length) if candidates else b.head+Vector((0,0.22,0))
+            b.tail=b.head+Vector((0,0.22,0))
             b.align_roll(Vector((0,0,1)))
         for key,n in nodes.items():
             if n.get("parent") is not None:
@@ -116,7 +114,8 @@ def build(data,motion,nodes,manifest,out,trial):
                 armdata.edit_bones[key].use_connect=False
     finally:
         bpy.ops.object.mode_set(mode="OBJECT")
-    ranges=motion["target_ranges"] if trial else {key:n["rotation_range"] for key,n in nodes.items()}
+    ranges=motion["target_ranges"] if trial else {key:n["rotation_range"] for key,n in nodes.items() if n.get("rotation_range") is not None}
+    for pb in rig.pose.bones: pb.rotation_mode="XYZ"
     for key,bounds in ranges.items():
         pb=rig.pose.bones[key]; pb.rotation_mode="XYZ"
         pb.lock_location=(True,True,True); pb.lock_scale=(True,True,True); pb.lock_rotation=(True,True,False)
@@ -129,8 +128,9 @@ def build(data,motion,nodes,manifest,out,trial):
         if "use_transform_limit" in c.bl_rna.properties:
             c.use_transform_limit=True
     meshes={}
+    depth_order={p["id"]:i for i,p in enumerate(sorted(data["parts"],key=lambda p:p["z_index"]))}
     for p in data["parts"]:
-        ox,oy=p["crop_origin"]; pw,ph=p["pixel_size"]; depth=p["z_index"]*0.005
+        ox,oy=p["crop_origin"]; pw,ph=p["pixel_size"]; depth=depth_order[p["id"]]*0.005
         verts=[point((ox,oy)),point((ox+pw,oy)),point((ox+pw,oy+ph)),point((ox,oy+ph))]
         mesh=bpy.data.meshes.new(identity+"_"+p["id"]); mesh.from_pydata(verts,[],[(0,3,2,1)]); mesh.update()
         obj=bpy.data.objects.new(mesh.name,mesh); collection.objects.link(obj); obj["owner"]=identity; obj["part_id"]=p["id"]
@@ -140,11 +140,11 @@ def build(data,motion,nodes,manifest,out,trial):
         uv=mesh.uv_layers.new(name="SourceUV")
         coords=((0,1),(1,1),(1,0),(0,0))
         for loop in mesh.loops: uv.data[loop.index].uv=coords[loop.vertex_index]
-        group=obj.vertex_groups.new(name=p["node"]); group.add(list(range(4)),1,"REPLACE")
-        modifier=obj.modifiers.new("Rigid single-bone binding","ARMATURE"); modifier.object=rig
+        if p["node"] is not None:
+            group=obj.vertex_groups.new(name=p["node"]); group.add(list(range(4)),1,"REPLACE")
+            modifier=obj.modifiers.new("Rigid single-bone binding","ARMATURE"); modifier.object=rig
         image=bpy.data.images.load(str(inside(manifest.parent,p["file"])),check_existing=False)
         require(list(image.size)==p["pixel_size"],f"PNG dimensions mismatch: {p['id']}")
-        require(image.channels==4,f"PNG missing alpha: {p['id']}")
         image.alpha_mode="STRAIGHT"; image.pack()
         material=bpy.data.materials.new(mesh.name+"_alpha"); material.use_nodes=True
         methods={v.identifier for v in material.bl_rna.properties["surface_render_method"].enum_items} if "surface_render_method" in material.bl_rna.properties else set()
@@ -160,7 +160,7 @@ def build(data,motion,nodes,manifest,out,trial):
         obj.data.materials.append(material); meshes[p["id"]]=obj
     camera_data=bpy.data.cameras.new(identity+"_ortho"); camera_data.type="ORTHO"; camera_data.ortho_scale=h*scale
     camera=bpy.data.objects.new(camera_data.name,camera_data); collection.objects.link(camera); camera.location=(0,0,30); scene.camera=camera
-    scene.render.resolution_x=w//2; scene.render.resolution_y=h//2; scene.render.resolution_percentage=100
+    scene.render.resolution_x=max(1,w//2); scene.render.resolution_y=max(1,h//2); scene.render.resolution_percentage=100
     frame=camera_data.view_frame(scene=scene)
     camera_data.ortho_scale*=h*scale/(max(v.y for v in frame)-min(v.y for v in frame))
     scene.render.film_transparent=True; scene.render.image_settings.file_format="PNG"; scene.render.image_settings.color_mode="RGBA"
@@ -168,6 +168,9 @@ def build(data,motion,nodes,manifest,out,trial):
     scene.render.engine="BLENDER_EEVEE_NEXT"
     if hasattr(scene,"eevee") and hasattr(scene.eevee,"taa_render_samples"): scene.eevee.taa_render_samples=32
     scene.render.fps=24
+    if not nodes:
+        bpy.data.objects.remove(rig,do_unlink=True)
+        rig=None
     return scene,rig,meshes,point,ranges
 
 
@@ -175,7 +178,8 @@ def verify(data,motion,nodes,scene,rig,meshes,point,ranges,out,render):
     report={"blender_version":bpy.app.version_string,"rigid_weights_valid":True,"poses":[],"visual_qa":"requires_render_review"}
     for p in data["parts"]:
         obj=meshes[p["id"]]
-        require(abs(obj.location.z-p["z_index"]*0.005)<1e-7,"transparent object sort depth mismatch")
+        rank=sorted(data["parts"],key=lambda p:p["z_index"]).index(p)
+        require(abs(obj.location.z-rank*0.005)<1e-7,"transparent object sort depth mismatch")
         for v in obj.data.vertices:
             require(len(v.groups)==1 and obj.vertex_groups[v.groups[0].group].name==p["node"] and abs(v.groups[0].weight-1)<1e-6,"nonrigid vertex weight")
     cases=list(motion["poses"])

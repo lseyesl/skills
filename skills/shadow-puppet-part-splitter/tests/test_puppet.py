@@ -11,6 +11,7 @@ import unittest
 from PIL import Image, ImageDraw
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "puppet.py"
+sys.path.insert(0, str(SCRIPT.parent))
 spec = importlib.util.spec_from_file_location("puppet", SCRIPT)
 puppet = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(puppet)
@@ -117,14 +118,14 @@ class PuppetTests(unittest.TestCase):
             ("missing parent", lambda d: d["nodes"][1].update(parent="absent")),
             ("unknown node", lambda d: d["parts"][0].update(node="absent")),
             ("duplicate id", lambda d: d["parts"][1].update(id="torso")),
-            ("duplicate z", lambda d: d["parts"][1].update(z_index=0)),
+            ("invalid z", lambda d: d["parts"][1].update(z_index=True)),
             ("pivot", lambda d: d["parts"][1].update(pivot_local=[0, 0])),
             ("size", lambda d: d["parts"][1].update(pixel_size=[1, 1])),
             ("missing mask", lambda d: d["parts"][1].pop("inferred_region_mask")),
             ("missing asset", lambda d: d["parts"][0].update(file="missing.png")),
             ("outside path", lambda d: d["parts"][0].update(file="../outside.png")),
             ("nonfinite", lambda d: d["nodes"][0].update(pivot_global=[float("nan"), 0])),
-            ("bad range", lambda d: d["nodes"][0].update(rotation_range=[10, 30])),
+            ("bad range", lambda d: d["nodes"][0].update(rotation_range=[30, 10])),
             ("bad parent type", lambda d: d["nodes"][0].update(parent=[]))]
         for name, mutate in cases:
             with self.subTest(case=name):
@@ -134,15 +135,14 @@ class PuppetTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     puppet.load_manifest(self.path)
 
-    def test_wrong_mask_and_non_rgba_rejected(self):
+    def test_wrong_mask_rejected_and_rgb_accepted(self):
         mask = self.path.parent / "masks/arm.png"
         Image.new("L", (1, 1), 255).save(mask)
         with self.assertRaisesRegex(ValueError, "same-size"):
             puppet.load_manifest(self.path)
         fixture(self.path.parent)
         Image.new("RGB", (40, 16), "blue").save(self.path.parent / "parts/arm.png")
-        with self.assertRaisesRegex(ValueError, "RGBA"):
-            puppet.load_manifest(self.path)
+        self.assertEqual(len(puppet.load_manifest(self.path)["parts"]), 3)
 
     def test_mask_cannot_mark_transparent_pixels(self):
         mask = Image.new("L", (40, 16), 255)

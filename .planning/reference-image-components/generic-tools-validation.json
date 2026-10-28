@@ -1,0 +1,41 @@
+{
+  "status": "completed",
+  "unit_tests": 24,
+  "skill_validation": "passed",
+  "blender_version": "4.5.12 LTS",
+  "static": {
+    "nodes": 0,
+    "packed_textures": 1,
+    "reopen_samples": 1,
+    "error": 0
+  },
+  "partial_hierarchy": {
+    "nodes": 2,
+    "actions": 2,
+    "reopen_samples": 8,
+    "max_vertex_error_world": 1.228781230931777e-07
+  },
+  "existing_character": {
+    "nodes": 16,
+    "packed_textures": 34,
+    "actions": 6,
+    "provided_samples": 18,
+    "reopen_samples": 30,
+    "max_vertex_error_world": 1.4502435994859265e-06
+  },
+  "media": {
+    "actual_mp4_frames": 5,
+    "width": 80,
+    "height": 60,
+    "gif": "produced",
+    "contact_sheet": "produced",
+    "missing_ffmpeg": "partial with other outputs"
+  },
+  "visual_review": "pending; source-canvas walking clipping observed",
+  "cached_demo_steps": 4,
+  "limitations": [
+    "explicit masks/anchors/trajectories required",
+    "long media sequences loaded into memory",
+    "environment executable versions require force to invalidate cache"
+  ]
+}

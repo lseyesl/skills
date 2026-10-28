@@ -1,0 +1,41 @@
+{
+  "skill_name": "blender-python-modeling",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "先生成一盆橡皮泥向日葵设计图，再做对应的可编辑 Blender 模型。两片叶面向上斜伸，花瓣有手捏凹凸，叶片主脉和侧脉都要看得见。",
+      "expected_output": "Detailed geometry follows reviewed inferred five/six-view design references. A representative thick upward-facing leaf and cupped petal pass local material/light review before a full render suite. Final output includes actual common-scale model views and feature-specific comparison evidence.",
+      "files": [],
+      "assertions": [
+        "Pre-model design sheet and post-model verification renders are distinguished",
+        "Leaf orientation, thickness, attachment, main vein and branch veins are reviewed separately",
+        "Petal concavity and margins are modeled rather than replaced by shader grain",
+        "Local crops are checked before full final render suite",
+        "Completion evidence is not inferred from object counts or nonzero displacement"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这个盾牌的 AI 六视图里，TOP 仍能看见整个正面徽章，侧面还像斜视图。先修正设计参考，再做模型，别改盾牌角度来迁就每个视图。",
+      "expected_output": "Flags projection/configuration conflict, states expected edge-on appearance, attempts a targeted correction, and labels unresolved generated sheets preview-only. Uses a frozen model-backed blockout for geometric consistency if image edits drift, without claiming prior reference preparation was satisfied retroactively.",
+      "files": [],
+      "assertions": [
+        "TOP text is not accepted as projection proof",
+        "Same frozen part orientation is preserved across views",
+        "Residual scale/projection conflicts block Blender-blockout-ready labeling"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "你说叶脉已还原，但效果图里只有一道模糊凹陷，分叉侧脉看不见。修正叶脉，并保留原模型。",
+      "expected_output": "Invalidates affected matches and final review, diagnoses geometry depth/sampling/modifier/lighting visibility, updates the owned recipe, and presents identical-camera/light before/after plus a full assembly view at delivery scale. Other assemblies and source blend are preserved.",
+      "files": [],
+      "assertions": [
+        "User rejection overrides prior matched/100-percent claims",
+        "Presence of a vein formula is not treated as visual evidence",
+        "Readable branching paths are checked after modifiers at presentation scale",
+        "Isolated diagnostic renders are labeled and visibility is restored"
+      ]
+    }
+  ]
+}

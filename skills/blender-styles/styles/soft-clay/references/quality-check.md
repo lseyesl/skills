@@ -32,6 +32,14 @@ When enforcing real proportions, pass `--expectations /absolute/project/asset-di
 
 ## Manual review record
 
+Record each visible signature separately: e.g. leaf upper-surface tilt, solid
+thickness, attached petiole, continuous midrib, branching veins; petal concavity,
+swollen margins and finger dents. Evaluate the modifier result in actual soft
+lighting at delivery scale. A crop that reveals only a broad center depression
+does not pass a reference with readable secondary veins. Structure, local relief
+amplitude and full-image appearance are separate evidence. Follow
+[local-feature-review.md](../../../../blender-python-modeling/references/local-feature-review.md).
+
 Store review notes with output frame names and pass/fail for:
 
 1. Geometry: approved silhouettes, part ratios, rounded edges and controlled facets.

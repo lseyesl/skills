@@ -16,11 +16,20 @@
         "Replace with the visible features that make this module recognizable"
       ],
       "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
       "status": "missing",
       "implementation_objects": [],
       "user_approved_simplification": false,
       "simplification_reason": "",
       "notes": ""
     }
-  ]
+  ],
+  "final_review": {
+    "status": "pending",
+    "structural_report": "",
+    "contact_sheet": "",
+    "perspective_view": "",
+    "unresolved_issues": ["Reference and rendered views have not been reviewed"]
+  }
 }

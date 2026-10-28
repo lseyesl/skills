@@ -17,6 +17,15 @@ Inspect the image itself; a successful generation call is not acceptance evidenc
 
 ## Cross-view design
 
+Check projection using each part's surface normal and expected occlusion. A
+vertical disk should be thin from above/below; an upward-facing leaf or tabletop
+should expose its broad surface from above. A face-on disk in a TOP panel or
+camera-facing leaves in every panel indicate reposing or incorrect projection.
+An underside view must respect occlusion by the base/saucer/support. Preserve a
+common orthographic scale rather than enlarging top/bottom panels to fill them.
+If adding line art rescales or changes the render panels, retain the render-only
+source and mark the combined sheet preview-only; do not claim exact preservation.
+
 Compare views component by component:
 
 - primary body length/width/height ratios are plausible together;

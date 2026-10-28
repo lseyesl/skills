@@ -70,7 +70,25 @@ matched. Before assigning that status, record the controlling view/region,
 comparison screenshot or overlay, relevant landmarks/proportions and local
 profiles, observed differences, and the reason those differences are acceptable
 for the requested target. Use the module's `notes` and a linked comparison record
-without changing the ledger schema.
+using structured `feature_reviews` records.
+
+For each matched signature, add a `feature_reviews` entry with `feature` (the
+exact signature), `status: "matched"`, `reference` (source region), `candidate`
+(render/crop artifact), `view`, and `comparison` (observed agreement and remaining
+differences). A filename alone or "object exists" is insufficient comparison.
+Reuse one crop for several features only after checking each. For orientation,
+thickness and relief, follow [local-feature-review.md](local-feature-review.md).
+
+At final, fill `final_review` with `status: "passed"`, `structural_report`,
+`contact_sheet`, `perspective_view`, and `unresolved_issues: []`, referring to
+reports/images actually inspected. Do not fill these at build time. The validator
+checks record completeness, not whether images look correct. Older ledgers stay
+readable but matched/final claims fail until evidence records are provided;
+do not backfill evidence for unreviewed assets.
+
+After user correction, clear the affected match and set a concrete
+`review_invalidated` reason; reopen final review. Clear the reason only after
+repair and comparison evidence. User rejection overrides a previous agent pass.
 
 Include reference-specific shape and placement in signature features. Conditions
 such as "has two eyes", "round head" or "two thin legs" are insufficient when

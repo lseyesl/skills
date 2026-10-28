@@ -18,6 +18,39 @@ PRIORITIES = {"primary", "secondary", "tertiary"}
 EVIDENCE = {"observed", "inferred", "unknown"}
 
 
+def nonempty(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def validate_feature_reviews(raw: dict[str, Any], features: list[str], label: str) -> list[str]:
+    """Check evidence declarations; this cannot inspect reference agreement."""
+    errors: list[str] = []
+    reviews = raw.get("feature_reviews")
+    if not isinstance(reviews, list):
+        return [f"{label}: matched status requires feature_reviews"]
+    reviewed: set[str] = set()
+    for i, review in enumerate(reviews):
+        where = f"{label}.feature_reviews[{i}]"
+        if not isinstance(review, dict):
+            errors.append(f"{where}: must be an object")
+            continue
+        feature = review.get("feature")
+        if not nonempty(feature) or feature not in features:
+            errors.append(f"{where}: unknown or invalid feature")
+            continue
+        if feature in reviewed:
+            errors.append(f"{where}: duplicate feature review: {feature}")
+        reviewed.add(feature)
+        if review.get("status") != "matched":
+            errors.append(f"{where}: feature is not visually matched")
+        for field in ("reference", "candidate", "view", "comparison"):
+            if not nonempty(review.get(field)):
+                errors.append(f"{where}: requires non-empty {field}")
+    for feature in sorted(set(features) - reviewed):
+        errors.append(f"{label}: missing feature review: {feature}")
+    return errors
+
+
 def validate_ledger(payload: dict[str, Any], stage_override: str | None = None) -> dict[str, Any]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -84,6 +117,10 @@ def validate_ledger(payload: dict[str, Any], stage_override: str | None = None) 
         if status == "matched" and set(matched_features) != set(features):
             missing_features = sorted(set(features) - set(matched_features))
             errors.append(f"{module_id}: matched status requires every signature feature; missing {missing_features}")
+        if status == "matched":
+            errors.extend(validate_feature_reviews(raw, features, module_id))
+        if raw.get("review_invalidated") and (status == "matched" or (stage == "final" and required)):
+            errors.append(f"{module_id}: review invalidated by unresolved feedback")
         if status == "simplified" and not str(raw.get("simplification_reason", "")).strip():
             errors.append(f"{module_id}: simplified status requires simplification_reason")
         if required and status == "not-applicable":
@@ -125,6 +162,17 @@ def validate_ledger(payload: dict[str, Any], stage_override: str | None = None) 
             if item["priority"] in {"primary", "secondary"} and item["status"] == "missing"
         )
     elif stage == "final":
+        review = payload.get("final_review")
+        if not isinstance(review, dict):
+            errors.append("final gate requires final_review evidence")
+        else:
+            if review.get("status") != "passed":
+                errors.append("final_review.status must be passed after actual review")
+            for field in ("structural_report", "contact_sheet", "perspective_view"):
+                if not nonempty(review.get(field)):
+                    errors.append(f"final_review requires non-empty {field}")
+            if review.get("unresolved_issues") != []:
+                errors.append("final_review.unresolved_issues must be an explicit empty list")
         errors.extend(f"{module_id}: required module is missing at final gate" for module_id in missing)
         errors.extend(
             f"{module_id}: simplified module lacks explicit user approval at final gate"
@@ -151,6 +199,7 @@ def validate_ledger(payload: dict[str, Any], stage_override: str | None = None) 
         "errors": errors,
         "warnings": warnings,
         "ready_to_claim_complete": stage == "final" and not errors,
+        "metric_scope": "Ledger evidence declarations only; not measured visual or reconstruction accuracy.",
     }
     return report
 

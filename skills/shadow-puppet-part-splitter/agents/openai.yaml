@@ -1,0 +1,4 @@
+interface:
+  display_name: "皮影角色拆件"
+  short_description: "按目标动作拆分皮影组件，在 Blender 刚性绑定试动，再补全隐藏结构并验收"
+  default_prompt: "使用 $shadow-puppet-part-splitter 将这张参考图拆成可组装、可活动的透明组件，并给出验证结果。"

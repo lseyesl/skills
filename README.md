@@ -24,6 +24,12 @@
 
 风格细节位于 `blender-styles/styles/<style-id>/STYLE.md`，不再分别注册 Skill。当前有 `soft-clay` 和 `handmade-plasticine`；手捏橡皮泥仍待实际小样视觉校准。
 
+## 二维角色资产
+
+| Skill | 作用 |
+|---|---|
+| [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 按目标动作拆分皮影组件，在 Blender 刚性绑定试动，补全隐藏结构并验收活动范围 |
+
 ## 使用方式
 
 1. 将本仓库克隆到 Claude 可识别的 skills 目录（例如 `~/.claude/skills/`）。

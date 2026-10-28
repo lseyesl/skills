@@ -44,12 +44,20 @@ Each stage should be idempotent and retrieve existing data by stable names or ta
 
 ## Connection and execution failures
 
-- **Blender unreachable:** ask the user to open Blender and start the Blender MCP add-on. A code-only deliverable can still be completed and clearly labeled unexecuted.
+- **Blender unreachable:** follow the recovery sequence below before asking the user to launch Blender manually. An exposed MCP tool only proves that the bridge is available, not that Blender or its add-on service is running.
 - **Add-on/server mismatch:** relay the update instruction returned by `get_addon_status`; do not guess installation paths.
 - **Timeout:** split the work into smaller stages, reduce preview resolution, or move heavy loops into the persistent script. Do not resend the identical large call.
 - **Context or poll failure:** inspect mode, active object, selection, area and region. Prefer a direct data API or a narrow `bpy.context.temp_override`.
 - **API or enum error:** query `bpy_api_lookup`; do not trial-and-error several guessed spellings.
 - **Node/socket error:** query `describe_node_type` with the intended property overrides before rewriting node code.
+
+### Recover an unreachable Blender
+
+1. Check for the actual Blender application process. On macOS, `pgrep -fl Blender` can help, but a thumbnail extension or an `mcp-for-blender` bridge process does not count. If process inspection is denied by the sandbox, request execution approval; do not interpret the denial as proof that Blender is closed.
+2. If Blender is absent and the task needs a live session, launch the installed application once. On macOS, use `open -a /Applications/Blender.app` when that path exists; otherwise locate the installed app first. Follow the environment's approval requirements. Launch Blender in normal UI mode; its window may stay in the background or minimized while MCP is used. Do not use `blender --background` or `blender -b` headless mode for MCP connection recovery: this add-on's auto-start callback skips that mode, and viewport tools need a UI context. Do not install or reconfigure Blender as part of connection recovery.
+3. Allow startup to finish, then retry `get_addon_status` up to three times, roughly five seconds apart. If the add-on is enabled and auto-start is configured, no manual Start button should be needed. A connection reset immediately after a known add-on reload can also warrant this bounded retry. Once status succeeds, call `get_scene_info` before continuing the task.
+4. If Blender is already running or the retries fail, inspect whether the MCP add-on is enabled and its service started, whether the configured host/port match, and whether another Blender instance owns the port. Check version compatibility once reachable. Preserve any existing auto-start setting. Do not launch duplicate instances, kill/restart a running Blender, or update/reinstall the add-on merely to retry a connection; those actions can affect current work or configuration and require appropriate task scope.
+5. If recovery still fails, report the observed error and the specific remaining check. Ask the user to enable/start the add-on only when it cannot be done with available authorized tools. A code-only deliverable can still be completed when appropriate and clearly labeled unexecuted. Never claim connection success without a successful MCP response.
 
 ## Optional asset services
 

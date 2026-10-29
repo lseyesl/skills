@@ -15,20 +15,11 @@
 
 每个 Skill 位于 `skills/` 下一个独立目录中，至少包含一个 `SKILL.md` 描述文件。
 
-## Blender 制作与风格
+## 技能索引
 
-| Skill | 作用 |
-|---|---|
-| [blender-python-modeling](skills/blender-python-modeling/SKILL.md) | 通用建模、参考图导入校准、对照验证、绑定和交付流程 |
-| [blender-styles](skills/blender-styles/SKILL.md) | 统一风格入口，按索引加载柔和黏土、稚拙手捏橡皮泥及组合规则，共用材质、灯光和渲染工具 |
+查看 [index.md](index.md)，按用途查找全部现有技能、适用场景与 `SKILL.md` 入口。完整清单统一在该文件维护。
 
-风格细节位于 `blender-styles/styles/<style-id>/STYLE.md`，不再分别注册 Skill。当前有 `soft-clay` 和 `handmade-plasticine`；手捏橡皮泥仍待实际小样视觉校准。
-
-## 二维角色资产
-
-| Skill | 作用 |
-|---|---|
-| [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 按目标动作拆分皮影组件，在 Blender 刚性绑定试动，补全隐藏结构并验收活动范围 |
+Agent 的仓库工作约定见 [AGENTS.md](AGENTS.md)。
 
 ## 使用方式
 
@@ -37,4 +28,4 @@
 
 ## 新增 Skill
 
-在 `skills/` 下创建新的子目录，并在其中放置 `SKILL.md` 文件即可。建议遵循现有 Skill 的命名与组织方式。
+在 `skills/` 下创建新的子目录，并在其中放置 `SKILL.md` 文件，同时更新 [技能索引](index.md)。建议遵循现有 Skill 的命名与组织方式。

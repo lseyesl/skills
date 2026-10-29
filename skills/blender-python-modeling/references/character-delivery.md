@@ -2,11 +2,24 @@
 
 Treat the editable rig, deformation mesh, baked export rig, and exported clips as separate deliverables. Do not apply transforms, collapse modifiers, rename bones, or replace actions on the editable source merely to satisfy an exporter.
 
+## Reference and rest pose before modeling
+
+Decide this at character design/reference generation, not when the user later asks for bones. For reusable characters and unspecified character-model requests, prepare a neutral bind-pose image, then generate the controlling multiview sheet in that same pose. A seated, crouched or action concept can define identity, palette and surface treatment, but cannot be the sole construction reference for a general-purpose deforming character. Explicit fixed-pose sculptures may stay in their requested pose without an extra animation workflow.
+
+- **Humanoids/bipeds:** choose relaxed A-pose by default; use T-pose when the intended rig/retargeting convention calls for it. Keep arms clear of the torso, legs separated, hands open/readable, spine and pelvis neutral, feet on one plane, and slight joint bends where needed to establish bend direction. Record the selected angles rather than treating the name “A-pose” as sufficient.
+- **Quadrupeds:** use a balanced four-foot standing rest, neutral back/head, readable shoulder/hip attachments, modest elbow/knee/hock bends, separated limb volumes and a relaxed tail clear of the legs. Do not force humanoid A/T poses onto animals. Occlusion in a true side view is legitimate; use front/back/top or supplemental joint close-ups to explain overlap rather than staggering a limb in one panel.
+- **Other anatomies:** choose a relaxed, structurally readable rest configuration; keep wings, tentacles or accessories clear of deforming joints where practical, preserving identity and anatomy.
+
+Record intended use, reference roles (appearance versus bind-pose construction), neutral-pose image/sheet paths, axes/ground, joint state, inferred hidden regions and review findings in the project reference record. Import/calibrate the neutral construction views using the normal reference-workspace workflow, derive mesh proportions/joint landmarks from them, and compare the actual unposed mesh before skinning. Presentation poses are subsequent rig poses or separate static variants. Do not fuse adjacent limbs, tail-to-leg contacts or clothing to skin merely because they touch in the beauty reference.
+
+If animation is requested only after a posed model exists, inspect topology and pose suitability first. Preserve that source and derive a neutral version; revise topology/weights or rebuild affected regions when necessary. Do not assume adding bones or rotating sitting limbs makes the asset walk-ready. Existing compatible rigs/rest references may be reused; generating a new image is unnecessary for an ordinary animation edit that already has an adequate rest mesh.
+
 ## Bind readiness
 
 Before binding:
 
 - confirm mesh and armature scale, orientation, rest pose, symmetry and intended root;
+- compare the rest mesh to the reviewed neutral-pose references and confirm separate limb volumes, readable joint attachments and room for the intended range of motion; a consistent sheet or correct weight sums alone do not establish this;
 - resolve non-manifold geometry, duplicate vertices, accidental internal faces, and invalid normals;
 - preserve modifier order, especially Mirror/Subdivision relative to Armature;
 - ensure bone roll and local axes are stable before weights or animations are authored;

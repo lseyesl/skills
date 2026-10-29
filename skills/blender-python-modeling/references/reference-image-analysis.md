@@ -14,11 +14,20 @@ The most useful package is:
 4. close-ups for joints and surface details;
 5. any semantic scale anchor, even approximate, such as “tabletop object” or “about 20 cm tall.”
 
+For reusable characters, the controlling package must depict the selected neutral bind/rest pose, prepared before geometry. Keep seated/action beauty images as separate appearance references; do not use their silhouette as the sole construction target for a later walking rig. Select the anatomy-appropriate pose and record source-pose conversion as inference using [character-delivery.md](character-delivery.md#reference-and-rest-pose-before-modeling). Existing calibrated neutral references can be reused; explicitly fixed-pose sculptures retain their requested pose.
+
 If no scale anchor exists, use normalized units with the longest inferred dimension equal to `1.0`. Do not silently choose metres, centimetres, or a category-average size.
 
 ## Establish the Blender reference workspace before geometry
 
 Seeing an image in the conversation is not the same as having a calibrated modeling reference. Before building reference-driven geometry:
+
+For generic procedural tasks, use [reference_workspace.py](../scripts/reference_workspace.py)
+and the [executable setup/build/review sequence](reference-workspace-tool.md).
+The task template calls its prerequisite before deleting/rebuilding old geometry.
+An imported Image Empty is a visual guide, not an automatic modeling constraint:
+builders must consume calibrated landmarks/profiles or use an equivalent measured
+fitting path, then compare actual geometry to those guides.
 
 1. **Prepare separate images.** Split a sheet into its real view regions, preserving complete silhouettes and useful landmarks. Do not assume the generator obeyed equal cell boundaries. Preserve originals and the crop/label mapping; do not stretch a distorted panel to make its geometry appear correct.
 2. **Choose axes and controlling evidence.** Record forward/up, anatomical left/right where relevant, pose, origin and scale. Identify which views or regions control width, height, depth and attachments. A weak perspective side image can help judge volume without being a dimensional authority. Missing or rejected views remain explicitly unresolved or inferred, not manufactured measurements.

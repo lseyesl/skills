@@ -50,6 +50,8 @@ Avoid: background colours close to the subject, gradients, textures, scenery, fl
 
 For a character, define one neutral modeling pose rather than merely asking for a “neutral pose.” State the limb angles or relationships, head/spine/pelvis state, hand and foot state, ground contact, and tail/wing/accessory state. Every panel must preserve that pose even when a limb becomes occluded. Preserve real left/right costume or anatomy differences. For an articulated prop or machine, similarly lock all movable parts. For an object whose front/back is ambiguous, define the chosen front in the inference record.
 
+For reusable character modeling, generate/review the neutral-pose source before Pass 1A/1B. If the original is seated or acting, prompt the conversion explicitly: “Use the original for character identity, proportions, markings and clay surface. Create a separate neutral construction reference in <specified A/T pose or balanced four-foot standing rest>. Keep limb volumes separate and joints readable; no sitting, crouching or action gesture. Hidden structure is inferred.” Review identity and attachments before expanding it to multiviews. Name both the downstream use and concrete joint state in the multiview prompt; “same pose in all panels” alone can reproduce the wrong construction pose consistently.
+
 ## Pass 2: combined render and line-art sheet
 
 Use the approved 2×3 render sheet as the edit target:

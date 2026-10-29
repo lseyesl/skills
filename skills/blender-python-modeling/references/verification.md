@@ -67,6 +67,12 @@ For a scene whose deliverable is a final image or animation, render representati
 
 ## Completion evidence
 
+For generic reference-driven builds, run the live workspace/review gate from
+[reference-workspace-tool.md](reference-workspace-tool.md) before final claims.
+Attach the current calibration and model-comparison records, consumed landmark
+bindings and actual reference-visible viewport captures. A source image packed
+in the blend or an import count does not show that it influenced geometry.
+
 Report:
 
 - persistent script path;

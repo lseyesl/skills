@@ -48,6 +48,8 @@ Keep the subject centered, fully visible, at one common orthographic scale, and 
 
 For a directional subject, establish one canonical orientation before generation, for example “side and top views point nose-left, tail-right.” For a character or articulated object, read [references/pose-and-configuration-normalization.md](references/pose-and-configuration-normalization.md) and lock one modeling pose or mechanical configuration before generation. Every controlling view must depict that same state as if only the orthographic camera moved; never re-pose a limb, joint, tail, wing, control surface, door, or tool to improve visibility in one panel.
 
+Choose the pose for its downstream use, not merely for cross-view consistency. For reusable/riggable character modeling (including unspecified character-model requests), first prepare and review a neutral bind-pose design image, then generate its multiviews. Use humanoid A/T pose or quadruped four-foot standing rest as anatomy requires. Preserve a seated/action original separately as appearance evidence; a perfectly consistent seated sheet still does not serve as the neutral construction sheet. Honor explicitly fixed-pose/static deliverables without forcing a second pose.
+
 Treat normalization readiness explicitly:
 
 - **Preview-only:** small pose, configuration, scale, or anchor drift may remain if disclosed.

@@ -41,6 +41,8 @@ Prefer the original supplied view as the controlling evidence for visible featur
 
 ## Pose and configuration normalization
 
+First check suitability for the declared use: a reusable character requires the reviewed neutral construction pose, with separate limb volumes and readable joint attachments across the view set. An internally consistent seated/action sheet is insufficient for this purpose. A fixed-pose sculpture may retain its specified pose. Neutral pose and multiview consistency do not certify a deformation-ready mesh.
+
 For a character or articulated subject, compare the views as projections of one frozen state:
 
 - head, spine, pelvis, shoulder, elbow, wrist, hand, hip, knee, ankle, foot, tail, and wing states agree wherever applicable;

@@ -2,6 +2,8 @@
 
 Inspect the image itself; a successful generation call is not acceptance evidence.
 
+For modeling handoff, complete the [pre-model review and scoped receipt](pre-model-review.md) before detailed geometry. Review every panel and explicitly classify controlling/supplemental/rejected views. Pose consistency, imported-image calibration, model fidelity and animation readiness are separate decisions. Critical unresolved regions cannot be approved through a generic whole-sheet pass.
+
 ## Layout and projection
 
 - exactly five controlling views for an accepted symmetric design, or six for an asymmetric/uncertain design;

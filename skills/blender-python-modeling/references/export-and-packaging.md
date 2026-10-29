@@ -116,6 +116,8 @@ For game-ready naming, texture suffixes, packed-channel conventions, LODs, colli
 
 Never overwrite the user's source file unless explicitly requested. Resolve the absolute path, verify the parent directory, and use Save As or Save Copy semantics appropriate to the task. After saving, confirm `bpy.data.filepath` only when the operation was intended to change the live document path, and verify the output exists with non-zero size.
 
+A task-only dependency package written with `bpy.data.libraries.write` is not sufficient evidence of a normal user-openable scene. It can reopen with an empty/default active scene even when its asset datablocks exist. In an isolated process, select the intended scene/camera and save a normal `.blend`, then reopen that final file without a `--scene` override. Confirm the default active scene, model, packed references/materials and rig are actually available; selecting the scene inside a verifier must not conceal an incorrect opening state. Preserve the user's original live scenes and source files throughout.
+
 ## Round-trip validation
 
 File existence is only the first check. Validate high-risk exports in a disposable blank scene or the actual consumer:

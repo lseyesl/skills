@@ -54,6 +54,10 @@ For GLB, favor Principled-compatible nodes and conventional image maps. Complex 
 
 ## Procedural materials
 
+For reference-driven colour blocking, define semantic regions before projection: face cap/blaze/brows, ear front/rim/back, throat/chest/belly, paw top/sole and appendage root/tip, or equivalent product parts. Use source views to constrain those regions; resolve visibility and normal-direction ambiguity explicitly. Mixing front/side image masks by surface normal alone can paint an ear's back with its front or interrupt an underside colour field. Inspect back/top/bottom early, not only the beauty camera.
+
+For deforming characters, pin procedural coordinates/region attributes to the rest mesh or use UVs so colour and grain follow the skin. Bake unsupported procedural regions to UV textures when the destination requires it; retain editable sources. Keep mask projection separate from geometry recovery and do not paste source lighting as a substitute for material design. Review actual material deformation alongside joint tests. For comparison invalidation and external texture dependencies, see [staged-execution.md](staged-execution.md).
+
 Common Blender 4.x-compatible patterns:
 
 - Noise Texture → Color Ramp → Base Color for stone, paint variation, clouds;

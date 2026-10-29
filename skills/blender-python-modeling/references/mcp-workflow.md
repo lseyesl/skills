@@ -31,6 +31,8 @@ Use an absolute path and quote it safely. The script owns all substantive logic 
 
 ## Stage large builds
 
+Use the [guarded project stages](staged-execution.md) and `scripts/stage_guard.py` when build/verify/render span separate tool calls. A new attempt invalidates prior success before work. Inspect tool result text as well as `isError`: a returned `Error executing code`/traceback/communication error must stop dependent rendering even when the transport flag says false. Require the current predecessor receipt and artifact hashes; do not reuse a stale `.blend` or scene success flag after a failed attempt.
+
 Separate expensive or failure-prone work into bounded stages such as:
 
 1. generated collection and base geometry;

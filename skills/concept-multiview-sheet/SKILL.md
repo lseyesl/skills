@@ -50,6 +50,8 @@ For a directional subject, establish one canonical orientation before generation
 
 Choose the pose for its downstream use, not merely for cross-view consistency. For reusable/riggable character modeling (including unspecified character-model requests), first prepare and review a neutral bind-pose design image, then generate its multiviews. Use humanoid A/T pose or quadruped four-foot standing rest as anatomy requires. Preserve a seated/action original separately as appearance evidence; a perfectly consistent seated sheet still does not serve as the neutral construction sheet. Honor explicitly fixed-pose/static deliverables without forcing a second pose.
 
+Before detailed modeling, apply the [pre-model review](references/pre-model-review.md) to the actual generated panels and record `passed`, `partial`, or `blocked` with source hashes, controlling regions and conflicts. A partial set authorizes only its explicit allowed regions; repair critical conflicts before shaping affected geometry. A later model render cannot certify an omitted pre-model review.
+
 Treat normalization readiness explicitly:
 
 - **Preview-only:** small pose, configuration, scale, or anchor drift may remain if disclosed.
@@ -64,7 +66,7 @@ Treat normalization readiness explicitly:
 
    For an image-then-model task, do this before detailed geometry; later model renders are verification, not a substitute for omitted design references. State projection expectations explicitly: a vertical flower disk, wheel or shield reads edge-on from top/bottom; broad upward-facing surfaces read broadly from above and foreshorten from the side. Labeling a panel TOP does not make it a top projection. Review these constraints before generating line art.
 5. **Review before line art.** Check part count, placement, silhouette, proportions, colour blocking, symmetry, orientation, pose/configuration, anchor alignment, common orthographic scale, and whether any panel is actually three-quarter. Regenerate or make one targeted edit if a controlling inconsistency remains.
-6. **Create the combined sheet.** Edit the approved 2×3 render sheet into the 4×3 layout. Preserve the first two rows exactly and add matching line-art rows. Do not ask for a dense fake topology mesh.
+6. **Create the combined sheet.** Preserve approved render panels as immutable sources. Generate matching line art separately and assemble the 4×3 layout without regenerating the accepted render rows. If line art drifts, keep it supplemental or derive contours from a reviewed blockout. Do not ask for a dense fake topology mesh.
 7. **Validate.** Apply [references/consistency-review.md](references/consistency-review.md). Iterate with one explicit correction at a time; stop when further image edits cause component drift rather than improvement.
 8. **Deliver and hand off.** For preview-only work, display the result inline. For project work, copy the reviewed image into the workspace and preserve the render-only source when useful. When Blender modeling follows, provide separate uncropped view images (or exact crop regions), view/axis labels, shared scale/origin and semantic alignment anchors, plus per-region reliability and unresolved conflicts. Report final paths, prompt summary, generation mode, and important inferred/unknown structure. The Blender Skill establishes and visually checks its imported reference workspace before geometry; a generated sheet alone is not a calibrated Blender reference setup.
 

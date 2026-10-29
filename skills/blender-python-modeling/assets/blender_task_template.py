@@ -26,6 +26,9 @@ REFERENCE_CONFIG = None  # Project-local reference-setup.json; see reference-wor
 CALIBRATION_REVIEW = None  # Inspected reference-visible orthographic captures.
 COMPARISON_REVIEW = None  # Optional until blockout exists; required for a final claim.
 INFERRED_DEPTH = None  # Sample builder only: explicitly chosen depth if no side evidence.
+BUILD_RECEIPT = None  # Project-local build-state.json for separate build/render calls.
+BUILD_OUTPUTS = []  # Saved artifacts if the project builder writes them; template itself does not.
+STAGE_INPUTS = {}  # Subject/style parameters and other inputs affecting this build.
 
 
 def generated_collection() -> bpy.types.Collection:
@@ -111,7 +114,7 @@ def validate_result(objects: list[bpy.types.Object]) -> dict[str, Any]:
     return result
 
 
-def main() -> None:
+def build_task() -> dict[str, Any]:
     if TASK_ID == "replace-me":
         raise RuntimeError("Set TASK_ID before running this template")
     if BUILD_MODE not in {'reference', 'original', 'waived'}:
@@ -139,6 +142,38 @@ def main() -> None:
             require_reference_review(bpy.context.scene, TASK_ID, COMPARISON_REVIEW,
                                      phase='comparison', objects=objects)
             result['reference_stage'] = 'compared_against_imported_guides'
+    return result
+
+
+def stage_inputs() -> dict[str, Any]:
+    from stage_guard import file_input
+    inputs = {'task': TASK_ID, 'mode': BUILD_MODE, 'recipe': file_input(__file__),
+              'parameters': STAGE_INPUTS, 'inferred_depth': INFERRED_DEPTH,
+              'waiver': WAIVER_REASON}
+    inputs['helpers'] = [file_input(Path(REFERENCE_HELPER_DIR) / name) for name in
+                         ('reference_workspace.py', 'reference_review.py',
+                          'appearance_signature.py', 'stage_guard.py')]
+    if BUILD_MODE == 'reference':
+        path = Path(REFERENCE_CONFIG).resolve()
+        config = json.loads(path.read_text())
+        inputs['config'] = file_input(path)
+        inputs['calibration'] = file_input(CALIBRATION_REVIEW)
+        if config.get('multiview_review'):
+            inputs['design'] = file_input(path.parent / config['multiview_review'])
+        inputs['images'] = [file_input(path.parent / item['image']) for item in config['views'].values()]
+    return inputs
+
+
+def main() -> None:
+    if BUILD_RECEIPT:
+        if not REFERENCE_HELPER_DIR:
+            raise RuntimeError('Set helper scripts directory for stage receipts')
+        sys.path.insert(0, str(Path(REFERENCE_HELPER_DIR).resolve()))
+        from stage_guard import run_stage
+        result = run_stage(BUILD_RECEIPT, 'build', stage_inputs, BUILD_OUTPUTS,
+                           build_task, lambda r: bool(r.get('objects')))
+    else:
+        result = build_task()
     print(json.dumps(result, ensure_ascii=False, sort_keys=True))
 
 

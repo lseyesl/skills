@@ -37,11 +37,14 @@ avoid global polygon increases without evidence.
 
 1. Inspect one representative part from front/side/top in solid/clay lighting:
    orientation, volume and connections first.
+   For characters, make the head/face and one shoulder-to-limb-to-paw chain the first samples: compare muzzle/jaw depth and section curvature, eye placement/surface fit, ear thickness/recess, joint width continuity and real sole contact. Trace cross-sections and local landmarks to trusted regions; extra primitives or grain cannot compensate for incorrect primary volume.
 2. Render a local crop at modest samples using intended material, light and color
    management. Check grooves, branching, raised margins and dents individually.
 3. Inspect at intended presentation scale. A feature visible only in an enlarged
    diagnostic image has not passed a main-shot readability requirement.
 4. Only then render the full common-scale multiview suite and final hero.
+
+After corrections, rerender affected local crops and controlling views first. Refresh the whole suite when global lighting/material changes or final assembly make those views affected; retain unchanged evidence with provenance rather than rerendering every camera mechanically. Follow the stage/freshness rules in [staged-execution.md](staged-execution.md).
 
 If a feature disappears, distinguish shallow geometry/undersampling from modifier
 smoothing, material contrast, light direction and occlusion. Change the cause,

@@ -13,6 +13,8 @@ template formerly had no corresponding prerequisite; it now requires explicit
 
 ## 1. Prepare the workspace before a geometry build
 
+For multiple construction guides, first complete the [pre-model review](../../concept-multiview-sheet/references/pre-model-review.md). Add `"multiview_review": "multiview-review.json"` to the config. If its readiness is `partial`, add explicit `"build_regions": ["body"]` (use actual reviewed regions). `setup_references` checks source hashes, view roles and scope **before any guide mutation**. A supplemental/rejected view cannot silently become a guide, and blocked parent/child regions cannot enter the declared build. The record is declared inspection evidence, not automated pixel/anatomy judgment; the actual builder must honor those region names. A single ordinary guide does not require an artificial multiview receipt.
+
 Keep a project-local `reference-setup.json`, with separate image paths and reviewed
 pixel anchors. Example shape only; replace its coordinates with actual analysis:
 
@@ -123,16 +125,27 @@ traceable to those values and the resulting shape must be compared.
 
 Build a blockout, inspect reference-visible axis overlays, and repair differences.
 Save `comparison-review.json` using phase `comparison`, current workspace signature,
-per-view capture/findings, and `model_signature(objects)` for the actual model.
+per-view capture/findings, `model_signature(objects)` and
+`appearance_signature(scene, objects, extra=...)` for the actual model/presentation.
+Both functions are exported by `reference_workspace`. Store external visual
+dependencies under `appearance_extra` if used, and pass that same value to the
+appearance signature. See [staged-execution.md](staged-execution.md) for scope.
 Run `require_reference_review(scene, task, path, phase="comparison", objects=objects)`
 before claiming a final reference-guided result. The template without this review
 reports `blockout_pending_comparison`, not completion.
 
 Changing model geometry/transforms/evaluated modifiers invalidates the comparison;
+material/texture/attribute, light/world, camera and render changes invalidate its
+appearance evidence even when geometry is identical. Old comparison receipts
+without an appearance signature need inspection and renewal, not an automatic pass.
 moving, hiding or replacing a guide invalidates calibration. New landmark readings
 alone do not renew a visual pass. Supply the comparison artifact in feature/final
 ledger review evidence; a valid ledger does not replace this Blender live-state
 check. Images remain viewport guides, separate from normal final beauty renders.
+
+The pre-model review text is retained in the scene for portable packed-file inspection. Source files and review artifacts must be present for a new setup/build; an existing packed scene can be inspected away from them. A changed available design receipt invalidates calibration. Old saved workspaces remain readable, but new multiple-guide setup requires the scoped design review.
+
+For separate build/render calls, enable `BUILD_RECEIPT` in the task template and provide helper paths/actual stage inputs and saved outputs. A failed or interrupted new attempt cannot reuse an old successful receipt. Use [staged execution](staged-execution.md) instead of branching on a transport error flag alone.
 
 ## Executable checks
 

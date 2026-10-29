@@ -25,6 +25,8 @@ Put detailed checks in the persistent script and print a compact pass/fail summa
 
 ## Visual checks
 
+Before multiple construction views enter Blender, require their scoped [pre-model review](../../concept-multiview-sheet/references/pre-model-review.md). Check pose suitability, common scale/landmarks, projection/occlusion, structure/colour and axes; reject critical conflicts for affected detailed geometry. The imported-workspace calibration below is a second check, not a substitute for source consistency.
+
 For reference-driven work, first inspect the imported, calibrated Image Empty
 workspace in the corresponding orthographic views: source images, orientation,
 scale, landmark alignment, opacity/front display, view filtering and locked
@@ -50,7 +52,11 @@ Call `get_viewport_screenshot` after each meaningful visual stage. Inspect at le
 
 For a scene whose deliverable is a final image or animation, render representative output; a solid-mode viewport screenshot does not validate render materials or lighting.
 
+Keep current geometry and appearance signatures in visual comparison records. Shader inputs/groups, source textures, UV/region attributes, lights/world, cameras and render/colour settings can invalidate an image judgment without changing vertices. The executable comparison gate checks both; external caches/engines need explicit additional dependencies. See [staged-execution.md](staged-execution.md). A valid receipt establishes freshness and declared inspection, not image agreement.
+
 ## Animation and simulation checks
+
+Use the [character acceptance levels](character-delivery.md#separate-animation-acceptance-levels) for rigs: small FK poses, full motion-range deformation, and complete locomotion contact/loop checks are distinct. Inspect actual evaluated soles and intended materials; finite vertices and weight sums cannot certify walking.
 
 - Scrub or sample the start, middle, end, and important contact frames.
 - Confirm frame rate, frame range, interpolation, looping, constraints, and object origins.

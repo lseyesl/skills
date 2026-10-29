@@ -54,7 +54,7 @@ For reusable character modeling, generate/review the neutral-pose source before 
 
 ## Pass 2: combined render and line-art sheet
 
-Use the approved 2×3 render sheet as the edit target:
+Keep the approved 2×3 render sheet immutable. Generate the matching line-art panels as separate outputs using it as reference, then assemble the approved render panels and line art into the 4×3 layout without regenerating the originals. If a combined generative edit is used, treat the following as a request to verify, not a guarantee of unchanged pixels:
 
 ```text
 Preserve the first two render rows exactly: same five or six rendered views, design, scale, alignment, colours, materials, component positions, asymmetry, and silhouettes.

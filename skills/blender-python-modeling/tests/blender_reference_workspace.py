@@ -5,6 +5,7 @@ Run with Blender --background --factory-startup --python-exit-code 1 --python ..
 from pathlib import Path
 import importlib.util
 import json
+import hashlib
 import sys
 import tempfile
 
@@ -14,7 +15,7 @@ from mathutils import Vector
 SCRIPTS = Path(__file__).resolve().parents[1] / 'scripts'
 sys.path.insert(0, str(SCRIPTS))
 from reference_workspace import (OWNER, setup_references, workspace_signature,
-                                 reference_landmark, require_reference_review, model_signature)
+                                 reference_landmark, require_reference_review, model_signature, appearance_signature)
 
 checks = []
 
@@ -44,6 +45,18 @@ def main():
         config = {'views': {v: {'image': 'reference.png', 'pixels_per_unit': 200,
                                'origin_px': [50, 180], 'landmarks': landmarks}
                             for v in ['front', 'back', 'right', 'left', 'top', 'bottom']}}
+        # Synthetic pre-model evidence tests declarations, never image agreement.
+        rejects('multiple guides without design review', lambda: setup_references(scene, task, config, root))
+        assert not any(o.get(OWNER) == task for o in scene.objects)
+        from reference_review import CHECKS
+        design = {'schema_version': 1, 'purpose': 'synthetic rigid prop', 'pose': 'fixed rest cube',
+                  'readiness': 'passed', 'allowed_regions': ['body'], 'blocked_regions': [],
+                  'conflicts': [], 'checks': {k: {'status': 'passed', 'finding': 'Synthetic test only'} for k in CHECKS},
+                  'views': {v: {'image': 'reference.png', 'sha256': hashlib.sha256((root/'reference.png').read_bytes()).hexdigest(),
+                                'role': 'controlling', 'controls': ['body'], 'finding': 'Synthetic test only'} for v in config['views']},
+                  'review_artifacts': ['reference.png']}
+        design_path = root/'design-review.json';design_path.write_text(json.dumps(design))
+        config['multiview_review'] = 'design-review.json'
         record = setup_references(scene, task, config, root)
         sig = workspace_signature(scene, task)
         counts = (len(scene.objects), len(bpy.data.images))
@@ -107,25 +120,77 @@ def main():
         config_path = root / 'reference-setup.json';config_path.write_text(json.dumps(config))
         module.REFERENCE_HELPER_DIR = SCRIPTS;module.REFERENCE_CONFIG = config_path
         module.CALIBRATION_REVIEW = review_path
+        module.BUILD_RECEIPT = root / 'build-state.json'
         rejects('missing inferred depth before deleting geometry', module.main)
         assert scene.objects.get(sentinel.name) == sentinel
+        assert json.loads(module.BUILD_RECEIPT.read_text())['status']=='failed'
+        checks.append('template records failed prerequisite attempt before preserving old geometry')
         module.INFERRED_DEPTH = .2
         module.main()
         cube = bpy.data.objects['GEO_' + task + '_body']
         assert (cube.dimensions - Vector((.4, .2, .85))).length < 1e-6
         checks.append('sample builder dimensions actually derived from imported guide anchors')
+        from stage_guard import require_stage
+        require_stage(module.BUILD_RECEIPT,'build',module.stage_inputs)
+        checks.append('template successful build has fresh guarded receipt')
 
-        comparison = dict(review, phase='comparison', model_signature=model_signature([cube]))
+        comparison = dict(review, phase='comparison', model_signature=model_signature([cube]),
+                          appearance_signature=appearance_signature(scene, [cube]))
         review_path.write_text(json.dumps(comparison))
         require_reference_review(scene, task, review_path, phase='comparison', objects=[cube])
+        # Material, light, world, camera, attribute and image changes invalidate visual receipts.
+        mat=bpy.data.materials.new('synthetic-visual');mat.use_nodes=True;cube.data.materials.append(mat)
+        bs=next(n for n in mat.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
+        def current_comparison():
+            comparison['appearance_signature']=appearance_signature(scene,[cube]);review_path.write_text(json.dumps(comparison))
+        def stale_visual(label):
+            rejects(label,lambda:require_reference_review(scene,task,review_path,phase='comparison',objects=[cube]))
+        current_comparison();bs.inputs['Base Color'].default_value=(.2,.5,.8,1);stale_visual('base colour invalidates comparison')
+        current_comparison();bs.inputs['Roughness'].default_value=.12;stale_visual('roughness invalidates comparison')
+        texture=mat.node_tree.nodes.new('ShaderNodeTexImage');texture.image=image
+        current_comparison();image.colorspace_settings.name='Non-Color';stale_visual('image colours change invalidates comparison')
+        texcoord=mat.node_tree.nodes.new('ShaderNodeAttribute');texcoord.attribute_name='RestUV'
+        attr=cube.data.attributes.new('RestUV','FLOAT_VECTOR','POINT')
+        current_comparison();cube.data.attributes['RestUV'].data[0].vector=(.2,.3,.4);stale_visual('material attribute invalidates comparison')
+        light_data=bpy.data.lights.new('synthetic-light','AREA');light=bpy.data.objects.new('synthetic-light',light_data);scene.collection.objects.link(light)
+        current_comparison();light.data.energy+=10;stale_visual('light energy invalidates comparison')
+        current_comparison();light.location.x+=.2;bpy.context.view_layer.update();stale_visual('light placement invalidates comparison')
+        camera_data=bpy.data.cameras.new('synthetic-camera');camera=bpy.data.objects.new('synthetic-camera',camera_data);scene.collection.objects.link(camera);scene.camera=camera
+        current_comparison();camera.data.lens+=5;stale_visual('camera lens invalidates comparison')
+        world=bpy.data.worlds.new('synthetic-world');world.use_nodes=True;scene.world=world
+        current_comparison();next(n for n in world.node_tree.nodes if n.type=='BACKGROUND').inputs['Strength'].default_value=.2;stale_visual('world invalidates comparison')
+        group=bpy.data.node_groups.new('synthetic-group','ShaderNodeTree');node=mat.node_tree.nodes.new('ShaderNodeGroup');node.node_tree=group
+        value=group.nodes.new('ShaderNodeValue')
+        current_comparison();value.outputs[0].default_value=.7
+        # Output default sockets also matter for Value/RGB nodes.
+        stale_visual('nested group output invalidates comparison')
+        brick=mat.node_tree.nodes.new('ShaderNodeTexBrick')
+        current_comparison();brick.offset_frequency=3;stale_visual('stock node RNA settings invalidate comparison')
+        stable=appearance_signature(scene,[cube]);brick.location.x+=50
+        assert stable==appearance_signature(scene,[cube]);checks.append('editor node layout does not invalidate visual evidence')
+        current_comparison();scene.view_settings.exposure+=.3;stale_visual('exposure invalidates comparison')
+        uv=cube.data.uv_layers.new(name='ShaderUV')
+        current_comparison();cube.data.uv_layers['ShaderUV'].data[0].uv=(.3,.5);stale_visual('UV change invalidates comparison')
+        attr=cube.data.attributes.new('RegionId','INT','FACE')
+        current_comparison();cube.data.attributes['RegionId'].data[0].value=3;stale_visual('region ids invalidate comparison')
+        separate=bpy.data.images.new('synthetic-texture',width=8,height=8);separate.filepath_raw=str(root/'texture.png');separate.file_format='PNG';separate.save();separate.pack();texture.image=separate
+        current_comparison();p=root/'texture.png';p.write_bytes(p.read_bytes()+b'changed');stale_visual('external texture content invalidates comparison')
+        current_comparison();scene.render.resolution_x+=1;stale_visual('resolution invalidates comparison')
+        current_comparison();mat.node_tree.nodes.get(texture.name).image=None;stale_visual('texture binding invalidates comparison')
+        current_comparison()
         cube.data.vertices[0].co.x += .01;cube.data.update();bpy.context.view_layer.update()
         rejects('model edit invalidates prior overlay comparison',
                 lambda: require_reference_review(scene, task, review_path, phase='comparison', objects=[cube]))
 
+        original_design=design_path.read_text();design['pose']='changed pose after calibration';design_path.write_text(json.dumps(design))
+        rejects('changed design review invalidates workspace',lambda:workspace_signature(scene,task))
+        design_path.write_text(original_design)
         # A packed guide remains usable after moving the blend away from source files.
         (root / 'reference.png').unlink()
         workspace_signature(scene, task)
         checks.append('packed source fallback retains calibration')
+        design_path.unlink();workspace_signature(scene,task)
+        checks.append('embedded design receipt keeps packed scene inspectable offline')
     print(json.dumps({'ok': True, 'blender': bpy.app.version_string, 'checks': checks,
                       'scope': 'Synthetic integration checks; no real viewport review or artistic fidelity certified'}))
 

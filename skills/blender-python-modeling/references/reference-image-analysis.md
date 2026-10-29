@@ -22,6 +22,8 @@ If no scale anchor exists, use normalized units with the longest inferred dimens
 
 Seeing an image in the conversation is not the same as having a calibrated modeling reference. Before building reference-driven geometry:
 
+First review multiple construction views using the [pre-model review](../../concept-multiview-sheet/references/pre-model-review.md). Save inspected findings, source hashes, view/region authorities and conflict decisions in `multiview-review.json`; name it as `multiview_review` in the setup config. The helper validates it before guide mutation. For `partial` readiness, specify `build_regions` within the allowed scope. Do not import rejected/supplemental panels as dimensional guides or silently build a blocked face/joint. Existing single-reference work does not need an artificial multiview receipt; generated image-then-model work still follows the required sheet preparation.
+
 For generic procedural tasks, use [reference_workspace.py](../scripts/reference_workspace.py)
 and the [executable setup/build/review sequence](reference-workspace-tool.md).
 The task template calls its prerequisite before deleting/rebuilding old geometry.

@@ -14,6 +14,12 @@ Record intended use, reference roles (appearance versus bind-pose construction),
 
 If animation is requested only after a posed model exists, inspect topology and pose suitability first. Preserve that source and derive a neutral version; revise topology/weights or rebuild affected regions when necessary. Do not assume adding bones or rotating sitting limbs makes the asset walk-ready. Existing compatible rigs/rest references may be reused; generating a new image is unnecessary for an ordinary animation edit that already has an adequate rest mesh.
 
+## Animation mesh before binding
+
+Distinguish the high-resolution clay sculpt from the deformation mesh. Record a target appropriate to the intended renderer, shot size, runtime/export limits and expected motion; do not prescribe one universal polygon count. A dense voxel-fused surface can be a valid sculpt, but face count, watertightness and smooth shading do not establish useful joint topology.
+
+Before general animation binding, inspect edge flow and density around shoulders, hips, elbows, knees/hocks, wrists/ankles and any deforming face. Keep the sculpt for shape/normal detail and prepare a simpler animation mesh with joint loops where required. Avoid collapsing a bending joint to a pole or placing uncontrolled overlapping/internal surfaces there. A sculpt used directly for limited clay/stop-motion poses needs deformation and performance evidence for that limited use; do not label it production-animation-ready by default. Resolve topology before final weights/shape keys to avoid repeated skinning work.
+
 ## Bind readiness
 
 Before binding:
@@ -41,6 +47,14 @@ For each deforming mesh, inspect only vertex groups that correspond to deform bo
 Context-sensitive cleanup operators include `vertex_group_clean`, `vertex_group_normalize_all`, and `vertex_group_limit_total`. Use them only on the intended mesh in Weight Paint or Object Mode as required by the running API, and revalidate after each operation. Do not normalize non-deform control groups into the skin weights accidentally.
 
 Test deformation poses, not only numerical sums: arms up/down, elbow/knee extremes, shoulder twist, hip flexion, wrist/ankle rotation, facial extremes, and any gameplay-critical silhouette.
+
+## Separate animation acceptance levels
+
+- **Basic FK binding:** rest mesh, hierarchy/weights, neutral-pose equivalence and representative small poses checked. State this scope explicitly; finite coordinates and normalized weights alone are insufficient even here.
+- **Motion validated:** inspect the intended range with actual materials: joint compression/volume, creasing, self-intersection, gaps, eye/ear/muzzle attachments, paw deformation and texture stability. IK controls, facial shapes and retargeting require their own checks when requested.
+- **Locomotion validated:** review at least one complete stride, its support/swing transitions and loop boundary from side and three-quarter views. Check actual evaluated sole contact, penetration, unintended foot sliding during stance, swing clearance, weight transfer and root travel. Ankle-target error is not sole-contact evidence. For a traveling loop, compare matching phases after removing intended root translation; also inspect texture/material continuity.
+
+Choose motion/contact tolerances for character scale and style, record them with observations, and sample critical contacts rather than just start/middle/end. A few pleasant stills or a zero-nonfinite-vertex test cannot authorize a walking/running-ready claim. Do not generate an animation solely because the user mentioned possible future use; establish the neutral mesh/basic scope and preserve the validation backlog.
 
 ## Armature and modifier contract
 

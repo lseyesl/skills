@@ -10,6 +10,8 @@ import math
 
 import bpy
 from mathutils import Matrix, Vector
+from reference_review import require_design_review
+from appearance_signature import appearance_signature
 
 OWNER = 'reference_workspace_owner'
 BASES = {
@@ -40,6 +42,8 @@ def setup_references(scene, task, config, base):
     if not task or not config.get('views'):
         raise ValueError('task and separate reference views are required')
     base = Path(base).resolve()
+    # Source design review precedes even guide mutation, not just geometry deletion.
+    design = require_design_review(config, base)
     name = task + '::reference-workspace'
     collection = bpy.data.collections.get(name)
     if collection is None:
@@ -122,6 +126,12 @@ def setup_references(scene, task, config, base):
         entry['matrix'] = [list(row) for row in _object(scene, task, view).matrix_world]
     scene[_key(task)] = json.dumps(records, sort_keys=True)
     scene[_key(task) + '::used'] = '[]'
+    if design:
+        scene[_key(task) + '::design'] = json.dumps({
+            'config': config, 'base': str(base), 'review': design,
+            'review_text': Path(design['path']).read_bytes().decode('utf-8')}, sort_keys=True)
+    elif _key(task) + '::design' in scene:
+        del scene[_key(task) + '::design']
     return records
 
 
@@ -155,6 +165,18 @@ def workspace_signature(scene, task):
             raise RuntimeError(view + ': reference transform changed; recalibrate')
         if abs(obj.empty_display_size - max(entry['size']) / entry['pixels_per_unit']) > 1e-6 or tuple(obj.empty_image_offset) != (-.5, -.5):
             raise RuntimeError(view + ': reference scale or image offset changed')
+    design_key = _key(task) + '::design'
+    if design_key in scene:
+        design = json.loads(scene[design_key])
+        live = design['review']
+        receipt = Path(live['path'])
+        embedded = hashlib.sha256(design['review_text'].encode('utf-8')).hexdigest()
+        # Existing packed scenes remain inspectable away from their source folder.
+        # New setup/build still validates all source files and scope above.
+        if embedded != live['sha256'] or (receipt.is_file() and
+                hashlib.sha256(receipt.read_bytes()).hexdigest() != live['sha256']):
+            raise RuntimeError('Pre-model design review changed; inspect and recalibrate')
+        records = {'guides': records, 'design_review': live}
     return hashlib.sha256(json.dumps(records, sort_keys=True).encode()).hexdigest()
 
 
@@ -197,11 +219,15 @@ def require_reference_review(scene, task, review_path, *, phase='calibration', o
         if not image.is_file() or image.stat().st_size == 0:
             raise RuntimeError(view + ': review capture missing or empty')
     if phase == 'comparison':
+        objects = list(objects)
         used = json.loads(scene[_key(task) + '::used'])
         if not used:
             raise RuntimeError('No reference landmarks consumed by the builder')
         if review.get('model_signature') != model_signature(objects):
             raise RuntimeError('Model changed since reference comparison')
+        if review.get('appearance_signature') != appearance_signature(
+                scene, objects, extra=review.get('appearance_extra')):
+            raise RuntimeError('Visual state changed or missing; inspect materials/lights/cameras again')
     return review
 
 

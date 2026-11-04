@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-04",
+  "files": [
+    {
+      "source": "projects/中国神话视频/工作流/工作流-3D纸模角色.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-3D纸模角色.md",
+      "sha256": "975408846d79e4ee0e10a17f8ccf9224fb04873a27570665eeb71f837747059c",
+      "size": 10480,
+      "media": false,
+      "target_sha256": "d28f0dd5ff3b312dd072f65ce3b87d3745a5c6e58ebb31dfd5ba481b1bbcd263"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-全流程总控.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-全流程总控.md",
+      "sha256": "2bddc439e8382979058939b1d3cf6c1467758e79788d6f354771a1f4da2f424b",
+      "size": 14809,
+      "media": false,
+      "target_sha256": "78a827545d3eb84899d1b4932e12b77da2a0e31740ee81d595a08ba1778fa3b1"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-场景精灵动画.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-场景精灵动画.md",
+      "sha256": "9714866f60d0269193b48621046cc690f8671290a204207715f2af5e649419be",
+      "size": 11708,
+      "media": false,
+      "target_sha256": "6447ed0c0494b326b84f4238dab6e51b544dd798beb264f4cb808b1d7df30a02"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-多语言本地化.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-多语言本地化.md",
+      "sha256": "c0a56ea14f7a82cb2692825c3293772edf6cd79b6e523f6ee503a428eade6ec9",
+      "size": 10273,
+      "media": false,
+      "target_sha256": "1a8eff7fac69a531bfe614cff4b0b6b042f7500bb540511f752768c6838926bd"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-导演.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-导演.md",
+      "sha256": "6f63099de1c5e2409ced97cec5cc2cfa494bd2120ff1cea393b8214341bae436",
+      "size": 28951,
+      "media": false,
+      "target_sha256": "32c638b35a6254af7e775a890ca1ca55e22f0f2baa9f290c3f52e89859b44039"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-成片合成与质量检查.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-成片合成与质量检查.md",
+      "sha256": "b58470baa4b017d9797c617f33d8f55d72be6acd4418f7ac0f7d095dcd50b62b",
+      "size": 11341,
+      "media": false,
+      "target_sha256": "d3615ebfe8e2fc4f0f817ec3abc4d6c82c37f1e8e9fd93b93f7b4cd9bf5cb414"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-皮影角色视觉定义.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-皮影角色视觉定义.md",
+      "sha256": "e994c523a32a2d9e85df6d19ae3ea643211c1c771fa8e201f2d1e3a6c525916b",
+      "size": 8830,
+      "media": false,
+      "target_sha256": "69b4128514f73dbe15213f379cb2b5c32c80f4a4046c4edf4bcbacdf194c8462"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-神话调研.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-神话调研.md",
+      "sha256": "c07d26fa7d165650b6b6939fe8956990c2ad0c0e055cc7496693028ab7bd3bf7",
+      "size": 6919,
+      "media": false,
+      "target_sha256": "fc853dfc22b2943a2049d069d11107519a37536900f0a14c7f8b17049836aee0"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-策划与制片.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-策划与制片.md",
+      "sha256": "3317e180cc25088686db6d32693cac18c59c65ef468f7a3b82cae91d6f4b1d49",
+      "size": 7511,
+      "media": false,
+      "target_sha256": "c45aece26e9768bd12e4b9a915332ec3adb15318d76ede3f2a87345486022deb"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-纸偶小剧场视觉定义.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-纸偶小剧场视觉定义.md",
+      "sha256": "6fdfacdf51a34ad6a4d05f9df2b653f857197b1d7ab13adf35eac0fce460f09e",
+      "size": 18745,
+      "media": false,
+      "target_sha256": "9f99b6894b7b6ce2dde2ab6ef7a0b2cd27c49bdb8589b2c296ff7a8535942c7d"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-纸偶小剧场静态资产.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-纸偶小剧场静态资产.md",
+      "sha256": "3c7c1220369999815d60dbcc1dabf9d8aca7b7d1f86ad7611779bade1b3d2069",
+      "size": 20401,
+      "media": false,
+      "target_sha256": "98875011a1606f78e87cf87362770ece884ef2f1ced3f93932e3c7bbf992f2c6"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-编剧.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-编剧.md",
+      "sha256": "b715eb56fe3a593ea6557996e87f77a67bf0bbacae31a7c3a94a9b49a8170480",
+      "size": 11340,
+      "media": false,
+      "target_sha256": "094090c75c609525c4ee6fceb82794907032eb3f950de52eaed728caec1bf247"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-美术设计与资产.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-美术设计与资产.md",
+      "sha256": "2645f0d6df6650c99797e2375859b24492875c0242e9c55e015d9a0407f5a17c",
+      "size": 25643,
+      "media": false,
+      "target_sha256": "de121fb5b35de057212f325d239d5889bae60ee4ed8368ea73bb12ce9b906944"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-角色组件分层拆分与提示词生成.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-角色组件分层拆分与提示词生成.md",
+      "sha256": "35d1adf629de08f7def2de8280b6585b3643a6efc934dd0078b5e07b65afb1bf",
+      "size": 21088,
+      "media": false,
+      "target_sha256": "0bb7e811c4df500ad1fa6d7dd7818e4552a3675269df5280b3aa8d312124eb78"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-跨仓库资产所有权.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-跨仓库资产所有权.md",
+      "sha256": "698e98ee58ef7fd08bcb40654c7460867c7ab561527f7e4a20929a493ad69e10",
+      "size": 11740,
+      "media": false,
+      "target_sha256": "31dfcbf0bf6b3d02a7602afb8d8f2001c7227260abb2656fbf10896bfc08ee45"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-音频交付与导入.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-音频交付与导入.md",
+      "sha256": "79db242d84ae778c16545ce5f5921dc55fb8f5b41a88b4338dd657963a5782c1",
+      "size": 10588,
+      "media": false,
+      "target_sha256": "8cc00d749920856e43e32f245403416c4bfd55c5941d67d5d6e23c3220e13f16"
+    },
+    {
+      "source": "projects/中国神话视频/工作流/工作流-项目配置.md",
+      "repository_id": "skills",
+      "target": "skills/ancient-tales-production/references/工作流-项目配置.md",
+      "sha256": "de6b7767e6a22759c71c24a42e17693654e0c18195e342a0ead5e97b6f829a8d",
+      "size": 15179,
+      "media": false,
+      "target_sha256": "aa0ad6681589518e782791950bbd6ec1638741e9d4ca9ebe2f005b91847c38bb"
+    }
+  ]
+}

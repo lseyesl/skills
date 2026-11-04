@@ -33,3 +33,10 @@
 - 每个 `skills/<skill-name>/SKILL.md` 应在本索引中有一个入口。
 - 本索引只保存简要路由信息，详细流程和依赖保留在各技能内。
 - 未找到匹配项时，继续搜索 `skills/` 目录，避免遗漏尚未同步到索引的技能。
+
+## 神话制作与项目依赖
+
+| 技能 | 用途 |
+|---|---|
+| [ancient-tales-production](skills/ancient-tales-production/SKILL.md) | 神话调研到成片的专业流程，项目拥有制作状态。 |
+| [ancient-tales-pipeline](skills/ancient-tales-pipeline/SKILL.md) | 共享 Skill 锁定同步与 HF 资产恢复校验。 |

@@ -29,3 +29,9 @@ Agent 的仓库工作约定见 [AGENTS.md](AGENTS.md)。
 ## 新增 Skill
 
 在 `skills/` 下创建新的子目录，并在其中放置 `SKILL.md` 文件，同时更新 [技能索引](index.md)。建议遵循现有 Skill 的命名与组织方式。
+
+## 权威源与同步
+
+本仓库是自维护 Skill 的唯一源码。按项目 skills.lock.json 安装到项目受管目录，不独立编辑安装副本。
+
+运行 `python skills/ancient-tales-pipeline/scripts/runtime.py --help` 查看同步与 HF 命令。Skill 源码与依赖媒体完整保留在本仓库 Git 中，不上传 HF；Obsidian 仓库也不使用 HF。working-tree 锁明确依赖本地尚未提交源码；提交后运行 update/install。官方和第三方 Skill 保持上游维护，仅在项目依赖说明记录实际来源版本。

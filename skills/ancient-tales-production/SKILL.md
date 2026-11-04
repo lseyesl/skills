@@ -9,7 +9,7 @@ description: 中国神话视频的调研、策划、编剧、导演、美术、�
 
 - 当前项目仓库拥有内容、提示词、生产总控、交接和批准记录；Obsidian 仅提供来源与知识查询，禁止向 Vault 写制作状态。
 - 从项目 README、migration.json、content/制作/生产总控及最新 HANDOFF 读取当前事实。无总控的草案保持草案，不补造批准。
-- 下列 references 迁自旧 Vault，只保留专业要求和历史证据。其 Vault 输出路径、跨仓库自动提交、旧环境路径和 Git 二进制身份规则已被本节取代，不得执行。
+- 下列 references 是现行专业规范；退役原文单独保存在 history/，仅供明确的历史审计，不参与活动路由。
 - 文本、规则、清单和代码进入项目 Git；媒体和工程二进制进入 HF。资产身份为 repository_id + project_id + bucket URI + SHA-256 + version，不能用 Git commit 证明二进制存在。
 - 读取 sources.lock.json 核对来源；事实、研究解释和创作推演分层。不得改写来源层。
 - 不改变既有项目 ID、风格或批准事实；同故事不同风格独立制作，不跨项目借用正式资产。

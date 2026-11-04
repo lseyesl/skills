@@ -40,3 +40,7 @@
 |---|---|
 | [ancient-tales-production](skills/ancient-tales-production/SKILL.md) | 神话调研到成片的专业流程，项目拥有制作状态。 |
 | [ancient-tales-pipeline](skills/ancient-tales-pipeline/SKILL.md) | 共享 Skill 锁定同步与 HF 资产恢复校验。 |
+
+## 依赖与安装
+
+必需本库依赖、可选协作 Skill 与外部工具的机器可读声明统一在 [skills.json](skills.json)。安装器只自动补齐必需项；首次安装和旧锁升级见 [README](README.md)。校验入口为 `python tools/check.py`。

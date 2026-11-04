@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "skills": {
+    "ancient-tales-production": {
+      "directory": "skills/ancient-tales-production",
+      "requires": ["ancient-tales-pipeline"],
+      "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action"],
+      "external": []
+    },
+    "ancient-tales-pipeline": {
+      "directory": "skills/ancient-tales-pipeline",
+      "requires": [],
+      "optional": [],
+      "external": [{"name": "hf", "kind": "tool", "when": "HF transfers in explicitly enabled production repositories only"}]
+    },
+    "blender-python-modeling": {
+      "directory": "skills/blender-python-modeling",
+      "requires": [],
+      "optional": ["concept-multiview-sheet", "blender-styles"],
+      "external": [
+        {"name": "Blender >=4.5", "kind": "tool", "when": "Blender scene operations or rendering"},
+        {"name": "mcp-for-blender", "kind": "tool", "when": "Live Blender control required by the modeling workflow"},
+        {"name": "uv", "kind": "tool", "when": "Host reference-image analysis environment"}
+      ]
+    },
+    "blender-styles": {
+      "directory": "skills/blender-styles",
+      "requires": ["blender-python-modeling"],
+      "optional": ["concept-multiview-sheet"],
+      "external": []
+    },
+    "concept-multiview-sheet": {
+      "directory": "skills/concept-multiview-sheet",
+      "requires": [],
+      "optional": ["blender-python-modeling"],
+      "external": [{"name": "image generation", "kind": "tool", "when": "Generating inferred concept views"}]
+    },
+    "continuous-action": {
+      "directory": "skills/continuous-action",
+      "requires": [],
+      "optional": ["blender-python-modeling"],
+      "external": [
+        {"name": "Blender", "kind": "tool", "when": "Rendering keyframes from the bundled A.blend"},
+        {"name": "image generation", "kind": "tool", "when": "Creating character frames from validated keyframe references"},
+        {"name": "sprite-gen", "kind": "skill", "when": "Optional sprite assembly/export route"}
+      ]
+    },
+    "shadow-puppet-image": {
+      "directory": "skills/shadow-puppet-image",
+      "requires": [],
+      "optional": ["shadow-puppet-part-splitter"],
+      "external": [{"name": "image generation", "kind": "tool", "when": "Generating or editing character concept images"}]
+    },
+    "shadow-puppet-part-splitter": {
+      "directory": "skills/shadow-puppet-part-splitter",
+      "requires": [],
+      "optional": ["shadow-puppet-image", "blender-python-modeling"],
+      "external": [
+        {"name": "Pillow", "kind": "python-package", "when": "Deterministic image processing tools"},
+        {"name": "Blender", "kind": "tool", "when": "Rigging and animated range-of-motion verification"},
+        {"name": "FFmpeg", "kind": "tool", "when": "Optional video preview and media operations"}
+      ]
+    },
+    "epub-xhtml-to-markdown": {
+      "directory": "skills/epub-xhtml-to-markdown",
+      "requires": [],
+      "optional": [],
+      "external": []
+    },
+    "pdf-epub-to-markdown": {
+      "directory": "skills/pdf-epub-to-markdown",
+      "requires": [],
+      "optional": ["epub-xhtml-to-markdown"],
+      "external": [
+        {"name": "uv", "kind": "tool", "when": "Managing the converter environment"},
+        {"name": "marker-pdf", "kind": "python-package", "when": "Document conversion that needs Marker/OCR; reflowable EPUB uses the optional XHTML route"}
+      ]
+    },
+    "query-obsidian": {
+      "directory": "skills/query-obsidian",
+      "requires": [],
+      "optional": ["distill-to-obsidian"],
+      "external": [{"name": "obsidian-cli", "kind": "skill", "when": "Optional live Obsidian navigation; filesystem queries do not require it"}]
+    },
+    "distill-to-obsidian": {
+      "directory": "skills/distill-to-obsidian",
+      "requires": [],
+      "optional": ["query-obsidian"],
+      "external": [
+        {"name": "defuddle", "kind": "skill", "when": "Web-page ingestion"},
+        {"name": "obsidian-markdown", "kind": "skill", "when": "Formatting guidance while editing Obsidian Markdown"}
+      ]
+    }
+  }
+}

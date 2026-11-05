@@ -89,6 +89,19 @@ class LibraryChecks(unittest.TestCase):
         (folder / 'references/route.md').write_text('[tool](https://github.com/lseyesl/skills/blob/main/skills/example/SKILL.md)', encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'locked relative'): check.validate_library(self.root)
 
+    def test_route_registry_rejects_undeclared_provider_and_external_capability(self):
+        self.production_fixture()
+        p = self.root / 'skills/ancient-tales-production/references/routes.json'
+        route = {'skills': [], 'external': [], 'asset_unit': 'whole-pose-png', 'backend_required': False}
+        p.write_text(json.dumps({'schema_version': 1, 'routes': {'static-pose': route}}))
+        check.validate_library(self.root)
+        route['skills'] = ['example']
+        p.write_text(json.dumps({'schema_version': 1, 'routes': {'static-pose': route}}))
+        with self.assertRaisesRegex(ValueError, 'not declared'): check.validate_library(self.root)
+        route['skills'] = []; route['external'] = ['missing-tool']
+        p.write_text(json.dumps({'schema_version': 1, 'routes': {'static-pose': route}}))
+        with self.assertRaisesRegex(ValueError, 'Undeclared'): check.validate_library(self.root)
+
     def test_optional_cycle_is_allowed(self):
         other = self.root / 'skills/other'; other.mkdir()
         (other / 'SKILL.md').write_text('---\nname: other\ndescription: test\n---\n', encoding='utf-8')

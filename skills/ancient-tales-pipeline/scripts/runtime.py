@@ -18,6 +18,10 @@ from concurrent.futures import ThreadPoolExecutor
 _dependency_spec = importlib.util.spec_from_file_location('ancient_tales_dependencies', Path(__file__).with_name('skill_dependencies.py'))
 dependencies = importlib.util.module_from_spec(_dependency_spec)
 _dependency_spec.loader.exec_module(dependencies)
+_contract_spec = importlib.util.spec_from_file_location('ancient_tales_asset_contract', Path(__file__).with_name('asset_contract.py'))
+asset_contract = importlib.util.module_from_spec(_contract_spec)
+_contract_spec.loader.exec_module(asset_contract)
+
 
 MEDIA = {'.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp', '.tif', '.tiff', '.svg', '.exr', '.hdr', '.mp3', '.wav', '.ogg', '.flac', '.m4a', '.mp4', '.mov', '.mkv', '.webm', '.avi', '.blend', '.fbx', '.glb', '.gltf', '.obj', '.zip', '.7z', '.pdf', '.ttf', '.otf'}
 SKIP = {'.git', '.codex', '.agents', '.tmp', '__pycache__', '.venv', '.godot', '.space', 'node_modules'}
@@ -58,6 +62,7 @@ def run(*args):
     subprocess.run([str(x) for x in args], check=True)
 
 def asset_verify(root, lock):
+    asset_contract.validate_manifest(lock, root=root)
     errors = []
     seen = set()
     for a in lock['assets']:
@@ -72,6 +77,7 @@ def asset_verify(root, lock):
     return len(seen)
 
 def asset_transfer(root, lock, mode):
+    asset_contract.validate_manifest(lock, root=root)
     prefix = f"hf://buckets/{lock['bucket']}/{lock['repository_id']}/objects/"
     root.joinpath('.tmp').mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='assets-', dir=root / '.tmp') as temp:
@@ -131,6 +137,7 @@ def assets(args):
         lock = read(lock_path)
         if (lock.get('repository_id'), lock.get('bucket')) != (policy['repository_id'], policy['bucket']):
             raise ValueError('Asset manifest namespace differs from repository policy')
+        asset_contract.validate_manifest(lock, root=root, expected_project=policy.get('project_id'))
         return lock
     if args.action == 'index':
         if args.repository_id != policy['repository_id'] or args.bucket != policy['bucket']:
@@ -157,9 +164,11 @@ def assets(args):
                 continue
             if before.get('sha256') != sha and before.get('status') in {'approved', 'locked'}:
                 raise ValueError('Approved asset changed in place; create a new version: ' + rel)
-            result[rel] = {'asset_id': before.get('asset_id', rel), 'project_id': rel.split('/')[1] if rel.startswith('projects/') else 'shared', 'path': rel, 'sha256': sha, 'size': p.stat().st_size, 'version': sha, 'status': before.get('status', 'unreviewed'), 'uri': f'hf://buckets/{args.bucket}/{args.repository_id}/objects/{sha}{p.suffix.lower()}'}
+            result[rel] = {'asset_id': before.get('asset_id', rel), 'project_id': rel.split('/')[1] if rel.startswith('projects/') else policy.get('project_id', 'shared'), 'path': rel, 'sha256': sha, 'size': p.stat().st_size, 'version': sha, 'status': before.get('status', 'unreviewed'), 'uri': f'hf://buckets/{args.bucket}/{args.repository_id}/objects/{sha}{p.suffix.lower()}'}
         # Pending is promoted only by push after verified upload.
-        write(root / 'assets.pending.json', {**previous, 'schema_version': 1, 'bucket': args.bucket, 'repository_id': args.repository_id, 'excluded_roots': excluded, 'assets': [result[p] for p in sorted(result)]})
+        pending = {**previous, 'schema_version': 1, 'bucket': args.bucket, 'repository_id': args.repository_id, 'excluded_roots': excluded, 'assets': [result[p] for p in sorted(result)]}
+        asset_contract.validate_manifest(pending, root=root, expected_project=policy.get('project_id'))
+        write(root / 'assets.pending.json', pending)
         print('ASSETS_INDEX_PENDING', len(result))
     elif args.action == 'forget':
         lock = checked_lock(path)
@@ -184,6 +193,10 @@ def assets(args):
         pending.unlink(missing_ok=True)
     elif args.action == 'pull':
         asset_transfer(root, checked_lock(path), 'pull')
+    elif args.action == 'validate':
+        lock = checked_lock(path)
+        asset_contract.validate_manifest(lock, root=root, strict=True, expected_project=policy.get('project_id'))
+        print('ASSETS_VALIDATE_OK', asset_verify(root, lock))
     else:
         print('ASSETS_VERIFY_OK', asset_verify(root, checked_lock(path)))
 
@@ -361,7 +374,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     subs = parser.add_subparsers(dest='command', required=True)
     p = subs.add_parser('assets')
-    p.add_argument('action', choices=['index', 'push', 'pull', 'verify', 'forget'])
+    p.add_argument('action', choices=['index', 'push', 'pull', 'verify', 'validate', 'forget'])
     p.add_argument('--project', default='.')
     p.add_argument('--bucket', default='lseyesl/mv_assets')
     p.add_argument('--repository-id')

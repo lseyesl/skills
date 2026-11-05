@@ -38,8 +38,8 @@
 
 | 技能 | 用途 |
 |---|---|
-| [ancient-tales-production](skills/ancient-tales-production/SKILL.md) | 神话制作的阶段、专业分工、Gate 与交付契约；按需调用通用技能，项目拥有制作状态。 |
-| [ancient-tales-pipeline](skills/ancient-tales-pipeline/SKILL.md) | 共享 Skill 锁定安装、HF 资产索引与字节恢复校验；不推进制作阶段或批准资产。 |
+| [ancient-tales-production](skills/ancient-tales-production/SKILL.md) | 神话制作的阶段、专业分工、Gate 与交付契约；按需调用通用技能，提供交接契约校验与能力环境检查，项目拥有制作状态。 |
+| [ancient-tales-pipeline](skills/ancient-tales-pipeline/SKILL.md) | 共享 Skill 锁定安装、HF 资产索引、恢复及身份／批准回执校验；不推进制作阶段或批准资产。 |
 
 ## 依赖与安装
 

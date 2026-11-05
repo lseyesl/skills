@@ -33,6 +33,7 @@ python <skill-dir>/scripts/runtime.py skills check --project <project>
 ```powershell
 python <skill-dir>/scripts/runtime.py assets pull --project <project>
 python <skill-dir>/scripts/runtime.py assets verify --project <project>
+python <skill-dir>/scripts/runtime.py assets validate --project <project>
 python <skill-dir>/scripts/runtime.py assets index --project <project> --repository-id <repository-id> --bucket <owner/bucket>
 python <skill-dir>/scripts/runtime.py assets push --project <project>
 python <skill-dir>/scripts/runtime.py git-check --project <project>
@@ -44,4 +45,5 @@ python <skill-dir>/scripts/runtime.py git-check --project <project>
 - push 上传并回读验证后才替换正式锁；移除记录必须有明确 forget 标记。远端对象按内容哈希寻址，新发现条目默认以哈希初始化版本；已有业务版本不重写，approved/locked 文件改变必须新建路径。
 - pull 先验证全部远端内容，再安装缺失项，不覆盖本地改动。正式构建先 verify，缺失或损坏立即停止。
 - 凭据沿用用户现有 `hf auth`，不得打印 token 或写入仓库；这些命令不表示获得视觉批准。
-- `verify` 检查本地路径、大小与 SHA-256；它不验证项目身份语义、生产状态枚举、批准回执或 Gate。调用方须另行核对这些契约，不能将 `ASSETS_VERIFY_OK` 当作制作批准。
+- `verify` 检查路径、大小、SHA-256、已知状态与内容寻址 URI；已有 project_id 须匹配 projects/<id>/ 路径或配置的 project_id。兼容缺少身份字段的旧清单，但不为其补造批准。
+- `validate` 是正式交接的严格模式：要求 asset_id、project_id、version，approved/locked 条目还需哈希绑定的 JSON 批准回执。格式与迁移见[资产校验契约](references/资产校验契约.md)。检查已有记录的一致性不等于证明人工批准真实性，也不判断画面或 Gate。

@@ -19,6 +19,9 @@ import json
 def validate_library(root):
     root = Path(root).resolve()
     catalog = dependencies.validate_registry(json.loads((root / 'skills.json').read_text(encoding='utf-8')))
+    route_file = root / 'skills/ancient-tales-production/references/routes.json'
+    if route_file.is_file():
+        dependencies.validate_routes(json.loads(route_file.read_text(encoding='utf-8')), catalog)
     actual = {p.parent.name for p in (root / 'skills').glob('*/SKILL.md')}
     if actual != set(catalog):
         raise ValueError('skills.json differs from actual Skill entries')
@@ -80,6 +83,8 @@ def main():
     suites = [
         'skills/ancient-tales-pipeline/tests/test_runtime.py',
         'tests/test_library_checks.py',
+        'skills/ancient-tales-production/tests/test_contract.py',
+        'skills/continuous-action/tests/test_runtime_paths.py',
         'skills/epub-xhtml-to-markdown/tests/test_converter.py',
         'skills/shadow-puppet-part-splitter/tests/test_puppet.py',
         'skills/shadow-puppet-part-splitter/tests/test_toolbox.py',

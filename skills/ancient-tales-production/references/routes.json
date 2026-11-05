@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "routes": {
+    "knowledge-query": {"skills": ["query-obsidian"], "external": [], "asset_unit": "source-evidence", "backend_required": false},
+    "shadow-concept": {"skills": ["shadow-puppet-image"], "external": ["image generation"], "asset_unit": "concept-image", "backend_required": false},
+    "flat-components": {"skills": ["shadow-puppet-part-splitter"], "external": ["Pillow"], "asset_unit": "component-png", "backend_required": false, "hidden_region_policies": ["concept-covered", "inferred-repair"]},
+    "static-pose": {"skills": ["shadow-puppet-part-splitter"], "external": ["Pillow"], "asset_unit": "whole-pose-png", "backend_required": false},
+    "library-action": {"skills": ["continuous-action"], "external": ["Blender", "image generation"], "asset_unit": "pose-mapped-frames", "backend_required": false},
+    "sprite-action": {"skills": [], "external": ["sprite-gen"], "asset_unit": "sprite-sequence", "backend_required": false},
+    "blender-model": {"skills": ["blender-python-modeling"], "external": ["Blender >=4.5"], "asset_unit": "editable-3d", "backend_required": false},
+    "clay-shot": {"skills": ["blender-python-modeling", "blender-styles"], "external": ["Blender >=4.5"], "asset_unit": "rendered-shot", "backend_required": true},
+    "multiview-design": {"skills": ["concept-multiview-sheet"], "external": ["image generation"], "asset_unit": "inferred-views", "backend_required": false}
+  }
+}

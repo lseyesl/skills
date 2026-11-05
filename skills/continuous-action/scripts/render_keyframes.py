@@ -3,10 +3,11 @@
 Run: blender -b assets/A.blend -t 2 --python scripts/render_keyframes.py -- \
   --action ACTION_ID_FROM_CATALOG --count 8 --view front
 
-Without --output, a fresh directory is created under the repository's
-.tmp/continuous-action/. Never write rendered images into the skill.
+Without --output, a fresh directory is created under the consuming project's
+.tmp/continuous-action/. Resources remain relative to this Skill.
 """
 import argparse
+import importlib.util
 from array import array
 import json
 import math
@@ -167,7 +168,9 @@ def compose_reference_sheet(frame_paths, sheet_path, columns):
 
 def main():
     skill_dir = Path(__file__).resolve().parents[1]
-    root = skill_dir.parents[1]
+    paths_spec = importlib.util.spec_from_file_location('action_runtime_paths', skill_dir / 'scripts/runtime_paths.py')
+    paths = importlib.util.module_from_spec(paths_spec)
+    paths_spec.loader.exec_module(paths)
     catalog = json.loads((skill_dir / "assets" / "A.catalog.json").read_text())
     clips = catalog.get("clips")
     if not isinstance(clips, dict) or not clips:
@@ -180,7 +183,8 @@ def main():
     parser.add_argument("--format", choices=("frames", "sheet"), default="frames",
                         help="Individual pose PNGs for precise frame matching (default), or one sequence sheet")
     parser.add_argument("--columns", type=int, default=4, help="Maximum columns in the single reference image (default 4)")
-    parser.add_argument("--output", type=Path, help="Directory under repository .tmp/continuous-action; defaults to a fresh run")
+    parser.add_argument("--project", type=Path, help="Consuming project root; inferred from standard source/installed layout by default")
+    parser.add_argument("--output", type=Path, help="Empty task output directory outside Skill resources; defaults to project .tmp/continuous-action")
     parser.add_argument("--view", choices=("front", "back", "left", "right"), default="front")
     parser.add_argument("--follow-hips", action="store_true", help="Keep translating clips centered horizontally")
     parser.add_argument("--far-limb-dim", type=float, default=0.15,
@@ -221,15 +225,11 @@ def main():
         [bpy.data.objects[name] for name in catalog["meshes"]], far_side,
         options.far_limb_dim, options.far_limb_cool_strength
     ) if far_side else {}
-    temp_root = root / ".tmp" / "continuous-action"
-    temp_root.mkdir(parents=True, exist_ok=True)
-    output = (options.output.expanduser().resolve() if options.output else
-              Path(tempfile.mkdtemp(prefix=f"{options.action}-{options.view}-", dir=temp_root)))
-    if output == temp_root or temp_root not in output.parents:
-        parser.error(f"output must be a task directory below {temp_root}")
-    if output.exists() and any(output.iterdir()):
-        parser.error(f"output directory must be empty: {output}")
-    output.mkdir(parents=True, exist_ok=True)
+    try:
+        output = paths.prepare_output(skill_dir, options.project, options.output,
+                                      prefix=f"{options.action}-{options.view}-")
+    except ValueError as exc:
+        parser.error(str(exc))
     manifest = {"source_blend": str(skill_dir / "assets" / "A.blend"), "action": options.action,
                 "source_fbx": clip["source_fbx"], "view": options.view,
                 "follow_hips": options.follow_hips,

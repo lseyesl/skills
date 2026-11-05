@@ -168,6 +168,46 @@ class PipelineTests(unittest.TestCase):
             r.assets(self.args('index', bucket='owner/bucket', repository_id='test'))
         self.assertEqual(r.read(self.root / 'assets.pending.json'), {'existing': 'candidate'})
 
+    def test_verify_rejects_invalid_semantics_before_transfer(self):
+        for field, value in [('project_id', 'wrong'), ('status', 'invented'), ('status', []), ('uri', 'invalid')]:
+            with self.subTest(field=field):
+                lock = self.lock(); self.materialize(lock); lock['assets'][0][field] = value
+                with self.assertRaises(ValueError): r.asset_verify(self.root, lock)
+                with patch.object(r, 'run') as run:
+                    with self.assertRaises(ValueError): r.asset_transfer(self.root, lock, 'pull')
+                    run.assert_not_called()
+
+    def test_strict_validation_requires_and_checks_bound_approval_receipt(self):
+        lock = self.lock(status='locked'); self.materialize(lock)
+        record = lock['assets'][0]
+        record.update(asset_id='hero', project_id='p', version='v1')
+        with self.assertRaises(ValueError): r.asset_contract.validate_manifest(lock, self.root, strict=True)
+        receipt = {k: record[k] for k in ('asset_id', 'project_id', 'version', 'sha256')}
+        receipt.update(repository_id='test', approved_by='reviewer', approved_at='2026-11-05')
+        path = self.root / 'content/approval.json'; r.write(path, receipt)
+        record.update(approval_receipt='content/approval.json', approval_receipt_sha256=r.digest(path))
+        self.assertEqual(r.asset_contract.validate_manifest(lock, self.root, strict=True), 1)
+        receipt['sha256'] = '0' * 64; r.write(path, receipt)
+        record['approval_receipt_sha256'] = r.digest(path)
+        with self.assertRaisesRegex(ValueError, 'identity/hash'): r.asset_contract.validate_manifest(lock, self.root, strict=True)
+
+    def test_index_uses_single_project_policy_for_non_projects_asset_roots(self):
+        r.write(self.root / 'assets.config.json', {'enabled': True, 'repository_id': 'test', 'bucket': 'owner/bucket', 'project_id': 'p'})
+        path = self.root / 'assets/hero.png'; path.parent.mkdir(); path.write_bytes(b'hero')
+        r.assets(self.args('index', bucket='owner/bucket', repository_id='test'))
+        pending = r.read(self.root / 'assets.pending.json')
+        self.assertEqual(pending['assets'][0]['project_id'], 'p')
+        r.asset_contract.validate_manifest(pending, self.root, expected_project='p')
+        other = self.root / 'projects/other/wrong.png'; other.parent.mkdir(parents=True); other.write_bytes(b'other')
+        with self.assertRaisesRegex(ValueError, 'different project'):
+            r.assets(self.args('index', bucket='owner/bucket', repository_id='test'))
+        self.assertEqual(r.read(self.root / 'assets.pending.json'), pending)
+
+    def test_strict_mode_keeps_legacy_transport_compatible_without_promoting_it(self):
+        lock = self.lock(); self.materialize(lock)
+        self.assertEqual(r.asset_verify(self.root, lock), 1)
+        with self.assertRaises(ValueError): r.asset_contract.validate_manifest(lock, self.root, strict=True)
+
     def test_missing_locked_asset_does_not_erase_formal_or_pending_lock(self):
         lock = self.lock(status='locked')
         r.write(self.root / 'assets.lock.json', lock)

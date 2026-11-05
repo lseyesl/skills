@@ -55,3 +55,25 @@ def validate_lock(entries):
         catalog[name] = item
     resolve(list(catalog), catalog)
     return catalog
+
+
+def validate_routes(data, catalog, owner='ancient-tales-production'):
+    if data.get('schema_version') != 1 or not isinstance(data.get('routes'), dict) or not data['routes']:
+        raise ValueError('routes.json requires schema_version=1 and nonempty routes')
+    available = {owner, *catalog[owner].get('requires', []), *catalog[owner].get('optional', [])}
+    for route_id, route in data['routes'].items():
+        if not NAME.fullmatch(route_id) or not isinstance(route, dict):
+            raise ValueError('Invalid route')
+        providers = route.get('skills')
+        if not isinstance(providers, list) or any(not isinstance(s, str) for s in providers) or len(set(providers)) != len(providers) or any(s not in available for s in providers):
+            raise ValueError('Route Skill is not declared by owner: ' + route_id)
+        external = {r['name'] for s in resolve([owner, *providers], catalog) for r in catalog[s].get('external', [])}
+        needed = route.get('external')
+        if not isinstance(needed, list) or any(name not in external for name in needed):
+            raise ValueError('Undeclared route external capability: ' + route_id)
+        if not isinstance(route.get('asset_unit'), str) or not route['asset_unit'] or type(route.get('backend_required')) is not bool:
+            raise ValueError('Route needs asset_unit and backend_required: ' + route_id)
+        policies = route.get('hidden_region_policies', [])
+        if not isinstance(policies, list) or any(p not in {'concept-covered', 'inferred-repair'} for p in policies):
+            raise ValueError('Invalid hidden-region route policy')
+    return len(data['routes'])

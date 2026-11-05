@@ -57,4 +57,4 @@ python tools/check.py
 python tools/check.py --group blender --blender G:/SteamLibrary/steamapps/common/Blender/blender.exe
 ```
 
-该检查使用隔离临时场景，技术测试通过不等于视觉批准。历史制作规范位于 `ancient-tales-production/history/`，不参与活动路由。
+该检查使用隔离临时场景，技术测试通过不等于视觉批准。制作规范的迁移归档可在 Git 提交 `804ba9d` 中查看。

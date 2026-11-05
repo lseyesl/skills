@@ -4,8 +4,12 @@
     "ancient-tales-production": {
       "directory": "skills/ancient-tales-production",
       "requires": ["ancient-tales-pipeline"],
-      "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action"],
-      "external": []
+      "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action", "concept-multiview-sheet", "query-obsidian"],
+      "external": [
+        {"name": "sprite-gen", "kind": "skill", "when": "Selected sprite generation/post-processing route; integration documented against 2.1.0, inspect the installed interface before use"},
+        {"name": "image generation", "kind": "tool", "when": "Generating storyboard panels, visual concepts or character frames"},
+        {"name": "FFmpeg", "kind": "tool", "when": "Animatic assembly or video/audio encoding selected by the project backend"}
+      ]
     },
     "ancient-tales-pipeline": {
       "directory": "skills/ancient-tales-pipeline",

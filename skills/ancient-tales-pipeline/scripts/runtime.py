@@ -135,7 +135,7 @@ def assets(args):
     if args.action == 'index':
         if args.repository_id != policy['repository_id'] or args.bucket != policy['bucket']:
             raise ValueError('Repository/bucket differs from assets.config.json')
-        previous = read(path) if path.exists() else {'assets': []}
+        previous = checked_lock(path) if path.exists() else {'assets': []}
         old = {a['path']: a for a in previous['assets']}
         missing = [p for p in old if not safe(root, p).is_file()]
         if missing:
@@ -151,11 +151,15 @@ def assets(args):
                 continue
             rel, sha = p.relative_to(root).as_posix(), digest(p)
             before = old.get(rel, {})
+            if before.get('sha256') == sha:
+                # A rescan discovers bytes, not a new business version or approval.
+                # Keep identity, receipts and project-specific extension fields intact.
+                continue
             if before.get('sha256') != sha and before.get('status') in {'approved', 'locked'}:
                 raise ValueError('Approved asset changed in place; create a new version: ' + rel)
             result[rel] = {'asset_id': before.get('asset_id', rel), 'project_id': rel.split('/')[1] if rel.startswith('projects/') else 'shared', 'path': rel, 'sha256': sha, 'size': p.stat().st_size, 'version': sha, 'status': before.get('status', 'unreviewed'), 'uri': f'hf://buckets/{args.bucket}/{args.repository_id}/objects/{sha}{p.suffix.lower()}'}
         # Pending is promoted only by push after verified upload.
-        write(root / 'assets.pending.json', {'schema_version': 1, 'bucket': args.bucket, 'repository_id': args.repository_id, 'excluded_roots': excluded, 'assets': [result[p] for p in sorted(result)]})
+        write(root / 'assets.pending.json', {**previous, 'schema_version': 1, 'bucket': args.bucket, 'repository_id': args.repository_id, 'excluded_roots': excluded, 'assets': [result[p] for p in sorted(result)]})
         print('ASSETS_INDEX_PENDING', len(result))
     elif args.action == 'forget':
         lock = checked_lock(path)

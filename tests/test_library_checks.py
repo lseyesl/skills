@@ -84,6 +84,11 @@ class LibraryChecks(unittest.TestCase):
         (folder / 'references/output.md').write_text('Output: `projects/中国神话视频/项目/<主题>/`', encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'retired Vault output'): check.validate_library(self.root)
 
+    def test_production_library_route_cannot_escape_installed_version(self):
+        folder = self.production_fixture()
+        (folder / 'references/route.md').write_text('[tool](https://github.com/lseyesl/skills/blob/main/skills/example/SKILL.md)', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'locked relative'): check.validate_library(self.root)
+
     def test_optional_cycle_is_allowed(self):
         other = self.root / 'skills/other'; other.mkdir()
         (other / 'SKILL.md').write_text('---\nname: other\ndescription: test\n---\n', encoding='utf-8')

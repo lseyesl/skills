@@ -141,6 +141,33 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             r.asset_verify(self.root, lock)
 
+    def test_unchanged_locked_asset_preserves_identity_and_receipts_through_push(self):
+        lock = self.lock(status='locked'); self.materialize(lock)
+        lock['approval_policy'] = {'receipt_root': 'content/approvals'}
+        record = lock['assets'][0]
+        record.update(asset_id='hero', project_id='p', version='v1',
+                      approved_by='reviewer', approved_at='2026-11-01',
+                      approval_receipt='content/approvals/hero-v1.json',
+                      extension={'reviewed_sha256': record['sha256']})
+        r.write(self.root / 'assets.lock.json', lock)
+        r.assets(self.args('index', bucket='owner/bucket', repository_id='test'))
+        pending = r.read(self.root / 'assets.pending.json')
+        self.assertEqual(pending['assets'], lock['assets'])
+        self.assertEqual(pending['approval_policy'], lock['approval_policy'])
+        self.assertEqual(r.read(self.root / 'assets.lock.json'), lock)
+        with patch.object(r, 'asset_transfer') as transfer:
+            r.assets(self.args('push'))
+            transfer.assert_called_once_with(self.root, pending, 'push')
+        self.assertEqual(r.read(self.root / 'assets.lock.json'), pending)
+
+    def test_index_rejects_previous_manifest_from_other_namespace(self):
+        lock = self.lock(); self.materialize(lock); lock['repository_id'] = 'other'
+        r.write(self.root / 'assets.lock.json', lock)
+        r.write(self.root / 'assets.pending.json', {'existing': 'candidate'})
+        with self.assertRaisesRegex(ValueError, 'namespace'):
+            r.assets(self.args('index', bucket='owner/bucket', repository_id='test'))
+        self.assertEqual(r.read(self.root / 'assets.pending.json'), {'existing': 'candidate'})
+
     def test_missing_locked_asset_does_not_erase_formal_or_pending_lock(self):
         lock = self.lock(status='locked')
         r.write(self.root / 'assets.lock.json', lock)
@@ -204,7 +231,7 @@ class PipelineTests(unittest.TestCase):
         source, args = self.setup_skills()
         locked = r.read(self.root / 'skills.lock.json')
         clone = self.root / 'crlf-source'
-        subprocess.run(['git', '-c', 'core.autocrlf=true', 'clone', '--quiet', '--local', str(source), str(clone)], check=True, capture_output=True)
+        subprocess.run(['git', 'clone', '--config', 'core.autocrlf=true', '--quiet', '--local', str(source), str(clone)], check=True, capture_output=True)
         self.assertFalse(self.git(clone, 'status', '--porcelain'))
         self.assertIn(b'\r\n', (clone / 'skills/example/SKILL.md').read_bytes())
         args.source = str(clone); r.skills(args)

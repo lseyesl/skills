@@ -44,6 +44,8 @@ def validate_library(root):
             raise ValueError('Active production reference uses a retired Vault output path: ' + str(p))
         for target in re.findall(r'\]\(([^)\n]+)\)', text):
             if '://' in target or target.startswith(('#', '<')):
+                if p.is_relative_to(root / 'skills/ancient-tales-production') and re.match(r'https?://github\.com/lseyesl/skills/(blob|tree)/', target):
+                    raise ValueError('Use a locked relative Skill/tool link, not a remote library route: ' + str(p))
                 if p.is_relative_to(root / 'skills/ancient-tales-production') and ('/legacy-vault/' in target or '/docs/archive/' in target):
                     raise ValueError('Active production reference routes into retired backend docs: ' + str(p))
                 continue

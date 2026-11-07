@@ -199,6 +199,10 @@ def appearance_signature(scene, objects, *, extra=None):
     def layer(c):
         return {'name': c.name, 'exclude': c.exclude, 'render_hidden': c.collection.hide_render,
                 'children': [layer(x) for x in c.children]}
+    if hasattr(scene, 'compositing_node_group'):
+        compositor = scene.compositing_node_group
+    else:
+        compositor = scene.node_tree if scene.use_nodes else None
     data = {'frame': scene.frame_current, 'active_camera': scene.camera.name if scene.camera else None,
             'objects': context, 'layers': [layer(l.layer_collection) for l in scene.view_layers],
             'render': _props(scene.render, ('engine', 'resolution_x', 'resolution_y', 'resolution_percentage',
@@ -208,7 +212,7 @@ def appearance_signature(scene, objects, *, extra=None):
             'display': _props(scene.display_settings, ('display_device',)),
             'world': {'color': list(scene.world.color), 'nodes': _tree(scene.world.node_tree)
                       if scene.world.use_nodes else None} if scene.world else None,
-            'compositor': _tree(scene.node_tree) if scene.use_nodes else None,
+            'compositor': _tree(compositor),
             'extra': extra}
     if scene.view_settings.use_curve_mapping:
         data['view_curves'] = _curves(scene.view_settings.curve_mapping)

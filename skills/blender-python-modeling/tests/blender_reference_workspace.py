@@ -159,6 +159,16 @@ def main():
         current_comparison();camera.data.lens+=5;stale_visual('camera lens invalidates comparison')
         world=bpy.data.worlds.new('synthetic-world');world.use_nodes=True;scene.world=world
         current_comparison();next(n for n in world.node_tree.nodes if n.type=='BACKGROUND').inputs['Strength'].default_value=.2;stale_visual('world invalidates comparison')
+        if hasattr(scene, 'compositing_node_group'):
+            compositor = bpy.data.node_groups.new('synthetic-compositor', 'CompositorNodeTree')
+            scene.compositing_node_group = compositor
+        else:
+            scene.use_nodes = True
+            compositor = scene.node_tree
+        blur = compositor.nodes.new('CompositorNodeBlur')
+        current_comparison()
+        blur.mute = True
+        stale_visual('compositor node change invalidates comparison')
         group=bpy.data.node_groups.new('synthetic-group','ShaderNodeTree');node=mat.node_tree.nodes.new('ShaderNodeGroup');node.node_tree=group
         value=group.nodes.new('ShaderNodeValue')
         current_comparison();value.outputs[0].default_value=.7

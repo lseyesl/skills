@@ -13,6 +13,8 @@
 
 Block out primary proportions before details. Name major parts separately when they need distinct pivots, materials, export behavior, or replacement. Use one real-world unit convention and keep user-editable parameters at the top of the script.
 
+For a worked hard-surface example, see the [iron lantern pilot](../examples/iron-lantern-p0/README.md). It maps calibrated landmarks to turned profiles and swept tubes, then checks local corrections against the same views, aperture rays, and mesh seats.
+
 ## Direct mesh construction
 
 Use `mesh.from_pydata` for known topology and BMesh for procedural editing:

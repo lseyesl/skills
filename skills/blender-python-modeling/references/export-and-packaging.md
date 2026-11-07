@@ -131,6 +131,40 @@ File existence is only the first check. Validate high-risk exports in a disposab
 
 Never round-trip into the user's working scene. Import operator names are version-sensitive just like export operators; discover their RNA at runtime.
 
+### Static textured GLB audit
+
+Use [the executable audit](../scripts/validate_glb_roundtrip.py) on the exact
+binary to deliver, with the prepared export collection as the baseline. The
+script opens the source in a disposable process, inventories its evaluated
+meshes, resets to an empty Blender scene, then imports the GLB.
+
+```bash
+blender --background --factory-startup --disable-autoexec --python-exit-code 1 \
+  --python scripts/validate_glb_roundtrip.py -- prepared.blend COLLECTION final.glb --report roundtrip.json
+```
+
+The static audit checks named mesh bounds and triangle counts, material
+assignments, and raw GLB positions under the Blender-to-glTF axis conversion
+`(x, y, z) -> (x, z, -y)`, with one Blender unit per meter. It verifies a
+single 0–1 UV set, degenerate UV triangles, and unchanged world-position/UV
+pairs. Sampled overlap is measured per mesh on a 384×384 grid. Use
+`--allow-uv-overlap` only for documented stacks or mirrors within a mesh.
+Reusing a texture across separate meshes is independent of that policy.
+
+The supported material paths are Principled constants, direct image inputs,
+and separated metallic/roughness image channels. The audit compares imported
+image pixels, sizes and color spaces and records the hash of each embedded
+image. Convert incompatible procedural graphs to supported maps before audit.
+The raw axis check uses dense float position accessors. This recipe covers
+static textured props with those accessors and exact triangle counts. Adapt
+the audit before using a different vertex encoding or an intentional
+simplification budget.
+
+The [lantern replay](../examples/iron-lantern-p0/README.md#p2-isolated-glb-round-trip)
+uses the same audit with project-specific opening and seat probes on the
+imported meshes. It publishes only the verified candidate bytes and records
+post-import review renders alongside the report.
+
 ## Export acceptance checks
 
 - Only intended objects were exported.

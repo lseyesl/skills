@@ -4,7 +4,7 @@
     "ancient-tales-production": {
       "directory": "skills/ancient-tales-production",
       "requires": ["ancient-tales-pipeline"],
-      "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action", "concept-multiview-sheet", "query-obsidian"],
+      "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-animation", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action", "concept-multiview-sheet", "query-obsidian"],
       "external": [
         {"name": "sprite-gen", "kind": "skill", "when": "Selected sprite generation/post-processing route; integration documented against 2.1.0, inspect the installed interface before use"},
         {"name": "image generation", "kind": "tool", "when": "Generating storyboard panels, visual concepts or character frames"},
@@ -47,6 +47,17 @@
         {"name": "Blender", "kind": "tool", "when": "Rendering keyframes from the bundled A.blend"},
         {"name": "image generation", "kind": "tool", "when": "Creating character frames from validated keyframe references"},
         {"name": "sprite-gen", "kind": "skill", "when": "Optional sprite assembly/export route"}
+      ]
+    },
+    "shadow-puppet-animation": {
+      "directory": "skills/shadow-puppet-animation",
+      "requires": [],
+      "optional": ["shadow-puppet-image", "shadow-puppet-part-splitter", "blender-python-modeling", "ancient-tales-production"],
+      "external": [
+        {"name": "image generation", "kind": "tool", "when": "Generating or editing character, scene, prop and state concepts"},
+        {"name": "FFmpeg", "kind": "tool", "when": "Reference-frame extraction or media inspection and encoding"},
+        {"name": "animation backend", "kind": "tool", "when": "Actual scene assembly, contact animation and rendering; use the selected project backend"},
+        {"name": "video/audio playback", "kind": "tool", "when": "Continuous original-speed visual and audio review"}
       ]
     },
     "shadow-puppet-image": {

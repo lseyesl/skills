@@ -8,6 +8,8 @@
 
 `ancient-tales-production` 定义专业流程、Gate 和交接，`ancient-tales-pipeline` 提供技能安装及资产索引／传输工具。制作任务从项目配置选择通用 Skill 与后端；独立建模、拆件或图片任务可直接调用对应 Skill。具体调用与返回字段见[技能协作与交付契约](skills/ancient-tales-production/references/技能协作与交付契约.md)。
 
+皮影动画的资产、运动、镜头和参考品质对照使用 [shadow-puppet-animation](skills/shadow-puppet-animation/SKILL.md)，复用角色概念与拆件能力，正式项目仍遵守既有制作契约。
+
 导演负责镜头决策和专业复审，制片／总控负责阶段推进，项目后端负责装配与渲染。当前提供工作流规范、能力工具及[交接契约校验与环境检查](skills/ancient-tales-production/references/交接校验与环境检查.md)，不会自动调度导演或授予批准。资产基础检查使用 `assets verify`，严格身份／回执检查使用 `assets validate`；旧清单迁移见[资产校验契约](skills/ancient-tales-pipeline/references/资产校验契约.md)。
 
 ## 安装到项目

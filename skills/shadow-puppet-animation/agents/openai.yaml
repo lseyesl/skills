@@ -1,0 +1,4 @@
+interface:
+  display_name: "皮影动画制作"
+  short_description: "从角色场景与拆件到接触运动、镜头叙事和参考品质审阅的皮影动画流程"
+  default_prompt: "使用 $shadow-puppet-animation，基于参考片制定皮影动画资产、动作和镜头方案，制作代表镜头并如实记录验收证据。"

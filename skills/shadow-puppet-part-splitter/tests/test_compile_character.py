@@ -1,4 +1,6 @@
-import copy
+import shutil
+import subprocess
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -62,5 +64,45 @@ class CharacterCompileTests(unittest.TestCase):
     def test_unknown_node_rejected(self):
         self.data['parts'][0]['node']='missing'
         with self.assertRaisesRegex(ValueError,'unknown node'):self.run_case()
+
+    def test_blocked_asset_cannot_enter_normal_loader(self):
+        from puppet import load_manifest, render
+        self.add_repair(); self.data['parts'][0]['z_index']=2
+        self.assertEqual(self.run_case()['status'],'blocked')
+        with self.assertRaisesRegex(ValueError,'blocked'):load_manifest(self.r/'out/manifest.json')
+        self.assertIsNotNone(render(self.r/'out/manifest.json',diagnostic=True))
+    def test_source_binding_rejects_same_size_replacement(self):
+        self.data['source_sha256']=hashlib.sha256((self.r/'source.png').read_bytes()).hexdigest()
+        Image.new('RGBA',(8,8),'green').save(self.r/'source.png')
+        with self.assertRaisesRegex(ValueError,'source hash mismatch'):self.run_case()
+    def test_output_changes_invalidate_compilation(self):
+        from puppet import load_manifest
+        self.run_case(); Image.new('RGBA',(4,8),'red').save(self.r/'out/parts/a.png')
+        with self.assertRaisesRegex(ValueError,'changed since validation'):load_manifest(self.r/'out/manifest.json')
+    def test_records_repair_dependencies(self):
+        self.add_repair(); report=self.run_case()
+        self.assertIn(str(self.r/'repair.png'),report['input_sha256'])
+        self.assertIn('manifest.json',report['output_sha256'])
+
+    @unittest.skipUnless(shutil.which('node'), 'optional Node editor contract check')
+    def test_editor_identity_and_reserved_ids(self):
+        subprocess.run(['node',str(Path(__file__).with_name('editor_contract.js'))],check=True,capture_output=True,text=True)
+
+    def test_compiler_preserves_and_checks_parent_intent(self):
+        self.data['expected_parents']={'root':'root'}
+        report=self.run_case();self.assertEqual(report['status'],'blocked')
+        manifest=json.loads((self.r/'out/manifest.json').read_text())
+        self.assertEqual(manifest['expected_parents'],self.data['expected_parents'])
+    def test_compiler_preserves_occlusion_rules(self):
+        self.data['occlusion_rules']=[{'front':'b','back':'a'}]
+        report=self.run_case();self.assertEqual(report['status'],'pass')
+        self.assertEqual(report['layer_constraints'],'pass-sampled')
+
+    def test_wrong_layer_blocks_even_if_pixel_colors_match(self):
+        self.add_repair();Image.new('RGBA',(8,8),(80,120,160,255)).save(self.r/'repair.png')
+        self.data['parts'][0]['z_index']=2
+        self.data['occlusion_rules']=[{'front':'b','back':'a'}]
+        report=self.run_case();self.assertEqual(report['rest_changed_pixels'],0)
+        self.assertEqual(report['status'],'blocked');self.assertEqual(report['layer_constraints'],'fail')
 
 if __name__=='__main__':unittest.main()

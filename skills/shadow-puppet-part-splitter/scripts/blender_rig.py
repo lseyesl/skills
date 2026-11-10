@@ -37,7 +37,9 @@ def inside(root, name):
 
 
 def inputs(manifest, plan):
-    data=json.loads(manifest.read_text(encoding="utf-8"))
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from puppet_core import read_manifest
+    data=read_manifest(manifest)
     motion=json.loads(plan.read_text(encoding="utf-8"))
     require(data.get("schema_version")=="1.0" and data.get("coordinate_system")=="image-pixels-y-down", "unsupported manifest")
     require(pair(data.get("source_size")) and all(isinstance(x,int) and x>0 for x in data["source_size"]),"invalid source_size")

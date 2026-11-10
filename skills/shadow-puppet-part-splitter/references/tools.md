@@ -6,6 +6,8 @@
 
 没有 mask/manifest 时先走 [标注与编译入口](character-intake.md)，使用 `assets/annotation-editor.html` 和 `scripts/compile_character.py`。下列 toolbox 操作消费已有明确数据，不会自动识别人物部件。
 
+装配误差定位与转轴候选优化用 [assembly_diagnostics.py](assembly-diagnostics.md)，复用本工具的媒体编码与原生坐标变换。诊断输出标记为 pending，不作为生产资产放行。
+
 ## 五分钟示例
 
 ```bash

@@ -15,9 +15,9 @@ from puppet_core import (require, number, pair, asset, index, read_manifest,
                          IDENTITY, multiply, inverse, pose_transforms, transforms)
 
 
-def load_manifest(path):
+def load_manifest(path, allow_unverified=False):
     path = Path(path).resolve()
-    data = read_manifest(path)
+    data = read_manifest(path, allow_unverified=allow_unverified)
     for part in data['parts']:
         key = part['id']
         with Image.open(asset(path.parent, part['file'])) as im:
@@ -34,9 +34,9 @@ def load_manifest(path):
     return data
 
 
-def render(path, angles=None, pose=None, enforce_limits=True):
+def render(path, angles=None, pose=None, enforce_limits=True, diagnostic=False):
     path = Path(path).resolve()
-    data = load_manifest(path)
+    data = load_manifest(path, allow_unverified=diagnostic)
     matrices = pose_transforms(data, pose if pose is not None else {'angles': {} if angles is None else angles}, enforce_limits)
     canvas = Image.new('RGBA', tuple(data['source_size']))
     for part in sorted(data['parts'], key=lambda p: p['z_index']):

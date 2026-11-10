@@ -64,14 +64,21 @@ def visible_diff(a, b):
     return changed
 
 
+def sha256(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
 def compile_character(annotation, output):
     annotation=Path(annotation).resolve(); base=annotation.parent
     output=Path(output).resolve()
     require(not output.exists(), "output already exists; use a new version directory")
     data=read(annotation)
+    require(isinstance(data, dict), "annotation must be an object")
     require(data.get("schema_version") == "character-annotation-1", "unsupported annotation schema")
     require(data.get("hidden_policy") in ("concept-covered", "inferred-repair"), "explicit hidden_policy required")
     source=(base/data["source"]).resolve()
+    if data.get('source_sha256'):
+        require(sha256(source) == data['source_sha256'], 'source hash mismatch: review annotation against selected image')
     with Image.open(source) as im:
         original=im.convert("RGBA")
     require(data.get("source_size") == list(original.size), "annotation/source dimensions mismatch")
@@ -119,7 +126,10 @@ def compile_character(annotation, output):
             item["inferred_region_mask"]=f"masks/{p['id']}-inferred.png"
             item["notes"]=p["repair"]["reason"]
         manifest["parts"].append(item); images.append(vis.crop(box)); repair_masks.append(inferred.crop(box))
+    for key in ('occlusion_rules', 'expected_parents'):
+        if key in data: manifest[key] = data[key]
     normalize(manifest)
+    manifest['compilation'] = {'report': 'compile-report.json'}
     output.mkdir(parents=True)
     for sub in ("parts","masks","preview"):
         (output/sub).mkdir()
@@ -128,7 +138,7 @@ def compile_character(annotation, output):
         if p["inferred"]: repair.save(output/p["inferred_region_mask"])
     write(output/"manifest.json", manifest)
     target.save(output/"preview/source-subject.png")
-    rest=render(output/"manifest.json"); rest.save(output/"preview/reassembled.png")
+    rest=render(output/"manifest.json", diagnostic=True); rest.save(output/"preview/reassembled.png")
     diff=visible_diff(target,rest); diff.save(output/"preview/rest-difference.png")
     overlaps.save(output/"preview/ownership-overlap.png")
     labels=Image.new("RGBA",original.size)
@@ -138,8 +148,31 @@ def compile_character(annotation, output):
         box=mask.getbbox(); ImageDraw.Draw(labels).text((box[0],box[1]),p["id"],fill="white")
     labels.save(output/"preview/ownership.png")
     report={"status":"pass" if not diff.getbbox() else "blocked", "source_sha256":hashlib.sha256(source.read_bytes()).hexdigest(), "annotation_sha256":hashlib.sha256(annotation.read_bytes()).hexdigest(), "source":str(source), "annotation":str(annotation), "parts":len(parts), "unassigned_pixels":0,"requested_overlap_pixels":count(overlaps),"rest_changed_pixels":count(diff),"hidden_policy":data["hidden_policy"],"visual_review":"pending", "motion_review":"pending", "limitations":["Ownership/rest equality do not prove semantic boundaries or motion readiness.","Video RGB retains baked background/lighting within the selected subject; alpha recovery is not performed."]}
+    if manifest.get('occlusion_rules') or manifest.get('expected_parents'):
+        from layer_diagnostics import layers
+        layer_out = output/'preview/layers'
+        layer_out.mkdir()
+        layer_report = layers(output/'manifest.json', {'frames':[{'frame':0}]}, layer_out)
+        write(layer_out/'report.json', layer_report)
+        report['layer_constraints'] = layer_report['status']
+        if layer_report['status'] == 'fail': report['status'] = 'blocked'
+    dependencies = {annotation, source}
+    def collect(value):
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key in ('mask', 'file') and isinstance(item, str):
+                    dependencies.add((base/item).resolve())
+                else:
+                    collect(item)
+        elif isinstance(value, list):
+            for item in value: collect(item)
+    collect(data)
+    report['input_sha256'] = {str(path): sha256(path) for path in sorted(dependencies)}
+    report['source_binding'] = 'verified' if data.get('source_sha256') else 'legacy-unbound'
+    report['output_sha256'] = {str(path.relative_to(output)): sha256(path)
+                               for path in sorted(output.rglob('*')) if path.is_file()}
     write(output/"compile-report.json", report)
-    load_manifest(output/"manifest.json")
+    if report['status'] == 'pass': load_manifest(output/"manifest.json")
     return report
 
 
@@ -150,7 +183,7 @@ def main():
     try:
         report=compile_character(args.annotation,args.output)
         print(json.dumps(report,ensure_ascii=False))
-        if report["status"]!="pass": parser.exit(2,"rest mismatch: inspect preview/rest-difference.png; assets are not approved\n")
+        if report["status"]!="pass": parser.exit(2,"assembly blocked: inspect compile report, pixel difference and layer diagnostics; assets are not approved\n")
     except (ValueError,KeyError,TypeError,OSError) as exc:
         parser.exit(1,f"error: {exc}\n")
 

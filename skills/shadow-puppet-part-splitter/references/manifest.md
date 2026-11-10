@@ -55,3 +55,7 @@
 ```json
 {"schema_version":"1.0","coordinate_system":"image-pixels-y-down","source_size":[200,120],"parts":[{"id":"prop","file":"prop.png","pixel_size":[200,120]}]}
 ```
+
+## 可选层级意图
+
+`occlusion_rules` 声明绘制片 `front/back`，可附闭区间 `frames` 与半开画布矩形 `region`；`expected_parents` 声明控制节点到期望父级的映射，根用 null。编译标注同名字段保留到 manifest。引用与范围由 normalize 检查，按实际姿态校验用 [层级诊断](assembly-diagnostics.md)。运动父子循环本身仍由原有 manifest 校验拒绝。帧段声明不表示后端已实现动态换层。

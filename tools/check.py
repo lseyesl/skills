@@ -89,6 +89,8 @@ def main():
         'skills/shadow-puppet-part-splitter/tests/test_puppet.py',
         'skills/shadow-puppet-part-splitter/tests/test_toolbox.py',
         'skills/shadow-puppet-part-splitter/tests/test_compile_character.py',
+        'skills/shadow-puppet-part-splitter/tests/test_assembly_diagnostics.py',
+        'skills/shadow-puppet-part-splitter/tests/test_layer_diagnostics.py',
         'skills/shadow-puppet-animation/tests/test_contacts.py',
         'skills/shadow-puppet-animation/tests/test_planar_ik.py',
         'skills/blender-python-modeling/tests/test_reference_review.py',

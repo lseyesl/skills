@@ -153,6 +153,9 @@ def build(data,motion,nodes,manifest,out,trial):
         else: raise RuntimeError("Required alpha blending capability unavailable")
         nt=material.node_tree; nt.nodes.clear()
         tex=nt.nodes.new("ShaderNodeTexImage"); tex.image=image
+        # Cropped parts are decals, not tiled textures. REPEAT wraps opaque
+        # edge texels onto the opposite border during filtered/minified rendering.
+        tex.extension="CLIP"
         emission=nt.nodes.new("ShaderNodeEmission"); transparent=nt.nodes.new("ShaderNodeBsdfTransparent")
         mix=nt.nodes.new("ShaderNodeMixShader"); output=nt.nodes.new("ShaderNodeOutputMaterial")
         nt.links.new(tex.outputs["Color"],emission.inputs["Color"])

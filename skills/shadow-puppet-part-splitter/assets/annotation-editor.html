@@ -1,0 +1,37 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>皮影拆件标注</title>
+<style>body{margin:0;background:#19222d;color:#eee;font:14px system-ui}header,aside{padding:16px}header{background:#263443}main{display:flex;gap:12px}aside{width:310px;flex-shrink:0}button,input,select{margin:5px;padding:6px;max-width:280px}canvas{background:#aaa;max-width:100%;height:auto;cursor:crosshair}section{overflow:auto;flex:1}textarea{width:95%;height:120px}p{line-height:1.6}.note{color:#ffcc80}</style>
+<header><b>源图 → 可编辑边界与关节 → 编译组件</b>　所有操作在本地，不上传图片。<br>
+图片 <input id="imageFile" type="file" accept="image/*"> 标注 <input id="jsonFile" type="file" accept="application/json"></header>
+<main><aside><p>先载入图片。角色外轮廓独立于部件边界标注；内部镂空用“孔洞”。最后保存 JSON，与源图放在一起运行编译器。</p>
+<label>目标 <select id="target"></select></label><br>
+<button id="add">新增部件</button><button id="pivot">设置当前部件关节</button><br>
+<select id="mode"><option value="polygons">可见多边形</option><option value="holes">孔洞</option></select><br>
+<button id="finish">闭合当前多边形</button><button id="undo">撤回一个点</button><button id="remove">删除最后多边形</button><br>
+<label>父节点 <input id="parent" placeholder="留空为根节点"></label><br>
+<label>z 顺序 <input id="depth" type="number" value="0"></label><button id="saveNode">更新父级/z</button>
+<p id="status" class="note"></p><button id="export">保存标注 JSON</button>
+<p>点击加点；闭合后可拖动顶点。切换目标不保存未闭合点。重叠由后列部件取得所有权，编译报告会显示重叠面积。工具不自动识别人脸、袖片或隐藏肢体。</p>
+<p>已有 mask/修补参数可随 JSON 导入并保留；本编辑器只显示多边形。最终透明度、前后层次和试动必须在编译结果中检查。</p></aside>
+<section><canvas id="canvas" width="800" height="600"></canvas></section></main>
+<script>
+const $=id=>document.getElementById(id),c=$('canvas'),ctx=c.getContext('2d');
+let im=new Image(),points=[],drag=null,settingPivot=false;
+let data={schema_version:'character-annotation-1',source:'source.png',source_size:[],hidden_policy:'concept-covered',ownership:'ordered-last-wins',subject:{polygons:[]},nodes:[],parts:[]};
+function part(){return data.parts.find(p=>p.id===$('target').value)}
+function reg(){return part()?.visible||data.subject}
+function status(s){$('status').textContent=s}
+function refresh(){let value=$('target').value;$('target').replaceChildren();for(let id of ['subject',...data.parts.map(p=>p.id)]){let o=document.createElement('option');o.value=id;o.textContent=id;$('target').append(o)}$('target').value=[...$('target').options].some(o=>o.value===value)?value:'subject';sync();draw()}
+function sync(){settingPivot=false;drag=null;let p=part(),n=data.nodes.find(n=>n.id===p?.node);$('parent').value=n?.parent||'';$('depth').value=p?.z_index||0;points=[]}
+function line(ps,color,close){if(!ps.length)return;ctx.beginPath();ctx.moveTo(...ps[0]);for(let p of ps.slice(1))ctx.lineTo(...p);if(close)ctx.closePath();ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.stroke();for(let [x,y]of ps){ctx.fillStyle=color;ctx.fillRect(x-2,y-2,4,4)}}
+function draw(){ctx.clearRect(0,0,c.width,c.height);if(im.complete&&im.naturalWidth)ctx.drawImage(im,0,0);for(let p of reg().polygons||[])line(p,'#00ffff',true);for(let p of reg().holes||[])line(p,'#ff5555',true);line(points,'#ffff00',false);let n=data.nodes.find(n=>n.id===part()?.node);if(n){let[x,y]=n.pivot_global;ctx.strokeStyle='#0f0';ctx.beginPath();ctx.moveTo(x-8,y);ctx.lineTo(x+8,y);ctx.moveTo(x,y-8);ctx.lineTo(x,y+8);ctx.stroke()}}
+$('imageFile').onchange=()=>{let f=$('imageFile').files[0];if(!f)return;const url=URL.createObjectURL(f);im.onload=()=>{c.width=im.width;c.height=im.height;if(data.source_size.length&&data.source_size.join()!=[im.width,im.height].join())status('尺寸不一致：不要导出，载入正确图片或标注');else{data.source=f.name;data.source_size=[im.width,im.height];status('已载入源图')}URL.revokeObjectURL(url);draw()};im.src=url};
+$('jsonFile').onchange=async()=>{try{let d=JSON.parse(await $('jsonFile').files[0].text());if(d.schema_version!=='character-annotation-1')throw Error('格式错误');data=d;refresh();status(im.naturalWidth&&data.source_size.join()!=[im.width,im.height].join()?'尺寸不一致：载入正确图片或标注':'已载入标注；请核对图片尺寸和文件名')}catch(e){status(e.message)}};
+$('target').onchange=()=>{sync();draw()};$('mode').onchange=()=>{points=[];draw()};
+$('add').onclick=()=>{let id=prompt('部件 ID：字母、数字、下划线或短横线');if(!id)return;if(!/^[A-Za-z0-9_-]+$/.test(id)||id==='subject'||data.parts.some(p=>p.id===id)||data.nodes.some(n=>n.id===id)){status('ID 无效或已存在');return}data.parts.push({id,node:id,z_index:data.parts.length,visible:{polygons:[]}});data.nodes.push({id,parent:null,pivot_global:[0,0]});refresh();$('target').value=id;sync();draw();status('请标注区域并设置关节，原点只是占位')};
+$('pivot').onclick=()=>{if(!data.nodes.some(n=>n.id===part()?.node)){status('此部件没有控制节点；先在 JSON 中明确配置节点');return}settingPivot=true;status('点击真实关节中心，不能用裁剪框中心替代')};
+function xy(e){let r=c.getBoundingClientRect();return[Math.max(0,Math.min(c.width-1,Math.round((e.clientX-r.left)*c.width/r.width))),Math.max(0,Math.min(c.height-1,Math.round((e.clientY-r.top)*c.height/r.height)))]}
+c.onpointerdown=e=>{let p=xy(e);if(settingPivot){data.nodes.find(n=>n.id===part().node).pivot_global=p;settingPivot=false;draw();return}for(let poly of reg()[$('mode').value]||[])for(let i=0;i<poly.length;i++)if(Math.hypot(poly[i][0]-p[0],poly[i][1]-p[1])<6){drag={poly,i};c.setPointerCapture(e.pointerId);return}points.push(p);draw()};c.onpointermove=e=>{if(drag){drag.poly[drag.i]=xy(e);draw()}};c.onpointerup=()=>drag=null;
+$('finish').onclick=()=>{if(points.length<3){status('至少三个点');return}let key=$('mode').value;if(reg().mask){status('mask 区域请用图像编辑器修改；不可叠加多边形');return}(reg()[key]??=[]).push(points);points=[];draw()};$('undo').onclick=()=>{points.pop();draw()};$('remove').onclick=()=>{reg()[$('mode').value]?.pop();draw()};
+$('saveNode').onclick=()=>{let p=part();if(!p)return;let parent=$('parent').value.trim();if(parent&&!data.nodes.some(n=>n.id===parent)){status('父节点不存在');return}let node=data.nodes.find(n=>n.id===p.node);if(node)node.parent=parent||null;else if(parent){status('当前部件没有控制节点');return}p.z_index=Number($('depth').value);status('已记录；父子环将在编译时拒绝')};
+$('export').onclick=()=>{if(!im.naturalWidth||data.source_size.join()!=[im.width,im.height].join()){status('源图未载入或尺寸不匹配');return}if(points.length){status('先闭合或撤回未保存的点');return}let a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.href=url;a.download='character.annotation.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};refresh();
+</script></html>

@@ -2,6 +2,10 @@
 
 以下命令从本 Skill 目录执行，`python` 指已安装 `scripts/requirements.txt` 的 Python 3.10+ 环境。图片处理需要 Pillow；Blender 只在 `blender` / `reopen` 操作时需要，MP4 只在请求它时需要 ffmpeg。其余步骤可以独立使用。
 
+## 从单张角色图开始
+
+没有 mask/manifest 时先走 [标注与编译入口](character-intake.md)，使用 `assets/annotation-editor.html` 和 `scripts/compile_character.py`。下列 toolbox 操作消费已有明确数据，不会自动识别人物部件。
+
 ## 五分钟示例
 
 ```bash

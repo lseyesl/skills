@@ -24,7 +24,7 @@
 |---|---|
 | [concept-multiview-sheet](skills/concept-multiview-sheet/SKILL.md) | 从单视图概念图推演五视图或六视图设计稿及技术线稿；隐藏视图属于设计推测，不代表实测几何或真实拓扑。 |
 | [shadow-puppet-image](skills/shadow-puppet-image/SKILL.md) | 生成或修正皮影角色概念图，约束平面分件、搭接与遮挡；交付静态参考，不替代独立组件制作、绑定或活动验证。 |
-| [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 将皮影、剪纸或平面角色图制作成独立二维组件，按需绑定、补全与试动；已有素材可直接使用确定性处理工具。制作项目须遵循约定的资产单位与隐藏区策略。 |
+| [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 将皮影、剪纸或平面角色图制作成独立二维组件，按需绑定、补全与试动；单图可经本地边界/关节标注编译出独立 PNG、组装数据与差分；已有素材可直接使用确定性处理工具。制作项目须遵循约定的资产单位与隐藏区策略。 |
 
 ### 三维建模与风格
 

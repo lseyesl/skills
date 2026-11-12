@@ -71,3 +71,7 @@
 - 每个 `skills/<skill-name>/SKILL.md` 在对应用途分类中保留一个主入口。
 - 本索引只保存选择入口所需的信息，详细流程、工具接口和契约保留在对应技能中。
 - 未找到匹配项时，继续搜索 `skills/`，检查是否存在尚未同步的技能。
+
+## 知识与问题定位
+
+Skill 主分组见 [机器分类](catalog/taxonomy.json)，每个 Skill 的 knowledge.json 按任务、对象、症状及适用条件索引知识。源码查询：`python tools/knowledge.py search "握拳塌陷" --task repair --subject hand`。结果列出匹配依据、排除条件和缺失事实；必须核对正文后执行。组织规则见 [架构](docs/skill-architecture.md)。

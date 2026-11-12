@@ -58,3 +58,17 @@ python tools/check.py --group blender --blender G:/SteamLibrary/steamapps/common
 ```
 
 该检查使用隔离临时场景，技术测试通过不等于视觉批准。历史制作规范位于 `ancient-tales-production/history/`，不参与活动路由。
+
+## 知识发现与修改评测
+
+按 [架构规则](docs/skill-architecture.md) 将知识归入现有能力，不按每个对象新增 Skill。各 Skill 的 knowledge.json 与源码一同锁定安装。检索：
+
+```shell
+python tools/knowledge.py search "车轮偏心" --task repair --subject wheel
+python tools/knowledge.py retrieve blender.wheel-motion
+python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json
+```
+
+锁定副本可直接运行 `<blender-skill-dir>/scripts/knowledge_catalog.py`，无需源码根目录。检索候选必须再核对现场条件。
+
+[评测入口](evals/README.md) 说明任务记录、证据哈希和版本比较；[收益规则](docs/evaluation-policy.md) 区分正向、负向、取舍与证据不足。轻量 CI 覆盖知识索引、检索与评分逻辑；Blender group 增加隔离的权重/姿势/枢轴/滚动/导出技术夹具。夹具通过不等于真实建模任务或视觉评测通过。

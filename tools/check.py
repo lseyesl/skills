@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'skills/ancient-tales-pipeline/scripts'))
 import skill_dependencies as dependencies
 import json
+sys.path.insert(0, str(ROOT / "tools"))
+from knowledge import validate_catalog
 
 
 def validate_library(root):
@@ -26,7 +28,8 @@ def validate_library(root):
     if actual != set(catalog):
         raise ValueError('skills.json differs from actual Skill entries')
     index = (root / 'index.md').read_text(encoding='utf-8')
-    documents = [root / p for p in ('README.md', 'index.md', 'AGENTS.md') if (root / p).is_file()]
+    documents = list((root / 'docs').glob('*.md')) + list((root / 'evals').glob('*.md'))
+    documents += [root / p for p in ('README.md', 'index.md', 'AGENTS.md') if (root / p).is_file()]
     for name, item in catalog.items():
         if item['directory'] + '/SKILL.md' not in index:
             raise ValueError('Skill missing from index: ' + name)
@@ -61,6 +64,13 @@ def validate_library(root):
             if dest.is_relative_to(root) and 'history' in dest.relative_to(root).parts:
                 raise ValueError('Active document routes into history: ' + str(p))
             links += 1
+    if any((root / 'skills').glob('*/knowledge.json')) and not (root / 'catalog/taxonomy.json').is_file():
+        raise ValueError('Knowledge manifests require catalog/taxonomy.json')
+    if (root / 'catalog/taxonomy.json').exists():
+        validate_catalog(root)
+        from run_evals import validate_suite
+        for suite in (root / 'skills').glob('*/evals/task-suite.json'):
+            validate_suite(json.loads(suite.read_text(encoding='utf-8')))
     return {'skills': len(catalog), 'documents': len(documents), 'relative_links': links}
 
 
@@ -79,8 +89,12 @@ def main():
         if not args.blender:
             parser.error('--group blender requires --blender; Blender is never installed automatically')
         subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / 'skills/shadow-puppet-part-splitter/tests/blender_smoke.py'), '--blender', args.blender], cwd=ROOT, env=env, check=True)
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_domain_checks.py'), '--', str(temp / 'blender-domain')], cwd=ROOT, env=env, check=True)
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_repair_acceptance.py'), '--', str(temp / 'blender-repair')], cwd=ROOT, env=env, check=True)
         return
     suites = [
+        'tests/test_knowledge_evals.py',
+        'tests/test_reconstruction_acceptance.py',
         'skills/ancient-tales-pipeline/tests/test_runtime.py',
         'tests/test_library_checks.py',
         'skills/ancient-tales-production/tests/test_contract.py',

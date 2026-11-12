@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "query-obsidian.overview",
+      "title": "查询 Obsidian 知识",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "query"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Obsidian",
+        "知识检索",
+        "笔记查询"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ]
+}

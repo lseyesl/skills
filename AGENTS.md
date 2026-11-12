@@ -45,3 +45,7 @@
 ## 依赖与验证入口
 
 新增技能或改变依赖时同步更新 skills.json 和 index.md；必需本库依赖不得形成环，可选协作不自动安装，外部工具不由同步器安装。共享校验入口为 `python tools/check.py`，Blender 实机测试用独立 group 显式运行。活动规范不得引用 history/ 或退役后端入口；历史原文只作审计。
+
+## 知识组织与修改收益
+
+遵循 [Skill 架构](docs/skill-architecture.md) 和 [评测规则](docs/evaluation-policy.md)。新增对象、症状、风格优先归入已有 Skill 的知识/流程，不默认新增 Skill。同步 knowledge.json；能力分组维护 catalog/taxonomy.json，依赖继续维护 skills.json。修改知识时查找 requires/verification 的反向影响，复测相关任务并使旧证据失效。效果未经成对评测保持 experimental，不以单测或文件存在宣称收益。

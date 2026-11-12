@@ -1,0 +1,461 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {
+      "id": "hand.create",
+      "split": "dev",
+      "prompt": "创建手部：先根据现场资产制定处理方案。检查张手、握拳、拇指对掌；保留原动作与指部身份。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "张手、握拳、拇指对掌；保留原动作与指部身份"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "hand.repair",
+      "split": "dev",
+      "prompt": "修复手部：先根据现场资产制定处理方案。检查张手、握拳、拇指对掌；保留原动作与指部身份。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "张手、握拳、拇指对掌；保留原动作与指部身份"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "hand.optimize",
+      "split": "dev",
+      "prompt": "优化手部：先根据现场资产制定处理方案。检查张手、握拳、拇指对掌；保留原动作与指部身份。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "张手、握拳、拇指对掌；保留原动作与指部身份"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "hand.regression",
+      "split": "test",
+      "prompt": "回归检查手部：先根据现场资产制定处理方案。检查张手、握拳、拇指对掌；保留原动作与指部身份。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "张手、握拳、拇指对掌；保留原动作与指部身份"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "wheel.create",
+      "split": "dev",
+      "prompt": "创建车轮：先根据现场资产制定处理方案。检查轴心、完整旋转、纯滚动/滑移区分；保留转向层级。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "轴心、完整旋转、纯滚动/滑移区分；保留转向层级"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "wheel.repair",
+      "split": "dev",
+      "prompt": "修复车轮：先根据现场资产制定处理方案。检查轴心、完整旋转、纯滚动/滑移区分；保留转向层级。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "轴心、完整旋转、纯滚动/滑移区分；保留转向层级"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "wheel.optimize",
+      "split": "dev",
+      "prompt": "优化车轮：先根据现场资产制定处理方案。检查轴心、完整旋转、纯滚动/滑移区分；保留转向层级。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "轴心、完整旋转、纯滚动/滑移区分；保留转向层级"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "wheel.regression",
+      "split": "test",
+      "prompt": "回归检查车轮：先根据现场资产制定处理方案。检查轴心、完整旋转、纯滚动/滑移区分；保留转向层级。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "轴心、完整旋转、纯滚动/滑移区分；保留转向层级"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "rig.create",
+      "split": "dev",
+      "prompt": "创建角色绑定与导出：先根据现场资产制定处理方案。检查静止姿态、权重、目标动作和隔离导出重载；保留源骨架。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "静止姿态、权重、目标动作和隔离导出重载；保留源骨架"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "rig.repair",
+      "split": "dev",
+      "prompt": "修复角色绑定与导出：先根据现场资产制定处理方案。检查静止姿态、权重、目标动作和隔离导出重载；保留源骨架。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "静止姿态、权重、目标动作和隔离导出重载；保留源骨架"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "rig.optimize",
+      "split": "dev",
+      "prompt": "优化角色绑定与导出：先根据现场资产制定处理方案。检查静止姿态、权重、目标动作和隔离导出重载；保留源骨架。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "静止姿态、权重、目标动作和隔离导出重载；保留源骨架"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    },
+    {
+      "id": "rig.regression",
+      "split": "test",
+      "prompt": "回归检查角色绑定与导出：先根据现场资产制定处理方案。检查静止姿态、权重、目标动作和隔离导出重载；保留源骨架。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
+      "setup": "Use an independently prepared asset with the requested defect/constraint. Record source hash, object IDs, exact reproduction and environment before running; do not expose scoring fixtures to Agent.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "现场观察支持原因判断及适用性选择，不凭症状重建"
+        },
+        {
+          "id": "integrity",
+          "kind": "structure",
+          "required": true,
+          "criterion": "目标及非目标数据关联保留，执行相关结构诊断"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "静止姿态、权重、目标动作和隔离导出重载；保留源骨架"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定视图/尺度/姿势审阅实际求值结果，符合任务范围"
+        },
+        {
+          "id": "regression",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
+        }
+      ]
+    }
+  ]
+}

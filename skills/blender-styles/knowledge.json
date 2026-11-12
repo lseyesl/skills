@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "blender-styles.overview",
+      "title": "Blender 风格选择",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "黏土",
+        "橡皮泥",
+        "clay",
+        "风格"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "style.soft-clay",
+      "title": "柔和黏土",
+      "entry": "styles/soft-clay/STYLE.md",
+      "kind": "style",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [
+        "style"
+      ],
+      "aliases": [
+        "柔和黏土",
+        "soft-clay"
+      ],
+      "applies_when": [
+        "已选择此风格或其某一表现层"
+      ],
+      "exclude_when": [
+        "纯二维任务"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "style.handmade-plasticine",
+      "title": "手捏橡皮泥",
+      "entry": "styles/handmade-plasticine/STYLE.md",
+      "kind": "style",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [
+        "style"
+      ],
+      "aliases": [
+        "手捏橡皮泥",
+        "handmade-plasticine"
+      ],
+      "applies_when": [
+        "已选择此风格或其某一表现层"
+      ],
+      "exclude_when": [
+        "纯二维任务"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "query_exclusions": [
+    "React",
+    "onwheel",
+    "wheel event",
+    "JavaScript event",
+    "浏览器滚轮",
+    "鼠标滚轮",
+    "Blender crashes",
+    "Blender installation",
+    "Blender install",
+    "启动崩溃",
+    "安装失败"
+  ]
+}

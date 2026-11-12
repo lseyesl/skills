@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "continuous-action.overview",
+      "title": "动作库与序列参考",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "animate"
+      ],
+      "subjects": [],
+      "aliases": [
+        "动作参考",
+        "关键帧",
+        "连续动作"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ]
+}

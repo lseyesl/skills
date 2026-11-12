@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "ancient-tales-production.overview",
+      "title": "制作流程与交接",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "制作",
+        "交接",
+        "Gate"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ]
+}

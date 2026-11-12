@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "shadow-puppet-image.overview",
+      "title": "皮影概念图",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影图片",
+        "角色概念"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ]
+}

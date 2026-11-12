@@ -1,0 +1,336 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "blender-python-modeling.overview",
+      "title": "Blender 建模与场景",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Blender",
+        "建模",
+        "场景"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.hand-construction",
+      "title": "可变形人手制作",
+      "entry": "references/procedures/characters/hand-construction.md",
+      "kind": "procedure",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [
+        "hand"
+      ],
+      "aliases": [
+        "人手",
+        "手掌",
+        "finger",
+        "hand topology"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.hand-poses"
+      ],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.hand-deformation",
+      "title": "握拳塌陷与手指扭曲诊断",
+      "entry": "references/procedures/characters/hand-deformation.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "optimize"
+      ],
+      "subjects": [
+        "hand"
+      ],
+      "aliases": [
+        "握拳塌陷",
+        "手指扭曲",
+        "finger collapse",
+        "hand deformation"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "rest_mesh_ok",
+        "intended_use",
+        "asset_exists"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.hand-poses"
+      ],
+      "conditions": {
+        "asset_exists": true
+      },
+      "status": "experimental"
+    },
+    {
+      "id": "blender.wheel-construction",
+      "title": "汽车车轮制作",
+      "entry": "references/procedures/vehicles/wheel-construction.md",
+      "kind": "procedure",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [
+        "wheel"
+      ],
+      "aliases": [
+        "汽车轮胎",
+        "轮毂",
+        "wheel tire tyre"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.wheel-motion"
+      ],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.wheel-motion",
+      "title": "车轮偏心与滚动诊断",
+      "entry": "references/procedures/vehicles/wheel-motion.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "animate",
+        "optimize"
+      ],
+      "subjects": [
+        "wheel"
+      ],
+      "aliases": [
+        "车轮偏心",
+        "轮子打滑",
+        "wheel wobble rolling"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "rolling_mode",
+        "axis",
+        "asset_exists"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.wheel-motion"
+      ],
+      "conditions": {
+        "asset_exists": true
+      },
+      "status": "experimental"
+    },
+    {
+      "id": "blender.rigging-and-skinning",
+      "title": "角色绑定与蒙皮交付",
+      "entry": "references/procedures/characters/rigging-and-skinning.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "character"
+      ],
+      "aliases": [
+        "骨骼",
+        "蒙皮",
+        "绑定",
+        "skinning rig export",
+        "骨架",
+        "添加骨架",
+        "rigging",
+        "armature"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "intended_use",
+        "target_format"
+      ],
+      "requires": [
+        "blender.character-delivery"
+      ],
+      "verification": [
+        "blender.acceptance.character-export"
+      ],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.character-delivery",
+      "title": "角色交付通用契约",
+      "entry": "references/character-delivery.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "repair",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "character"
+      ],
+      "aliases": [
+        "角色交付",
+        "rest pose",
+        "weights"
+      ],
+      "applies_when": [
+        "需要可变形角色或骨骼导出"
+      ],
+      "exclude_when": [
+        "明确仅制作静态雕塑"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.hand-poses",
+      "title": "手部姿势验收",
+      "entry": "references/acceptance/hand-poses.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "手部姿势验收"
+      ],
+      "applies_when": [
+        "对应处理流程请求验收"
+      ],
+      "exclude_when": [
+        "不能替代未执行的视觉或目标平台验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.wheel-motion",
+      "title": "车轮运动验收",
+      "entry": "references/acceptance/wheel-motion.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "车轮运动验收"
+      ],
+      "applies_when": [
+        "对应处理流程请求验收"
+      ],
+      "exclude_when": [
+        "不能替代未执行的视觉或目标平台验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.character-export",
+      "title": "角色导出验收",
+      "entry": "references/acceptance/character-export.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "角色导出验收"
+      ],
+      "applies_when": [
+        "对应处理流程请求验收"
+      ],
+      "exclude_when": [
+        "不能替代未执行的视觉或目标平台验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "query_exclusions": [
+    "React",
+    "onwheel",
+    "wheel event",
+    "JavaScript event",
+    "浏览器滚轮",
+    "鼠标滚轮",
+    "Blender crashes",
+    "Blender installation",
+    "Blender install",
+    "启动崩溃",
+    "安装失败"
+  ]
+}

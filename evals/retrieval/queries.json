@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "note": "Curated seed cases; test split is held aside by convention, not an independently collected blind benchmark.",
+  "queries": [
+    {
+      "id": "hand-zh",
+      "query": "握拳塌陷",
+      "task": "repair",
+      "expected": [
+        "blender.hand-deformation"
+      ],
+      "split": "test",
+      "subject": "hand"
+    },
+    {
+      "id": "hand-en",
+      "query": "finger collapse",
+      "task": "repair",
+      "expected": [
+        "blender.hand-deformation"
+      ],
+      "split": "test",
+      "subject": "hand"
+    },
+    {
+      "id": "hand-create",
+      "query": "人手",
+      "task": "create",
+      "expected": [
+        "blender.hand-construction"
+      ],
+      "split": "dev",
+      "subject": "hand"
+    },
+    {
+      "id": "wheel-zh",
+      "query": "车轮偏心",
+      "task": "repair",
+      "expected": [
+        "blender.wheel-motion"
+      ],
+      "split": "test",
+      "subject": "wheel"
+    },
+    {
+      "id": "wheel-en",
+      "query": "wheel wobble",
+      "task": "repair",
+      "expected": [
+        "blender.wheel-motion"
+      ],
+      "split": "test",
+      "subject": "wheel"
+    },
+    {
+      "id": "wheel-create",
+      "query": "汽车轮胎",
+      "task": "create",
+      "expected": [
+        "blender.wheel-construction"
+      ],
+      "split": "dev",
+      "subject": "wheel"
+    },
+    {
+      "id": "rig-zh",
+      "query": "骨骼蒙皮",
+      "task": "export",
+      "expected": [
+        "blender.rigging-and-skinning"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "rig-en",
+      "query": "skinning rig export",
+      "task": "export",
+      "expected": [
+        "blender.rigging-and-skinning"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "style",
+      "query": "手捏橡皮泥",
+      "task": "create",
+      "expected": [
+        "style.handmade-plasticine"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "document",
+      "query": "PDF OCR",
+      "task": "convert",
+      "expected": [
+        "pdf-epub-to-markdown.overview"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "knowledge",
+      "query": "Obsidian 笔记查询",
+      "task": "query",
+      "expected": [
+        "query-obsidian.overview"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "oos",
+      "query": "Kubernetes PostgreSQL",
+      "task": "repair",
+      "expected": [],
+      "split": "test"
+    },
+    {
+      "id": "wrong-subject",
+      "query": "握拳塌陷",
+      "task": "repair",
+      "expected": [],
+      "split": "test",
+      "subject": "wheel"
+    },
+    {
+      "id": "missing-asset",
+      "query": "握拳塌陷",
+      "task": "repair",
+      "expected": [],
+      "split": "test",
+      "subject": "hand",
+      "facts": {
+        "asset_exists": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "distill-to-obsidian.overview",
+      "title": "知识蒸馏与沉淀",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Obsidian",
+        "蒸馏",
+        "知识沉淀"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ]
+}

@@ -27,5 +27,6 @@
       "conditions": {},
       "status": "experimental"
     }
-  ]
+  ],
+  "excluded_paths": {}
 }

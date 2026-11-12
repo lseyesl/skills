@@ -76,7 +76,7 @@ def validate_library(root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--group', choices=['lightweight', 'metadata', 'blender'], default='lightweight')
+    parser.add_argument('--group', choices=['lightweight', 'metadata', 'blender', 'isolation'], default='lightweight')
     parser.add_argument('--blender', help='Explicit Blender executable for optional real-engine tests')
     args = parser.parse_args()
     print('LIBRARY_CHECK_OK', validate_library(ROOT), flush=True)
@@ -85,6 +85,9 @@ def main():
     temp = ROOT / '.tmp/tests'
     temp.mkdir(parents=True, exist_ok=True)
     env = {**os.environ, 'PYTHONUTF8': '1', 'PYTHONDONTWRITEBYTECODE': '1', 'SKILLS_TEST_TMP': str(temp), 'TMPDIR': str(temp), 'TMP': str(temp), 'TEMP': str(temp)}
+    if args.group == 'isolation':
+        subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / 'tests/test_agent_isolation.py')], cwd=ROOT, env=env, check=True)
+        return
     if args.group == 'blender':
         if not args.blender:
             parser.error('--group blender requires --blender; Blender is never installed automatically')
@@ -95,6 +98,8 @@ def main():
     suites = [
         'tests/test_knowledge_evals.py',
         'tests/test_reconstruction_acceptance.py',
+        'tests/test_p0_pipeline.py',
+        'tests/test_knowledge_evidence.py',
         'skills/ancient-tales-pipeline/tests/test_runtime.py',
         'tests/test_library_checks.py',
         'skills/ancient-tales-production/tests/test_contract.py',

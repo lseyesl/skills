@@ -26,6 +26,137 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "concept-multiview-sheet.reference.9c32a6c55f2c",
+      "title": "Consistency Review",
+      "entry": "references/consistency-review.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Consistency Review",
+        "consistency review"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "concept-multiview-sheet.reference.5fbb302b01b7",
+      "title": "Single-View Inference Contract",
+      "entry": "references/inference-contract.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Single-View Inference Contract",
+        "inference contract"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "concept-multiview-sheet.reference.688bc77c5aba",
+      "title": "Pose and Configuration Normalization",
+      "entry": "references/pose-and-configuration-normalization.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Pose and Configuration Normalization",
+        "pose and configuration normalization"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "concept-multiview-sheet.reference.56aadff0826d",
+      "title": "Pre-model multiview review",
+      "entry": "references/pre-model-review.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Pre-model multiview review",
+        "pre model review"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "concept-multiview-sheet.reference.06032bbd0b9a",
+      "title": "Prompt Recipes",
+      "entry": "references/prompt-recipes.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Prompt Recipes",
+        "prompt recipes"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
     }
-  ]
+  ],
+  "excluded_paths": {}
 }

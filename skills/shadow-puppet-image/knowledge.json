@@ -25,6 +25,32 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-image.reference.dd9d4ab08d31",
+      "title": "平面影人结构约束与检查",
+      "entry": "references/structure.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [],
+      "aliases": [
+        "平面影人结构约束与检查",
+        "structure"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
     }
-  ]
+  ],
+  "excluded_paths": {}
 }

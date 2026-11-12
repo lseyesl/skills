@@ -132,6 +132,42 @@
       "facts": {
         "asset_exists": false
       }
+    },
+    {
+      "id": "existing-cloth-en",
+      "query": "cloth collision penetrates mesh",
+      "task": "repair",
+      "expected": [
+        "blender.physics-and-simulation"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "existing-cloth-zh",
+      "query": "布料穿透",
+      "task": "repair",
+      "expected": [
+        "blender.physics-and-simulation"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "existing-uv",
+      "query": "UV 接缝",
+      "task": "repair",
+      "expected": [
+        "blender.uv-and-texture-baking"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "mixed-target",
+      "query": "为 React 展示页面导出 Blender 角色 GLB",
+      "task": "export",
+      "expected": [
+        "blender.export-and-packaging"
+      ],
+      "split": "dev"
     }
   ]
 }

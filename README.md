@@ -72,3 +72,9 @@ python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json
 锁定副本可直接运行 `<blender-skill-dir>/scripts/knowledge_catalog.py`，无需源码根目录。检索候选必须再核对现场条件。
 
 [评测入口](evals/README.md) 说明任务记录、证据哈希和版本比较；[收益规则](docs/evaluation-policy.md) 区分正向、负向、取舍与证据不足。轻量 CI 覆盖知识索引、检索与评分逻辑；Blender group 增加隔离的权重/姿势/枢轴/滚动/导出技术夹具。夹具通过不等于真实建模任务或视觉评测通过。
+
+## P0 执行与验证进度
+
+现有活动参考资料已经逐项索引；检索采用紧凑知识卡片 BM25，并区分混合意图与不支持请求。收益比较需绑定运行前声明的目标、成本上限和保护项。真实 Agent 执行器、独立评分校准、内容绑定验证回执及当前鉴权阻塞见 [P0 执行记录](docs/p0-execution.md)。知识审阅与过期机制见 [知识验证规则](docs/knowledge-review.md)。
+
+`python tools/knowledge_audit.py` 检查已有验证声明；`python tools/check.py --group isolation` 显式检查 Linux 评测隔离。轻量流水线覆盖 main/work 分支及定期回归；Blender 双版本工作流需要配置带 blender 标签的专用 runner，实际未运行的版本不视为兼容性认证。

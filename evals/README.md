@@ -13,3 +13,5 @@
 技术实机测试：`python tools/check.py --group blender --blender /path/to/blender`。隔离临时目录生成带正确/错误权重的最小夹具、偏心运动反例及可导出绑定；它们不是生产级手/车轮样例。新规范仍为 experimental，真实任务和视觉验收需独立执行。
 
 独立验收：`python tests/test_reconstruction_acceptance.py` 覆盖自然语言检索、近域排除、未知事实、收益判定控制记录及正式提交快照的锁定安装；这些测试不调用模型。Blender group 还运行真实几何的偏心与缺失权重修复实验，生成诊断渲染。详见 [重构能力验证](../docs/verification-results.md)。
+
+真实执行入口为 tools/agent_benchmark.py，独立 wheel-origin 胶囊及校准入口位于 evals/capsules 和 tools/calibrate_capsule.py。运行前必须有绑定当前胶囊/Blender 版本的校准报告，以及预先绑定的比较策略。命令、隔离要求和实际鉴权失败证据见 [P0 执行记录](../docs/p0-execution.md)。控制案例只校准评分器，不代表 Agent 已完成任务。

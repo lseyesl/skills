@@ -49,3 +49,5 @@
 ## 知识组织与修改收益
 
 遵循 [Skill 架构](docs/skill-architecture.md) 和 [评测规则](docs/evaluation-policy.md)。新增对象、症状、风格优先归入已有 Skill 的知识/流程，不默认新增 Skill。同步 knowledge.json；能力分组维护 catalog/taxonomy.json，依赖继续维护 skills.json。修改知识时查找 requires/verification 的反向影响，复测相关任务并使旧证据失效。效果未经成对评测保持 experimental，不以单测或文件存在宣称收益。
+
+收益比较必须使用运行前绑定的目标/成本/保护项策略；缺策略或未观察到实际模型身份不得宣称正向。validated 证据按 [知识验证规则](docs/knowledge-review.md) 绑定正文、依赖、工具和评分任务；过期声明须复测。真实 Agent 运行必须保留隔离、轨迹与独立评分，不得用控制记录替代效果证据。

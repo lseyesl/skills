@@ -17,3 +17,5 @@ requires 指知识前置依赖，verification 指验收入口；跨 Skill 必需
 影响分析：`python tools/knowledge.py impacts blender.acceptance.hand-poses` 返回该条目及通过前置/验收引用受影响的流程。按结果复测相关任务；无显式引用的外部调用仍需人工检查。
 
 knowledge.json 可声明 query_exclusions，按词项组合显式排除其他领域及能力边界外的查询；这里只做可解释规则，不保证理解任意否定或复杂意图。空值事实保持未知；条件值类型必须一致。得分相同时优先具体 procedure，再显示通用知识与入口。新增反例应记录原始失败，并在修复后归入回归集，不再称盲测。
+
+后续机制：活动参考资料必须在 knowledge.json 的 entries 或 excluded_paths 中出现，排除须给理由；检索使用知识卡片标题/别名/领域/正文标题的 BM25。context_exclusions 配合 domain_terms 区分混合背景，强排除只针对具体不支持意图。内容绑定验证回执、动态 stale 状态和审阅职责见 [知识验证规则](knowledge-review.md)；查询结果还会返回验证范围，调用者仍须核对目标环境。

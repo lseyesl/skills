@@ -2,9 +2,11 @@ name: Skills checks
 
 on:
   push:
-    branches: [main]
+    branches: [main, work]
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
 
 permissions:
   contents: read
@@ -35,3 +37,11 @@ jobs:
 
       - name: Retrieval regression report
         run: python tools/run_evals.py retrieval --split test --output .tmp/retrieval-test.json
+
+      - name: Knowledge evidence freshness
+        run: python tools/knowledge_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrieval-${{ matrix.os }}-${{ matrix.python }}
+          path: .tmp/retrieval-test.json

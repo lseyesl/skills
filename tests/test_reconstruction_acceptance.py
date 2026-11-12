@@ -52,7 +52,13 @@ class AcceptanceTests(unittest.TestCase):
             base['records'].append(dict(task_id=str(i),repeat=1,status='failed',severe_error=False,elapsed_seconds=1,context_tokens=1,human_interventions=0))
         head=copy.deepcopy(base)
         for record in head['records']:record['status']='passed'
-        self.assertEqual(compare(base,head)['verdict'],'positive')
+        self.assertEqual(compare(base,head)['verdict'],'insufficient-evidence')
+        policy={'schema_version':1,'objective':{'metric':'success_rate','min_improvement':0},'minimum_distinct_tasks':10,'max_mean_increase':dict(elapsed_seconds=0,context_tokens=0,human_interventions=0),'max_per_run':dict(elapsed_seconds=10,context_tokens=10,human_interventions=0),'protected_checks':[]}
+        import hashlib
+        for report in (base,head):
+            report['metadata']['comparison_policy_sha256']=hashlib.sha256(json.dumps(policy,sort_keys=True).encode()).hexdigest()
+            report['metadata']['source_sha256']='same-fixture'
+        self.assertEqual(compare(base,head,policy=policy)['verdict'],'positive')
         self.assertEqual(compare(head,base)['verdict'],'negative')
         mixed=copy.deepcopy(head);mixed['records'][0]['status']='failed'
         previous=copy.deepcopy(base);previous['records'][0]['status']='passed'

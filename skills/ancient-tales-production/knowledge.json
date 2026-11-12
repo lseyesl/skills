@@ -26,6 +26,482 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.f557b39bf9af",
+      "title": "交接校验与环境检查",
+      "entry": "references/交接校验与环境检查.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "交接校验与环境检查",
+        "交接校验与环境检查"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.2087710ae3ef",
+      "title": "3D 纸模角色工作流",
+      "entry": "references/工作流-3D纸模角色.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "3D 纸模角色工作流",
+        "工作流 3D纸模角色"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.488ce02913eb",
+      "title": "中国神话视频全流程总控工作流",
+      "entry": "references/工作流-全流程总控.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频全流程总控工作流",
+        "工作流 全流程总控"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.5d7f65d10651",
+      "title": "中国神话视频场景精灵动画工作流",
+      "entry": "references/工作流-场景精灵动画.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频场景精灵动画工作流",
+        "工作流 场景精灵动画"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.dfdf744a8958",
+      "title": "中国神话视频多语言本地化工作流",
+      "entry": "references/工作流-多语言本地化.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频多语言本地化工作流",
+        "工作流 多语言本地化"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.dcf4e3ec3dd4",
+      "title": "中国神话视频导演工作流",
+      "entry": "references/工作流-导演.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频导演工作流",
+        "工作流 导演"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.30e5efb3003e",
+      "title": "中国神话视频成片合成与质量检查工作流",
+      "entry": "references/工作流-成片合成与质量检查.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频成片合成与质量检查工作流",
+        "工作流 成片合成与质量检查"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.640802d4a9f8",
+      "title": "中国神话视频皮影角色视觉定义工作流",
+      "entry": "references/工作流-皮影角色视觉定义.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频皮影角色视觉定义工作流",
+        "工作流 皮影角色视觉定义"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.faaaab9049a7",
+      "title": "中国神话视频神话调研工作流",
+      "entry": "references/工作流-神话调研.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频神话调研工作流",
+        "工作流 神话调研"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.25175f1855fc",
+      "title": "中国神话视频策划与制片工作流",
+      "entry": "references/工作流-策划与制片.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频策划与制片工作流",
+        "工作流 策划与制片"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.59d0b6f0620b",
+      "title": "中国神话视频纸偶小剧场视觉定义工作流",
+      "entry": "references/工作流-纸偶小剧场视觉定义.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频纸偶小剧场视觉定义工作流",
+        "工作流 纸偶小剧场视觉定义"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.2c355b0d680e",
+      "title": "中国神话视频纸偶小剧场静态资产工作流",
+      "entry": "references/工作流-纸偶小剧场静态资产.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频纸偶小剧场静态资产工作流",
+        "工作流 纸偶小剧场静态资产"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.04815c47dead",
+      "title": "中国神话视频编剧工作流",
+      "entry": "references/工作流-编剧.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频编剧工作流",
+        "工作流 编剧"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.eb9f95fcf628",
+      "title": "中国神话视频美术设计与资产工作流",
+      "entry": "references/工作流-美术设计与资产.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频美术设计与资产工作流",
+        "工作流 美术设计与资产"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.e9f81b62d06c",
+      "title": "中国神话视频角色组件分层拆分与提示词生成工作流",
+      "entry": "references/工作流-角色组件分层拆分与提示词生成.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频角色组件分层拆分与提示词生成工作流",
+        "工作流 角色组件分层拆分与提示词生成"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.af5a709bd730",
+      "title": "资产所有权与追溯",
+      "entry": "references/工作流-跨仓库资产所有权.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "资产所有权与追溯",
+        "工作流 跨仓库资产所有权"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.66dad8726838",
+      "title": "中国神话视频音频交付与导入工作流",
+      "entry": "references/工作流-音频交付与导入.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "中国神话视频音频交付与导入工作流",
+        "工作流 音频交付与导入"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.cb3c5b958e26",
+      "title": "项目配置与路由",
+      "entry": "references/工作流-项目配置.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "项目配置与路由",
+        "工作流 项目配置"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-production.reference.a09d550356e7",
+      "title": "技能协作与交付契约",
+      "entry": "references/技能协作与交付契约.md",
+      "kind": "knowledge",
+      "tasks": [
+        "produce"
+      ],
+      "subjects": [],
+      "aliases": [
+        "技能协作与交付契约",
+        "技能协作与交付契约"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
     }
-  ]
+  ],
+  "excluded_paths": {}
 }

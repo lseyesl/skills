@@ -15,11 +15,12 @@ uv run --project skills/blender-python-modeling python \
   --config skills/blender-python-modeling/examples/clay-girl-fit/character.json \
   --output output/my-fit-analysis
 
-# One-command reproducible full case; output directory must be empty.
+# Fresh construction requires a reviewed reference-preparation decision; output directory must be empty.
 uv run --project skills/blender-python-modeling python \
   skills/blender-python-modeling/scripts/fit_character.py optimize \
   --config skills/blender-python-modeling/examples/clay-girl-fit/character.json \
   --output output/my-fit-run --rig-test \
+  --reference-preparation output/reference-preparation.json \
   --blender /Applications/Blender.app/Contents/MacOS/Blender
 ```
 
@@ -93,3 +94,7 @@ uv run --project skills/blender-python-modeling python \
 Keep the original `blender-styles/scripts/test_soft_clay.py --render` regression suite. See the run-specific report for actual counts and failures; command exit success alone does not validate reference agreement.
 
 Generate a paired report with `scripts/report_fit_run.py --baseline BASELINE --run RUN --delivery FINAL_RENDER_DIR --output REPORT_DIR`. Verify real snapshots/candidate history with `scripts/verify_fit_run.py --run RUN --baseline BASELINE --output REPORT.json`.
+
+## Reference preparation gate
+
+Fresh build/optimize runs must supply --reference-preparation with the [reviewed route decision](../reference-preparation.md). The example config does not certify its images as suitable construction references. Analysis/render/evaluate and source-based repair do not require generating new views. Diagnostic experiments require both an explicit diagnostic_only decision and --diagnostic-only; their results cannot be promoted to accepted construction. The worker independently checks this before creating its task scene.

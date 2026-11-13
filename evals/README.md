@@ -17,3 +17,7 @@
 独立验收：`python tests/test_reconstruction_acceptance.py` 覆盖自然语言检索、近域排除、未知事实、收益判定控制记录及正式提交快照的锁定安装；这些测试不调用模型。Blender group 还运行真实几何的偏心与缺失权重修复实验，生成诊断渲染。详见 [重构能力验证](../docs/verification-results.md)。
 
 真实执行入口为 tools/agent_benchmark.py，独立 wheel-origin 胶囊及校准入口位于 evals/capsules 和 tools/calibrate_capsule.py。运行前必须有绑定当前胶囊/Blender 版本的校准报告，以及预先绑定的比较策略。命令、隔离要求和实际鉴权失败证据见 [P0 执行记录](../docs/p0-execution.md)。控制案例只校准评分器，不代表 Agent 已完成任务。
+
+## 源码与运行产物
+
+测试标准、报告模板、任务契约、可复用夹具、评分器和自动化测试代码随 Skill 提交。单次运行生成的模型、图片、日志、评分 JSON、报告及失败快照默认写入 `evals/runs/<run-id>/`，由 Git 忽略，保留在本地供核验。需要共享时单独交付产物包，不将其混入 Skill 源码提交；报告引用本地证据不能成为已提交入口文档中的失效链接。

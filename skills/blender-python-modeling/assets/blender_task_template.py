@@ -21,6 +21,7 @@ REFERENCE_HELPER_DIR=None  # installed Skill scripts directory, required for gat
 MODELING_PLAN=None  # project modeling-plan.json
 MODELING_SCOPE=[]  # explicit module IDs, one receipt per scope
 REFERENCE_CONFIG=None
+REFERENCE_PREPARATION=None  # explicit route decision, required even for no-reference originals
 CALIBRATION_REVIEW=None
 BLOCKOUT_REVIEW=None  # inspected evidence JSON, not pre-filled at build time
 BLOCKOUT_RECEIPT=None
@@ -103,8 +104,8 @@ def _state(modules):
 
 def _dependencies(plan):
     from stage_guard import file_input
-    result={'parameters':BLOCKOUT_PARAMETERS,'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],
-            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py','production_workspace.py')]}
+    result={'reference_preparation':_preparation(),'parameters':BLOCKOUT_PARAMETERS,'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],
+            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py','production_workspace.py','reference_preparation.py')]}
     for module in plan['modules']:
         if module['id'] in _dependency_scope(plan) and module['method']=='reuse':
             result.setdefault('reuse_sources',[]).append(file_input(Path(MODELING_PLAN).resolve().parent/module['source_snapshot']))
@@ -124,6 +125,7 @@ def _dependency_scope(plan):
 
 
 def _prepare_reference():
+    _preparation()
     if BUILD_MODE=='reference':
         from reference_workspace import setup_references,require_reference_review
         path=Path(REFERENCE_CONFIG).resolve()
@@ -158,6 +160,15 @@ def _load_plan():
     return plan
 
 
+def _preparation():
+    from reference_preparation import require_preparation
+    images=[]
+    if REFERENCE_CONFIG:
+        path=Path(REFERENCE_CONFIG).resolve()
+        images=[path.parent/item['image'] for item in json.loads(path.read_text())['views'].values()]
+    return require_preparation(REFERENCE_PREPARATION,TASK_ID,mode=BUILD_MODE,construction_images=images)
+
+
 def _activate_scene(create=False):
     from production_workspace import task_scene
     name=SCENE_NAME or ('MODEL_'+TASK_ID if SCENE_MODE=='create' else None)
@@ -171,7 +182,7 @@ def build_inputs():
     from stage_guard import file_input
     from blockout_gate import select_modules
     plan=_load_plan()
-    result={'task_id':TASK_ID,'mode':BUILD_MODE,'scene_mode':SCENE_MODE,'scene_name':SCENE_NAME,'waiver':WAIVER_REASON,'plan_context':{k:v for k,v in plan.items() if k!='modules'},
+    result={'task_id':TASK_ID,'mode':BUILD_MODE,'reference_preparation':_preparation(),'scene_mode':SCENE_MODE,'scene_name':SCENE_NAME,'waiver':WAIVER_REASON,'plan_context':{k:v for k,v in plan.items() if k!='modules'},
             'modules':select_modules(plan,MODELING_SCOPE),'recipe':file_input(__file__),
             'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],'parameters':BLOCKOUT_PARAMETERS}
     if BUILD_MODE=='reference':

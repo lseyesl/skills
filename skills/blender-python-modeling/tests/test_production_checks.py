@@ -68,6 +68,12 @@ class ProductionChecks(unittest.TestCase):
             ('可用资产验收','inspect','blender.acceptance.usable-asset')]:
             with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
 
+    def test_reference_preparation_and_source_fidelity_routes(self):
+        entries=load_catalog(ROOT.parent)
+        for query,expected in [('参考准备','blender.reference-preparation'),('原图对照','concept.source-fidelity'),('Blender MCP安装','blender.mcp-workflow')]:
+            with self.subTest(query=query):
+                self.assertEqual(search(entries,query,'inspect')[0]['id'],expected)
+
     def test_fitter_task_budget_validation(self):
         import copy
         from reference_fit.config import validate

@@ -1,5 +1,7 @@
 # Prompt Recipes
 
+For photograph-to-model reconstruction, use faithful reconstruction intent rather than default design exploration. Supply the actual source image, preserve its critical observed features and mark hidden regions inferred. Replace broad "preserve style" language with explicit source shape/count/attachment constraints. "No branding" below means no invented branding: preserve source-visible identity marks when required, and leave unreadable marks unknown. Apply [source-fidelity review](source-fidelity.md) before cross-view approval or line art.
+
 Use the `stylized-concept` image-generation category unless the source clearly requires product rendering, scientific illustration, or another established category. Keep prompts compact enough that invariants remain prominent.
 
 ## Pass 1A: symmetric five-view renders

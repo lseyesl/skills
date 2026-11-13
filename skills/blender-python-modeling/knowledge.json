@@ -683,7 +683,11 @@
       "subjects": [],
       "aliases": [
         "Local Blender MCP Workflow",
-        "mcp workflow"
+        "mcp workflow",
+        "Blender MCP安装",
+        "缺少MCP",
+        "mcp-for-blender setup",
+        "安装插件"
       ],
       "applies_when": [
         "Read this guide when its documented task and prerequisites match the observed asset."
@@ -1859,6 +1863,37 @@
       "tool_dependencies": [
         "scripts/asset_delivery.py",
         "scripts/isolated_delivery.py"
+      ]
+    },
+    {
+      "id": "blender.reference-preparation",
+      "title": "建模前参考路线选择与证据门禁",
+      "entry": "references/reference-preparation.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "跳过多视图",
+        "参考准备",
+        "reference preparation",
+        "concept-multiview-sheet"
+      ],
+      "applies_when": [
+        "照片/已有设计转模型，需要选择或验收建模参考"
+      ],
+      "exclude_when": [
+        "不构成隐藏几何的实测证明"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/reference_preparation.py"
       ]
     }
   ],

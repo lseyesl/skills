@@ -17,6 +17,8 @@ plan={'schema_version':1,'task_id':m.TASK_ID,'intended_use':'synthetic static as
  {'id':'body','method':'box','reason':'continuous low-resolution control cage','world_dimensions':[3,1,1],'dimension_tolerance':0.00001,'objects':['CoarseBody'],'depends_on':[],'checks':[{'id':'shape','kind':'visual','criterion':'inspect proportion and silhouette'}]},
  {'id':'accessory','method':'primitives','reason':'independent part','objects':['Accessory'],'depends_on':[],'checks':[{'id':'shape','kind':'visual','criterion':'inspect shape'}]}]}
 m.MODELING_PLAN.write_text(json.dumps(plan))
+m.REFERENCE_PREPARATION=out/'reference-preparation.json'
+m.REFERENCE_PREPARATION.write_text(json.dumps({'schema_version':1,'task_id':m.TASK_ID,'purpose':'synthetic original geometry','route':'no_reference','reason':'Original test cube, no input images','source_images':[],'construction_images':[]}))
 bpy.ops.mesh.primitive_cube_add(size=0.2,location=(-3,0,0));protected=bpy.context.object;protected.name='Protected'
 checks={}
 def rejects(name,fn):

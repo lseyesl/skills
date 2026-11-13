@@ -1,5 +1,7 @@
 # AI Reference Image Analysis
 
+Before construction, record the [reference preparation route](reference-preparation.md). A single photograph does not silently bypass concept-multiview-sheet. Source fidelity and cross-view consistency require separate evidence.
+
 Use reference images as evidence for a parametric model, not as proof of hidden geometry or real dimensions. AI-generated views frequently contain inconsistent proportions, topology, perspective, and details.
 
 When only one design view exists and the user first needs inferred modeling artwork, use `concept-multiview-sheet` to create five symmetric or six asymmetric views. Treat its output as a design hypothesis: retain its observed/inferred/unknown ledger and run the consistency checks below before blockout.

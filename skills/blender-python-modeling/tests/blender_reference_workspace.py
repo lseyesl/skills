@@ -124,6 +124,11 @@ def main():
         module.CALIBRATION_REVIEW = review_path
         module.MODELING_PLAN = root / 'modeling-plan.json'
         module.MODELING_SCOPE = ['body']
+        source_ref={'path':'reference.png','sha256':hashlib.sha256((root/'reference.png').read_bytes()).hexdigest()}
+        existing_path=root/'existing-reference-review.json'
+        existing_path.write_text(json.dumps({'status':'passed','finding':'Synthetic calibrated image fixture only; not visual reconstruction evidence','construction_images':[source_ref]}))
+        module.REFERENCE_PREPARATION=root/'reference-preparation.json'
+        module.REFERENCE_PREPARATION.write_text(json.dumps({'schema_version':1,'task_id':task,'purpose':'synthetic calibration regression','route':'existing_reviewed','reason':'Known calibration test, no inferred missing identity','facts':{'projection':'orthographic','needs_hidden_shape':False,'needs_pose_normalization':False},'source_images':[source_ref],'construction_images':[source_ref],'existing_review':{'path':existing_path.name,'sha256':hashlib.sha256(existing_path.read_bytes()).hexdigest()}}))
         module.MODELING_PLAN.write_text(json.dumps({'schema_version':1,'task_id':task,'modules':[{'id':'body','method':'box','reason':'reference anchor teaching cage','objects':['GEO_'+task+'_body'],'checks':[{'id':'shape','kind':'visual','criterion':'synthetic fixture only'}]}]}))
         module.BUILD_RECEIPT = root / 'build-state.json'
         rejects('missing inferred depth before deleting geometry', module.main)

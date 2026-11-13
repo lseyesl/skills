@@ -90,3 +90,5 @@ Blender Skill 增加生成/扫描网格恢复、属性迁移、关节修正、�
 轻量检查不安装外部工具。`python tools/check.py --group blender --blender <executable>` 包含制作技术样例；显式提供 Node.js 和 gltf-validator 后，可用 `python tools/check.py --group gltf --blender <executable> --validator-module <installed-module-path>` 运行真实导出/规范验证及正反例。工具技术通过与生产级视觉/消费者验收分别记录。
 
 Blender 复杂建模现使用分模块建模计划和基础形体验收；正式模板默认不生成 Cube，教学 Cube 示例单独保存。细化依赖与当前粗模/计划/证据匹配的作用域回执；已有资产和局部修改可以复用。详见 [基础形体流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)。
+
+图片转模型先记录 [参考准备路线](skills/blender-python-modeling/references/reference-preparation.md)，并分别验证 [原图忠实度](skills/concept-multiview-sheet/references/source-fidelity.md) 与跨视图一致性。仅记录 Skill 名称或生成成功不能放行建模。

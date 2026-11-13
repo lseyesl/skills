@@ -56,5 +56,10 @@
     "maximum_attempts": null,
     "maximum_seconds": null
   },
-  "repair_attempts": []
+  "repair_attempts": [],
+  "reference_preparation": {
+    "decision_path": null,
+    "source_fidelity_review_path": null,
+    "multiview_review_path": null
+  }
 }

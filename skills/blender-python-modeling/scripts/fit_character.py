@@ -15,6 +15,8 @@ def main():
     parser.add_argument('--config',type=Path,required=True);parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--blender',default='/Applications/Blender.app/Contents/MacOS/Blender')
     parser.add_argument('--source',type=Path);parser.add_argument('--iterations',type=int);parser.add_argument('--rig-test',action='store_true');parser.add_argument('--timeout',type=int,default=600)
+    parser.add_argument('--reference-preparation',type=Path,help='Reviewed route decision for new reference-driven construction')
+    parser.add_argument('--diagnostic-only',action='store_true',help='Explicit laboratory/blocked-reference investigation, never accepted construction')
     args=parser.parse_args();c,base=load(args.config)
     # Resolve only data paths, preserving the caller's independent character source.
     for key in ['image','annotation']:
@@ -22,6 +24,11 @@ def main():
         if not p.is_file():raise FileNotFoundError(p)
         c['reference'][key]=str(p)
     for item in c['reference'].get('views',{}).values():item['image']=str((base/item['image']).resolve())
+    if args.command in ['build','optimize'] and not args.source:
+        from reference_preparation import require_preparation
+        guides=[item['image'] for item in c['reference'].get('views',{}).values()] or [c['reference']['image']]
+        require_preparation(args.reference_preparation,c['character_id'],mode='reference',construction_images=guides,allow_diagnostic=args.diagnostic_only)
+    if args.diagnostic_only and args.reference_preparation is None:parser.error('Diagnostic-only still needs an explicit diagnostic route and source hashes')
     if args.iterations is not None:c['validation']['max_iterations']=args.iterations;validate(c)
     out=args.output.resolve()
     if args.command not in ['evaluate'] and out.exists() and any(out.iterdir()):raise FileExistsError('Choose empty output directory: '+str(out))
@@ -39,6 +46,8 @@ def main():
         if quick:cmd+=['--quick']
         if render_only:cmd+=['--render-only']
         if args.rig_test:cmd+=['--rig-test']
+        if args.reference_preparation:cmd+=['--reference-preparation',str(args.reference_preparation.resolve())]
+        if args.diagnostic_only:cmd+=['--diagnostic-only']
         run_logged(cmd,folder/'blender.log',args.timeout)
         if not (folder/'worker-result.json').is_file():raise RuntimeError('Blender produced no completion record')
         return json.loads((folder/'structure.json').read_text())

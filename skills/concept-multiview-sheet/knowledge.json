@@ -156,6 +156,35 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "concept.source-fidelity",
+      "title": "原图忠实度独立验收",
+      "entry": "references/source-fidelity.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "忠实还原",
+        "原图对照",
+        "source fidelity",
+        "正视图 A"
+      ],
+      "applies_when": [
+        "照片/已有设计转模型，需要选择或验收建模参考"
+      ],
+      "exclude_when": [
+        "不构成隐藏几何的实测证明"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": []
     }
   ],
   "excluded_paths": {}

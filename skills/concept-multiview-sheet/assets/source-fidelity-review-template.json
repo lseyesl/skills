@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "pending",
+  "scope": "replace with the actual source-visible identity/regions inspected; hidden dimensions are not measured",
+  "reviewer": null,
+  "source_images": [{"path": "source.png", "sha256": null}],
+  "generated_images": [{"path": "render-only-sheet.png", "sha256": null}],
+  "invariants": [
+    {
+      "id": "replace-with-observed-critical-feature",
+      "evidence_type": "observed",
+      "critical": true,
+      "status": "unknown",
+      "source_region": "replace with original image/region",
+      "generated_region": "replace with generated panel/region at a comparable orientation",
+      "finding": "",
+      "evidence": [{"path": "render-only-sheet.png", "sha256": null}]
+    }
+  ],
+  "inferred_hidden_regions": [],
+  "unresolved_issues": ["Not yet reviewed against the original source"],
+  "construction_readiness": "pending; source fidelity and cross-view consistency are separate"
+}

@@ -113,6 +113,7 @@ def main():
         'tests/test_knowledge_evidence.py',
         'skills/blender-python-modeling/tests/test_production_checks.py',
         'skills/blender-python-modeling/tests/test_blockout_gate.py',
+        'skills/blender-python-modeling/tests/test_reference_preparation.py',
         'skills/ancient-tales-pipeline/tests/test_runtime.py',
         'tests/test_library_checks.py',
         'skills/ancient-tales-production/tests/test_contract.py',

@@ -2,6 +2,41 @@
 
 This skill targets the installed `ahujasid/mcp-for-blender` tool namespace. Tool availability is runtime-dependent; use only tools actually exposed in the current session.
 
+## Missing MCP: install the upstream integration, then verify
+
+Use the official [ahujasid/mcp-for-blender repository](https://github.com/ahujasid/mcp-for-blender). The current package is `mcp-for-blender` (formerly `blender-mcp`); an older working installation does not need renaming merely for this task. Check the installed client/server/add-on before adding another copy. Installation is two parts: a stdio MCP server in the AI client, and the matching socket add-on inside Blender. Installing only one does not establish a connection.
+
+When this task calls for installation, follow upstream setup instead of silently falling back to code-only work. With existing official `uv`:
+
+```bash
+uvx mcp-for-blender setup
+```
+
+This discovers clients, offers configuration, installs/enables the add-on and preserves existing client entries with backups. Review the actual detected targets; avoid configuring unrelated clients. If uv is missing, install it by the [official uv instructions](https://docs.astral.sh/uv/getting-started/installation/) for the host OS first. Do not blindly execute a downloaded shell installer.
+
+For a manual Codex setup:
+
+```bash
+codex mcp add blender -- uvx mcp-for-blender
+uvx mcp-for-blender install-addon
+```
+
+For clients using JSON MCP configuration, merge this entry into existing settings rather than replacing them:
+
+```json
+{"mcpServers":{"blender":{"command":"uvx","args":["mcp-for-blender"]}}}
+```
+
+Enable **Interface: MCP for Blender** in Blender Preferences → Add-ons, then launch Blender in normal UI mode. The add-on auto-starts its socket server by default; inspect the 3D viewport sidebar **MCP for Blender** tab and use **Start MCP Server** if needed. Match host/port (default localhost:9876); keep the connection local unless remote access was explicitly requested. MCP clients may need a full restart to discover newly registered tools. Do not start competing client/server instances on the same bridge.
+
+In a restricted or managed workspace, use a task-local environment and the supported `install-addon --addons-dir /absolute/path/scripts/addons` override instead of overwriting inaccessible global settings. Blender must actually use that scripts directory (`BLENDER_USER_SCRIPTS`) and a writable task config (`BLENDER_USER_CONFIG`); a copied file in an arbitrary directory is not an enabled add-on. Point the client command at the installed executable using an absolute path when its PATH differs. Pin the version/commit used in the task's installation record. New settings in a read-only or dynamically managed client may not appear in the active conversation: report that distinction. A task-owned client using the official MCP SDK and the actual upstream stdio server may verify and execute the same tools immediately; this is not a claim that the conversation's tool registry was hot-reloaded.
+
+After installation, call the actual upstream `get_addon_status`, then `get_scene_info`, preserving the user's verbatim instruction in `user_prompt`. Reject returned error text even when isError=false. Confirm server/add-on protocol compatibility and actual Blender version, then execute a tiny read-only probe and inspect a viewport image before returning to the saved modeling stage. Current upstream 2.2.9 exposes visual inspection as `look`; older tool sets may expose `get_viewport_screenshot`. Discover tool names/signatures instead of inventing aliases. Preserve the script and stage evidence, then continue the original task; installation success alone is not task completion.
+
+If a source-checkout build reports `No module named blender_mcp.config` during status checks, do not certify the connection from scene access alone. The checked 2026-11-13 upstream checkout omitted that module; installing the official PyPI 2.2.9 release resolved the actual failure. Prefer the published release for normal installation and record the version used.
+
+For upgrades, use the matching add-on from the chosen server version, disable/re-enable it or restart Blender, and re-run the handshake. Never restart a Blender containing unsaved user work to troubleshoot a bridge. Connection failures after installation follow the bounded recovery below; headless CLI is not an MCP auto-start recovery method.
+
 ## Required order
 
 1. `mcp__blender__get_addon_status` — confirm the add-on connection, server/add-on compatibility, and `blender_version`.

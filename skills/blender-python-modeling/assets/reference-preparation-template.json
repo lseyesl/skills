@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_id": "replace-me",
+  "purpose": "replace with intended modeling use",
+  "route": "generated",
+  "reason": "replace with diagnosis of why generated views, existing views, or a sufficient single view are appropriate",
+  "facts": {"projection": "unknown", "needs_hidden_shape": true, "needs_pose_normalization": false},
+  "selected_skill": "concept-multiview-sheet",
+  "source_images": [{"path": "reference/source.png", "sha256": null}],
+  "construction_images": [{"path": "reference/front.png", "sha256": null}, {"path": "reference/right.png", "sha256": null}],
+  "generation_record": {"path": "reference/generation-record.json", "sha256": null},
+  "source_fidelity_review": {"path": "reference/source-fidelity-review.json", "sha256": null}
+}

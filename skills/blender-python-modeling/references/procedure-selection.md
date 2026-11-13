@@ -1,5 +1,7 @@
 # 方案选择与执行
 
+图片驱动新建先走 [参考路线决策](reference-preparation.md)，再选几何方法。缺少合适规范视图时实际调用 concept-multiview-sheet，不以照片作为 appearance-only、旧参数配方或 optional 安装标签跳过。生成图分别验证原图忠实度和跨视图一致性；未就绪范围不得细化。
+
 用 [知识索引](../knowledge.json) 或本 Skill scripts/knowledge_catalog.py 按任务、对象与症状查询；检索结果是候选，不是操作授权。读取正文，核对 applies_when/exclude_when 和 required_facts；有冲突排除，无证据先诊断。无对应方法时明确缺口，先做可回滚局部实验，禁止声称已验证通用方法。
 
 手部新建用 hand-construction；已有手形变异常用 hand-deformation；车轮新建用 wheel-construction；偏心、摆动、滚动关系用 wheel-motion；绑定/权重/骨骼导出用 rigging-and-skinning。风格选择继续使用 blender-styles，不能用风格规范替代结构方案。

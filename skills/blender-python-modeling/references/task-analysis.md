@@ -9,3 +9,5 @@ observations 是实际工具/截图/测量事实；hypotheses 是可证伪假设
 已有兼容资产的局部修改无需重新生成设计图。新参考驱动角色仍遵守中立姿态与参考审阅前置条件。缺失信息只阻塞依赖它的操作。
 
 复杂新建或重大形体修改增加 modeling_plan 路径、scope 和 review_receipt；分模块选择表示方法并说明理由。复用已有资产记录来源快照与复用依据；局部修复不强制重建。模块台账仍管完成度，建模计划管方法与前置检查，不相互复制状态。
+
+scene 记录 create/edit、明确场景和角色集合；runtime_preflight 保存实际探针记录和有效降噪设置。delivery_contract 记录静态/旋转/蒙皮模式、对象白名单、预算、帧、clip 和世界单位容差。repair_budget 在尝试前声明次数/时间；repair_attempts 逐项保存快照、观察、假设、修改、测量、视图和剩余问题，不覆盖失败。

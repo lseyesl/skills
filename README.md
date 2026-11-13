@@ -79,6 +79,8 @@ python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json
 
 现有活动参考资料已经逐项索引；检索采用紧凑知识卡片 BM25，并区分混合意图与不支持请求。收益比较需绑定运行前声明的目标、成本上限和保护项。真实 Agent 执行器、独立评分校准、内容绑定验证回执及当前鉴权阻塞见 [P0 执行记录](docs/p0-execution.md)。知识审阅与过期机制见 [知识验证规则](docs/knowledge-review.md)。
 
+Blender 新建模型从任务空场景开始；[生产工作区](skills/blender-python-modeling/references/production-workspace.md) 提供实际渲染预检与隔离 GLB 交付，避免默认对象和导出求值差异。容器连接、持久绑定和 [可用资产验收](skills/blender-python-modeling/references/acceptance/usable-asset.md) 继续归入现有 Skill；实机机制测试不等于图片还原或完整角色已通过。
+
 `python tools/knowledge_audit.py` 检查已有验证声明；`python tools/check.py --group isolation` 显式检查 Linux 评测隔离。轻量流水线覆盖 main/work 分支及定期回归；Blender 双版本工作流需要配置带 blender 标签的专用 runner，实际未运行的版本不视为兼容性认证。
 
 ## Blender 制作处理流程

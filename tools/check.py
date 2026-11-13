@@ -104,6 +104,7 @@ def main():
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_production_checks.py'), '--', str(temp / 'blender-production')], cwd=ROOT, env=env, check=True)
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_blockout_pipeline.py'), '--', str(temp / 'blender-blockout')], cwd=ROOT, env=env, check=True)
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_reference_workspace.py')], cwd=ROOT, env=env, check=True)
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_asset_delivery.py'), '--', str(temp / 'blender-delivery')], cwd=ROOT, env=env, check=True)
         return
     suites = [
         'tests/test_knowledge_evals.py',

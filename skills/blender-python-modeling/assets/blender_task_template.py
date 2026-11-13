@@ -13,6 +13,8 @@ OWNER_KEY='codex_task_id'
 MODULE_KEY='codex_module_id'
 PHASE_KEY='codex_build_phase'
 BUILD_MODE=None  # reference, original, waived
+SCENE_MODE='create'  # create: owned empty scene; edit: explicitly named existing scene
+SCENE_NAME=None  # defaults to MODEL_<TASK_ID> only for create
 WAIVER_REASON=''
 EXECUTION_STAGE=None  # blockout, review, refine
 REFERENCE_HELPER_DIR=None  # installed Skill scripts directory, required for gates
@@ -49,8 +51,9 @@ def remove_previous_generated_data(module_ids,phase):
     """Project builders may call this after prerequisites, only for their own scope."""
     if phase not in {'blockout','refine'} or not module_ids:raise ValueError('Explicit phase/module scope required')
     outside={name for module in _load_plan()['modules'] if module['id'] not in module_ids for name in module['objects']}
-    candidates=[obj for obj in bpy.data.objects if obj.get(OWNER_KEY)==TASK_ID and obj.get(MODULE_KEY) in module_ids and obj.get(PHASE_KEY)==phase]
+    candidates=[obj for obj in bpy.context.scene.objects if obj.get(OWNER_KEY)==TASK_ID and obj.get(MODULE_KEY) in module_ids and obj.get(PHASE_KEY)==phase]
     if any(obj.name in outside for obj in candidates):raise RuntimeError('Scoped deletion would remove a shared module object; edit the region or derive a copy')
+    if any(any(scene is not bpy.context.scene for scene in obj.users_scene) for obj in candidates):raise RuntimeError('Scoped deletion would affect another scene')
     for obj in candidates:bpy.data.objects.remove(obj,do_unlink=True)
     for mesh in list(bpy.data.meshes):
         if mesh.users==0 and mesh.get(OWNER_KEY)==TASK_ID and mesh.get(MODULE_KEY) in module_ids and mesh.get(PHASE_KEY)==phase:bpy.data.meshes.remove(mesh)
@@ -60,7 +63,7 @@ def _objects(modules):
     result=[]
     for module in modules:
         for name in module['objects']:
-            obj=bpy.data.objects.get(name)
+            obj=bpy.context.scene.objects.get(name)
             if obj is None:raise RuntimeError('Missing bound blockout object: '+name)
             if obj not in result:result.append(obj)
     return result
@@ -101,7 +104,7 @@ def _state(modules):
 def _dependencies(plan):
     from stage_guard import file_input
     result={'parameters':BLOCKOUT_PARAMETERS,'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],
-            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py')]}
+            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py','production_workspace.py')]}
     for module in plan['modules']:
         if module['id'] in _dependency_scope(plan) and module['method']=='reuse':
             result.setdefault('reuse_sources',[]).append(file_input(Path(MODELING_PLAN).resolve().parent/module['source_snapshot']))
@@ -130,6 +133,7 @@ def _prepare_reference():
 
 def build_task(plan):
     if getattr(build_blockout,'placeholder',False):raise NotImplementedError('Replace build_blockout before any scene mutation')
+    _activate_scene(create=True)
     _prepare_reference()
     objects=build_blockout(plan,MODELING_SCOPE);bpy.context.view_layer.update()
     return validate_blockout(objects,plan,MODELING_SCOPE)
@@ -154,11 +158,20 @@ def _load_plan():
     return plan
 
 
+def _activate_scene(create=False):
+    from production_workspace import task_scene
+    name=SCENE_NAME or ('MODEL_'+TASK_ID if SCENE_MODE=='create' else None)
+    if not name:raise ValueError('Edit mode requires SCENE_NAME')
+    existing=bpy.data.scenes.get(name)
+    if not create and existing is None:raise RuntimeError('Build/reuse the project scene before review/refinement')
+    return task_scene(TASK_ID,mode=SCENE_MODE,name=name,existing=existing)
+
+
 def build_inputs():
     from stage_guard import file_input
     from blockout_gate import select_modules
     plan=_load_plan()
-    result={'task_id':TASK_ID,'mode':BUILD_MODE,'waiver':WAIVER_REASON,'plan_context':{k:v for k,v in plan.items() if k!='modules'},
+    result={'task_id':TASK_ID,'mode':BUILD_MODE,'scene_mode':SCENE_MODE,'scene_name':SCENE_NAME,'waiver':WAIVER_REASON,'plan_context':{k:v for k,v in plan.items() if k!='modules'},
             'modules':select_modules(plan,MODELING_SCOPE),'recipe':file_input(__file__),
             'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],'parameters':BLOCKOUT_PARAMETERS}
     if BUILD_MODE=='reference':
@@ -192,10 +205,12 @@ def main():
                          lambda:build_task(_load_plan()),lambda result:bool(result['objects']))
     elif EXECUTION_STAGE=='review':
         if not BLOCKOUT_RECEIPT or not BLOCKOUT_REVIEW:raise RuntimeError('Inspection evidence and review receipt required')
+        _activate_scene()
         result=record_blockout_review(BLOCKOUT_RECEIPT,_load_plan,MODELING_SCOPE,BLOCKOUT_REVIEW,_state,lambda:_dependencies(_load_plan()))
         result.update(ready_to_refine=True,ready_to_claim_complete=False)
     elif EXECUTION_STAGE=='refine':
         if not REFINEMENT_RECEIPT or not BLOCKOUT_RECEIPT or not BLOCKOUT_REVIEW:raise RuntimeError('Refinement and prerequisite review paths required')
+        _activate_scene()
         result=run_stage(REFINEMENT_RECEIPT,'refine',refinement_inputs,REFINEMENT_OUTPUTS,
                          lambda:refine_task(_load_plan()),lambda result:bool(result['objects']))
     else:raise RuntimeError('Choose blockout, review or refine explicitly')

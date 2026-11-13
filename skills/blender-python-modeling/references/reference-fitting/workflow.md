@@ -25,6 +25,8 @@ uv run --project skills/blender-python-modeling python \
 
 `build` creates one model/render/measurement; `render --source accepted.blend` validates matching geometry/material config and refreshes reference calibration plus render outputs without rebuilding geometry; `evaluate` remeasures an existing render directory; `baseline --source existing.blend` applies the example's configurable legacy object-to-label mapping in a disposable process. `optimize --source accepted/scene.blend --config accepted/config.json` resumes an existing owned configuration, requiring shape/material identity. Baseline/source files are never overwritten. Every run retains its Blender log and a worker timeout (default 600 seconds). Existing output directories are rejected instead of overwriting review evidence.
 
+Creation now uses a task-owned empty scene; its startup Cube/Camera/Light are absent. Rendering performs a real small CPU preflight before setting comparison appearance. Unavailable denoising is explicitly recorded and disabled consistently for beauty/clay, while unrelated failures remain errors. `render-record.json` retains the decision. This is still a **static fitter**: `--rig-test` is disposable and `worker-result.json` explicitly does not certify a production rig or final delivery. Declare `validation.max_triangles` when the task has a realtime budget; evaluated totals are reported and over-budget geometry fails structure. Persistent binding follows the existing [rigging procedure](../procedures/characters/rigging-and-skinning.md).
+
 See [architecture.md](architecture.md) for the audited reuse decisions and module boundaries. This is an additive system; no old API migration is required.
 
 ## Phase 0: freeze evidence

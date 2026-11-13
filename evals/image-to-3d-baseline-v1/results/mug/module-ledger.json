@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "task_id": "mug",
+  "target_stage": "final",
+  "modules": [
+    {
+      "id": "module-1",
+      "name": "tapered hollow cup and rolled lip",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "primary",
+      "required": true,
+      "expected_instances": 1,
+      "implemented_instances": 1,
+      "signature_features": [
+        "tapered hollow cup and rolled lip"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "cup_body",
+        "handle_D",
+        "spoon_stem",
+        "spoon_bowl"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Open lip, handle hole and separate spoon exist. Handle join and axial bottom fail; rolled lip and bowl concavity are not close enough for final. Aggregate assembly entry, not a declaration that each signature is matched."
+    },
+    {
+      "id": "module-2",
+      "name": "D-shaped attached handle and open hole",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "primary",
+      "required": true,
+      "expected_instances": 1,
+      "implemented_instances": 1,
+      "signature_features": [
+        "D-shaped attached handle and open hole"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "cup_body",
+        "handle_D",
+        "spoon_stem",
+        "spoon_bowl"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Open lip, handle hole and separate spoon exist. Handle join and axial bottom fail; rolled lip and bowl concavity are not close enough for final. Aggregate assembly entry, not a declaration that each signature is matched."
+    },
+    {
+      "id": "module-3",
+      "name": "spoon stem and concave bowl",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "secondary",
+      "required": true,
+      "expected_instances": 1,
+      "implemented_instances": 1,
+      "signature_features": [
+        "spoon stem and concave bowl"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "cup_body",
+        "handle_D",
+        "spoon_stem",
+        "spoon_bowl"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Open lip, handle hole and separate spoon exist. Handle join and axial bottom fail; rolled lip and bowl concavity are not close enough for final. Aggregate assembly entry, not a declaration that each signature is matched."
+    }
+  ],
+  "final_review": {
+    "status": "failed",
+    "structural_report": "technical.json",
+    "contact_sheet": "../report.html",
+    "perspective_view": "three-quarter.png",
+    "unresolved_issues": [
+      "Independent ray test misses center floor; lower handle center-to-wall distance .07429 exceeds tube radius .052.",
+      "Unexpected Cube exported. Bounds max error=1.010000; source triangles=876, imported=888. Not asset-only or equivalent geometry.",
+      "Open lip, handle hole and separate spoon exist. Handle join and axial bottom fail; rolled lip and bowl concavity are not close enough for final."
+    ]
+  }
+}

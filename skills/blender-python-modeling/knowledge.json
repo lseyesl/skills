@@ -228,7 +228,10 @@
       "conditions": {},
       "status": "experimental",
       "tool_dependencies": [
-        "scripts/domain_checks.py"
+        "scripts/domain_checks.py",
+        "scripts/character_rig.py",
+        "scripts/asset_delivery.py",
+        "scripts/isolated_delivery.py"
       ]
     },
     {
@@ -340,7 +343,10 @@
       "conditions": {},
       "status": "experimental",
       "tool_dependencies": [
-        "scripts/domain_checks.py"
+        "scripts/domain_checks.py",
+        "scripts/character_rig.py",
+        "scripts/asset_delivery.py",
+        "scripts/isolated_delivery.py"
       ]
     },
     {
@@ -522,7 +528,11 @@
       "requires": [],
       "verification": [],
       "conditions": {},
-      "status": "experimental"
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/asset_delivery.py",
+        "scripts/isolated_delivery.py"
+      ]
     },
     {
       "id": "blender.fidelity-and-completion",
@@ -994,7 +1004,10 @@
       "requires": [],
       "verification": [],
       "conditions": {},
-      "status": "experimental"
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_workspace.py"
+      ]
     },
     {
       "id": "blender.scene-lighting-rendering",
@@ -1689,7 +1702,9 @@
       "tool_dependencies": [
         "scripts/blockout_gate.py",
         "scripts/stage_guard.py",
-        "assets/blender_task_template.py"
+        "assets/blender_task_template.py",
+        "scripts/production_workspace.py",
+        "scripts/construction_checks.py"
       ]
     },
     {
@@ -1721,7 +1736,129 @@
       "conditions": {},
       "status": "experimental",
       "tool_dependencies": [
-        "scripts/blockout_gate.py"
+        "scripts/blockout_gate.py",
+        "scripts/construction_checks.py"
+      ]
+    },
+    {
+      "id": "blender.production-workspace",
+      "title": "新建空场景、渲染预检与隔离交付",
+      "entry": "references/production-workspace.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "inspect",
+        "export",
+        "repair"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "新建空场景",
+        "默认 Cube 混入",
+        "降噪器不可用",
+        "isolated asset export"
+      ],
+      "applies_when": [
+        "现场任务与正文用途及适配器边界一致"
+      ],
+      "exclude_when": [
+        "未知平台、未检查外观或未支持材质/动画不得声明完整交付"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [
+        "blender.python-modeling"
+      ],
+      "verification": [
+        "blender.acceptance.usable-asset"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_workspace.py",
+        "scripts/asset_delivery.py",
+        "scripts/isolated_delivery.py"
+      ]
+    },
+    {
+      "id": "blender.containers-and-connections",
+      "title": "容器底面与部件连接诊断修复",
+      "entry": "references/procedures/modeling/containers-and-connections.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "inspect"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "杯底漏孔",
+        "把手浮空",
+        "辐条断开",
+        "连接拓扑",
+        "hollow container"
+      ],
+      "applies_when": [
+        "现场任务与正文用途及适配器边界一致"
+      ],
+      "exclude_when": [
+        "未知平台、未检查外观或未支持材质/动画不得声明完整交付"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [
+        "blender.blockout-and-refinement"
+      ],
+      "verification": [
+        "blender.acceptance.blockout",
+        "blender.acceptance.usable-asset"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/construction_checks.py",
+        "scripts/production_checks.py"
+      ]
+    },
+    {
+      "id": "blender.acceptance.usable-asset",
+      "title": "图片模型的用途与交付分级验收",
+      "entry": "references/acceptance/usable-asset.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect",
+        "export"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "可用资产验收",
+        "usable asset acceptance",
+        "动画交付门槛"
+      ],
+      "applies_when": [
+        "现场任务与正文用途及适配器边界一致"
+      ],
+      "exclude_when": [
+        "未知平台、未检查外观或未支持材质/动画不得声明完整交付"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/asset_delivery.py",
+        "scripts/isolated_delivery.py"
       ]
     }
   ],

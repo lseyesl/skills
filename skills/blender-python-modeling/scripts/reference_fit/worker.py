@@ -6,6 +6,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from reference_fit.config import load,digest,check_runtime
 from reference_fit.blender_builder import build,fingerprints,OWNER
 from reference_fit.blender_validation import workspace,setup,render_channels,structure,rig_probe
+from production_workspace import task_scene
 
 
 def main():
@@ -40,7 +41,7 @@ def main():
             if any(before[k]!=after[k] for k in unchanged):raise RuntimeError('Unrelated/locked geometry or material changed')
     else:
         # Create a separate scene; leave factory/user scene datablocks intact.
-        scene=bpy.data.scenes.new('Fit_'+owner);bpy.context.window.scene=scene
+        scene=task_scene(owner,name='Fit_'+owner)
         workspace(scene,c,base) # mandatory reference workspace precedes geometry
         bpy.ops.wm.save_as_mainfile(filepath=str(folder/'reference-workspace.blend'))
         scene,affected=build(c,scene)
@@ -61,7 +62,9 @@ def main():
     # Saved file contains original materials and fixed setup, not temporary mask shaders.
     bpy.ops.wm.save_as_mainfile(filepath=str(folder/'scene.blend'))
     render_channels(scene,c,folder,quick=args.quick)
-    (folder/'worker-result.json').write_text(json.dumps({'ok':qa['ok'],'structure':'structure.json','scene':'scene.blend'}))
+    (folder/'worker-result.json').write_text(json.dumps({'ok':qa['ok'],'structure':'structure.json','scene':'scene.blend',
+        'delivery_scope':'static fitting only; disposable rig probes are not production skinning or animation delivery',
+        'ready_to_claim_complete':False,'production_rig_verified':False}))
     print('REFERENCE_FIT_WORKER_DONE',str(folder),flush=True)
 
 if __name__=='__main__':main()

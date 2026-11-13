@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "task_id": "mug",
+  "intended_use": "static prop",
+  "modules": [
+    {
+      "id": "mug",
+      "method": "surface",
+      "reason": "Low-resolution revolution profiles and curves preserve cavity and radial structures; hidden depth inferred from mechanics",
+      "objects": [
+        "cup_body",
+        "handle_D",
+        "spoon_stem",
+        "spoon_bowl"
+      ],
+      "checks": [
+        {
+          "id": "shape",
+          "kind": "visual",
+          "criterion": "Coarse profile, negative space and count support refinement; not final likeness"
+        }
+      ]
+    }
+  ]
+}

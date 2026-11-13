@@ -1,0 +1,10 @@
+{
+  "source": "repository clay-girl-fit regression fixture",
+  "files": {
+    "front.png": "54ec12e535de622429353558e522faa04c91c9e689c480ef1595cfcdcf721df8",
+    "left.png": "f89f836c22c47938c23a92ee1a44062ecc1dabb536332b5ad21e221f9f5f7e1d"
+  },
+  "novelty": "seen regression; existing recipe and annotations reused, not generalization evidence",
+  "projection": "front controls; side inconsistent, only depth guidance",
+  "rig_requirement": "persistent usable armature and deformed poses/export animation required; disposable rig probe is insufficient"
+}

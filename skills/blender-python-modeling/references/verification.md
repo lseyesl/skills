@@ -2,6 +2,8 @@
 
 Select checks proportional to the deliverable. Structural success alone is insufficient for a visual scene, and a good screenshot alone is insufficient for an exportable model.
 
+New creation starts in an owned empty task scene with no startup objects. Verify the saved file opens in that scene without a verifier selecting it on the user's behalf. Before render comparisons, execute and record the [render preflight](production-workspace.md). Before final claims, apply [use-specific acceptance](acceptance/usable-asset.md); a static fitter or disposable rig test cannot certify an animation asset.
+
 ## Structural checks
 
 - Expected collection, object, material, camera, light, armature, action, and node-group names exist.

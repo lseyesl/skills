@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "task_id": "wheel",
+  "status": "failed",
+  "reviewer": "current-session-Agent-self-review",
+  "inspection_signature": "8025c8e3aae1745410c652df035233ddab8b4ad311d7dad08f2a86efafe33620",
+  "modules": {
+    "wheel": {
+      "unresolved_issues": [
+        "Inspected blockout.png: ten branches are present but radial spoke roots start at r=.20 whereas the center cap ends at r=.155, leaving a disconnected radial gap. The photo has continuous cast-metal joins. Required assembly continuity fails."
+      ],
+      "checks": {
+        "shape": {
+          "status": "failed",
+          "finding": "Inspected blockout.png: ten branches are present but radial spoke roots start at r=.20 whereas the center cap ends at r=.155, leaving a disconnected radial gap. The photo has continuous cast-metal joins. Required assembly continuity fails.",
+          "view": "three-quarter",
+          "evidence": [
+            {
+              "path": "blockout.png",
+              "sha256": "05e6c5f9a593ff435e2ab201973940ecc7c56183fa62c69ff1fcf5adb4a3956c"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

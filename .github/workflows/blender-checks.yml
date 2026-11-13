@@ -55,5 +55,9 @@ jobs:
             .tmp/tests/blender-production/normal.png
             .tmp/tests/blender-blockout/pipeline-report.json
             .tmp/tests/blender-blockout/blockout.png
+            .tmp/tests/blender-delivery/delivery-report.json
+            .tmp/tests/blender-delivery/**/render-preflight.json
+            .tmp/tests/blender-delivery/**/*.glb.report.json
+            .tmp/tests/blender-delivery/**/*.glb.log
             .tmp/gltf-format-report.json
             .tmp/wheel-calibration/calibration.json

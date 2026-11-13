@@ -31,5 +31,30 @@
     "scope": [],
     "review_receipt": null,
     "reuse_reason": null
-  }
+  },
+  "scene": {
+    "mode": null,
+    "name": null,
+    "owner": null,
+    "role_collections": {}
+  },
+  "runtime_preflight": {
+    "path": null,
+    "effective_denoising": null,
+    "fallback_reason": null
+  },
+  "delivery_contract": {
+    "mode": null,
+    "objects": [],
+    "triangle_budget": null,
+    "frames": [],
+    "required_clips": [],
+    "spatial_tolerance": null,
+    "report": null
+  },
+  "repair_budget": {
+    "maximum_attempts": null,
+    "maximum_seconds": null
+  },
+  "repair_attempts": []
 }

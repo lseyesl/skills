@@ -1,0 +1,821 @@
+{
+  "meshes": {
+    "clay_girl_fit::head::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.023677683280289546,
+      "finite": true,
+      "dimensions": [
+        0.3987901210784912,
+        0.3382258117198944,
+        0.3464750051498413
+      ]
+    },
+    "clay_girl_fit::neck::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.00013661832952032132,
+      "finite": true,
+      "dimensions": [
+        0.05790960043668747,
+        0.05411869287490845,
+        0.0840030312538147
+      ]
+    },
+    "clay_girl_fit::torso::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0008892230942449488,
+      "finite": true,
+      "dimensions": [
+        0.15606608986854553,
+        0.08973107486963272,
+        0.12147378921508789
+      ]
+    },
+    "clay_girl_fit::ear_L::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 9.898993116710153e-05,
+      "finite": true,
+      "dimensions": [
+        0.06184287369251251,
+        0.044036537408828735,
+        0.06924116611480713
+      ]
+    },
+    "clay_girl_fit::ear_R::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 9.890328203533634e-05,
+      "finite": true,
+      "dimensions": [
+        0.06198202073574066,
+        0.043811388313770294,
+        0.06986641883850098
+      ]
+    },
+    "clay_girl_fit::dress::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0011841339869237562,
+      "finite": true,
+      "dimensions": [
+        0.3927045464515686,
+        0.24466386437416077,
+        0.27380138635635376
+      ]
+    },
+    "clay_girl_fit::dress::strap_0": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.471224349431141e-05,
+      "finite": true,
+      "dimensions": [
+        0.033953387290239334,
+        0.10558591783046722,
+        0.06073099374771118
+      ]
+    },
+    "clay_girl_fit::dress::strap_1": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.456313255612319e-05,
+      "finite": true,
+      "dimensions": [
+        0.033862464129924774,
+        0.10527953505516052,
+        0.06116300821304321
+      ]
+    },
+    "clay_girl_fit::arm_L::limb": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0004179452157774233,
+      "finite": true,
+      "dimensions": [
+        0.2745816707611084,
+        0.05303939804434776,
+        0.20496508479118347
+      ]
+    },
+    "clay_girl_fit::arm_L::palm": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.00010700589222305028,
+      "finite": true,
+      "dimensions": [
+        0.06947076320648193,
+        0.06014252454042435,
+        0.06447204947471619
+      ]
+    },
+    "clay_girl_fit::arm_L::thumb": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 1.4896218847896732e-05,
+      "finite": true,
+      "dimensions": [
+        0.03591364622116089,
+        0.0239412859082222,
+        0.034788936376571655
+      ]
+    },
+    "clay_girl_fit::leg_L::limb": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0004840747418359227,
+      "finite": true,
+      "dimensions": [
+        0.07107900083065033,
+        0.05690452456474304,
+        0.2328900843858719
+      ]
+    },
+    "clay_girl_fit::shoe_L::toe": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.000813478615112362,
+      "finite": true,
+      "dimensions": [
+        0.11599365621805191,
+        0.1679462343454361,
+        0.08021462708711624
+      ]
+    },
+    "clay_girl_fit::shoe_L::upper": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0003480641476226726,
+      "finite": true,
+      "dimensions": [
+        0.09521287679672241,
+        0.11056756973266602,
+        0.063916876912117
+      ]
+    },
+    "clay_girl_fit::shoe_L::opening_rim": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 1.4157575557168769e-05,
+      "finite": true,
+      "dimensions": [
+        0.075532466173172,
+        0.05961909517645836,
+        0.008588820695877075
+      ]
+    },
+    "clay_girl_fit::shoe_L::sole": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0002089263340577076,
+      "finite": true,
+      "dimensions": [
+        0.11763176321983337,
+        0.17429985105991364,
+        0.02097138948738575
+      ]
+    },
+    "clay_girl_fit::arm_R::limb": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.000390828880747104,
+      "finite": true,
+      "dimensions": [
+        0.25961416959762573,
+        0.052919693291187286,
+        0.20758599042892456
+      ]
+    },
+    "clay_girl_fit::arm_R::palm": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.000107079220549157,
+      "finite": true,
+      "dimensions": [
+        0.06947150826454163,
+        0.059824977070093155,
+        0.06407192349433899
+      ]
+    },
+    "clay_girl_fit::arm_R::thumb": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 1.493516143456629e-05,
+      "finite": true,
+      "dimensions": [
+        0.035716503858566284,
+        0.02397184818983078,
+        0.03465437889099121
+      ]
+    },
+    "clay_girl_fit::leg_R::limb": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.00048647104400704864,
+      "finite": true,
+      "dimensions": [
+        0.06863436102867126,
+        0.0571749210357666,
+        0.2328864336013794
+      ]
+    },
+    "clay_girl_fit::shoe_R::toe": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0008159700985425315,
+      "finite": true,
+      "dimensions": [
+        0.1159888505935669,
+        0.1699109524488449,
+        0.08108475804328918
+      ]
+    },
+    "clay_girl_fit::shoe_R::upper": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.000348167386131733,
+      "finite": true,
+      "dimensions": [
+        0.09566979110240936,
+        0.1112266331911087,
+        0.06403682380914688
+      ]
+    },
+    "clay_girl_fit::shoe_R::opening_rim": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 1.4040903875557008e-05,
+      "finite": true,
+      "dimensions": [
+        0.07530621439218521,
+        0.05935477092862129,
+        0.00849926471710205
+      ]
+    },
+    "clay_girl_fit::shoe_R::sole": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.00021380489362888912,
+      "finite": true,
+      "dimensions": [
+        0.11825381219387054,
+        0.1754187047481537,
+        0.021544598042964935
+      ]
+    },
+    "clay_girl_fit::hair::cap": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0009305678159655786,
+      "finite": true,
+      "dimensions": [
+        0.40727418661117554,
+        0.2956726551055908,
+        0.3264036774635315
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_0": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.02154820117999e-05,
+      "finite": true,
+      "dimensions": [
+        0.14853660762310028,
+        0.02187458798289299,
+        0.1187366247177124
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_1": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.814360091262725e-05,
+      "finite": true,
+      "dimensions": [
+        0.1384737640619278,
+        0.052671320736408234,
+        0.11546248197555542
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_2": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.6768587545883336e-05,
+      "finite": true,
+      "dimensions": [
+        0.11844832450151443,
+        0.07909023761749268,
+        0.10931086540222168
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_3": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.23723655702508e-05,
+      "finite": true,
+      "dimensions": [
+        0.08985161781311035,
+        0.09677131474018097,
+        0.09996503591537476
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_4": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.0006559878607137e-05,
+      "finite": true,
+      "dimensions": [
+        0.06005525961518288,
+        0.10666464269161224,
+        0.08958989381790161
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_5": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 2.575559493942061e-05,
+      "finite": true,
+      "dimensions": [
+        0.033173322677612305,
+        0.10653539001941681,
+        0.07671761512756348
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_6": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 2.6582998681516767e-05,
+      "finite": true,
+      "dimensions": [
+        0.032427020370960236,
+        0.10606633871793747,
+        0.07779186964035034
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_7": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 2.89338412877515e-05,
+      "finite": true,
+      "dimensions": [
+        0.0600922554731369,
+        0.10732463002204895,
+        0.08978742361068726
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_8": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.415775638891969e-05,
+      "finite": true,
+      "dimensions": [
+        0.09208379685878754,
+        0.09828296303749084,
+        0.10038244724273682
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_9": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.666717493545275e-05,
+      "finite": true,
+      "dimensions": [
+        0.11764112114906311,
+        0.07809312641620636,
+        0.1092064380645752
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_10": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.658903038310643e-05,
+      "finite": true,
+      "dimensions": [
+        0.13865065574645996,
+        0.052699826657772064,
+        0.11540275812149048
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_11": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.915746002829124e-05,
+      "finite": true,
+      "dimensions": [
+        0.14874976873397827,
+        0.02160361036658287,
+        0.11906909942626953
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_12": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 6.56035484427028e-05,
+      "finite": true,
+      "dimensions": [
+        0.17527127265930176,
+        0.022464610636234283,
+        0.296123743057251
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_13": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.578737709004841e-05,
+      "finite": true,
+      "dimensions": [
+        0.1629347801208496,
+        0.06941219419240952,
+        0.2991154193878174
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_14": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.874460940518207e-05,
+      "finite": true,
+      "dimensions": [
+        0.13771367073059082,
+        0.1092524304986,
+        0.3004636764526367
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_15": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 8.286965084351912e-05,
+      "finite": true,
+      "dimensions": [
+        0.0970330610871315,
+        0.13679495453834534,
+        0.29891687631607056
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_16": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 8.235300395009674e-05,
+      "finite": true,
+      "dimensions": [
+        0.043202955275774,
+        0.15105897188186646,
+        0.2987521290779114
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_17": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 8.321842057565471e-05,
+      "finite": true,
+      "dimensions": [
+        0.04449675232172012,
+        0.14999158680438995,
+        0.2932812571525574
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_18": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.759735499790048e-05,
+      "finite": true,
+      "dimensions": [
+        0.09397253394126892,
+        0.13467685878276825,
+        0.29913103580474854
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_19": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 6.534960255618146e-05,
+      "finite": true,
+      "dimensions": [
+        0.1341988742351532,
+        0.10599003732204437,
+        0.29606300592422485
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_20": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.131830635067235e-05,
+      "finite": true,
+      "dimensions": [
+        0.16370028257369995,
+        0.06725971400737762,
+        0.30054771900177
+      ]
+    },
+    "clay_girl_fit::hair::directed_lock_21": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 6.675910648882956e-05,
+      "finite": true,
+      "dimensions": [
+        0.17631928622722626,
+        0.023250391706824303,
+        0.2989722490310669
+      ]
+    },
+    "clay_girl_fit::hair::bun_0": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.0018083601937126507,
+      "finite": true,
+      "dimensions": [
+        0.1512104570865631,
+        0.14038769900798798,
+        0.16347813606262207
+      ]
+    },
+    "clay_girl_fit::hair::bun_0_fold_0": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 5.1024536084303994e-05,
+      "finite": true,
+      "dimensions": [
+        0.15475894510746002,
+        0.05737052112817764,
+        0.02525883913040161
+      ]
+    },
+    "clay_girl_fit::hair::bun_0_fold_1": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.238990340667556e-05,
+      "finite": true,
+      "dimensions": [
+        0.06494560837745667,
+        0.05554141104221344,
+        0.15742820501327515
+      ]
+    },
+    "clay_girl_fit::hair::bun_0_fold_2": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 2.295125284724325e-05,
+      "finite": true,
+      "dimensions": [
+        0.12650786340236664,
+        0.052810609340667725,
+        0.10526388883590698
+      ]
+    },
+    "clay_girl_fit::hair::bun_0_fold_3": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.032984010729751e-05,
+      "finite": true,
+      "dimensions": [
+        0.12851378321647644,
+        0.05484883114695549,
+        0.10753005743026733
+      ]
+    },
+    "clay_girl_fit::hair::bun_0_fold_4": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.444908236800405e-05,
+      "finite": true,
+      "dimensions": [
+        0.06560574471950531,
+        0.05681885406374931,
+        0.15912920236587524
+      ]
+    },
+    "clay_girl_fit::hair::bun_1": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 0.002216007783435419,
+      "finite": true,
+      "dimensions": [
+        0.16734465956687927,
+        0.14946596324443817,
+        0.17180651426315308
+      ]
+    },
+    "clay_girl_fit::hair::bun_1_fold_0": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 2.7572566657910556e-05,
+      "finite": true,
+      "dimensions": [
+        0.1628091037273407,
+        0.05491204559803009,
+        0.019255876541137695
+      ]
+    },
+    "clay_girl_fit::hair::bun_1_fold_1": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.619801268162091e-05,
+      "finite": true,
+      "dimensions": [
+        0.0653880387544632,
+        0.05756726861000061,
+        0.16494154930114746
+      ]
+    },
+    "clay_girl_fit::hair::bun_1_fold_2": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 5.626939205462676e-05,
+      "finite": true,
+      "dimensions": [
+        0.1419704705476761,
+        0.05990876257419586,
+        0.11604106426239014
+      ]
+    },
+    "clay_girl_fit::hair::bun_1_fold_3": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 5.1526492964123014e-05,
+      "finite": true,
+      "dimensions": [
+        0.1435268670320511,
+        0.060055866837501526,
+        0.11480826139450073
+      ]
+    },
+    "clay_girl_fit::hair::bun_1_fold_4": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 4.658527089283221e-05,
+      "finite": true,
+      "dimensions": [
+        0.06877997517585754,
+        0.058588191866874695,
+        0.1659693717956543
+      ]
+    },
+    "clay_girl_fit::nose::body": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 3.489430947654797e-05,
+      "finite": true,
+      "dimensions": [
+        0.049987733364105225,
+        0.02798360586166382,
+        0.047897398471832275
+      ]
+    },
+    "clay_girl_fit::eye_L::patch": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.1410517591449385e-06,
+      "finite": true,
+      "dimensions": [
+        0.07659251987934113,
+        0.03416191041469574,
+        0.03993105888366699
+      ]
+    },
+    "clay_girl_fit::eye_R::patch": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.025380404758311e-06,
+      "finite": true,
+      "dimensions": [
+        0.07463504374027252,
+        0.035348936915397644,
+        0.03774648904800415
+      ]
+    },
+    "clay_girl_fit::brow_L::patch": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.281270402925105e-06,
+      "finite": true,
+      "dimensions": [
+        0.06909235566854477,
+        0.03175300359725952,
+        0.048746585845947266
+      ]
+    },
+    "clay_girl_fit::brow_R::patch": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 7.436906215075412e-06,
+      "finite": true,
+      "dimensions": [
+        0.07094836980104446,
+        0.034270308911800385,
+        0.043056368827819824
+      ]
+    },
+    "clay_girl_fit::smile::patch": {
+      "non_manifold_edges": 0,
+      "inconsistent_winding_edges": 0,
+      "degenerate_faces": 0,
+      "signed_volume": 1.7925216049358954e-05,
+      "finite": true,
+      "dimensions": [
+        0.12926200032234192,
+        0.037180885672569275,
+        0.05399608612060547
+      ]
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "intersection_scope": "Connection endpoints and AABB broad phase only; arbitrary mesh self/intersections not certified.",
+  "rig_status": "not_requested",
+  "ok": true,
+  "rig_probe": {
+    "ok": true,
+    "limbs": [
+      {
+        "component": "arm_L",
+        "ok": true,
+        "max_displacement": 0.008663300314038459,
+        "angle_radians": 0.45
+      },
+      {
+        "component": "leg_L",
+        "ok": true,
+        "max_displacement": 0.011623629287823381,
+        "angle_radians": 0.45
+      },
+      {
+        "component": "arm_R",
+        "ok": true,
+        "max_displacement": 0.008476504323126306,
+        "angle_radians": 0.45
+      },
+      {
+        "component": "leg_R",
+        "ok": true,
+        "max_displacement": 0.012058197797179428,
+        "angle_radians": 0.45
+      }
+    ],
+    "scope": "Disposable two-bone skinning/bend smoke test only. Production rig, shoulder/cloth deformation and all poses unvalidated."
+  },
+  "unchanged_object_count": 0,
+  "config_hash": "8e9f3d5e9694f88c3a194580b7998a404efef388548a68686caec9c17980a059"
+}

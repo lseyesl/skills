@@ -58,7 +58,7 @@ Failing on unsupported options is safer than silently dropping a setting that ch
 
 ## Stable selection and export examples
 
-Before a selection-limited export, enter Object Mode, deselect everything, select the exact task-owned objects, set a meaningful active object, and verify the selected-name set. Restore the user's selection afterwards when practical.
+Before a selection-limited export, enter Object Mode and constrain both the active scene and exact task-owned objects. Deselecting the current view layer alone does not clear selections in other scenes. Prefer the [isolated delivery adapter](production-workspace.md) within its supported scope; explicit current-scene settings and independent whitelist checks remain necessary for other adapters. Restore the user's selection afterwards when practical.
 
 Minimal Blender 4.5-compatible GLB call:
 
@@ -68,6 +68,7 @@ call_supported(
     filepath=str(output_path),
     export_format="GLB",
     use_selection=True,
+    use_active_scene=True,
     export_apply=False,
     export_texcoords=True,
     export_normals=True,
@@ -80,6 +81,8 @@ call_supported(
 ```
 
 Enable tangents only when the mesh has a valid UV map and the target needs tangent-space normals. Choose `export_apply` only after testing rigs, shape keys, instances, and Geometry Nodes evaluation.
+
+Do not use this minimal call as a complete delivery pipeline. Static assets should freeze evaluated copies so bevel/subdivision/curve results are retained. Rigged assets require prepared copies that preserve skin and shape-key correspondence; blanket application of all modifiers is not a repair. Source and imported evaluated surfaces must agree at declared sample frames. `asset_delivery.py` implements isolated constant-PBR static/object-animation/linear-skin cases and refuses unsupported graphs, constraints and shape keys; richer textured and character cases keep their dedicated audits.
 
 Typical FBX settings include `use_selection=True`, `axis_forward="-Z"`, `axis_up="Y"`, `apply_unit_scale=True`, `use_mesh_modifiers=True`, and explicit animation/NLA options. These are common starting values, not a universal engine preset. OBJ uses `wm.obj_export` with `export_selected_objects`; STL uses `wm.stl_export` with `export_selected_objects` and optionally `use_scene_unit`. Inspect runtime RNA before passing them.
 

@@ -111,6 +111,7 @@ def main():
         spec = importlib.util.spec_from_file_location('task_template', template)
         example = importlib.util.module_from_spec(spec);spec.loader.exec_module(example)
         module = example.project
+        module.SCENE_MODE = 'edit';module.SCENE_NAME = scene.name
         module.TASK_ID = task;module.COLLECTION_NAME = 'GEN_reference-workspace-test'
         sentinel = bpy.data.objects.new('owned-prior-geometry', None)
         scene.collection.objects.link(sentinel);sentinel[module.OWNER_KEY] = task

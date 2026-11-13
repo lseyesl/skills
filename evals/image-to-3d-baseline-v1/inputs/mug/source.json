@@ -1,0 +1,82 @@
+{
+  "title": "File:Antisky ceramic mug.jpg",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Antisky_ceramic_mug.jpg",
+  "download_url": "https://upload.wikimedia.org/wikipedia/commons/4/47/Antisky_ceramic_mug.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "metadata": {
+    "DateTime": {
+      "value": "2016-03-18 12:49:25",
+      "source": "mediawiki-metadata",
+      "hidden": ""
+    },
+    "ObjectName": {
+      "value": "Antisky ceramic mug",
+      "source": "mediawiki-metadata"
+    },
+    "CommonsMetadataExtension": {
+      "value": 1.2,
+      "source": "extension",
+      "hidden": ""
+    },
+    "Categories": {
+      "value": "Self-published work|White mugs",
+      "source": "commons-categories",
+      "hidden": ""
+    },
+    "Assessments": {
+      "value": "",
+      "source": "commons-categories",
+      "hidden": ""
+    },
+    "ImageDescription": {
+      "value": "Antisky Ceramic",
+      "source": "commons-desc-page"
+    },
+    "DateTimeOriginal": {
+      "value": "2010-11-05",
+      "source": "commons-desc-page"
+    },
+    "Credit": {
+      "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+      "source": "commons-desc-page"
+    },
+    "Artist": {
+      "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Ethan8808&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Ethan8808 (page does not exist)\">Ethan8808</a>",
+      "source": "commons-desc-page"
+    },
+    "LicenseShortName": {
+      "value": "CC BY-SA 4.0",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "UsageTerms": {
+      "value": "Creative Commons Attribution-Share Alike 4.0",
+      "source": "commons-desc-page"
+    },
+    "AttributionRequired": {
+      "value": "true",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "LicenseUrl": {
+      "value": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source": "commons-desc-page"
+    },
+    "Copyrighted": {
+      "value": "True",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "Restrictions": {
+      "value": "",
+      "source": "commons-desc-page",
+      "hidden": ""
+    },
+    "License": {
+      "value": "cc-by-sa-4.0",
+      "source": "commons-templates",
+      "hidden": ""
+    }
+  },
+  "sha256": "a1b66666a4df57f6e0869db8a0461f804c269e3294241f3f85d97161d1f8d1b6",
+  "projection": "perspective photograph; hidden dimensions inferred; no ground-truth mesh"
+}

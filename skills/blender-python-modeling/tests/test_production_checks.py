@@ -57,4 +57,24 @@ class ProductionChecks(unittest.TestCase):
             ('基础形体验收','inspect','blender.acceptance.blockout')]:
             with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
 
+    def test_usable_asset_failure_routes(self):
+        entries=load_catalog(ROOT.parent)
+        for query,task,expected in [
+            ('默认 Cube 混入','repair','blender.production-workspace'),
+            ('降噪器不可用','repair','blender.production-workspace'),
+            ('杯底漏孔','repair','blender.containers-and-connections'),
+            ('把手浮空','repair','blender.containers-and-connections'),
+            ('辐条断开','repair','blender.containers-and-connections'),
+            ('可用资产验收','inspect','blender.acceptance.usable-asset')]:
+            with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
+
+    def test_fitter_task_budget_validation(self):
+        import copy
+        from reference_fit.config import validate
+        config=json.loads((ROOT/'examples/clay-girl-fit/character.json').read_text())
+        for budget in (0,-1,True,80000.5):
+            candidate=copy.deepcopy(config);candidate['validation']['max_triangles']=budget
+            with self.subTest(budget=budget),self.assertRaises(ValueError):validate(candidate)
+        config['validation']['max_triangles']=80000;validate(config)
+
 if __name__=='__main__':unittest.main()

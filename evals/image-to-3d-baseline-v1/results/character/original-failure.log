@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/skills/skills/blender-python-modeling/scripts/fit_character.py", line 76, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/skills/skills/blender-python-modeling/scripts/fit_character.py", line 56, in main
+    qa=worker(c,out,args.source,legacy=args.command=='baseline',render_only=args.command=='render')
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/skills/skills/blender-python-modeling/scripts/fit_character.py", line 42, in worker
+    run_logged(cmd,folder/'blender.log',args.timeout)
+  File "/workspace/skills/skills/blender-python-modeling/scripts/reference_fit/process.py", line 12, in run_logged
+    if result.returncode:raise RuntimeError('Blender failed '+str(result.returncode)+'; see '+str(logfile))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Blender failed 1; see /workspace/skills/.tmp/image3d-baseline-20261113/character/blender.log

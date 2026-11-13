@@ -1,0 +1,168 @@
+{
+  "task_id": "character",
+  "status": "failed",
+  "actual_stage": "static-character-diagnostic-after-render-failure",
+  "visual_reviewer": "current-session-Agent-self-review",
+  "review_confidence": "provisional; uncalibrated self-assessment",
+  "score": 41.5,
+  "subtotals": {
+    "fidelity": 25.0,
+    "technical": 9.0,
+    "purpose": 0,
+    "process": 7.5
+  },
+  "items": {
+    "silhouette": {
+      "level": 0.75,
+      "reason": "Girl, two buns, dress, separated limbs and shoes recognizable. Head contour, hands, feet and dress hem differ; back/depth only partly observed.",
+      "weight": 10,
+      "points": 7.5
+    },
+    "proportions": {
+      "level": 0.75,
+      "reason": "Front head/body placement reasonably close. Head/skull profile, facial placement, hand/thumb shape and shoe thickness have visible discrepancies.",
+      "weight": 10,
+      "points": 7.5
+    },
+    "signature_features": {
+      "level": 0.5,
+      "reason": "Happy face and two buns present. Braided irregular hair, ceramic/clay relief, dress texture/hem and explicit hand/thumb details remain substantially simplified.",
+      "weight": 15,
+      "points": 7.5
+    },
+    "materials": {
+      "level": 0.5,
+      "reason": "Broad skin/green/red/dark colour blocks match; surface relief and hand-made material response missing or weak.",
+      "weight": 5,
+      "points": 2.5
+    },
+    "shading": {
+      "level": 0.75,
+      "reason": "Closed finite meshes and consistent winding measured; close-up form is smooth but noisy and reference-specific surface relief is absent.",
+      "weight": 4,
+      "points": 3.0
+    },
+    "geometry": {
+      "level": 0,
+      "reason": "Source evaluated triangles=152996, budget=80000; nonfinite=0, degenerate=0. All geometry criteria required for these 8 points.",
+      "weight": 8,
+      "points": 0
+    },
+    "material_portability": {
+      "level": 0.5,
+      "reason": "Base PBR materials embedded and Khronos format passed; procedural surface detail not baked/preserved.",
+      "weight": 4,
+      "points": 2.0
+    },
+    "source_editability": {
+      "level": 1,
+      "reason": "Source .blend reopens with separately editable semantic parts; this does not certify a usable armature.",
+      "weight": 4,
+      "points": 4
+    },
+    "purpose_function": {
+      "level": 0,
+      "reason": "No persistent armature, skin or exported clip; four disposable skinning probes are not production binding.",
+      "weight": 15,
+      "points": 0
+    },
+    "export_roundtrip": {
+      "level": 0,
+      "reason": "Unexpected Cube exported. Bounds max error=1.001498; source triangles=152996, imported=143858. Not asset-only or equivalent geometry.",
+      "weight": 10,
+      "points": 0
+    },
+    "reference_preparation": {
+      "level": 0.5,
+      "reason": "Existing fitter uses pixel/profile config and packed guides; side reference inconsistent. Actual reference-visible viewport calibration not performed.",
+      "weight": 5,
+      "points": 2.5
+    },
+    "blockout_gate": {
+      "level": 0,
+      "reason": "Existing fitter creates detailed geometry directly; no prior signed coarse inspection in this run.",
+      "weight": 5,
+      "points": 0
+    },
+    "completion_evidence": {
+      "level": 1,
+      "reason": "Per-module unresolved differences and failed final gate retained; no modules falsely labeled matched or assets claimed final.",
+      "weight": 5,
+      "points": 5
+    }
+  },
+  "hard_gate_passed": false,
+  "source_triangles": 152996,
+  "glb_triangles": 143858,
+  "format_status": "passed",
+  "context_tokens": null,
+  "total_task_elapsed_seconds": null,
+  "human_interventions": 0,
+  "runtime_rescues": 1,
+  "quality_retries": 0,
+  "execution_process_costs": [
+    {
+      "command": [
+        "blender",
+        "--background",
+        "--factory-startup",
+        "-t",
+        "4",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "evals/image-to-3d-baseline-v1/inspect_character.py",
+        "--",
+        "--input",
+        ".tmp/image3d-baseline-20261113/character",
+        "--output",
+        ".tmp/image3d-baseline-20261113/character-salvage"
+      ],
+      "elapsed_seconds": 12.385776560999147,
+      "returncode": 0,
+      "status": "diagnostic-rescue"
+    },
+    {
+      "elapsed_seconds": 3.576041697000619,
+      "returncode": 0,
+      "command": [
+        "blender",
+        "--background",
+        "--factory-startup",
+        "-t",
+        "4",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "evals/image-to-3d-baseline-v1/check_assets.py",
+        "--",
+        "--case",
+        "character",
+        "--source",
+        ".tmp/image3d-baseline-20261113/character-salvage/asset.blend",
+        "--glb",
+        ".tmp/image3d-baseline-20261113/character-salvage/asset.glb",
+        "--output",
+        ".tmp/image3d-baseline-20261113/character-salvage/technical.json"
+      ]
+    }
+  ],
+  "evidence": {
+    "front.png": "5ec2ae38d4ea318ff59a4a9a72054ef6cc44f538e6db6cd374ddf818592749b1",
+    "format.json": "a45c146f591129ec89acab8d6ae75ed63a592e8f448516179949292d355dc04a",
+    "back.png": "4b8e89fb9a9547a88c47068ec0b943292c2dd1e4f287740666ac20680873285d",
+    "side.png": "54249a8450e6631d85405490ed5133c36e24fcddc0c60cbbd407c8d079bc19c0",
+    "original-failure.log": "f792134b67a105286377cf021773f20a19537971dde200d343dc34fa8e2360eb",
+    "clay.png": "2f164c5668645c3689c6e2e69fe94731a4f621494eae3658eff56d26b58052bf",
+    "module-ledger.json": "78ee7578a7d0767f46b785108daa99f8827c17933726291107c189e54a2cb8e7",
+    "final-gate.json": "363ae44459be19e5ca744db93a64350ade9fedcd11e5a1913658c51149a0e484",
+    "salvage.json": "cb4c0f81c9c6292479c01c8492ac26bce7523f81296c3b3acd10212b3e488cb6",
+    "technical.json": "d54cda184f448b787a7780fce299571020c03686046c28247ae462112b57574a",
+    "three-quarter.png": "067138d74a5fc1c0276c67fbcf2a5a5c514b61a3e998b72e88d2551052344f4e",
+    "original-structure.json": "7b792b13284894b9362173e2ca85e3c0ce8b5c1016b854110d22ee0344b8512c"
+  },
+  "asset_paths": {
+    "blend": ".tmp/image3d-baseline-20261113/character-salvage/asset.blend",
+    "glb": ".tmp/image3d-baseline-20261113/character-salvage/asset.glb"
+  }
+}

@@ -27,6 +27,8 @@
 
 方法选择或关键形体失败时回到相应模块，不全场景推倒重来。review 可以由实际检查结果的 Agent 或人工记录，不自动增加用户批准步骤；重要设计歧义才按已有规则向用户确认。
 
+失败不是仅写“未通过”就结束：在事先声明的预算内执行 [局部诊断与修复闭环](containers-and-connections.md)。每次保留失败快照、假设、受影响模块、数值和实际视图；修复后使旧证据失效，重验后才进入细化。预算耗尽或原因不明时报告具体缺口，不盲调细分等级、不隐藏重试。
+
 ## 脚本与证据
 
 正式入口为 [blender_task_template.py](../../../assets/blender_task_template.py)，默认构建/细化函数未实现会报错，不会生成 Cube 冒充结果。示例 [blockout_cube_example.py](../../../assets/examples/blockout_cube_example.py) 只演示参考标定后的粗模，不能设置为 final。

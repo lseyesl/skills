@@ -1,0 +1,8 @@
+{
+  "status": "diagnostic-only",
+  "original_attempt": "../character",
+  "original_failure": "OpenImageDenoise unavailable",
+  "adapter": "disable beauty and clay denoising only; original source unchanged",
+  "not_a_successful_original_run": true,
+  "armatures": []
+}

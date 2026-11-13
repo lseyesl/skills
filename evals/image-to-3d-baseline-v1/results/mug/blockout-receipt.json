@@ -1,0 +1,10 @@
+{
+  "stage": "blockout-review",
+  "run_id": "b0152de7e8214e8d9175db709a5f9c37",
+  "status": "failed",
+  "input_signature": null,
+  "artifacts": [],
+  "scope": "Stage execution and declared validation only",
+  "error": "Review identity/status did not pass",
+  "elapsed_seconds": 0.0051618840006995015
+}

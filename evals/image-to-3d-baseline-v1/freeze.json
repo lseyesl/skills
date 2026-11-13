@@ -1,0 +1,14 @@
+{
+  "frozen_before_build_utc": "2026-11-13T06:17:29.171583+00:00",
+  "revision": "b7a0844e724471ec96918df3ffbee6a3bba19959",
+  "sha256": {
+    "protocol.json": "04401445c32a22e16f371e6098735c0fd862c91945a003e3339c55dc5d59e2d4",
+    "inputs/character/front.png": "54ec12e535de622429353558e522faa04c91c9e689c480ef1595cfcdcf721df8",
+    "inputs/character/left.png": "f89f836c22c47938c23a92ee1a44062ecc1dabb536332b5ad21e221f9f5f7e1d",
+    "inputs/character/source.json": "4e8f6003be70cb87b8e05ceeeae4e64187c6ce3a9de88c9a7050e35b72f34b20",
+    "inputs/mug/reference.jpg": "a1b66666a4df57f6e0869db8a0461f804c269e3294241f3f85d97161d1f8d1b6",
+    "inputs/mug/source.json": "4af6cdbb6d3ef027ee5ae9388ea115063133954afacf73cd1c74e2344f202459",
+    "inputs/wheel/reference.jpg": "6fdb94c37808cd38519a1390a861ea81f5bbf803918f37efca8a456906ad928e",
+    "inputs/wheel/source.json": "7640b85d5eefe495a88fa4702f8259585937867ae5a85713fc400ca552ec4abe"
+  }
+}

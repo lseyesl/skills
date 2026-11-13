@@ -18,6 +18,8 @@ if __name__ == "__main__":
 
 Rerunning the script should converge on the same result. Tag objects with a custom owner property and delete only matching generated objects. Do not use `bpy.ops.object.select_all(...); bpy.ops.object.delete()` as reset logic in a user's scene.
 
+For creation, first open a separate task-owned empty scene using [production_workspace](production-workspace.md); avoid/cull startup objects within that new task scene before modeling. Do not copy factory Cube/Camera/Light into it. Edit mode explicitly targets the existing scene and does not clear it. Preserve coarse snapshots, helpers and export geometry in separate role collections; only the declared delivery objects enter export.
+
 ## Data API before operators
 
 Prefer:

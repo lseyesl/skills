@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "tool": "gltf-validator",
+  "version": "2.0.0-dev.3.10",
+  "node_version": "v24.22.1",
+  "input_sha256": "ee4de0084e9fa5a021d85e05f7b2afd1f2e4057633cca1e6bf02f5e26651d15d",
+  "resource_fingerprints": {
+    "/workspace/skills/.tmp/image3d-baseline-20261113/wheel/diagnostic-asset.glb": "ee4de0084e9fa5a021d85e05f7b2afd1f2e4057633cca1e6bf02f5e26651d15d"
+  },
+  "status": "passed",
+  "scope": "format/data checks only; no visual, consumer compatibility or optimization approval",
+  "blocked_resources": [],
+  "result": {
+    "uri": "diagnostic-asset.glb",
+    "mimeType": "model/gltf-binary",
+    "validatorVersion": "2.0.0-dev.3.10",
+    "validatedAt": "2026-11-13T06:22:54.300Z",
+    "issues": {
+      "numErrors": 0,
+      "numWarnings": 0,
+      "numInfos": 1,
+      "numHints": 0,
+      "messages": [
+        {
+          "code": "UNUSED_OBJECT",
+          "message": "This object may be unused.",
+          "severity": 2,
+          "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+        }
+      ],
+      "truncated": false
+    },
+    "info": {
+      "version": "2.0",
+      "generator": "Khronos glTF Blender I/O v4.3.47",
+      "resources": [
+        {
+          "pointer": "/buffers/0",
+          "mimeType": "application/gltf-buffer",
+          "storage": "glb",
+          "byteLength": 22416
+        }
+      ],
+      "animationCount": 0,
+      "materialCount": 4,
+      "hasMorphTargets": false,
+      "hasSkins": false,
+      "hasTextures": false,
+      "hasDefaultScene": true,
+      "drawCallCount": 20,
+      "totalVertexCount": 692,
+      "totalTriangleCount": 1308,
+      "maxUVs": 1,
+      "maxInfluences": 0,
+      "maxAttributes": 3
+    }
+  }
+}

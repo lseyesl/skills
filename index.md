@@ -84,4 +84,6 @@ Skill 主分组见 [机器分类](catalog/taxonomy.json)，每个 Skill 的 know
 
 Blender 内新增的网格恢复/数据迁移、关节修正、法线烘焙/布料诊断及 glTF 验证/优化流程继续由 blender-python-modeling 一个入口组织，按 [知识索引](skills/blender-python-modeling/knowledge.json) 加载。
 
+图片到可用模型的执行路径补充 [空任务场景与隔离交付](skills/blender-python-modeling/references/production-workspace.md)、[容器/连接诊断修复](skills/blender-python-modeling/references/procedures/modeling/containers-and-connections.md) 和 [用途分级验收](skills/blender-python-modeling/references/acceptance/usable-asset.md)；角色拟合、持久绑定与动画交付分别检查，不以静态外观代替可用性。
+
 复杂 Blender 建模的方法选择、基础形体检查与细化前置条件见 [blockout 流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)；允许盒式建模和已有资产复用，保持单一 Blender Skill 入口。

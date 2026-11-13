@@ -776,6 +776,124 @@
           "criterion": "实际观察比例/轮廓/结构，粗模不冒充完成资产"
         }
       ]
+    },
+    {
+      "id": "production.empty-scene",
+      "split": "dev",
+      "prompt": "在另一个场景已选中默认 Cube 的项目中新建独立模型。保留原场景，使用空任务场景制作和隔离交付。",
+      "setup": "Use independent inputs and frozen runtime/budget; hide grader and old outputs from execution. This contract is not execution evidence.",
+      "checks": [
+        {
+          "id": "workspace",
+          "kind": "structure",
+          "required": true,
+          "criterion": "任务场景无启动对象、重复执行不新增任务场景、保存直接打开活动场景正确"
+        },
+        {
+          "id": "export",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "导出与重载对象白名单一致，无其他场景 Cube，求值修改器和材料保留"
+        }
+      ]
+    },
+    {
+      "id": "production.denoise-preflight",
+      "split": "dev",
+      "prompt": "在无 OpenImageDenoise 的构建运行固定视图拟合，保留首次探针和有效设置。",
+      "setup": "Use independent inputs and frozen runtime/budget; hide grader and old outputs from execution. This contract is not execution evidence.",
+      "checks": [
+        {
+          "id": "runtime",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际小图预检，仅降噪器不可用时回退；其他渲染错误不隐藏"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "用最终有效设置生成比较证据，旧外观回执失效"
+        }
+      ]
+    },
+    {
+      "id": "modeling.container-repair",
+      "split": "dev",
+      "prompt": "复现杯底轴心孔与杯把下端间隙，按用途执行局部修复而不全场景重建。",
+      "setup": "Use independent inputs and frozen runtime/budget; hide grader and old outputs from execution. This contract is not execution evidence.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "多位置射线与两端距离支持原因假设，区分相交、焊接和有意开口"
+        },
+        {
+          "id": "repair",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "保留各次失败，在声明预算内修复、重测，旧回执失效"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "内外底面、把手连接和负空间实际检查"
+        }
+      ]
+    },
+    {
+      "id": "vehicle.radial-connection",
+      "split": "dev",
+      "prompt": "修复铸造轮毂中心盘/辐条/轮圈的连续关系，并交付真实旋转动作。",
+      "setup": "Use independent inputs and frozen runtime/budget; hide grader and old outputs from execution. This contract is not execution evidence.",
+      "checks": [
+        {
+          "id": "connection",
+          "kind": "structure",
+          "required": true,
+          "criterion": "明确每根辐条区域路径及连接截面，不用重复数量代替连续性"
+        },
+        {
+          "id": "motion",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "存在非零转角，四分之一及整圈源与重载表面一致；不动不能通过"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "开口数量、铸造过渡和实际旋转审阅"
+        }
+      ]
+    },
+    {
+      "id": "character.persistent-delivery",
+      "split": "dev",
+      "prompt": "对符合静止姿态的角色制作持久绑定与基础FK动作，保留编辑源，明确目标预算。",
+      "setup": "Use independent inputs and frozen runtime/budget; hide grader and old outputs from execution. This contract is not execution evidence.",
+      "checks": [
+        {
+          "id": "rig",
+          "kind": "structure",
+          "required": true,
+          "criterion": "持久骨架/有效权重/预算符合声明，不用临时探针冒充绑定"
+        },
+        {
+          "id": "poses",
+          "kind": "visual",
+          "required": true,
+          "criterion": "实际肩、肘、膝代表姿势检查；有限顶点和权重和不能代替形变验收"
+        },
+        {
+          "id": "export",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "源与重载 skin、骨层级、所需clip和采样表面一致；复杂材质与形态键不静默丢失"
+        }
+      ]
     }
   ]
 }

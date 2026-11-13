@@ -1643,6 +1643,86 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "blender.blockout-and-refinement",
+      "title": "基础形体搭建方法与分阶段细化",
+      "entry": "references/procedures/modeling/blockout-and-refinement.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "optimize",
+        "inspect"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "基础形体搭建",
+        "低模搭建",
+        "盒式建模",
+        "Cube 细分",
+        "blockout",
+        "box modeling",
+        "blockout refinement",
+        "复用已有模型"
+      ],
+      "applies_when": [
+        "复杂新建、重大形体修改或已有资产需要确认细化前提"
+      ],
+      "exclude_when": [
+        "无关的小修不强制重新搭建；不能用细分等级代替形体验收"
+      ],
+      "required_facts": [
+        "intended_use",
+        "module_scope"
+      ],
+      "requires": [
+        "blender.modeling-recipes"
+      ],
+      "verification": [
+        "blender.acceptance.blockout"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/blockout_gate.py",
+        "scripts/stage_guard.py",
+        "assets/blender_task_template.py"
+      ]
+    },
+    {
+      "id": "blender.acceptance.blockout",
+      "title": "基础形体验收与细化前置条件",
+      "entry": "references/acceptance/blockout.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "基础形体验收",
+        "blockout acceptance"
+      ],
+      "applies_when": [
+        "选定模块进入细化前检查"
+      ],
+      "exclude_when": [
+        "存在对象或成功执行 builder 不构成视觉通过"
+      ],
+      "required_facts": [
+        "module_scope"
+      ],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/blockout_gate.py"
+      ]
     }
   ],
   "query_exclusions": [

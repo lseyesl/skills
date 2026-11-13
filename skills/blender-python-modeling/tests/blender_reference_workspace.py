@@ -107,9 +107,10 @@ def main():
         rejects('stale calibration review', lambda: require_reference_review(scene, task, review_path))
         review_path.write_text(json.dumps(review))
 
-        template = SCRIPTS.parent / 'assets/blender_task_template.py'
+        template = SCRIPTS.parent / 'assets/examples/blockout_cube_example.py'
         spec = importlib.util.spec_from_file_location('task_template', template)
-        module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        example = importlib.util.module_from_spec(spec);spec.loader.exec_module(example)
+        module = example.project
         module.TASK_ID = task;module.COLLECTION_NAME = 'GEN_reference-workspace-test'
         sentinel = bpy.data.objects.new('owned-prior-geometry', None)
         scene.collection.objects.link(sentinel);sentinel[module.OWNER_KEY] = task
@@ -120,18 +121,21 @@ def main():
         config_path = root / 'reference-setup.json';config_path.write_text(json.dumps(config))
         module.REFERENCE_HELPER_DIR = SCRIPTS;module.REFERENCE_CONFIG = config_path
         module.CALIBRATION_REVIEW = review_path
+        module.MODELING_PLAN = root / 'modeling-plan.json'
+        module.MODELING_SCOPE = ['body']
+        module.MODELING_PLAN.write_text(json.dumps({'schema_version':1,'task_id':task,'modules':[{'id':'body','method':'box','reason':'reference anchor teaching cage','objects':['GEO_'+task+'_body'],'checks':[{'id':'shape','kind':'visual','criterion':'synthetic fixture only'}]}]}))
         module.BUILD_RECEIPT = root / 'build-state.json'
         rejects('missing inferred depth before deleting geometry', module.main)
         assert scene.objects.get(sentinel.name) == sentinel
         assert json.loads(module.BUILD_RECEIPT.read_text())['status']=='failed'
         checks.append('template records failed prerequisite attempt before preserving old geometry')
-        module.INFERRED_DEPTH = .2
+        module.BLOCKOUT_PARAMETERS['depth'] = .2
         module.main()
         cube = bpy.data.objects['GEO_' + task + '_body']
         assert (cube.dimensions - Vector((.4, .2, .85))).length < 1e-6
         checks.append('sample builder dimensions actually derived from imported guide anchors')
         from stage_guard import require_stage
-        require_stage(module.BUILD_RECEIPT,'build',module.stage_inputs)
+        require_stage(module.BUILD_RECEIPT,'blockout-build',module.build_inputs)
         checks.append('template successful build has fresh guarded receipt')
 
         comparison = dict(review, phase='comparison', model_signature=model_signature([cube]),

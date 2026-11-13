@@ -53,5 +53,7 @@ jobs:
             .tmp/tests/blender-repair/diagnostic.png
             .tmp/tests/blender-production/production-report.json
             .tmp/tests/blender-production/normal.png
+            .tmp/tests/blender-blockout/pipeline-report.json
+            .tmp/tests/blender-blockout/blockout.png
             .tmp/gltf-format-report.json
             .tmp/wheel-calibration/calibration.json

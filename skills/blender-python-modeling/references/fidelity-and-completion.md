@@ -122,6 +122,10 @@ Gate:
 Allowed report language: "blockout complete" or "primary proportions pass".
 Do not say "model complete".
 
+For complex creation, also require the scoped [blockout acceptance](acceptance/blockout.md). Record the selected modeling method and inspection evidence in the project modeling plan/review, and reference their paths in the existing task record or ledger notes. Do not change ledger schema or duplicate its module completion labels. A successful builder or object-presence count cannot authorize refinement. A built but unreviewed coarse model is reported as "blockout built, review pending".
+
+A blockout inspection signature ties the reviewed scope to the actual source state and dependencies. After a relevant change, an unchanged old review cannot simply be recorded again. Retain a coarse snapshot/control state for continued refinement and invalidate affected detailed visual evidence separately. Existing reference-fitting snapshots can implement equivalent checks; a 2D threshold alone is not equivalent.
+
 ### Feature-complete
 
 Purpose: establish the complete recognizable design before micro-detail.

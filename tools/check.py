@@ -102,6 +102,8 @@ def main():
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_domain_checks.py'), '--', str(temp / 'blender-domain')], cwd=ROOT, env=env, check=True)
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_repair_acceptance.py'), '--', str(temp / 'blender-repair')], cwd=ROOT, env=env, check=True)
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_production_checks.py'), '--', str(temp / 'blender-production')], cwd=ROOT, env=env, check=True)
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_blockout_pipeline.py'), '--', str(temp / 'blender-blockout')], cwd=ROOT, env=env, check=True)
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_reference_workspace.py')], cwd=ROOT, env=env, check=True)
         return
     suites = [
         'tests/test_knowledge_evals.py',
@@ -109,6 +111,7 @@ def main():
         'tests/test_p0_pipeline.py',
         'tests/test_knowledge_evidence.py',
         'skills/blender-python-modeling/tests/test_production_checks.py',
+        'skills/blender-python-modeling/tests/test_blockout_gate.py',
         'skills/ancient-tales-pipeline/tests/test_runtime.py',
         'tests/test_library_checks.py',
         'skills/ancient-tales-production/tests/test_contract.py',

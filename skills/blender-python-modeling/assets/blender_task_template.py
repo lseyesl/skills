@@ -1,181 +1,210 @@
-"""Template for deterministic, task-scoped Blender scene generation.
-
-Copy this file into the target project's scripts/blender/ directory and replace
-the TASK_ID and build function. It deliberately does not save or export files.
+"""Project template: implement builders; default placeholders never create a model.
+Keep reviewed coarse sources immutable while refining copies. No automatic save/export.
 """
-
 from __future__ import annotations
-
 import json
+import math
 from pathlib import Path
 import sys
-from typing import Any
-
-import bmesh
 import bpy
-from mathutils import Matrix
+
+TASK_ID='replace-me'
+OWNER_KEY='codex_task_id'
+MODULE_KEY='codex_module_id'
+PHASE_KEY='codex_build_phase'
+BUILD_MODE=None  # reference, original, waived
+WAIVER_REASON=''
+EXECUTION_STAGE=None  # blockout, review, refine
+REFERENCE_HELPER_DIR=None  # installed Skill scripts directory, required for gates
+MODELING_PLAN=None  # project modeling-plan.json
+MODELING_SCOPE=[]  # explicit module IDs, one receipt per scope
+REFERENCE_CONFIG=None
+CALIBRATION_REVIEW=None
+BLOCKOUT_REVIEW=None  # inspected evidence JSON, not pre-filled at build time
+BLOCKOUT_RECEIPT=None
+BUILD_RECEIPT=None
+REFINEMENT_RECEIPT=None
+BUILD_OUTPUTS=[]
+REFINEMENT_OUTPUTS=[]
+BLOCKOUT_PARAMETERS={}
+REFINEMENT_PARAMETERS={}
+BLOCKOUT_INPUT_FILES=[]  # defaults to this recipe; use separate coarse recipe files for narrower invalidation
 
 
-TASK_ID = "replace-me"
-COLLECTION_NAME = f"GEN_{TASK_ID}"
-OWNER_KEY = "codex_task_id"
-BUILD_MODE = None  # Set explicitly: 'reference', 'original', or 'waived'.
-WAIVER_REASON = ""  # For 'waived', record the user's actual instruction.
-REFERENCE_HELPER_DIR = None  # Absolute path to this skill's scripts/ directory.
-REFERENCE_CONFIG = None  # Project-local reference-setup.json; see reference-workspace-tool.md.
-CALIBRATION_REVIEW = None  # Inspected reference-visible orthographic captures.
-COMPARISON_REVIEW = None  # Optional until blockout exists; required for a final claim.
-INFERRED_DEPTH = None  # Sample builder only: explicitly chosen depth if no side evidence.
-BUILD_RECEIPT = None  # Project-local build-state.json for separate build/render calls.
-BUILD_OUTPUTS = []  # Saved artifacts if the project builder writes them; template itself does not.
-STAGE_INPUTS = {}  # Subject/style parameters and other inputs affecting this build.
+def build_blockout(plan,scope):
+    raise NotImplementedError('Implement a purpose-selected low-resolution builder; see the separate cube example')
+build_blockout.placeholder=True  # Remove this marker when replacing the function implementation.
 
 
-def generated_collection() -> bpy.types.Collection:
-    collection = bpy.data.collections.get(COLLECTION_NAME)
-    if collection is None:
-        collection = bpy.data.collections.new(COLLECTION_NAME)
-        bpy.context.scene.collection.children.link(collection)
-    return collection
+def refine_geometry(objects,plan,scope):
+    raise NotImplementedError('Implement refinement of derived copies; preserve reviewed coarse sources')
+refine_geometry.placeholder=True  # Remove this marker when replacing the function implementation.
 
 
-def remove_previous_generated_data() -> None:
-    """Delete only objects and orphaned meshes explicitly owned by this task."""
-    for obj in list(bpy.data.objects):
-        if obj.get(OWNER_KEY) == TASK_ID:
-            bpy.data.objects.remove(obj, do_unlink=True)
+def mark_owned(data,module_id,phase):
+    data[OWNER_KEY]=TASK_ID;data[MODULE_KEY]=module_id;data[PHASE_KEY]=phase;return data
+
+
+def remove_previous_generated_data(module_ids,phase):
+    """Project builders may call this after prerequisites, only for their own scope."""
+    if phase not in {'blockout','refine'} or not module_ids:raise ValueError('Explicit phase/module scope required')
+    outside={name for module in _load_plan()['modules'] if module['id'] not in module_ids for name in module['objects']}
+    candidates=[obj for obj in bpy.data.objects if obj.get(OWNER_KEY)==TASK_ID and obj.get(MODULE_KEY) in module_ids and obj.get(PHASE_KEY)==phase]
+    if any(obj.name in outside for obj in candidates):raise RuntimeError('Scoped deletion would remove a shared module object; edit the region or derive a copy')
+    for obj in candidates:bpy.data.objects.remove(obj,do_unlink=True)
     for mesh in list(bpy.data.meshes):
-        if mesh.get(OWNER_KEY) == TASK_ID and mesh.users == 0:
-            bpy.data.meshes.remove(mesh)
+        if mesh.users==0 and mesh.get(OWNER_KEY)==TASK_ID and mesh.get(MODULE_KEY) in module_ids and mesh.get(PHASE_KEY)==phase:bpy.data.meshes.remove(mesh)
 
 
-def mark_owned(data: Any) -> Any:
-    data[OWNER_KEY] = TASK_ID
-    return data
-
-
-def geometry_transform() -> Matrix:
-    """Resolve reference-derived sample inputs before replacing prior geometry."""
-    transform = Matrix.Identity(4)
-    if BUILD_MODE == 'reference':
-        # Example of consuming actual imported image coordinates. Replace these
-        # semantic anchors/profiles for the subject; do not keep arbitrary sizes.
-        from reference_workspace import reference_landmark
-        point = lambda name: reference_landmark(bpy.context.scene, TASK_ID, 'front', name)
-        center = point('body_center')
-        width = (point('body_right') - point('body_left')).length
-        height = (point('body_top') - point('body_bottom')).length
-        if INFERRED_DEPTH is None or INFERRED_DEPTH <= 0 or min(width, height) <= 0:
-            raise RuntimeError('Supply valid anchor-derived dimensions and an explicitly inferred depth')
-        transform = Matrix.Translation(center) @ Matrix.Diagonal((width, INFERRED_DEPTH, height, 1))
-    return transform
-
-
-def build_geometry(transform: Matrix) -> list[bpy.types.Object]:
-    """Replace this sample cube with the task's actual model."""
-    collection = generated_collection()
-    mesh = mark_owned(bpy.data.meshes.new(f"MESH_{TASK_ID}_body"))
-    bm = bmesh.new()
-    bmesh.ops.create_cube(bm, size=1.0)
-    bmesh.ops.transform(
-        bm,
-        matrix=transform,
-        verts=bm.verts,
-    )
-    bm.to_mesh(mesh)
-    bm.free()
-    mesh.validate(verbose=True)
-    mesh.update()
-
-    obj = mark_owned(bpy.data.objects.new(f"GEO_{TASK_ID}_body", mesh))
-    collection.objects.link(obj)
-    return [obj]
-
-
-def validate_result(objects: list[bpy.types.Object]) -> dict[str, Any]:
-    if not objects:
-        raise RuntimeError("The build created no objects")
-
-    result = {
-        "task_id": TASK_ID,
-        "objects": [],
-        "warnings": [],
-    }
-    for obj in objects:
-        item = {
-            "name": obj.name,
-            "type": obj.type,
-            "dimensions": [round(value, 6) for value in obj.dimensions],
-        }
-        if obj.type == "MESH":
-            item["vertices"] = len(obj.data.vertices)
-            item["polygons"] = len(obj.data.polygons)
-        result["objects"].append(item)
+def _objects(modules):
+    result=[]
+    for module in modules:
+        for name in module['objects']:
+            obj=bpy.data.objects.get(name)
+            if obj is None:raise RuntimeError('Missing bound blockout object: '+name)
+            if obj not in result:result.append(obj)
     return result
 
 
-def build_task() -> dict[str, Any]:
-    if TASK_ID == "replace-me":
-        raise RuntimeError("Set TASK_ID before running this template")
-    if BUILD_MODE not in {'reference', 'original', 'waived'}:
-        raise RuntimeError('Choose BUILD_MODE explicitly; reference-driven tasks cannot silently skip setup')
-    if BUILD_MODE == 'waived' and not WAIVER_REASON.strip():
-        raise RuntimeError('Record the user instruction waiving reference setup')
-    if BUILD_MODE == 'reference':
-        if not all([REFERENCE_HELPER_DIR, REFERENCE_CONFIG, CALIBRATION_REVIEW]):
-            raise RuntimeError('Prepare/calibrate the workspace and inspect reference-visible views first')
-        sys.path.insert(0, str(Path(REFERENCE_HELPER_DIR).resolve()))
-        from reference_workspace import setup_references, require_reference_review
-        config_path = Path(REFERENCE_CONFIG).resolve()
-        setup_references(bpy.context.scene, TASK_ID, json.loads(config_path.read_text()), config_path.parent)
-        require_reference_review(bpy.context.scene, TASK_ID, CALIBRATION_REVIEW)
+def validate_blockout(objects,plan,scope):
+    """Finite geometry and optional world-size constraints; visual inspection stays separate."""
+    expected=_objects([m for m in plan['modules'] if m['id'] in scope])
+    if not expected or set(objects)!=set(expected):raise RuntimeError('Builder objects do not match scoped module bindings')
+    measurements={}
+    graph=bpy.context.evaluated_depsgraph_get()
+    for module in plan['modules']:
+        if module['id'] not in scope:continue
+        points=[]
+        for obj in _objects([module]):
+            if obj.type not in {'MESH','CURVE'}:raise RuntimeError('Default template state supports mesh/curve proxies; implement an equivalent adapter for other representations')
+            evaluated=obj.evaluated_get(graph);mesh=evaluated.to_mesh()
+            try:points.extend(evaluated.matrix_world@v.co for v in mesh.vertices)
+            finally:evaluated.to_mesh_clear()
+        if not points or any(not all(math.isfinite(value) for value in point) for point in points):raise RuntimeError('Empty/nonfinite blockout geometry')
+        dimensions=[max(point[i] for point in points)-min(point[i] for point in points) for i in range(3)]
+        if 'world_dimensions' in module and any(abs(actual-target)>module['dimension_tolerance'] for actual,target in zip(dimensions,module['world_dimensions'])):raise RuntimeError('Blockout dimensions outside declared tolerance: '+module['id'])
+        measurements[module['id']]={'world_dimensions':dimensions}
+    return {'measurements':measurements,'objects':[o.name for o in objects],'stage':'blockout-built','ready_to_refine':False,'ready_to_claim_complete':False}
 
-    # Resolve required anchors/dimensions before deleting prior geometry too.
-    transform = geometry_transform()
-    remove_previous_generated_data()
-    objects = build_geometry(transform)
+
+def validate_result(objects):
+    if not objects:raise RuntimeError('No refinement output')
+    return {'objects':[o.name for o in objects],'stage':'refinement-produced','ready_to_claim_complete':False}
+
+
+def _state(modules):
+    from reference_workspace import model_signature
     bpy.context.view_layer.update()
-    result = validate_result(objects)
-    if BUILD_MODE == 'reference':
-        result['reference_stage'] = 'blockout_pending_comparison'
-        if COMPARISON_REVIEW:
-            require_reference_review(bpy.context.scene, TASK_ID, COMPARISON_REVIEW,
-                                     phase='comparison', objects=objects)
-            result['reference_stage'] = 'compared_against_imported_guides'
+    return {'geometry':model_signature(_objects(modules)),'frame':bpy.context.scene.frame_current}
+
+
+def _dependencies(plan):
+    from stage_guard import file_input
+    result={'parameters':BLOCKOUT_PARAMETERS,'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],
+            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py')]}
+    for module in plan['modules']:
+        if module['id'] in _dependency_scope(plan) and module['method']=='reuse':
+            result.setdefault('reuse_sources',[]).append(file_input(Path(MODELING_PLAN).resolve().parent/module['source_snapshot']))
+    if BUILD_MODE=='reference':
+        from reference_workspace import workspace_signature,require_reference_review
+        require_reference_review(bpy.context.scene,TASK_ID,CALIBRATION_REVIEW)
+        path=Path(REFERENCE_CONFIG).resolve();config=json.loads(path.read_text())
+        result.update(workspace=workspace_signature(bpy.context.scene,TASK_ID),config=file_input(path),calibration=file_input(CALIBRATION_REVIEW),
+                      images=[file_input(path.parent/item['image']) for item in config['views'].values()])
+        if config.get('multiview_review'):result['design']=file_input(path.parent/config['multiview_review'])
     return result
 
 
-def stage_inputs() -> dict[str, Any]:
+def _dependency_scope(plan):
+    from blockout_gate import select_modules
+    return {m['id'] for m in select_modules(plan,MODELING_SCOPE)}
+
+
+def _prepare_reference():
+    if BUILD_MODE=='reference':
+        from reference_workspace import setup_references,require_reference_review
+        path=Path(REFERENCE_CONFIG).resolve()
+        setup_references(bpy.context.scene,TASK_ID,json.loads(path.read_text()),path.parent)
+        require_reference_review(bpy.context.scene,TASK_ID,CALIBRATION_REVIEW)
+
+
+def build_task(plan):
+    if getattr(build_blockout,'placeholder',False):raise NotImplementedError('Replace build_blockout before any scene mutation')
+    _prepare_reference()
+    objects=build_blockout(plan,MODELING_SCOPE);bpy.context.view_layer.update()
+    return validate_blockout(objects,plan,MODELING_SCOPE)
+
+
+def refine_task(plan):
+    if getattr(refine_geometry,'placeholder',False):raise NotImplementedError('Replace refine_geometry before mutation')
+    from blockout_gate import require_blockout_review,select_modules
+    require_blockout_review(BLOCKOUT_RECEIPT,plan,MODELING_SCOPE,BLOCKOUT_REVIEW,_state,lambda:_dependencies(plan))
+    modules=select_modules(plan,MODELING_SCOPE);before=_state(modules)
+    objects=refine_geometry(_objects([m for m in plan['modules'] if m['id'] in MODELING_SCOPE]),plan,MODELING_SCOPE)
+    bpy.context.view_layer.update()
+    if before!=_state(modules):raise RuntimeError('Reviewed blockout source changed during refinement; use derived copies and renew affected evidence')
+    if any(obj in _objects(modules) for obj in objects):raise RuntimeError('Refinement outputs must be derived copies, not reviewed source objects')
+    return validate_result(objects)
+
+
+def _load_plan():
+    from blockout_gate import validate_plan
+    plan=validate_plan(json.loads(Path(MODELING_PLAN).read_text()))
+    if plan['task_id']!=TASK_ID:raise RuntimeError('Plan task identity mismatch')
+    return plan
+
+
+def build_inputs():
     from stage_guard import file_input
-    inputs = {'task': TASK_ID, 'mode': BUILD_MODE, 'recipe': file_input(__file__),
-              'parameters': STAGE_INPUTS, 'inferred_depth': INFERRED_DEPTH,
-              'waiver': WAIVER_REASON}
-    inputs['helpers'] = [file_input(Path(REFERENCE_HELPER_DIR) / name) for name in
-                         ('reference_workspace.py', 'reference_review.py',
-                          'appearance_signature.py', 'stage_guard.py')]
-    if BUILD_MODE == 'reference':
-        path = Path(REFERENCE_CONFIG).resolve()
-        config = json.loads(path.read_text())
-        inputs['config'] = file_input(path)
-        inputs['calibration'] = file_input(CALIBRATION_REVIEW)
-        if config.get('multiview_review'):
-            inputs['design'] = file_input(path.parent / config['multiview_review'])
-        inputs['images'] = [file_input(path.parent / item['image']) for item in config['views'].values()]
-    return inputs
+    from blockout_gate import select_modules
+    plan=_load_plan()
+    result={'task_id':TASK_ID,'mode':BUILD_MODE,'waiver':WAIVER_REASON,'plan_context':{k:v for k,v in plan.items() if k!='modules'},
+            'modules':select_modules(plan,MODELING_SCOPE),'recipe':file_input(__file__),
+            'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],'parameters':BLOCKOUT_PARAMETERS}
+    if BUILD_MODE=='reference':
+        path=Path(REFERENCE_CONFIG).resolve();config=json.loads(path.read_text())
+        result.update(config=file_input(path),calibration=file_input(CALIBRATION_REVIEW),
+                      images=[file_input(path.parent/item['image']) for item in config['views'].values()])
+        if config.get('multiview_review'):result['design']=file_input(path.parent/config['multiview_review'])
+    return result
 
 
-def main() -> None:
-    if BUILD_RECEIPT:
-        if not REFERENCE_HELPER_DIR:
-            raise RuntimeError('Set helper scripts directory for stage receipts')
-        sys.path.insert(0, str(Path(REFERENCE_HELPER_DIR).resolve()))
-        from stage_guard import run_stage
-        result = run_stage(BUILD_RECEIPT, 'build', stage_inputs, BUILD_OUTPUTS,
-                           build_task, lambda r: bool(r.get('objects')))
-    else:
-        result = build_task()
-    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+def refinement_inputs():
+    from stage_guard import file_input
+    from blockout_gate import require_blockout_review
+    plan=_load_plan()
+    predecessor=require_blockout_review(BLOCKOUT_RECEIPT,plan,MODELING_SCOPE,BLOCKOUT_REVIEW,_state,lambda:_dependencies(plan))
+    return {'task_id':TASK_ID,'predecessor_run':predecessor['run_id'],'review_receipt':file_input(BLOCKOUT_RECEIPT),
+            'coarse_inputs':build_inputs(),'recipe':file_input(__file__),'parameters':REFINEMENT_PARAMETERS}
 
 
-if __name__ == "__main__":
+def main():
+    if TASK_ID=='replace-me' or BUILD_MODE not in {'reference','original','waived'}:raise RuntimeError('Set task identity and explicit reference mode')
+    if BUILD_MODE=='waived' and not WAIVER_REASON.strip():raise RuntimeError('Record the actual user reference waiver')
+    if not REFERENCE_HELPER_DIR or not MODELING_PLAN:raise RuntimeError('Set installed helper directory and modeling plan')
+    if BUILD_MODE=='reference' and not all([REFERENCE_CONFIG,CALIBRATION_REVIEW]):raise RuntimeError('Reference setup and calibration are required')
+    sys.path.insert(0,str(Path(REFERENCE_HELPER_DIR).resolve()))
+    from blockout_gate import record_blockout_review
+    from stage_guard import run_stage
+    if EXECUTION_STAGE=='blockout':
+        if not BUILD_RECEIPT:raise RuntimeError('Build receipt required')
+        result=run_stage(BUILD_RECEIPT,'blockout-build',build_inputs,BUILD_OUTPUTS,
+                         lambda:build_task(_load_plan()),lambda result:bool(result['objects']))
+    elif EXECUTION_STAGE=='review':
+        if not BLOCKOUT_RECEIPT or not BLOCKOUT_REVIEW:raise RuntimeError('Inspection evidence and review receipt required')
+        result=record_blockout_review(BLOCKOUT_RECEIPT,_load_plan,MODELING_SCOPE,BLOCKOUT_REVIEW,_state,lambda:_dependencies(_load_plan()))
+        result.update(ready_to_refine=True,ready_to_claim_complete=False)
+    elif EXECUTION_STAGE=='refine':
+        if not REFINEMENT_RECEIPT or not BLOCKOUT_RECEIPT or not BLOCKOUT_REVIEW:raise RuntimeError('Refinement and prerequisite review paths required')
+        result=run_stage(REFINEMENT_RECEIPT,'refine',refinement_inputs,REFINEMENT_OUTPUTS,
+                         lambda:refine_task(_load_plan()),lambda result:bool(result['objects']))
+    else:raise RuntimeError('Choose blockout, review or refine explicitly')
+    print(json.dumps(result,ensure_ascii=False));return result
+
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--stage',choices=['blockout','review','refine'],default=EXECUTION_STAGE)
+    arguments=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+    EXECUTION_STAGE=arguments.stage
     main()

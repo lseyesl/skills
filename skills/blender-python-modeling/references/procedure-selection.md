@@ -9,3 +9,5 @@
 复用 stage_guard、模块台账、参考拟合和现有持久脚本；不为一个局部修改再建执行框架。保存修改前后证据，更新受影响签名，旧通过回执不能继续代表新结果。
 
 更多问题：生成/扫描网格用 [网格恢复](procedures/modeling/generated-mesh-recovery.md)，重拓扑后数据用 [迁移](procedures/modeling/data-transfer-repair.md)，基础绑定正确后的局部失真用 [关节修正](procedures/characters/joint-correctives.md)，烘焙接缝用 [法线诊断](procedures/surfacing/normal-bake-repair.md)，布料异常用 [接触诊断](procedures/simulation/cloth-collision-repair.md)，GLB 交付/优化用 [格式验证](procedures/delivery/gltf-validation.md) 与 [优化回归](procedures/delivery/realtime-optimization.md)。
+
+复杂模型从 [低分辨率搭建与细化](procedures/modeling/blockout-and-refinement.md) 进入。Cube 盒式建模、基础体组合、面片/曲线/雕刻或已有资产复用按模块判断；进入细化前使用 [基础形体验收](acceptance/blockout.md)。

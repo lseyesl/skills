@@ -15,6 +15,21 @@ Block out primary proportions before details. Name major parts separately when t
 
 For a worked hard-surface example, see the [iron lantern pilot](../examples/iron-lantern-p0/README.md). It maps calibrated landmarks to turned profiles and swept tubes, then checks local corrections against the same views, aperture rays, and mesh seats.
 
+## Low-resolution construction and refinement
+
+Use [the blockout workflow](procedures/modeling/blockout-and-refinement.md) and [acceptance](acceptance/blockout.md) for complex creation. A method is selected per module, not once for an entire complex asset:
+
+| Representation | Good starting point | Next decision |
+|---|---|---|
+| Primitive assemblies | Explore primary masses and independent mechanical parts | Refine separately or reconstruct continuous surfaces where needed |
+| Box modeling | A continuous shell can be controlled with a small cage and extrusion | Add purposeful edge flow/support, then evaluate subdivision |
+| Surface patches | Panels and shells with important boundary control | Establish continuity, thickness and controlled subdivision |
+| Curves/sweeps | Tubes, rails, outlines | Choose path/profile sampling and downstream representation |
+| Low-resolution sculpt/base mesh | Organic volume exploration | Refine forms; retopologize if the delivery/deformation requires it |
+| Existing suitable asset | Local edits or compatible reusable geometry | Preserve a snapshot and inspect the affected scope directly |
+
+Do not subdivide densely before proportions and structure are established. Edit-mode Subdivide, Subdivision Surface and Multires have different purposes. Conversely, a set of intersecting primitives is not automatically a final skin or attachment. Determine continuity, separate parts and moving joints deliberately. Continuous characters may map several semantic modules to one mesh; do not split skin solely to satisfy bookkeeping.
+
 ## Direct mesh construction
 
 Use `mesh.from_pydata` for known topology and BMesh for procedural editing:

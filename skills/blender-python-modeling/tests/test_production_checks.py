@@ -48,4 +48,13 @@ class ProductionChecks(unittest.TestCase):
             ('保留节点优化','optimize','blender.realtime-optimization')]:
             with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
 
+    def test_modeling_method_and_acceptance_routes(self):
+        entries=load_catalog(ROOT.parent)
+        for query,task,expected in [
+            ('盒式建模','create','blender.blockout-and-refinement'),
+            ('Cube 细分','create','blender.blockout-and-refinement'),
+            ('已有基础网格复用','repair','blender.blockout-and-refinement'),
+            ('基础形体验收','inspect','blender.acceptance.blockout')]:
+            with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
+
 if __name__=='__main__':unittest.main()

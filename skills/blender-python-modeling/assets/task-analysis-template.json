@@ -25,5 +25,11 @@
     "stop_conditions": []
   },
   "acceptance": [],
-  "unknowns": []
+  "unknowns": [],
+  "modeling_plan": {
+    "path": null,
+    "scope": [],
+    "review_receipt": null,
+    "reuse_reason": null
+  }
 }

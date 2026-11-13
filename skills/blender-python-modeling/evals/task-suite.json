@@ -680,6 +680,102 @@
           "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
         }
       ]
+    },
+    {
+      "id": "modeling.blockout-before-detail",
+      "prompt": "制作一个复杂机械装配：先拆解体积、连接和运动关系，选择各部件的方法；基础形体检查通过后再细化。",
+      "split": "dev",
+      "setup": "Prepare independent reference/asset snapshots. Do not expose graders or synthetic review documents to the evaluated Agent.",
+      "checks": [
+        {
+          "id": "method",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "方法符合用途并有理由，不统一要求 Cube 或多基础体"
+        },
+        {
+          "id": "gate",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "未检查或过期形体不能进入细化，实际证据绑定当前状态"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "保留源和未修改模块，局部清理不删除共享网格"
+        },
+        {
+          "id": "shape",
+          "kind": "visual",
+          "required": true,
+          "criterion": "实际观察比例/轮廓/结构，粗模不冒充完成资产"
+        }
+      ]
+    },
+    {
+      "id": "modeling.box-modeling-valid",
+      "prompt": "从一个 Cube 用低模挤出和边环控制连续外壳，完成基础形体验证后细分；不要因为从 Cube 开始就判为错误。",
+      "split": "dev",
+      "setup": "Prepare independent reference/asset snapshots. Do not expose graders or synthetic review documents to the evaluated Agent.",
+      "checks": [
+        {
+          "id": "method",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "方法符合用途并有理由，不统一要求 Cube 或多基础体"
+        },
+        {
+          "id": "gate",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "未检查或过期形体不能进入细化，实际证据绑定当前状态"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "保留源和未修改模块，局部清理不删除共享网格"
+        },
+        {
+          "id": "shape",
+          "kind": "visual",
+          "required": true,
+          "criterion": "实际观察比例/轮廓/结构，粗模不冒充完成资产"
+        }
+      ]
+    },
+    {
+      "id": "modeling.reuse-local",
+      "prompt": "已有资产只有一个附件比例需要调整，保留其他模块，复用合适形体并只复查受影响的范围。",
+      "split": "dev",
+      "setup": "Prepare independent reference/asset snapshots. Do not expose graders or synthetic review documents to the evaluated Agent.",
+      "checks": [
+        {
+          "id": "method",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "方法符合用途并有理由，不统一要求 Cube 或多基础体"
+        },
+        {
+          "id": "gate",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "未检查或过期形体不能进入细化，实际证据绑定当前状态"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "保留源和未修改模块，局部清理不删除共享网格"
+        },
+        {
+          "id": "shape",
+          "kind": "visual",
+          "required": true,
+          "criterion": "实际观察比例/轮廓/结构，粗模不冒充完成资产"
+        }
+      ]
     }
   ]
 }

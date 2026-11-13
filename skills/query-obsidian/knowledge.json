@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "query-obsidian.overview",
+      "title": "查询 Obsidian 知识",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "query"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Obsidian",
+        "知识检索",
+        "笔记查询"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "query-obsidian.reference.31268bf73b3c",
+      "title": "Obsidian vault locations",
+      "entry": "references/vault-locations.md",
+      "kind": "knowledge",
+      "tasks": [
+        "query"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Obsidian vault locations",
+        "vault locations"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "excluded_paths": {}
+}

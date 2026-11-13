@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task_id": "replace-me",
+  "status": "pending",
+  "reviewer": null,
+  "modules": {
+    "body": {
+      "unresolved_issues": [
+        "Not inspected yet"
+      ],
+      "checks": {
+        "proportions": {
+          "status": "unknown",
+          "finding": "",
+          "evidence": []
+        },
+        "silhouette": {
+          "status": "unknown",
+          "finding": "",
+          "view": "",
+          "evidence": []
+        },
+        "connections": {
+          "status": "unknown",
+          "finding": "",
+          "view": "",
+          "evidence": []
+        }
+      }
+    }
+  },
+  "inspection_signature": null
+}

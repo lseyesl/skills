@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "wheel-origin",
+  "skill": "blender-python-modeling",
+  "prompt": "task.md",
+  "prepare": "prepare.py",
+  "grader": "grade.py",
+  "output": "output.blend",
+  "checks": ["rest_geometry", "preservation", "rotation"],
+  "scope": "Single synthetic wheel-origin repair; does not certify full vehicle skill or visual quality."
+}

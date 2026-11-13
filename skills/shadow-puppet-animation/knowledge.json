@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "shadow-puppet-animation.overview",
+      "title": "皮影动画制作",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create",
+        "animate",
+        "repair",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影动画",
+        "皮影镜头",
+        "shadow puppet animation"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-animation.reference-study",
+      "title": "双参考研究：可见证据与制作推演",
+      "entry": "references/reference-study.md",
+      "kind": "knowledge",
+      "tasks": [
+        "inspect",
+        "animate"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影参考分析",
+        "双参考研究"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-animation.art-assets",
+      "title": "资产设计与生成",
+      "entry": "references/art-assets.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "animate"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影服装",
+        "皮影场景道具"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-animation.motion-direction",
+      "title": "动作与运动逻辑",
+      "entry": "references/motion-direction.md",
+      "kind": "knowledge",
+      "tasks": [
+        "animate",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影动作逻辑",
+        "皮影表演"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/planar_ik.py"
+      ]
+    },
+    {
+      "id": "shadow-puppet-animation.contact-audit",
+      "title": "接触量测与复现测试",
+      "entry": "references/contact-audit.md",
+      "kind": "knowledge",
+      "tasks": [
+        "inspect",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影接触量测",
+        "支撑锚点",
+        "滑步检查"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/audit_contacts.py"
+      ]
+    },
+    {
+      "id": "shadow-puppet-animation.quality-review",
+      "title": "镜头与质量验收",
+      "entry": "references/quality-review.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影质量验收",
+        "原速审阅"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-animation.shot-record",
+      "title": "记录与示例",
+      "entry": "references/shot-record.md",
+      "kind": "knowledge",
+      "tasks": [
+        "animate",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影镜头记录"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "excluded_paths": {}
+}

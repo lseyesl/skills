@@ -77,3 +77,11 @@
 - 每个 `skills/<skill-name>/SKILL.md` 在对应用途分类中保留一个主入口。
 - 本索引只保存选择入口所需的信息，详细流程、工具接口和契约保留在对应技能中。
 - 未找到匹配项时，继续搜索 `skills/`，检查是否存在尚未同步的技能。
+
+## 知识与问题定位
+
+Skill 主分组见 [机器分类](catalog/taxonomy.json)，每个 Skill 的 knowledge.json 按任务、对象、症状及适用条件索引知识。源码查询：`python tools/knowledge.py search "握拳塌陷" --task repair --subject hand`。结果列出匹配依据、排除条件和缺失事实；必须核对正文后执行。组织规则见 [架构](docs/skill-architecture.md)。
+
+Blender 内新增的网格恢复/数据迁移、关节修正、法线烘焙/布料诊断及 glTF 验证/优化流程继续由 blender-python-modeling 一个入口组织，按 [知识索引](skills/blender-python-modeling/knowledge.json) 加载。
+
+复杂 Blender 建模的方法选择、基础形体检查与细化前置条件见 [blockout 流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)；允许盒式建模和已有资产复用，保持单一 Blender Skill 入口。

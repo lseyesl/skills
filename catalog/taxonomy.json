@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "groups": {
+    "production": [
+      "ancient-tales-production"
+    ],
+    "visual-design": [
+      "concept-multiview-sheet",
+      "shadow-puppet-image",
+      "shadow-puppet-part-splitter"
+    ],
+    "blender": [
+      "blender-python-modeling",
+      "blender-styles"
+    ],
+    "motion-reference": [
+      "continuous-action",
+      "shadow-puppet-animation"
+    ],
+    "documents": [
+      "epub-xhtml-to-markdown",
+      "pdf-epub-to-markdown"
+    ],
+    "knowledge": [
+      "query-obsidian",
+      "distill-to-obsidian"
+    ],
+    "infrastructure": [
+      "ancient-tales-pipeline"
+    ]
+  }
+}

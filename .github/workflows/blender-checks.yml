@@ -1,0 +1,59 @@
+name: Explicit Blender version checks
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender:
+    # Provision these versioned binaries on a dedicated runner before dispatch.
+    runs-on: [self-hosted, linux, blender]
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        blender: ["4.3", "4.5"]
+    env:
+      BLENDER_BIN: /opt/blender/${{ matrix.blender }}/blender
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements-ci.txt
+      - name: Verify matrix binary
+        env:
+          EXPECTED_VERSION: ${{ matrix.blender }}
+        run: python tools/check_blender_version.py --blender "$BLENDER_BIN" --expected-major-minor "$EXPECTED_VERSION"
+      - name: Blender integration and repair checks
+        run: python tools/check.py --group blender --blender "$BLENDER_BIN"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install optional pinned format validator
+        run: npm --cache .tmp/npm-cache install --prefix .tmp/gltf-tools --ignore-scripts --no-audit --no-fund gltf-validator@2.0.0-dev.3.10
+      - name: Validate actual Blender export and negative controls
+        run: python skills/blender-python-modeling/tests/test_gltf_validation.py --validator-module .tmp/gltf-tools/node_modules/gltf-validator --asset .tmp/tests/blender-production/production-sample.glb
+      - name: Preserve format report
+        run: python skills/blender-python-modeling/scripts/gltf_audit.py .tmp/tests/blender-production/production-sample.glb --validator-module .tmp/gltf-tools/node_modules/gltf-validator --report .tmp/gltf-format-report.json
+      - name: Calibrate independent wheel grader
+        run: python tools/calibrate_capsule.py --capsule evals/capsules/wheel-origin --output .tmp/wheel-calibration --blender "$BLENDER_BIN"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: blender-${{ matrix.blender }}
+          path: |
+            .tmp/tests/blender-domain/domain-report.json
+            .tmp/tests/blender-repair/repair-report.json
+            .tmp/tests/blender-repair/diagnostic.png
+            .tmp/tests/blender-production/production-report.json
+            .tmp/tests/blender-production/normal.png
+            .tmp/tests/blender-blockout/pipeline-report.json
+            .tmp/tests/blender-blockout/blockout.png
+            .tmp/gltf-format-report.json
+            .tmp/wheel-calibration/calibration.json

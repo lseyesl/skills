@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "shadow-puppet-part-splitter.overview",
+      "title": "皮影角色拆件",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "皮影拆件",
+        "组件分层"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-part-splitter.reference.46bb1a5b831e",
+      "title": "动作优先的 2.5D 骨骼流程",
+      "entry": "references/blender-workflow.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "动作优先的 2.5D 骨骼流程",
+        "blender workflow"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-part-splitter.reference.94c5230830ed",
+      "title": "数据约定 v1.0",
+      "entry": "references/manifest.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "数据约定 v1.0",
+        "manifest"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-part-splitter.reference.f4583c332045",
+      "title": "隐藏连接修补",
+      "entry": "references/repair.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "隐藏连接修补",
+        "repair"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-part-splitter.reference.ba817480ba04",
+      "title": "通用工具：直接使用",
+      "entry": "references/tools.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "通用工具：直接使用",
+        "tools"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "shadow-puppet-part-splitter.character-intake",
+      "title": "从单张图到可编辑组件：执行入口",
+      "entry": "references/character-intake.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "角色标注编译",
+        "character annotation",
+        "单图拆件"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/compile_character.py"
+      ]
+    },
+    {
+      "id": "shadow-puppet-part-splitter.assembly-diagnostics",
+      "title": "装配比较与转轴优化",
+      "entry": "references/assembly-diagnostics.md",
+      "kind": "procedure",
+      "tasks": [
+        "inspect",
+        "repair",
+        "optimize"
+      ],
+      "subjects": [],
+      "aliases": [
+        "装配诊断",
+        "图层诊断",
+        "转轴优化"
+      ],
+      "applies_when": [
+        "任务与正文适用条件、所需输入及所选后端一致"
+      ],
+      "exclude_when": [
+        "不把工具成功或检索命中当作视觉、动态或最终品质验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/assembly_diagnostics.py",
+        "scripts/layer_diagnostics.py"
+      ]
+    }
+  ],
+  "excluded_paths": {}
+}

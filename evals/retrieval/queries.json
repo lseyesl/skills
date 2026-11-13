@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "note": "Curated seed cases; test split is held aside by convention, not an independently collected blind benchmark.",
+  "queries": [
+    {
+      "id": "hand-zh",
+      "query": "握拳塌陷",
+      "task": "repair",
+      "expected": [
+        "blender.hand-deformation"
+      ],
+      "split": "test",
+      "subject": "hand"
+    },
+    {
+      "id": "hand-en",
+      "query": "finger collapse",
+      "task": "repair",
+      "expected": [
+        "blender.hand-deformation"
+      ],
+      "split": "test",
+      "subject": "hand"
+    },
+    {
+      "id": "hand-create",
+      "query": "人手",
+      "task": "create",
+      "expected": [
+        "blender.hand-construction"
+      ],
+      "split": "dev",
+      "subject": "hand"
+    },
+    {
+      "id": "wheel-zh",
+      "query": "车轮偏心",
+      "task": "repair",
+      "expected": [
+        "blender.wheel-motion"
+      ],
+      "split": "test",
+      "subject": "wheel"
+    },
+    {
+      "id": "wheel-en",
+      "query": "wheel wobble",
+      "task": "repair",
+      "expected": [
+        "blender.wheel-motion"
+      ],
+      "split": "test",
+      "subject": "wheel"
+    },
+    {
+      "id": "wheel-create",
+      "query": "汽车轮胎",
+      "task": "create",
+      "expected": [
+        "blender.wheel-construction"
+      ],
+      "split": "dev",
+      "subject": "wheel"
+    },
+    {
+      "id": "rig-zh",
+      "query": "骨骼蒙皮",
+      "task": "export",
+      "expected": [
+        "blender.rigging-and-skinning"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "rig-en",
+      "query": "skinning rig export",
+      "task": "export",
+      "expected": [
+        "blender.rigging-and-skinning"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "style",
+      "query": "手捏橡皮泥",
+      "task": "create",
+      "expected": [
+        "style.handmade-plasticine"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "document",
+      "query": "PDF OCR",
+      "task": "convert",
+      "expected": [
+        "pdf-epub-to-markdown.overview"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "knowledge",
+      "query": "Obsidian 笔记查询",
+      "task": "query",
+      "expected": [
+        "query-obsidian.overview"
+      ],
+      "split": "test"
+    },
+    {
+      "id": "oos",
+      "query": "Kubernetes PostgreSQL",
+      "task": "repair",
+      "expected": [],
+      "split": "test"
+    },
+    {
+      "id": "wrong-subject",
+      "query": "握拳塌陷",
+      "task": "repair",
+      "expected": [],
+      "split": "test",
+      "subject": "wheel"
+    },
+    {
+      "id": "missing-asset",
+      "query": "握拳塌陷",
+      "task": "repair",
+      "expected": [],
+      "split": "test",
+      "subject": "hand",
+      "facts": {
+        "asset_exists": false
+      }
+    },
+    {
+      "id": "existing-cloth-en",
+      "query": "cloth collision penetrates mesh",
+      "task": "repair",
+      "expected": [
+        "blender.physics-and-simulation"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "existing-cloth-zh",
+      "query": "布料穿透",
+      "task": "repair",
+      "expected": [
+        "blender.cloth-collision-repair"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "existing-uv",
+      "query": "UV 接缝",
+      "task": "repair",
+      "expected": [
+        "blender.uv-and-texture-baking"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "mixed-target",
+      "query": "为 React 展示页面导出 Blender 角色 GLB",
+      "task": "export",
+      "expected": [
+        "blender.export-and-packaging"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "mesh-recovery",
+      "query": "生成模型重拓扑",
+      "task": "repair",
+      "expected": [
+        "blender.mesh-recovery"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "transfer-repair",
+      "query": "权重迁移",
+      "task": "repair",
+      "expected": [
+        "blender.data-transfer-repair"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "joint-correctives",
+      "query": "修正形态键",
+      "task": "repair",
+      "expected": [
+        "blender.joint-correctives"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "bake-repair",
+      "query": "法线贴图接缝",
+      "task": "repair",
+      "expected": [
+        "blender.normal-bake-repair"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "gltf-check",
+      "query": "GLB规范验证",
+      "task": "inspect",
+      "expected": [
+        "blender.gltf-validation"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "node-preservation",
+      "query": "保留节点优化",
+      "task": "optimize",
+      "expected": [
+        "blender.realtime-optimization"
+      ],
+      "split": "dev"
+    }
+  ]
+}

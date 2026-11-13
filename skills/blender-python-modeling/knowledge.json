@@ -1,0 +1,1756 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "blender-python-modeling.overview",
+      "title": "Blender 建模与场景",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Blender",
+        "建模",
+        "场景"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.hand-construction",
+      "title": "可变形人手制作",
+      "entry": "references/procedures/characters/hand-construction.md",
+      "kind": "procedure",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [
+        "hand"
+      ],
+      "aliases": [
+        "人手",
+        "手掌",
+        "finger",
+        "hand topology"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.hand-poses"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.hand-deformation",
+      "title": "握拳塌陷与手指扭曲诊断",
+      "entry": "references/procedures/characters/hand-deformation.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "optimize"
+      ],
+      "subjects": [
+        "hand"
+      ],
+      "aliases": [
+        "握拳塌陷",
+        "手指扭曲",
+        "finger collapse",
+        "hand deformation"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "rest_mesh_ok",
+        "intended_use",
+        "asset_exists"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.hand-poses"
+      ],
+      "conditions": {
+        "asset_exists": true
+      },
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.wheel-construction",
+      "title": "汽车车轮制作",
+      "entry": "references/procedures/vehicles/wheel-construction.md",
+      "kind": "procedure",
+      "tasks": [
+        "create"
+      ],
+      "subjects": [
+        "wheel"
+      ],
+      "aliases": [
+        "汽车轮胎",
+        "轮毂",
+        "wheel tire tyre"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "intended_use"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.wheel-motion"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.wheel-motion",
+      "title": "车轮偏心与滚动诊断",
+      "entry": "references/procedures/vehicles/wheel-motion.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "animate",
+        "optimize"
+      ],
+      "subjects": [
+        "wheel"
+      ],
+      "aliases": [
+        "车轮偏心",
+        "轮子打滑",
+        "wheel wobble rolling"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "rolling_mode",
+        "axis",
+        "asset_exists"
+      ],
+      "requires": [],
+      "verification": [
+        "blender.acceptance.wheel-motion"
+      ],
+      "conditions": {
+        "asset_exists": true
+      },
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.rigging-and-skinning",
+      "title": "角色绑定与蒙皮交付",
+      "entry": "references/procedures/characters/rigging-and-skinning.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "character"
+      ],
+      "aliases": [
+        "骨骼",
+        "蒙皮",
+        "绑定",
+        "skinning rig export",
+        "骨架",
+        "添加骨架",
+        "rigging",
+        "armature"
+      ],
+      "applies_when": [
+        "先完成现场诊断并核对正文条件"
+      ],
+      "exclude_when": [
+        "与目标用途或正文排除条件冲突"
+      ],
+      "required_facts": [
+        "intended_use",
+        "target_format"
+      ],
+      "requires": [
+        "blender.character-delivery"
+      ],
+      "verification": [
+        "blender.acceptance.character-export"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.character-delivery",
+      "title": "角色交付通用契约",
+      "entry": "references/character-delivery.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "repair",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "character"
+      ],
+      "aliases": [
+        "角色交付",
+        "rest pose",
+        "weights"
+      ],
+      "applies_when": [
+        "需要可变形角色或骨骼导出"
+      ],
+      "exclude_when": [
+        "明确仅制作静态雕塑"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.hand-poses",
+      "title": "手部姿势验收",
+      "entry": "references/acceptance/hand-poses.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "手部姿势验收"
+      ],
+      "applies_when": [
+        "对应处理流程请求验收"
+      ],
+      "exclude_when": [
+        "不能替代未执行的视觉或目标平台验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.acceptance.wheel-motion",
+      "title": "车轮运动验收",
+      "entry": "references/acceptance/wheel-motion.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "车轮运动验收"
+      ],
+      "applies_when": [
+        "对应处理流程请求验收"
+      ],
+      "exclude_when": [
+        "不能替代未执行的视觉或目标平台验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.acceptance.character-export",
+      "title": "角色导出验收",
+      "entry": "references/acceptance/character-export.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "角色导出验收"
+      ],
+      "applies_when": [
+        "对应处理流程请求验收"
+      ],
+      "exclude_when": [
+        "不能替代未执行的视觉或目标平台验收"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/domain_checks.py"
+      ]
+    },
+    {
+      "id": "blender.animation-and-rigging",
+      "title": "Animation and Rigging Recipes",
+      "entry": "references/animation-and-rigging.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "character"
+      ],
+      "aliases": [
+        "Animation and Rigging Recipes",
+        "animation and rigging",
+        "关键帧",
+        "IK",
+        "骨架",
+        "绑定",
+        "animation constraints"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.asset-libraries",
+      "title": "Asset Libraries and Reuse",
+      "entry": "references/asset-libraries.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "library"
+      ],
+      "aliases": [
+        "Asset Libraries and Reuse",
+        "asset libraries",
+        "Asset Browser",
+        "资产浏览器",
+        "链接资产"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.compatibility",
+      "title": "Blender Version Compatibility",
+      "entry": "references/compatibility.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "compatibility"
+      ],
+      "aliases": [
+        "Blender Version Compatibility",
+        "compatibility",
+        "Blender 版本",
+        "API compatibility"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.compositing-and-passes",
+      "title": "Compositing and Render Passes",
+      "entry": "references/compositing-and-passes.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "compositing"
+      ],
+      "aliases": [
+        "Compositing and Render Passes",
+        "compositing and passes",
+        "Cryptomatte",
+        "合成",
+        "EXR",
+        "render passes"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.export-and-packaging",
+      "title": "Export and Asset Packaging",
+      "entry": "references/export-and-packaging.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "export"
+      ],
+      "aliases": [
+        "Export and Asset Packaging",
+        "export and packaging",
+        "GLB",
+        "glTF",
+        "FBX",
+        "导出",
+        "贴图丢失",
+        "web viewer",
+        "React 展示"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.fidelity-and-completion",
+      "title": "Reference Fidelity and Completion Gates",
+      "entry": "references/fidelity-and-completion.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Reference Fidelity and Completion Gates",
+        "fidelity and completion"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.game-assets",
+      "title": "Game Asset Production",
+      "entry": "references/game-assets.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "game-asset"
+      ],
+      "aliases": [
+        "Game Asset Production",
+        "game assets",
+        "LOD",
+        "减面",
+        "碰撞网格",
+        "游戏资产",
+        "retopology"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.local-feature-review",
+      "title": "Local shape, relief and render review",
+      "entry": "references/local-feature-review.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Local shape, relief and render review",
+        "local feature review"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.materials-and-nodes",
+      "title": "Materials and Node Recipes",
+      "entry": "references/materials-and-nodes.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "material"
+      ],
+      "aliases": [
+        "Materials and Node Recipes",
+        "materials and nodes",
+        "PBR",
+        "Geometry Nodes",
+        "着色器",
+        "材质节点"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.mcp-workflow",
+      "title": "Local Blender MCP Workflow",
+      "entry": "references/mcp-workflow.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Local Blender MCP Workflow",
+        "mcp workflow"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.modeling-recipes",
+      "title": "Modeling Recipes",
+      "entry": "references/modeling-recipes.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Modeling Recipes",
+        "modeling recipes"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.output-targets",
+      "title": "Output-Target Recipes",
+      "entry": "references/output-targets.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Output-Target Recipes",
+        "output targets"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.physics-and-simulation",
+      "title": "Physics and Simulation",
+      "entry": "references/physics-and-simulation.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "physics"
+      ],
+      "aliases": [
+        "Physics and Simulation",
+        "physics and simulation",
+        "布料穿透",
+        "布料碰撞",
+        "cloth collision",
+        "cloth simulation",
+        "fluid cache",
+        "刚体",
+        "布料模拟"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.procedure-selection",
+      "title": "方案选择与执行",
+      "entry": "references/procedure-selection.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "方案选择与执行",
+        "procedure selection"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.python-modeling",
+      "title": "Blender Python Modeling Rules",
+      "entry": "references/python-modeling.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Blender Python Modeling Rules",
+        "python modeling"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-python-modeling.reference.6dd9c4a1b5a2",
+      "title": "Reference fitting audit and design",
+      "entry": "references/reference-fitting/architecture.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Reference fitting audit and design",
+        "architecture"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-python-modeling.reference.fbb871ab7c09",
+      "title": "Executable reference-fitting workflow (Phase 0–4)",
+      "entry": "references/reference-fitting/workflow.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Executable reference-fitting workflow (Phase 0–4)",
+        "workflow"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.reference-image-analysis",
+      "title": "AI Reference Image Analysis",
+      "entry": "references/reference-image-analysis.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "AI Reference Image Analysis",
+        "reference image analysis"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.reference-workspace-tool",
+      "title": "Apply imported references to geometry",
+      "entry": "references/reference-workspace-tool.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Apply imported references to geometry",
+        "reference workspace tool"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.scene-diagnosis",
+      "title": "场景诊断",
+      "entry": "references/scene-diagnosis.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "场景诊断",
+        "scene diagnosis"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.scene-lighting-rendering",
+      "title": "Scene, Lighting, and Rendering Recipes",
+      "entry": "references/scene-lighting-rendering.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "render"
+      ],
+      "aliases": [
+        "Scene, Lighting, and Rendering Recipes",
+        "scene lighting rendering",
+        "渲染",
+        "相机",
+        "灯光",
+        "Cycles",
+        "EEVEE"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.staged-execution",
+      "title": "Fail-closed stages and selective rendering",
+      "entry": "references/staged-execution.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Fail-closed stages and selective rendering",
+        "staged execution"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.task-analysis",
+      "title": "任务分析",
+      "entry": "references/task-analysis.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "任务分析",
+        "task analysis"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.uv-and-texture-baking",
+      "title": "UV and Texture Baking",
+      "entry": "references/uv-and-texture-baking.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [
+        "uv"
+      ],
+      "aliases": [
+        "UV and Texture Baking",
+        "uv and texture baking",
+        "UV 接缝",
+        "纹理接缝",
+        "UV seam",
+        "UV unwrap",
+        "烘焙",
+        "texel density"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.verification",
+      "title": "Blender Result Verification",
+      "entry": "references/verification.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Blender Result Verification",
+        "verification"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.mesh-recovery",
+      "title": "生成扫描网格恢复与重拓扑",
+      "entry": "references/procedures/modeling/generated-mesh-recovery.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "optimize"
+      ],
+      "subjects": [
+        "mesh"
+      ],
+      "aliases": [
+        "扫描网格",
+        "AI模型清理",
+        "生成模型重拓扑",
+        "scan cleanup",
+        "generated mesh recovery",
+        "non manifold repair"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "intended_use",
+        "smallest_feature",
+        "budget"
+      ],
+      "requires": [
+        "blender.modeling-recipes",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.mesh-recovery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-remesh",
+        "retopoflow"
+      ]
+    },
+    {
+      "id": "blender.data-transfer-repair",
+      "title": "重拓扑后的权重 UV 属性迁移",
+      "entry": "references/procedures/modeling/data-transfer-repair.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "create"
+      ],
+      "subjects": [
+        "mesh",
+        "character"
+      ],
+      "aliases": [
+        "权重迁移",
+        "属性转移",
+        "UV迁移",
+        "data transfer",
+        "weight transfer",
+        "topology mapping"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "source_target_mapping",
+        "data_layers"
+      ],
+      "requires": [
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.mesh-recovery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-transfer"
+      ]
+    },
+    {
+      "id": "blender.joint-correctives",
+      "title": "关节修正形态键与驱动维护",
+      "entry": "references/procedures/characters/joint-correctives.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "animate",
+        "create"
+      ],
+      "subjects": [
+        "character",
+        "hand"
+      ],
+      "aliases": [
+        "修正形态键",
+        "关节修正",
+        "corrective shape keys",
+        "Corrective Smooth",
+        "Pose Shape Keys"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "target_pose",
+        "topology_stable",
+        "target_format"
+      ],
+      "requires": [
+        "blender.character-delivery",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.joint-correctives"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-corrective",
+        "studio-pose-keys"
+      ]
+    },
+    {
+      "id": "blender.normal-bake-repair",
+      "title": "法线贴图接缝与烘焙错误诊断",
+      "entry": "references/procedures/surfacing/normal-bake-repair.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "create",
+        "export"
+      ],
+      "subjects": [
+        "uv",
+        "material"
+      ],
+      "aliases": [
+        "法线贴图接缝",
+        "烘焙黑斑",
+        "normal bake seam",
+        "normal map inverted",
+        "cage ray distance"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "triangulation",
+        "uv_layer",
+        "tangent_convention"
+      ],
+      "requires": [
+        "blender.uv-and-texture-baking",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.normal-bake"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-bake",
+        "blender-colour"
+      ]
+    },
+    {
+      "id": "blender.cloth-collision-repair",
+      "title": "布料穿透悬浮与爆炸诊断",
+      "entry": "references/procedures/simulation/cloth-collision-repair.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "animate"
+      ],
+      "subjects": [
+        "physics"
+      ],
+      "aliases": [
+        "布料穿透",
+        "布料爆炸",
+        "布料悬浮",
+        "cloth penetration",
+        "cloth collision repair",
+        "cloth explosion"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "initial_intersection",
+        "collision_collection",
+        "scene_scale"
+      ],
+      "requires": [
+        "blender.physics-and-simulation",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.cloth-contact"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-cloth"
+      ]
+    },
+    {
+      "id": "blender.gltf-validation",
+      "title": "glTF 导出规范验证与重载验收",
+      "entry": "references/procedures/delivery/gltf-validation.md",
+      "kind": "procedure",
+      "tasks": [
+        "export",
+        "inspect",
+        "repair"
+      ],
+      "subjects": [
+        "export"
+      ],
+      "aliases": [
+        "GLB规范验证",
+        "glTF validator",
+        "gltf validation",
+        "export validation",
+        "GLB导出错误"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "consumer_version",
+        "required_extensions"
+      ],
+      "requires": [
+        "blender.export-and-packaging",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.gltf-delivery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/gltf_audit.py",
+        "scripts/validate_gltf.mjs"
+      ],
+      "source_ids": [
+        "khronos-io",
+        "khronos-validator",
+        "khronos-samples"
+      ]
+    },
+    {
+      "id": "blender.realtime-optimization",
+      "title": "实时 GLB 优化与功能回归",
+      "entry": "references/procedures/delivery/realtime-optimization.md",
+      "kind": "procedure",
+      "tasks": [
+        "optimize"
+      ],
+      "subjects": [
+        "game-asset",
+        "export"
+      ],
+      "aliases": [
+        "GLB减面",
+        "gltfpack",
+        "meshoptimizer",
+        "保留节点优化",
+        "asset optimization",
+        "node preservation"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "optimization_goal",
+        "protected_capabilities",
+        "consumer_extensions"
+      ],
+      "requires": [
+        "blender.game-assets",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.gltf-delivery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "meshoptimizer"
+      ]
+    },
+    {
+      "id": "blender.acceptance.mesh-recovery",
+      "title": "网格恢复与数据迁移验收",
+      "entry": "references/acceptance/mesh-recovery.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "网格恢复与数据迁移验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.joint-correctives",
+      "title": "关节修正验收",
+      "entry": "references/acceptance/joint-correctives.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "关节修正验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.normal-bake",
+      "title": "UV与法线烘焙验收",
+      "entry": "references/acceptance/normal-bake.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "UV与法线烘焙验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.cloth-contact",
+      "title": "布料接触验收",
+      "entry": "references/acceptance/cloth-contact.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "布料接触验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.gltf-delivery",
+      "title": "glTF交付与优化验收",
+      "entry": "references/acceptance/gltf-delivery.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "glTF交付与优化验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.production-sources",
+      "title": "Blender制作来源与采用边界",
+      "entry": "references/sources/production-sources.md",
+      "kind": "knowledge",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [
+        "source"
+      ],
+      "aliases": [
+        "制作规范来源",
+        "production sources"
+      ],
+      "applies_when": [
+        "核对本库制作流程原理与采用限制"
+      ],
+      "exclude_when": [
+        "来源本身不能替代本库实现验证"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.blockout-and-refinement",
+      "title": "基础形体搭建方法与分阶段细化",
+      "entry": "references/procedures/modeling/blockout-and-refinement.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "optimize",
+        "inspect"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "基础形体搭建",
+        "低模搭建",
+        "盒式建模",
+        "Cube 细分",
+        "blockout",
+        "box modeling",
+        "blockout refinement",
+        "复用已有模型"
+      ],
+      "applies_when": [
+        "复杂新建、重大形体修改或已有资产需要确认细化前提"
+      ],
+      "exclude_when": [
+        "无关的小修不强制重新搭建；不能用细分等级代替形体验收"
+      ],
+      "required_facts": [
+        "intended_use",
+        "module_scope"
+      ],
+      "requires": [
+        "blender.modeling-recipes"
+      ],
+      "verification": [
+        "blender.acceptance.blockout"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/blockout_gate.py",
+        "scripts/stage_guard.py",
+        "assets/blender_task_template.py"
+      ]
+    },
+    {
+      "id": "blender.acceptance.blockout",
+      "title": "基础形体验收与细化前置条件",
+      "entry": "references/acceptance/blockout.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [
+        "modeling"
+      ],
+      "aliases": [
+        "基础形体验收",
+        "blockout acceptance"
+      ],
+      "applies_when": [
+        "选定模块进入细化前检查"
+      ],
+      "exclude_when": [
+        "存在对象或成功执行 builder 不构成视觉通过"
+      ],
+      "required_facts": [
+        "module_scope"
+      ],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/blockout_gate.py"
+      ]
+    }
+  ],
+  "query_exclusions": [
+    "wheel event",
+    "onwheel",
+    "浏览器滚轮",
+    "鼠标滚轮",
+    "Blender crashes",
+    "Blender installation",
+    "Blender install",
+    "启动崩溃",
+    "安装失败"
+  ],
+  "excluded_paths": {
+    "references/reference-fitting/evals/README.md": "Historical measurement or migration evidence; not an execution guide.",
+    "references/reference-fitting/evals/metrics-table.md": "Historical measurement or migration evidence; not an execution guide."
+  },
+  "context_exclusions": [
+    "React",
+    "JavaScript"
+  ],
+  "domain_terms": [
+    "Blender",
+    "bpy",
+    "GLB",
+    "glTF",
+    "FBX",
+    "建模",
+    "三维模型"
+  ]
+}

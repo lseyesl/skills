@@ -24,7 +24,9 @@
       "external": [
         {"name": "Blender >=4.5", "kind": "tool", "when": "Blender scene operations or rendering"},
         {"name": "mcp-for-blender", "kind": "tool", "when": "Live Blender control required by the modeling workflow"},
-        {"name": "uv", "kind": "tool", "when": "Host reference-image analysis environment"}
+        {"name": "uv", "kind": "tool", "when": "Host reference-image analysis environment"},
+        {"name": "Node.js + gltf-validator", "kind": "tool", "when": "Independent glTF/GLB format audit explicitly selected; provide a locked validator module, not installed by the Skill synchronizer"},
+        {"name": "gltfpack", "kind": "tool", "when": "Optional realtime glTF optimization backend explicitly selected and consumer extension support is confirmed"}
       ]
     },
     "blender-styles": {

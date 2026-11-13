@@ -894,6 +894,58 @@
           "criterion": "源与重载 skin、骨层级、所需clip和采样表面一致；复杂材质与形态键不静默丢失"
         }
       ]
+    },
+    {
+      "id": "reference.occlusion-and-repeat",
+      "split": "dev",
+      "prompt": "从带遮挡/透视的重复机械结构图建模：区分真实边界和可见黑区，选择一组有证据支持的结构，保留例外和未知。",
+      "setup": "Prepare independent positive/defect/valid-alternative inputs. Synthetic tests calibrate mechanisms only. Freeze common generation/revision/time/resource caps and hide grader/old outputs from the executing Agent.",
+      "checks": [
+        {
+          "id": "interpretation",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际对照源图，不将遮挡区当完整孔，不无依据强制对称"
+        },
+        {
+          "id": "fidelity",
+          "kind": "visual",
+          "required": true,
+          "criterion": "独立原图区域/视角检查身份与负空间，不用同一描绘IoU自证"
+        }
+      ]
+    },
+    {
+      "id": "delivery.geometry-layers-and-budget",
+      "split": "dev",
+      "prompt": "在明确总预算内制作资产，检查源多边形、求值三角形、修改器/动画采样与实际导出重载，并保留合法开放面。",
+      "setup": "Prepare independent positive/defect/valid-alternative inputs. Synthetic tests calibrate mechanisms only. Freeze common generation/revision/time/resource caps and hide grader/old outputs from the executing Agent.",
+      "checks": [
+        {
+          "id": "geometry",
+          "kind": "structure",
+          "required": true,
+          "criterion": "正面积多边形中的退化三角形被检测，合法开放面按用途允许"
+        },
+        {
+          "id": "budget",
+          "kind": "structure",
+          "required": true,
+          "criterion": "使用完整资产求值合计预算，超过上限不通过"
+        },
+        {
+          "id": "transport",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际重载和后续动画帧检查，不凭格式/clip存在通过"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "预算内产物仍保留原图主要形状和所需动作"
+        }
+      ]
     }
   ]
 }

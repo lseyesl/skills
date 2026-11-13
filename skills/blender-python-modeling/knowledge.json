@@ -123,7 +123,9 @@
       "aliases": [
         "汽车轮胎",
         "轮毂",
-        "wheel tire tyre"
+        "wheel tire tyre",
+        "铸造轮毂",
+        "五组双辐"
       ],
       "applies_when": [
         "先完成现场诊断并核对正文条件"
@@ -141,7 +143,8 @@
       "conditions": {},
       "status": "experimental",
       "tool_dependencies": [
-        "scripts/domain_checks.py"
+        "scripts/domain_checks.py",
+        "scripts/production_checks.py"
       ]
     },
     {
@@ -936,7 +939,10 @@
       "subjects": [],
       "aliases": [
         "AI Reference Image Analysis",
-        "reference image analysis"
+        "reference image analysis",
+        "遮挡误判",
+        "照片黑区",
+        "负空间建模"
       ],
       "applies_when": [
         "Read this guide when its documented task and prerequisites match the observed asset."
@@ -948,7 +954,10 @@
       "requires": [],
       "verification": [],
       "conditions": {},
-      "status": "experimental"
+      "status": "experimental",
+      "tool_dependencies": [
+        "assets/reference-interpretation-template.json"
+      ]
     },
     {
       "id": "blender.reference-workspace-tool",
@@ -1164,7 +1173,10 @@
       "subjects": [],
       "aliases": [
         "Blender Result Verification",
-        "verification"
+        "verification",
+        "退化三角形",
+        "面数超预算",
+        "三角化检查"
       ],
       "applies_when": [
         "Read this guide when its documented task and prerequisites match the observed asset."
@@ -1176,7 +1188,12 @@
       "requires": [],
       "verification": [],
       "conditions": {},
-      "status": "experimental"
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py",
+        "scripts/asset_delivery.py",
+        "scripts/isolated_delivery.py"
+      ]
     },
     {
       "id": "blender.mesh-recovery",
@@ -1683,7 +1700,8 @@
         "blockout",
         "box modeling",
         "blockout refinement",
-        "复用已有模型"
+        "复用已有模型",
+        "阶段面数预算"
       ],
       "applies_when": [
         "复杂新建、重大形体修改或已有资产需要确认细化前提"
@@ -1708,7 +1726,8 @@
         "scripts/stage_guard.py",
         "assets/blender_task_template.py",
         "scripts/production_workspace.py",
-        "scripts/construction_checks.py"
+        "scripts/construction_checks.py",
+        "scripts/production_checks.py"
       ]
     },
     {
@@ -1741,7 +1760,8 @@
       "status": "experimental",
       "tool_dependencies": [
         "scripts/blockout_gate.py",
-        "scripts/construction_checks.py"
+        "scripts/construction_checks.py",
+        "scripts/production_checks.py"
       ]
     },
     {
@@ -1784,7 +1804,8 @@
       "tool_dependencies": [
         "scripts/production_workspace.py",
         "scripts/asset_delivery.py",
-        "scripts/isolated_delivery.py"
+        "scripts/isolated_delivery.py",
+        "scripts/production_checks.py"
       ]
     },
     {

@@ -92,3 +92,5 @@ Blender Skill 增加生成/扫描网格恢复、属性迁移、关节修正、�
 Blender 复杂建模现使用分模块建模计划和基础形体验收；正式模板默认不生成 Cube，教学 Cube 示例单独保存。细化依赖与当前粗模/计划/证据匹配的作用域回执；已有资产和局部修改可以复用。详见 [基础形体流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)。
 
 图片转模型先记录 [参考准备路线](skills/blender-python-modeling/references/reference-preparation.md)，并分别验证 [原图忠实度](skills/concept-multiview-sheet/references/source-fidelity.md) 与跨视图一致性。仅记录 Skill 名称或生成成功不能放行建模。
+
+Blender 阶段验收现分别记录源拓扑、求值三角形和导出重载，按完整资产合计面数执行声明预算。参考分析增加遮挡/反光、重复结构和负空间的条件分支；机制检查通过仅说明检测覆盖，建模路线效果仍需 [等预算成对评测](docs/evaluation-policy.md#建模路线的等预算对比)。

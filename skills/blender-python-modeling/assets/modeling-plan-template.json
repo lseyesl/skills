@@ -31,5 +31,13 @@
         }
       ]
     }
-  ]
+  ],
+  "resource_budget": {
+    "required": false,
+    "max_triangles": null,
+    "blockout_max_triangles": null,
+    "min_triangle_area": 5e-13,
+    "require_closed": false,
+    "reason": "Replace with target/scale rationale; realtime hard limits require required=true and an explicit positive max_triangles"
+  }
 }

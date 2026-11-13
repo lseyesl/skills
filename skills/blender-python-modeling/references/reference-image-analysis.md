@@ -126,3 +126,20 @@ A high silhouette score does not prove correct depth, topology, back-side constr
 ## Human judgment and stopping the affected work
 
 First attempt the evidence-based interpretation policy above. Request human judgment when incompatible part counts, attachments, camera hypotheses or hidden constructions remain materially ambiguous; when no usable reference remains for a required region; or when a dimensionally accurate deliverable lacks the necessary measurements. Explain the specific uncertainty and which region is paused. Do not block unrelated work for a minor AI depiction error, and do not keep retrying image matching when the disputed pixels cannot describe a coherent object.
+
+## Interpret the reference before tracing or choosing geometry
+
+Record the reasoning in [reference-interpretation-template.json](../assets/reference-interpretation-template.json), alongside the existing module plan and observed/inferred/unknown ledger. This supplements source-fidelity review; it does not grant approval by itself.
+
+| Observed condition | Diagnosis / construction decision | Verification |
+| --- | --- | --- |
+| A dark patch or partial opening in a photograph | Distinguish an actual boundary from shadow, reflection, an occluding part and the interior/back wall. Trace only the supported boundary; keep the rest unknown. | Compare source-angle witness views, adjacent views and identifiable attachment/edge landmarks. Never extrude every dark pixel into a through-hole. |
+| Oblique circular/radial part | Identify the axis, projected ellipse, rotational phase and repeated groups. Rectification is an approximate camera interpretation, not a physical measurement. | Preserve the raw photo and calibration assumptions; check both the canonical construction and a separate source-angle render. |
+| Several apparently repeated sectors | When the design supports repetition, model one representative sector and repeat it. Preserve unique valves, fasteners, damage and markings separately. | Count actual groups and openings, compare each visible sector, and reject the assumption if observed asymmetry contradicts it. Hidden completion remains inferred. |
+| A hollow rotational vessel | Use an outer/inner section with a rolled rim and actual bottom; use a separate path/profile for the handle and accessory. | Check cavity, floor thickness, handle negative space, connections and intended-view silhouette. A torus/ellipsoid alone does not establish these features. |
+| A cast part dominated by broad negative spaces | Control opening contours, surface cross-sections, fillets and continuous connections; use a low-resolution sector/surface before expensive remeshing. | Inspect one representative region in section/clay/material views, then inspect the complete repeated structure and evaluated triangle budget. Rod counts alone do not match a cast web. |
+| Material highlights hide the underlying shape | Separate geometry from lighting/material response and inspect fixed-view clay as well as beauty. | Recheck local contour/concavity; do not sculpt a reflection into the mesh. |
+
+For each uncertain region keep competing explanations, evidence that would distinguish them, the chosen representation, and a stop/uncertainty condition. Generated front A can organize constraints; it cannot replace the original reference as the authority on observed identity. Verify source → A before expanding views, then verify model → original source again. Do not force this generation route when existing calibrated references are adequate.
+
+Keep construction and acceptance evidence distinct. IoU against the same hand-traced mask used to build a model measures implementation agreement. Original-source fidelity needs a separately inspected original region/view; record reviewer, projection/occlusion uncertainty and material limitations. A high implementation IoU does not certify recovered depth or whole-model accuracy.

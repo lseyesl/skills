@@ -8,9 +8,29 @@ METHODS={'primitives','box','surface','curve','sculpt','reuse'}
 CHECK_KINDS={'structural','visual','functional'}
 
 
+def resource_limits(plan,stage):
+    from production_checks import triangle_budget
+    if stage not in {'blockout','refine','delivery','reimport'}:raise ValueError('Unknown resource stage')
+    budget=plan.get('resource_budget',{})
+    if not isinstance(budget,dict):raise ValueError('resource_budget must be an object')
+    required=budget.get('required',False)
+    if type(required) is not bool:raise ValueError('Explicit resource required flag must be boolean')
+    final=triangle_budget(budget.get('max_triangles'))
+    coarse=triangle_budget(budget.get('blockout_max_triangles'))
+    if required and final is None:raise ValueError('This target requires a final triangle budget before construction')
+    if (final is not None or coarse is not None or required) and (not isinstance(budget.get('reason'),str) or not budget['reason'].strip()):
+        raise ValueError('Resource limits require a target-derived rationale')
+    area=budget.get('min_triangle_area',5e-13);closed=budget.get('require_closed',False)
+    if type(area) not in (int,float) or not math.isfinite(area) or area<0 or type(closed) is not bool:
+        raise ValueError('Invalid area tolerance or closed-surface requirement')
+    return {'max_triangles':(coarse if coarse is not None else final) if stage=='blockout' else final,
+        'require_closed':closed if stage!='blockout' else False,'min_triangle_area':area}
+
+
 def validate_plan(plan):
     plan=plan() if callable(plan) else plan
     if plan.get('schema_version')!=1 or not isinstance(plan.get('task_id'),str) or not plan['task_id'].strip():raise ValueError('Plan needs schema_version=1 and task_id')
+    resource_limits(plan,'blockout')
     modules=plan.get('modules')
     if not isinstance(modules,list) or not modules:raise ValueError('Plan requires modules')
     ids=set()

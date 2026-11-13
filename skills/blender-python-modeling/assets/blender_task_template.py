@@ -70,6 +70,16 @@ def _objects(modules):
     return result
 
 
+def _geometry_check(objects,phase,plan):
+    from production_checks import require_asset_geometry
+    from blockout_gate import resource_limits
+    # Include unaffected same-phase modules so local work cannot spend the whole
+    # asset allowance once per object/module. Reviewed coarse controls stay excluded.
+    rest=[o for o in bpy.context.scene.objects if o.get(OWNER_KEY)==TASK_ID and
+          o.get(PHASE_KEY)==phase and o.type in {'MESH','CURVE'} and o not in objects]
+    return require_asset_geometry(list(objects)+rest,stage=phase,**resource_limits(plan,phase))
+
+
 def validate_blockout(objects,plan,scope):
     """Finite geometry and optional world-size constraints; visual inspection stays separate."""
     expected=_objects([m for m in plan['modules'] if m['id'] in scope])
@@ -88,12 +98,12 @@ def validate_blockout(objects,plan,scope):
         dimensions=[max(point[i] for point in points)-min(point[i] for point in points) for i in range(3)]
         if 'world_dimensions' in module and any(abs(actual-target)>module['dimension_tolerance'] for actual,target in zip(dimensions,module['world_dimensions'])):raise RuntimeError('Blockout dimensions outside declared tolerance: '+module['id'])
         measurements[module['id']]={'world_dimensions':dimensions}
-    return {'measurements':measurements,'objects':[o.name for o in objects],'stage':'blockout-built','ready_to_refine':False,'ready_to_claim_complete':False}
+    return {'geometry':_geometry_check(objects,'blockout',plan),'measurements':measurements,'objects':[o.name for o in objects],'stage':'blockout-built','ready_to_refine':False,'ready_to_claim_complete':False}
 
 
 def validate_result(objects):
     if not objects:raise RuntimeError('No refinement output')
-    return {'objects':[o.name for o in objects],'stage':'refinement-produced','ready_to_claim_complete':False}
+    return {'geometry':_geometry_check(objects,'refine',_load_plan()),'objects':[o.name for o in objects],'stage':'refinement-produced','ready_to_claim_complete':False}
 
 
 def _state(modules):
@@ -105,7 +115,7 @@ def _state(modules):
 def _dependencies(plan):
     from stage_guard import file_input
     result={'reference_preparation':_preparation(),'parameters':BLOCKOUT_PARAMETERS,'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],
-            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py','production_workspace.py','reference_preparation.py')]}
+            'helpers':[file_input(Path(REFERENCE_HELPER_DIR)/name) for name in ('blockout_gate.py','stage_guard.py','reference_workspace.py','production_workspace.py','reference_preparation.py','production_checks.py')]}
     for module in plan['modules']:
         if module['id'] in _dependency_scope(plan) and module['method']=='reuse':
             result.setdefault('reuse_sources',[]).append(file_input(Path(MODELING_PLAN).resolve().parent/module['source_snapshot']))
@@ -184,7 +194,8 @@ def build_inputs():
     plan=_load_plan()
     result={'task_id':TASK_ID,'mode':BUILD_MODE,'reference_preparation':_preparation(),'scene_mode':SCENE_MODE,'scene_name':SCENE_NAME,'waiver':WAIVER_REASON,'plan_context':{k:v for k,v in plan.items() if k!='modules'},
             'modules':select_modules(plan,MODELING_SCOPE),'recipe':file_input(__file__),
-            'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],'parameters':BLOCKOUT_PARAMETERS}
+            'recipes':[file_input(p) for p in (BLOCKOUT_INPUT_FILES or [__file__])],'parameters':BLOCKOUT_PARAMETERS,
+            'geometry_checker':file_input(Path(REFERENCE_HELPER_DIR)/'production_checks.py')}
     if BUILD_MODE=='reference':
         path=Path(REFERENCE_CONFIG).resolve();config=json.loads(path.read_text())
         result.update(config=file_input(path),calibration=file_input(CALIBRATION_REVIEW),

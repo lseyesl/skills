@@ -44,3 +44,13 @@
 生成检查草稿可调用 `make_review_draft(plan, scope, state_provider, dependencies)`；该函数只填写当前 inspection_signature 和 unknown 检查，不宣称检查通过。保留草稿对应状态，实际检查后再填写结果。旧文件的 signature 不匹配时必须重新检查，不得直接改 signature 复用旧通过结论。
 
 修改正式模板中的构建/细化函数时同时移除对应的 placeholder 标记。多个语义模块允许绑定同一个连续网格；默认状态会保守检查整个共享对象，局部清理不能删除其他模块仍使用的对象。
+
+## Resource-aware method selection
+
+Before building, populate the plan's resource_budget: target rationale, required flag, final max_triangles, optional blockout_max_triangles, world-space min_triangle_area and require_closed. Realtime/export targets with a hard cap use required=true; an unknown cap must be resolved rather than silently removed. Original render-only tasks may explicitly omit a cap and retain the reason; budget_passed then remains unknown, not certified.
+
+Choose a representation per module using the [reference interpretation branches](../../reference-image-analysis.md#interpret-the-reference-before-tracing-or-choosing-geometry). Inspect one representative cast sector, joint, cavity or accessory before multiplying expensive geometry. Estimate repetition/subdivision/remesh cost, but gate on actual evaluated aggregate counts. Coarse controls and refined copies are separate representations; the budget applies to the intended current output, not to every hidden historical snapshot combined.
+
+The template uses resource_limits(plan, stage) and require_asset_geometry after build/refine. It counts all same-phase owned modules, including unaffected ones, so a local operation cannot reuse the whole allowance per object. Plan limits, tolerances and checker code participate in receipt freshness. The delivery adapter receives the same final limit explicitly; omitting max_triangles does not prove a limited target passed. Modifiers and every declared animation sample can change evaluated cost/validity.
+
+When a phase fails, preserve the candidate/report and reconsider the implicated representation within the already declared run budget. Do not globally subdivide or remesh merely to smooth a silhouette. Any alternate low-cost output needs the same reference, cross-section, connection and motion checks; report changed/unchanged/worse/unknown under the original test policy. Do not overwrite a frozen test result with a repaired model's score.

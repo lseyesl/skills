@@ -92,6 +92,14 @@ class EvaluationTests(unittest.TestCase):
         with self.assertRaises(ValueError):compare(report,head)
         head=copy.deepcopy(report);head['records'][0]['repeat']=2
         self.assertEqual(compare(report,head)['verdict'],'insufficient-evidence')
+    def test_modeling_comparison_rejects_extra_revision_allowance(self):
+        report={**copy.deepcopy(self.run),'kind':'tasks','evidence_validated':True,'suite_sha256':'s','missing_tasks':[]}
+        budget={'candidate_builds':1,'quality_revision_rounds':0,'image_generation_calls':2}
+        report['metadata']['budget']=json.dumps(budget,sort_keys=True)
+        head=copy.deepcopy(report);budget['quality_revision_rounds']=2
+        head['metadata']['budget']=json.dumps(budget,sort_keys=True)
+        with self.assertRaisesRegex(ValueError,'budget'):compare(report,head)
+
     def test_repeats_do_not_inflate_independent_sample_count(self):
         a={**copy.deepcopy(self.run),'kind':'tasks','evidence_validated':True,'suite_sha256':'s','missing_tasks':[]}
         a['records']=[dict(copy.deepcopy(a['records'][0]),repeat=i,status='failed') for i in range(1,101)]

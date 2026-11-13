@@ -52,3 +52,5 @@ report = export_glb(objects, new_glb_path, mode="rigged",
 - 多动作、非线性蒙皮、IK/驱动、形态键和目标引擎特性需对应适配与目标检查。逐帧采样表面相同不证明解剖合理或整段播放正确。
 
 完整交付仍要运行 Khronos 格式检查、固定视图视觉检查和用途验收。不要把“进程成功”或“格式 0 错误”升级为完整模型可用。
+
+交付现在可传入 `max_triangles`、`min_triangle_area`、`require_closed`，与项目建模计划的最终限制一致。当前求值几何在导出前检查，独立进程对准备文件/实际重载的每个声明采样帧重新检查三角形与总预算。超限、退化或后续帧塌陷会保留失败报告，不以 clip 存在或文件格式正常替代。检查层次与 GLB 法线接缝的几何闭合范围见 [验证规范](verification.md#source-evaluated-triangles-and-reimport-are-distinct-layers)。

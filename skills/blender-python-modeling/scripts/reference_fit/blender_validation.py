@@ -145,6 +145,7 @@ def render_channels(scene,c,folder,quick=False):
 
 
 def structure(scene,c):
+    from production_checks import inspect_asset
     owner=c['character_id'];report={'meshes':{},'errors':[],'warnings':[],'intersection_scope':'Connection endpoints and AABB broad phase only; arbitrary mesh self/intersections not certified.','rig_status':'not_requested'}
     for ob in scene.objects:
         if ob.get(OWNER)!=owner or ob.type!='MESH':continue
@@ -160,6 +161,11 @@ def structure(scene,c):
     report['evaluated_triangles']=sum(m['evaluated_triangles'] for m in report['meshes'].values())
     budget=c['validation'].get('max_triangles');report['triangle_budget']=budget
     if budget is not None and report['evaluated_triangles']>budget:report['errors'].append('Evaluated triangle budget exceeded; prepare a reviewed realtime derivative')
+    targets=[o for o in scene.objects if o.get(OWNER)==owner and o.type=='MESH']
+    audit=inspect_asset(targets,stage='refine',max_triangles=budget,require_closed=True,
+        min_triangle_area=c['validation'].get('min_triangle_area',5e-13))
+    report['geometry_audit']=audit
+    report['errors'].extend(audit['issues'])
     # Minimum depth floor protects against a front-view optimizer flattening the head.
     for key,p in c['shape'].items():
         if p['kind']=='head':

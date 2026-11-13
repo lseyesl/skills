@@ -50,7 +50,10 @@
     "frames": [],
     "required_clips": [],
     "spatial_tolerance": null,
-    "report": null
+    "report": null,
+    "min_triangle_area": null,
+    "require_closed": null,
+    "geometry_reports": []
   },
   "repair_budget": {
     "maximum_attempts": null,
@@ -60,6 +63,7 @@
   "reference_preparation": {
     "decision_path": null,
     "source_fidelity_review_path": null,
-    "multiview_review_path": null
+    "multiview_review_path": null,
+    "interpretation_path": null
   }
 }

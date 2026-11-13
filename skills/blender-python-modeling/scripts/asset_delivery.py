@@ -11,7 +11,8 @@ import bpy
 
 
 def export_glb(objects, output, *, mode='static', frames=(1,), clip=None,
-               tolerance=1e-5, timeout=180):
+               tolerance=1e-5, timeout=180, max_triangles=None,
+               min_triangle_area=5e-13, require_closed=False):
     output = Path(output).resolve()
     report = Path(str(output) + '.report.json')
     if output.suffix.lower() != '.glb' or output.exists() or report.exists():
@@ -63,6 +64,13 @@ def export_glb(objects, output, *, mode='static', frames=(1,), clip=None,
             if weights['armature']!=rigs[0].name or any(weights['issues'].values()):
                 raise ValueError('Repair deform weights/influence limits before export')
     output.parent.mkdir(parents=True,exist_ok=True)
+    from production_checks import require_asset_geometry,GeometryRejected
+    try:
+        preflight=require_asset_geometry(meshes,stage='delivery',max_triangles=max_triangles,
+            min_triangle_area=min_triangle_area,require_closed=require_closed)
+    except GeometryRejected as exc:
+        report.write_text(json.dumps({'status':'failed','phase':'source-preflight','geometry':exc.report},indent=2)+'\n')
+        raise
     prepared=bpy.data.scenes.new('DeliveryPackage');prepared.frame_start=min(frames);prepared.frame_end=max(frames)
     prepared.render.fps=source.render.fps;prepared.render.fps_base=source.render.fps_base
     copies=[];data=[];expected=[]
@@ -84,7 +92,8 @@ def export_glb(objects, output, *, mode='static', frames=(1,), clip=None,
             contract.write_text(json.dumps({'scene':prepared.name,'mode':mode,'frames':list(frames),'clip':clip,
                 'expected_meshes':expected,'expected_objects':[o.name for o in prepared.objects],
                 'tolerance':tolerance,'source_scene':source.name,'source_frame':source.frame_current,
-                'fps':source.render.fps,'fps_base':source.render.fps_base},indent=2))
+                'fps':source.render.fps,'fps_base':source.render.fps_base,'max_triangles':max_triangles,
+                'min_triangle_area':min_triangle_area,'require_closed':require_closed,'source_preflight':preflight},indent=2))
             command=[bpy.app.binary_path,'--background','--factory-startup','--disable-autoexec','-t','2','--python-exit-code','1',
                 '--python',str(Path(__file__).with_name('isolated_delivery.py')),'--',str(package),str(contract),str(output)]
             try:

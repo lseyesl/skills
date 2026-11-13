@@ -70,9 +70,22 @@ class ProductionChecks(unittest.TestCase):
 
     def test_reference_preparation_and_source_fidelity_routes(self):
         entries=load_catalog(ROOT.parent)
-        for query,expected in [('参考准备','blender.reference-preparation'),('原图对照','concept.source-fidelity'),('Blender MCP安装','blender.mcp-workflow')]:
+        for query,expected in [('参考准备','blender.reference-preparation'),('原图对照','concept.source-fidelity'),('Blender MCP安装','blender.mcp-workflow'),('遮挡误判','blender.reference-image-analysis'),('退化三角形','blender.verification'),('面数超预算','blender.verification')]:
             with self.subTest(query=query):
                 self.assertEqual(search(entries,query,'inspect')[0]['id'],expected)
+
+    def test_resource_contract_validation(self):
+        from blockout_gate import resource_limits
+        for value in (0,-1,True,40000.5,'40000'):
+            with self.subTest(value=value),self.assertRaises(ValueError):
+                resource_limits({'resource_budget':{'max_triangles':value,'reason':'test'}},'refine')
+        with self.assertRaises(ValueError):resource_limits({'resource_budget':{'required':True}},'blockout')
+        with self.assertRaises(ValueError):resource_limits({'resource_budget':{'max_triangles':100}},'blockout')
+        plan={'resource_budget':{'required':True,'max_triangles':40000,'blockout_max_triangles':2000,'reason':'test target','require_closed':True}}
+        self.assertEqual(resource_limits(plan,'blockout')['max_triangles'],2000)
+        self.assertEqual(resource_limits(plan,'refine')['max_triangles'],40000)
+        self.assertFalse(resource_limits(plan,'blockout')['require_closed'])
+        self.assertTrue(resource_limits(plan,'delivery')['require_closed'])
 
     def test_fitter_task_budget_validation(self):
         import copy
@@ -82,5 +95,8 @@ class ProductionChecks(unittest.TestCase):
             candidate=copy.deepcopy(config);candidate['validation']['max_triangles']=budget
             with self.subTest(budget=budget),self.assertRaises(ValueError):validate(candidate)
         config['validation']['max_triangles']=80000;validate(config)
+        for value in (-1,True,float('nan')):
+            candidate=copy.deepcopy(config);candidate['validation']['min_triangle_area']=value
+            with self.subTest(area=value),self.assertRaises(ValueError):validate(candidate)
 
 if __name__=='__main__':unittest.main()

@@ -25,6 +25,8 @@ For complex creation or major shape changes, follow [blockout and refinement](re
 
 Before refinement require fresh scoped [blockout acceptance](references/acceptance/blockout.md) evidence bound to the current coarse geometry, plan and dependencies. Reuse existing coarse assets for local tasks; do not rebuild unaffected parts. Keep the reviewed coarse source or an equivalent frozen control state. Existing fitters may supply equivalent checks through their snapshots/reviews rather than adopting a second orchestration framework.
 
+Before choosing a representation, apply the [reference interpretation branches](references/reference-image-analysis.md#interpret-the-reference-before-tracing-or-choosing-geometry): separate boundaries from occlusion/reflection and justify repeated structure. Declare target-derived resource limits in the modeling plan. Run [source/evaluated-triangle/reimport checks](references/verification.md#source-evaluated-triangles-and-reimport-are-distinct-layers) at each meaningful stage; polygon validity, clip presence and GLB format success do not establish triangle quality or budget compliance. Keep original-source fidelity checks independent of construction-mask agreement.
+
 ## Core contract
 
 - Prefer a reusable `.py` file over a long one-off MCP code string. In an existing project, follow its script layout; otherwise use `scripts/blender/<task-name>.py`.

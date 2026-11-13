@@ -4,20 +4,27 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 from mathutils.kdtree import KDTree
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 
 
-def sample(scene):
+def sample(scene,spec=None,stage='reimport'):
     bpy.context.view_layer.update();graph=bpy.context.evaluated_depsgraph_get();result={}
     # Blender's glTF importer creates bone display meshes. These are not GLB
     # asset geometry; exclude only meshes actually referenced as custom shapes.
     custom_shapes={p.custom_shape for rig in scene.objects if rig.type=='ARMATURE' for p in rig.pose.bones if p.custom_shape}
-    for obj in scene.objects:
-        if obj.type not in {'MESH','CURVE'} or obj in custom_shapes:continue
+    objects=[o for o in scene.objects if o.type in {'MESH','CURVE'} and o not in custom_shapes]
+    from production_checks import require_asset_geometry
+    spec=spec or {}
+    audit=require_asset_geometry(objects,stage=stage,max_triangles=spec.get('max_triangles'),
+        min_triangle_area=spec.get('min_triangle_area',5e-13),require_closed=spec.get('require_closed',False),
+        seam_weld_distance=spec.get('tolerance') if stage=='reimport' and spec.get('require_closed') else None)
+    for obj in objects:
         ev=obj.evaluated_get(graph);mesh=ev.to_mesh()
         try:
             mesh.calc_loop_triangles();points=[tuple(ev.matrix_world@v.co) for v in mesh.vertices]
             if not points or any(not all(math.isfinite(x) for x in p) for p in points):raise ValueError('Empty/nonfinite geometry')
             result[obj.name]={'triangles':len(mesh.loop_triangles),'points':points,
+                'geometry':audit['objects'][obj.name],
                 'materials':sorted(m.name for m in mesh.materials if m),
                 'bounds':[[min(p[i] for p in points) for i in range(3)],[max(p[i] for p in points) for i in range(3)]]}
         finally:ev.to_mesh_clear()
@@ -58,7 +65,7 @@ def run(package,contract,output):
             if 'delivery_name' in obj:obj.name=obj['delivery_name']
         meshes=set(spec['expected_meshes'])
         before={}
-        for frame in spec['frames']:scene.frame_set(frame if spec['mode']!='static' else spec['source_frame']);before[str(frame)]=sample(scene)
+        for frame in spec['frames']:scene.frame_set(frame if spec['mode']!='static' else spec['source_frame']);before[str(frame)]=sample(scene,spec,stage='delivery')
         source_materials=material_state()
         bones={b.name:b.parent.name if b.parent else None for o in scene.objects if o.type=='ARMATURE' for b in o.data.bones}
         scene.frame_set(spec['frames'][0] if spec['mode']!='static' else spec['source_frame'])
@@ -83,7 +90,7 @@ def run(package,contract,output):
         scene.render.fps=spec['fps'];scene.render.fps_base=spec['fps_base']
         bpy.ops.import_scene.gltf(filepath=str(output))
         after={}
-        for frame in spec['frames']:scene.frame_set(frame);after[str(frame)]=sample(scene)
+        for frame in spec['frames']:scene.frame_set(frame);after[str(frame)]=sample(scene,spec)
         for frame in before:
             checks['meshes@'+frame]=set(before[frame])==set(after[frame])==meshes
             for name in meshes & before[frame].keys() & after[frame].keys():
@@ -105,6 +112,7 @@ def run(package,contract,output):
                       bytes=output.stat().st_size,sha256=hashlib.sha256(raw).hexdigest(),effective_options=options)
         record['status']='passed' if all(checks.values()) else 'failed'
     except Exception as exc:
+        if hasattr(exc,'report'):record['geometry_failure']=exc.report
         record['error']=str(exc)
         raise
     finally:

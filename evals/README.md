@@ -1,5 +1,7 @@
 # 评测入口
 
+每轮用户报告执行 [测试输出文档规范](../docs/test-output-standard.md)，从 [报告模板](templates/test-output.md) 开始。输入/输出核验与逐项四分类变化表为必填；测试结果与后续优化动作分开记录。
+
 检索：`python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json`。种子查询包含中英文、错误对象、明确不适用条件和域外问题；此集合用于回归，不宣称独立盲测。
 
 任务契约在 Blender Skill evals/task-suite.json，包含手/轮/绑定的创建、修复、优化与回归。Agent 或操作者需先准备真实输入资产、记录哈希并在隔离工作区执行；不能只转述 prompt 作为运行。技术夹具只校准工具与错误检测，不等于这些任务已通过。

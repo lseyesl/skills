@@ -73,7 +73,7 @@ python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json
 
 锁定副本可直接运行 `<blender-skill-dir>/scripts/knowledge_catalog.py`，无需源码根目录。检索候选必须再核对现场条件。
 
-[评测入口](evals/README.md) 说明任务记录、证据哈希和版本比较；[收益规则](docs/evaluation-policy.md) 区分正向、负向、取舍与证据不足。轻量 CI 覆盖知识索引、检索与评分逻辑；Blender group 增加隔离的权重/姿势/枢轴/滚动/导出技术夹具。夹具通过不等于真实建模任务或视觉评测通过。
+[评测入口](evals/README.md) 说明任务记录、证据哈希和版本比较；每轮按 [测试输出规范](docs/test-output-standard.md) 检验输入/输出，并明确改进、无变化、变坏和无法判断的项；[收益规则](docs/evaluation-policy.md) 区分正向、负向、取舍与证据不足。轻量 CI 覆盖知识索引、检索与评分逻辑；Blender group 增加隔离的权重/姿势/枢轴/滚动/导出技术夹具。夹具通过不等于真实建模任务或视觉评测通过。
 
 ## P0 执行与验证进度
 

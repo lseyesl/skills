@@ -11,3 +11,7 @@
 仓库轻量 CI 校验索引、检索、评分格式及工具逻辑。Blender 实机与 Agent 执行独立调用，不在普通 CI 中安装 Blender 或请求模型。现有文字型 evals.json 保留，新增 task-suite.json 承载可校验检查契约。使用 tools/run_evals.py 校验/汇总外部执行记录；它不虚构 Agent 执行。使用 tools/compare_evals.py 比较两份报告。
 
 比较策略示例在 evals/policies/success-with-cost-limits.json：声明 objective、所有成本的 max_mean_increase/max_per_run、protected_checks 与 minimum_distinct_tasks。执行前锁定策略哈希，两个运行的 metadata.comparison_policy_sha256 必须匹配；没有运行前绑定或没有观察到实际模型身份时不产生正向结论。成本目标支持耗时、上下文和人工介入；置信界仍依赖任务采样的独立性及预先声明的边界。单个车轮任务重复不能满足不同任务数量要求。
+
+## 测试报告交付
+
+每轮按 [测试输出文档规范 v1](test-output-standard.md) 和 [报告模板](../evals/templates/test-output.md) 交付。报告先检查实际输入、消费链及可比性，再检查实际输出，逐项展示改进、无变化、变坏与无法判断，最后讨论用途通过情况和 Skill 效果归因。总分不替代变化表，未知/未重测不算无变化。冻结报告后，若继续优化可复用流程，另立修改记录与新一轮测试；单次产物修复不追溯更新旧轮成绩。

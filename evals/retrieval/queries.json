@@ -147,7 +147,7 @@
       "query": "布料穿透",
       "task": "repair",
       "expected": [
-        "blender.physics-and-simulation"
+        "blender.cloth-collision-repair"
       ],
       "split": "dev"
     },
@@ -166,6 +166,60 @@
       "task": "export",
       "expected": [
         "blender.export-and-packaging"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "mesh-recovery",
+      "query": "生成模型重拓扑",
+      "task": "repair",
+      "expected": [
+        "blender.mesh-recovery"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "transfer-repair",
+      "query": "权重迁移",
+      "task": "repair",
+      "expected": [
+        "blender.data-transfer-repair"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "joint-correctives",
+      "query": "修正形态键",
+      "task": "repair",
+      "expected": [
+        "blender.joint-correctives"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "bake-repair",
+      "query": "法线贴图接缝",
+      "task": "repair",
+      "expected": [
+        "blender.normal-bake-repair"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "gltf-check",
+      "query": "GLB规范验证",
+      "task": "inspect",
+      "expected": [
+        "blender.gltf-validation"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "node-preservation",
+      "query": "保留节点优化",
+      "task": "optimize",
+      "expected": [
+        "blender.realtime-optimization"
       ],
       "split": "dev"
     }

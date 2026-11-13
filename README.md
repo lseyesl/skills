@@ -78,3 +78,9 @@ python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json
 现有活动参考资料已经逐项索引；检索采用紧凑知识卡片 BM25，并区分混合意图与不支持请求。收益比较需绑定运行前声明的目标、成本上限和保护项。真实 Agent 执行器、独立评分校准、内容绑定验证回执及当前鉴权阻塞见 [P0 执行记录](docs/p0-execution.md)。知识审阅与过期机制见 [知识验证规则](docs/knowledge-review.md)。
 
 `python tools/knowledge_audit.py` 检查已有验证声明；`python tools/check.py --group isolation` 显式检查 Linux 评测隔离。轻量流水线覆盖 main/work 分支及定期回归；Blender 双版本工作流需要配置带 blender 标签的专用 runner，实际未运行的版本不视为兼容性认证。
+
+## Blender 制作处理流程
+
+Blender Skill 增加生成/扫描网格恢复、属性迁移、关节修正、法线烘焙、布料碰撞、glTF 验证与实时优化七条条件化流程，并配套独立验收与 [一手来源记录](skills/blender-python-modeling/references/sources/production-sources.md)。它们归入既有 Skill，默认保持 experimental。
+
+轻量检查不安装外部工具。`python tools/check.py --group blender --blender <executable>` 包含制作技术样例；显式提供 Node.js 和 gltf-validator 后，可用 `python tools/check.py --group gltf --blender <executable> --validator-module <installed-module-path>` 运行真实导出/规范验证及正反例。工具技术通过与生产级视觉/消费者验收分别记录。

@@ -32,6 +32,15 @@ jobs:
         run: python tools/check_blender_version.py --blender "$BLENDER_BIN" --expected-major-minor "$EXPECTED_VERSION"
       - name: Blender integration and repair checks
         run: python tools/check.py --group blender --blender "$BLENDER_BIN"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install optional pinned format validator
+        run: npm --cache .tmp/npm-cache install --prefix .tmp/gltf-tools --ignore-scripts --no-audit --no-fund gltf-validator@2.0.0-dev.3.10
+      - name: Validate actual Blender export and negative controls
+        run: python skills/blender-python-modeling/tests/test_gltf_validation.py --validator-module .tmp/gltf-tools/node_modules/gltf-validator --asset .tmp/tests/blender-production/production-sample.glb
+      - name: Preserve format report
+        run: python skills/blender-python-modeling/scripts/gltf_audit.py .tmp/tests/blender-production/production-sample.glb --validator-module .tmp/gltf-tools/node_modules/gltf-validator --report .tmp/gltf-format-report.json
       - name: Calibrate independent wheel grader
         run: python tools/calibrate_capsule.py --capsule evals/capsules/wheel-origin --output .tmp/wheel-calibration --blender "$BLENDER_BIN"
       - uses: actions/upload-artifact@v4
@@ -42,4 +51,7 @@ jobs:
             .tmp/tests/blender-domain/domain-report.json
             .tmp/tests/blender-repair/repair-report.json
             .tmp/tests/blender-repair/diagnostic.png
+            .tmp/tests/blender-production/production-report.json
+            .tmp/tests/blender-production/normal.png
+            .tmp/gltf-format-report.json
             .tmp/wheel-calibration/calibration.json

@@ -1160,6 +1160,489 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "blender.mesh-recovery",
+      "title": "生成扫描网格恢复与重拓扑",
+      "entry": "references/procedures/modeling/generated-mesh-recovery.md",
+      "kind": "procedure",
+      "tasks": [
+        "create",
+        "repair",
+        "optimize"
+      ],
+      "subjects": [
+        "mesh"
+      ],
+      "aliases": [
+        "扫描网格",
+        "AI模型清理",
+        "生成模型重拓扑",
+        "scan cleanup",
+        "generated mesh recovery",
+        "non manifold repair"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "intended_use",
+        "smallest_feature",
+        "budget"
+      ],
+      "requires": [
+        "blender.modeling-recipes",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.mesh-recovery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-remesh",
+        "retopoflow"
+      ]
+    },
+    {
+      "id": "blender.data-transfer-repair",
+      "title": "重拓扑后的权重 UV 属性迁移",
+      "entry": "references/procedures/modeling/data-transfer-repair.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "create"
+      ],
+      "subjects": [
+        "mesh",
+        "character"
+      ],
+      "aliases": [
+        "权重迁移",
+        "属性转移",
+        "UV迁移",
+        "data transfer",
+        "weight transfer",
+        "topology mapping"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "source_target_mapping",
+        "data_layers"
+      ],
+      "requires": [
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.mesh-recovery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-transfer"
+      ]
+    },
+    {
+      "id": "blender.joint-correctives",
+      "title": "关节修正形态键与驱动维护",
+      "entry": "references/procedures/characters/joint-correctives.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "animate",
+        "create"
+      ],
+      "subjects": [
+        "character",
+        "hand"
+      ],
+      "aliases": [
+        "修正形态键",
+        "关节修正",
+        "corrective shape keys",
+        "Corrective Smooth",
+        "Pose Shape Keys"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "target_pose",
+        "topology_stable",
+        "target_format"
+      ],
+      "requires": [
+        "blender.character-delivery",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.joint-correctives"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-corrective",
+        "studio-pose-keys"
+      ]
+    },
+    {
+      "id": "blender.normal-bake-repair",
+      "title": "法线贴图接缝与烘焙错误诊断",
+      "entry": "references/procedures/surfacing/normal-bake-repair.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "create",
+        "export"
+      ],
+      "subjects": [
+        "uv",
+        "material"
+      ],
+      "aliases": [
+        "法线贴图接缝",
+        "烘焙黑斑",
+        "normal bake seam",
+        "normal map inverted",
+        "cage ray distance"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "triangulation",
+        "uv_layer",
+        "tangent_convention"
+      ],
+      "requires": [
+        "blender.uv-and-texture-baking",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.normal-bake"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-bake",
+        "blender-colour"
+      ]
+    },
+    {
+      "id": "blender.cloth-collision-repair",
+      "title": "布料穿透悬浮与爆炸诊断",
+      "entry": "references/procedures/simulation/cloth-collision-repair.md",
+      "kind": "procedure",
+      "tasks": [
+        "repair",
+        "animate"
+      ],
+      "subjects": [
+        "physics"
+      ],
+      "aliases": [
+        "布料穿透",
+        "布料爆炸",
+        "布料悬浮",
+        "cloth penetration",
+        "cloth collision repair",
+        "cloth explosion"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "initial_intersection",
+        "collision_collection",
+        "scene_scale"
+      ],
+      "requires": [
+        "blender.physics-and-simulation",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.cloth-contact"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "blender-cloth"
+      ]
+    },
+    {
+      "id": "blender.gltf-validation",
+      "title": "glTF 导出规范验证与重载验收",
+      "entry": "references/procedures/delivery/gltf-validation.md",
+      "kind": "procedure",
+      "tasks": [
+        "export",
+        "inspect",
+        "repair"
+      ],
+      "subjects": [
+        "export"
+      ],
+      "aliases": [
+        "GLB规范验证",
+        "glTF validator",
+        "gltf validation",
+        "export validation",
+        "GLB导出错误"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "consumer_version",
+        "required_extensions"
+      ],
+      "requires": [
+        "blender.export-and-packaging",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.gltf-delivery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/gltf_audit.py",
+        "scripts/validate_gltf.mjs"
+      ],
+      "source_ids": [
+        "khronos-io",
+        "khronos-validator",
+        "khronos-samples"
+      ]
+    },
+    {
+      "id": "blender.realtime-optimization",
+      "title": "实时 GLB 优化与功能回归",
+      "entry": "references/procedures/delivery/realtime-optimization.md",
+      "kind": "procedure",
+      "tasks": [
+        "optimize"
+      ],
+      "subjects": [
+        "game-asset",
+        "export"
+      ],
+      "aliases": [
+        "GLB减面",
+        "gltfpack",
+        "meshoptimizer",
+        "保留节点优化",
+        "asset optimization",
+        "node preservation"
+      ],
+      "applies_when": [
+        "资产症状/任务符合正文适用范围，且已检查所列现场事实"
+      ],
+      "exclude_when": [
+        "正文排除条件成立或当前目标格式/工具不支持"
+      ],
+      "required_facts": [
+        "optimization_goal",
+        "protected_capabilities",
+        "consumer_extensions"
+      ],
+      "requires": [
+        "blender.game-assets",
+        "blender.production-sources"
+      ],
+      "verification": [
+        "blender.acceptance.gltf-delivery"
+      ],
+      "conditions": {},
+      "status": "experimental",
+      "tool_dependencies": [
+        "scripts/production_checks.py"
+      ],
+      "source_ids": [
+        "meshoptimizer"
+      ]
+    },
+    {
+      "id": "blender.acceptance.mesh-recovery",
+      "title": "网格恢复与数据迁移验收",
+      "entry": "references/acceptance/mesh-recovery.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "网格恢复与数据迁移验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.joint-correctives",
+      "title": "关节修正验收",
+      "entry": "references/acceptance/joint-correctives.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "关节修正验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.normal-bake",
+      "title": "UV与法线烘焙验收",
+      "entry": "references/acceptance/normal-bake.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "UV与法线烘焙验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.cloth-contact",
+      "title": "布料接触验收",
+      "entry": "references/acceptance/cloth-contact.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "布料接触验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.acceptance.gltf-delivery",
+      "title": "glTF交付与优化验收",
+      "entry": "references/acceptance/gltf-delivery.md",
+      "kind": "acceptance",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "glTF交付与优化验收"
+      ],
+      "applies_when": [
+        "对应流程进入声明的交付验收"
+      ],
+      "exclude_when": [
+        "未执行项不得认证通过"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender.production-sources",
+      "title": "Blender制作来源与采用边界",
+      "entry": "references/sources/production-sources.md",
+      "kind": "knowledge",
+      "tasks": [
+        "inspect"
+      ],
+      "subjects": [
+        "source"
+      ],
+      "aliases": [
+        "制作规范来源",
+        "production sources"
+      ],
+      "applies_when": [
+        "核对本库制作流程原理与采用限制"
+      ],
+      "exclude_when": [
+        "来源本身不能替代本库实现验证"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
     }
   ],
   "query_exclusions": [

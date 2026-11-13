@@ -26,7 +26,7 @@ class PipelineTests(unittest.TestCase):
     def test_full_coverage_and_existing_topics(self):
         data=validate_catalog(ROOT);self.assertGreater(data['entries'],80)
         entries=load_catalog(ROOT/'skills')
-        for query,expected in [('UV 接缝','blender.uv-and-texture-baking'),('cloth simulation','blender.physics-and-simulation'),('布料穿透','blender.physics-and-simulation'),('为 React 展示页面导出 Blender 角色 GLB','blender.export-and-packaging')]:
+        for query,expected in [('UV 接缝','blender.uv-and-texture-baking'),('cloth simulation','blender.physics-and-simulation'),('布料穿透','blender.cloth-collision-repair'),('为 React 展示页面导出 Blender 角色 GLB','blender.export-and-packaging')]:
             with self.subTest(query=query):self.assertEqual(search(entries,query)[0]['id'],expected)
         self.assertEqual(search(entries,'React wheel event handler'),[])
         self.assertEqual(search(entries,'Blender crashes when launching'),[])

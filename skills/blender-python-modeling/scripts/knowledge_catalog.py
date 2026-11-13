@@ -150,6 +150,8 @@ def search(entries, query, task=None, subject=None, facts=None, limit=5):
         # Binary term-frequency BM25 over compact knowledge cards; no model/network dependency.
         score = sum(math.log(1 + (len(documents)-frequencies[t]+0.5)/(frequencies[t]+0.5)) * 2.2/(1+1.2*(0.25+0.75*len(terms)/max(1,average_length))) for t in matches)
         if entry['kind'] == 'procedure': score *= 1.2
+        normalized = lambda value: re.sub(r'[\W_]+', '', value.lower())
+        if any(normalized(query) == normalized(alias) for alias in entry['aliases']): score *= 1.5
         missing = sorted(set(entry['required_facts']) - facts.keys())
         results.append({'id': entry['id'], 'skill': entry['skill'], 'entry': entry['entry'], 'title': entry['title'],
                         'score': round(score, 6), 'matched_terms': matches, 'applies_when': entry['applies_when'],

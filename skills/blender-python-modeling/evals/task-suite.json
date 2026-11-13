@@ -456,6 +456,230 @@
           "criterion": "已有动作、导出与未修改组件在声明范围内通过；优化同时呈现测量基线"
         }
       ]
+    },
+    {
+      "id": "production.mesh-recovery",
+      "split": "dev",
+      "prompt": "生成扫描网格恢复与重拓扑：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
+    },
+    {
+      "id": "production.data-transfer-repair",
+      "split": "dev",
+      "prompt": "重拓扑后的权重 UV 属性迁移：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
+    },
+    {
+      "id": "production.joint-correctives",
+      "split": "dev",
+      "prompt": "关节修正形态键与驱动维护：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
+    },
+    {
+      "id": "production.normal-bake-repair",
+      "split": "dev",
+      "prompt": "法线贴图接缝与烘焙错误诊断：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
+    },
+    {
+      "id": "production.cloth-collision-repair",
+      "split": "dev",
+      "prompt": "布料穿透悬浮与爆炸诊断：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
+    },
+    {
+      "id": "production.gltf-validation",
+      "split": "dev",
+      "prompt": "glTF 导出规范验证与重载验收：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
+    },
+    {
+      "id": "production.realtime-optimization",
+      "split": "dev",
+      "prompt": "实时 GLB 优化与功能回归：先定位目标与保留范围，记录现场事实和失败复现，选择满足条件的方法，局部验证后处理，并提供实际结果和未验证项。",
+      "setup": "Prepare independent input/defect/allowed-alternative assets; expose input copies only. Technical fixtures in blender_production_checks.py calibrate limited mechanisms, not full production tasks.",
+      "checks": [
+        {
+          "id": "diagnosis",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "实际事实支持方案，缺失信息没有被当作通过"
+        },
+        {
+          "id": "preservation",
+          "kind": "structure",
+          "required": true,
+          "criterion": "原始源与非目标对象/数据保持可用"
+        },
+        {
+          "id": "function",
+          "kind": "behavior",
+          "required": true,
+          "criterion": "通过该流程的独立验收，负例与合法替代都得到正确处理"
+        },
+        {
+          "id": "visual",
+          "kind": "visual",
+          "required": true,
+          "criterion": "固定目标条件观察实际产物，数值通过不替代视觉判断"
+        }
+      ]
     }
   ]
 }

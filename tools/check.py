@@ -76,8 +76,9 @@ def validate_library(root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--group', choices=['lightweight', 'metadata', 'blender', 'isolation'], default='lightweight')
+    parser.add_argument('--group', choices=['lightweight', 'metadata', 'blender', 'isolation', 'gltf'], default='lightweight')
     parser.add_argument('--blender', help='Explicit Blender executable for optional real-engine tests')
+    parser.add_argument('--validator-module', help='Explicit installed gltf-validator module for the gltf group')
     args = parser.parse_args()
     print('LIBRARY_CHECK_OK', validate_library(ROOT), flush=True)
     if args.group == 'metadata':
@@ -88,18 +89,26 @@ def main():
     if args.group == 'isolation':
         subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / 'tests/test_agent_isolation.py')], cwd=ROOT, env=env, check=True)
         return
+    if args.group == 'gltf':
+        if not args.blender or not args.validator_module:
+            parser.error('--group gltf requires --blender and --validator-module; dependencies are never installed automatically')
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_production_checks.py'), '--', str(temp / 'blender-production')], cwd=ROOT, env=env, check=True)
+        subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / 'skills/blender-python-modeling/tests/test_gltf_validation.py'), '--validator-module', args.validator_module, '--asset', str(temp / 'blender-production/production-sample.glb')], cwd=ROOT, env=env, check=True)
+        return
     if args.group == 'blender':
         if not args.blender:
             parser.error('--group blender requires --blender; Blender is never installed automatically')
         subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / 'skills/shadow-puppet-part-splitter/tests/blender_smoke.py'), '--blender', args.blender], cwd=ROOT, env=env, check=True)
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_domain_checks.py'), '--', str(temp / 'blender-domain')], cwd=ROOT, env=env, check=True)
         subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_repair_acceptance.py'), '--', str(temp / 'blender-repair')], cwd=ROOT, env=env, check=True)
+        subprocess.run([args.blender, '--background', '--factory-startup', '--python-exit-code', '1', '--python', str(ROOT / 'skills/blender-python-modeling/tests/blender_production_checks.py'), '--', str(temp / 'blender-production')], cwd=ROOT, env=env, check=True)
         return
     suites = [
         'tests/test_knowledge_evals.py',
         'tests/test_reconstruction_acceptance.py',
         'tests/test_p0_pipeline.py',
         'tests/test_knowledge_evidence.py',
+        'skills/blender-python-modeling/tests/test_production_checks.py',
         'skills/ancient-tales-pipeline/tests/test_runtime.py',
         'tests/test_library_checks.py',
         'skills/ancient-tales-production/tests/test_contract.py',

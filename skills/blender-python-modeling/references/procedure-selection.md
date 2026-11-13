@@ -7,3 +7,5 @@
 在任务记录中写选中 ID、依据、改动范围、替代方案与停止条件。先在代表性局部验证，再推广；修改后按独立验收入口测试。失败先归因到检索、适用性、诊断、执行或验收，不无限调参数。新证据否定假设时回到诊断；达到事先声明的实验预算后报告具体未决项，不降低完成标准。
 
 复用 stage_guard、模块台账、参考拟合和现有持久脚本；不为一个局部修改再建执行框架。保存修改前后证据，更新受影响签名，旧通过回执不能继续代表新结果。
+
+更多问题：生成/扫描网格用 [网格恢复](procedures/modeling/generated-mesh-recovery.md)，重拓扑后数据用 [迁移](procedures/modeling/data-transfer-repair.md)，基础绑定正确后的局部失真用 [关节修正](procedures/characters/joint-correctives.md)，烘焙接缝用 [法线诊断](procedures/surfacing/normal-bake-repair.md)，布料异常用 [接触诊断](procedures/simulation/cloth-collision-repair.md)，GLB 交付/优化用 [格式验证](procedures/delivery/gltf-validation.md) 与 [优化回归](procedures/delivery/realtime-optimization.md)。

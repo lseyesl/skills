@@ -70,7 +70,7 @@ check('undeclared_budget_stays_unknown',inspect_asset([a],stage='blockout')['bud
 # Template local refinement includes unaffected same-phase owned modules.
 spec=importlib.util.spec_from_file_location('task_template',ROOT/'assets/blender_task_template.py');template=importlib.util.module_from_spec(spec);spec.loader.exec_module(template);template.TASK_ID='budget-fixture'
 for obj in [a,b]:obj[template.OWNER_KEY]=template.TASK_ID;obj[template.PHASE_KEY]='refine'
-rejected('template_counts_unaffected_modules',lambda:template._geometry_check([a],'refine',{'resource_budget':{'max_triangles':12,'reason':'shared synthetic budget'}}))
+rejected('template_counts_unaffected_modules',lambda:template._geometry_check([a],'refine',{'resource_budget':{'max_triangles':6,'working_max_triangles':12,'reason':'shared synthetic working budget'}}))
 for obj in [a,b]:obj.data.materials.append(plane.data.materials[0])
 rejected('bad_geometry_stops_export',lambda:export_glb([bad],out/'bad.glb'))
 check('rejected_preflight_has_report_no_glb',not (out/'bad.glb').exists() and json.loads((out/'bad.glb.report.json').read_text())['phase']=='source-preflight')

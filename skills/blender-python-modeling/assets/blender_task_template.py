@@ -1,5 +1,6 @@
 """Project template: implement builders; default placeholders never create a model.
-Keep reviewed coarse sources immutable while refining copies. No automatic save/export.
+Keep reviewed coarse sources immutable while refining copies. Freeze a fidelity-reviewed
+refined source before optimizing a separate delivery copy. No automatic save/export.
 """
 from __future__ import annotations
 import json
@@ -103,7 +104,9 @@ def validate_blockout(objects,plan,scope):
 
 def validate_result(objects):
     if not objects:raise RuntimeError('No refinement output')
-    return {'geometry':_geometry_check(objects,'refine',_load_plan()),'objects':[o.name for o in objects],'stage':'refinement-produced','ready_to_claim_complete':False}
+    return {'geometry':_geometry_check(objects,'refine',_load_plan()),'objects':[o.name for o in objects],
+            'stage':'refinement-produced','requires_source_fidelity_review':True,
+            'delivery_budget_checked':False,'ready_to_claim_complete':False}
 
 
 def _state(modules):

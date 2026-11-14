@@ -1486,7 +1486,7 @@
     },
     {
       "id": "blender.realtime-optimization",
-      "title": "实时 GLB 优化与功能回归",
+      "title": "源模型冻结、实时资产优化与保真回归",
       "entry": "references/procedures/delivery/realtime-optimization.md",
       "kind": "procedure",
       "tasks": [
@@ -1502,7 +1502,10 @@
         "meshoptimizer",
         "保留节点优化",
         "asset optimization",
-        "node preservation"
+        "node preservation",
+        "先还原再减面",
+        "源模型冻结",
+        "优化损失检查"
       ],
       "applies_when": [
         "资产症状/任务符合正文适用范围，且已检查所列现场事实"
@@ -1513,7 +1516,10 @@
       "required_facts": [
         "optimization_goal",
         "protected_capabilities",
-        "consumer_extensions"
+        "consumer_extensions",
+        "source_fidelity_review",
+        "frozen_source_sha256",
+        "regional_loss_tolerances"
       ],
       "requires": [
         "blender.game-assets",
@@ -1701,7 +1707,9 @@
         "box modeling",
         "blockout refinement",
         "复用已有模型",
-        "阶段面数预算"
+        "阶段面数预算",
+        "源模型与交付副本",
+        "还原面数限制"
       ],
       "applies_when": [
         "复杂新建、重大形体修改或已有资产需要确认细化前提"

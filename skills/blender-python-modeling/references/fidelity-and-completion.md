@@ -5,6 +5,10 @@ photos, diagrams, or AI-generated multi-view sheets. A silhouette match proves
 only the outer envelope. It does not prove that the visible design has been
 modeled at the requested level of detail.
 
+## Source acceptance and optimized delivery are separate
+
+First review the reconstructed source against the original images, local signature features and structural requirements. Final consumer polygon limits are not a reason to omit those features. Freeze the reviewed source, ledger and evidence with content hashes; optimization uses a separate copy and a separate ledger/review. Reuse this completion gate for each representation within its declared scope. A source can pass reconstruction yet remain unsuitable for budgeted delivery; an optimized copy can fit its budget yet fail fidelity preservation. Never transfer matched statuses to a decimated mesh without reinspection. Follow [realtime optimization](procedures/delivery/realtime-optimization.md).
+
 ## Module versus Blender object
 
 A **module** is a semantic assembly that a reviewer can identify and judge,

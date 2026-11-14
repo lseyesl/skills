@@ -4,6 +4,8 @@ Start from the destination engine contract. A visually correct Blender mesh can 
 
 ## Budget before topology
 
+Reconstruct and review the reference-faithful source before reducing a derived delivery copy. Final consumer triangle caps do not govern initial reconstruction; optional working-resource caps remain explicit. Freeze the source and check local losses against both it and the original images using [realtime optimization](procedures/delivery/realtime-optimization.md). If the source already meets the consumer limits, no reduction is required.
+
 Record budgets per deliverable, not as universal numbers:
 
 - evaluated triangles at each LOD;

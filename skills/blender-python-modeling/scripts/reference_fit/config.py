@@ -118,7 +118,8 @@ def _validate(c):
     if type(rend.get('seed',0))!=int:raise ValueError('Render seed must be integer')
     v=c['validation']
     if 'min_triangle_area' in v and (type(v['min_triangle_area']) not in (int,float) or not math.isfinite(v['min_triangle_area']) or v['min_triangle_area']<0):raise ValueError('min_triangle_area must be finite and nonnegative')
-    if 'max_triangles' in v and (type(v['max_triangles']) is not int or v['max_triangles']<1):raise ValueError('max_triangles must be a positive task budget')
+    for key in ('max_triangles','working_max_triangles'):
+        if key in v and (type(v[key]) is not int or v[key]<1):raise ValueError(key+' must be a positive explicit budget')
     for key in ['global_iou_target','component_iou_target','regression_tolerance','min_improvement']: finite(v[key],key,0,1)
     if type(v['max_iterations'])!=int or not 0<=v['max_iterations']<=50: raise ValueError('Invalid iteration limit')
     if v.get('alignment','none') not in ['none','bbox_similarity']:raise ValueError('Invalid alignment mode')

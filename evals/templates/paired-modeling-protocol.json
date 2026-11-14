@@ -5,9 +5,19 @@
   "base_revision_or_snapshot_sha256": null,
   "candidate_revision_or_snapshot_sha256": null,
   "controlled_change": null,
-  "source_inputs": [{"task_id": "replace-me", "path": null, "sha256": null}],
+  "source_inputs": [
+    {
+      "task_id": "replace-me",
+      "path": null,
+      "sha256": null
+    }
+  ],
   "same_starting_state_and_context": null,
-  "runtime": {"observed_model_id": null, "blender_version": null, "tool_versions": {}},
+  "runtime": {
+    "observed_model_id": null,
+    "blender_version": null,
+    "tool_versions": {}
+  },
   "common_limits": {
     "candidate_builds": 1,
     "quality_revision_rounds": 2,
@@ -16,14 +26,54 @@
     "maximum_context_tokens": null,
     "maximum_human_interventions": 0
   },
-  "task_resource_budgets": [{"task_id": "replace-me", "max_triangles": null, "blockout_max_triangles": null, "min_triangle_area_world": null, "require_closed": null}],
+  "task_resource_budgets": [
+    {
+      "task_id": "replace-me",
+      "max_triangles": null,
+      "blockout_max_triangles": null,
+      "min_triangle_area_world": null,
+      "require_closed": null,
+      "working_max_triangles": null
+    }
+  ],
   "rubric_path_and_sha256": null,
   "comparison_policy_path_and_sha256": null,
-  "protected_checks": ["source_preserved", "reference_identity", "geometry", "resource_budget", "required_motion", "export_transport"],
+  "protected_checks": [
+    "source_preserved",
+    "reference_identity",
+    "geometry",
+    "resource_budget",
+    "required_motion",
+    "export_transport"
+  ],
   "unseen_task_ids_and_repeats": [],
-  "record_actual_counts": ["candidate_builds", "quality_revision_rounds", "image_generation_calls", "elapsed_seconds", "context_tokens", "human_interventions"],
+  "record_actual_counts": [
+    "candidate_builds",
+    "quality_revision_rounds",
+    "image_generation_calls",
+    "elapsed_seconds",
+    "context_tokens",
+    "human_interventions"
+  ],
   "keep_first_candidate_and_all_failures": true,
-  "independent_source_review": {"reviewer": null, "source_regions": [], "construction_target_is_not_independent_fidelity_evidence": true},
+  "independent_source_review": {
+    "reviewer": null,
+    "source_regions": [],
+    "construction_target_is_not_independent_fidelity_evidence": true
+  },
   "report_template": "test-output.md",
-  "notes": "Complete and hash this protocol before both runs; the fields are a planning aid, not enforced quotas or a claim of comparable execution. Equal caps allow different actual usage, which must be reported."
+  "notes": "Complete and hash this protocol before both runs; the fields are a planning aid, not enforced quotas or a claim of comparable execution. Equal caps allow different actual usage, which must be reported.",
+  "representation_checkpoints": [
+    "blockout_review",
+    "source_fidelity_and_structure_review",
+    "frozen_source_hash",
+    "optimized_copy_fidelity_and_cost",
+    "delivery_reimport"
+  ],
+  "optimization_comparison": {
+    "same_representation_on_both_sides": true,
+    "source_and_delivery_scores_separate": true,
+    "preserve_source_and_all_candidates": true,
+    "fidelity_loss_tolerances_by_region": null
+  }
 }

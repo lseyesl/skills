@@ -78,6 +78,24 @@ shared=dict(plan['modules'][1],id='shared-region',objects=['CoarseBody'])
 plan['modules'].append(shared);m.MODELING_PLAN.write_text(json.dumps(plan))
 rejects('shared_semantic_mesh_not_deleted',lambda:m.remove_previous_generated_data(['body'],'blockout'))
 assert bpy.data.objects.get('CoarseBody') is body
+# A final consumer cap cannot reject a sound higher-resolution construction source.
+# The exact same geometry must still be rejected as a budgeted delivery.
+from blockout_gate import resource_limits
+from production_checks import require_asset_geometry
+budget_plan={'resource_budget':{'required':True,'max_triangles':1,'reason':'synthetic delivery cap'}}
+source_report=m._geometry_check([body],'refine',budget_plan)
+checks['source_above_delivery_cap_allowed']=source_report['passed'] and source_report['evaluated_triangles']>1 and source_report['budget_passed'] is None
+rejects('same_source_rejected_as_delivery',lambda:require_asset_geometry([body],stage='delivery',**resource_limits(budget_plan,'delivery')))
+budget_plan['resource_budget']['working_max_triangles']=1
+rejects('explicit_working_resource_cap_enforced',lambda:m._geometry_check([body],'refine',budget_plan))
+from reference_fit.blender_validation import structure
+from reference_fit.blender_builder import OWNER as FIT_OWNER
+body[FIT_OWNER]='budget-test'
+fit_config={'character_id':'budget-test','shape':{},'validation':{'max_triangles':1}}
+fit_source=structure(bpy.context.scene,fit_config)
+checks['fitter_source_not_rejected_by_delivery_cap']=fit_source['ok'] and fit_source['delivery_budget_passed'] is False and fit_source['geometry_audit']['budget_passed'] is None
+fit_config['validation']['working_max_triangles']=1
+checks['fitter_explicit_working_cap_rejects']=not structure(bpy.context.scene,fit_config)['ok']
 report={'passed':all(checks.values()),'blender':bpy.app.version_string,'checks':checks,'scope':'synthetic blockout/review/refinement/freshness mechanics only; no visual-quality or Agent-effect certification'}
 (out/'pipeline-report.json').write_text(json.dumps(report,indent=2));print('BLOCKOUT_PIPELINE_OK',json.dumps(report))
 if not report['passed']:raise SystemExit(1)

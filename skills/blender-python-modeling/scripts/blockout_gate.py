@@ -17,13 +17,18 @@ def resource_limits(plan,stage):
     if type(required) is not bool:raise ValueError('Explicit resource required flag must be boolean')
     final=triangle_budget(budget.get('max_triangles'))
     coarse=triangle_budget(budget.get('blockout_max_triangles'))
-    if required and final is None:raise ValueError('This target requires a final triangle budget before construction')
-    if (final is not None or coarse is not None or required) and (not isinstance(budget.get('reason'),str) or not budget['reason'].strip()):
+    working=triangle_budget(budget.get('working_max_triangles'))
+    # A consumer's final cap must not silently coarsen the reconstruction source.
+    # Working caps are optional, explicit resource safeguards, not fidelity targets.
+    delivery=stage in {'delivery','reimport'}
+    if delivery and required and final is None:raise ValueError('This target requires a final triangle budget before delivery')
+    if (any(v is not None for v in (final,coarse,working)) or required) and (not isinstance(budget.get('reason'),str) or not budget['reason'].strip()):
         raise ValueError('Resource limits require a target-derived rationale')
     area=budget.get('min_triangle_area',5e-13);closed=budget.get('require_closed',False)
     if type(area) not in (int,float) or not math.isfinite(area) or area<0 or type(closed) is not bool:
         raise ValueError('Invalid area tolerance or closed-surface requirement')
-    return {'max_triangles':(coarse if coarse is not None else final) if stage=='blockout' else final,
+    limit=final if delivery else coarse if stage=='blockout' else working
+    return {'max_triangles':limit,
         'require_closed':closed if stage!='blockout' else False,'min_triangle_area':area}
 
 

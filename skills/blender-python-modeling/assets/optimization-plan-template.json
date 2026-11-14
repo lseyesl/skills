@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "status": "draft-not-acceptance-evidence",
+  "source": {
+    "blend": null,
+    "sha256": null,
+    "ledger": null,
+    "ledger_sha256": null,
+    "fidelity_review": null,
+    "geometry_report": null,
+    "scope_and_approved_simplifications": []
+  },
+  "candidate": {"blend": null, "export": null, "must_differ_from_source": true},
+  "target": {"consumer": null, "max_triangles": null, "rationale": null},
+  "budget": {"maximum_candidates": null, "maximum_seconds": null},
+  "primary_metric": {"name": "evaluated_triangles", "before": null, "after": null, "minimum_gain": null},
+  "comparison": {"cameras_and_lights": null, "screen_scale": null, "frames": [], "original_source_regions": []},
+  "protected": [
+    {"id": "source_preserved", "criterion": "frozen source hash remains unchanged", "status": "unknown", "evidence": []},
+    {"id": "source_fidelity", "criterion": "original reference agreement retained within predeclared regional tolerances", "status": "unknown", "evidence": []},
+    {"id": "local_features", "criterion": "enumerate critical widths, curvature, openings, text/tread and allowed error before optimization", "status": "unknown", "evidence": []},
+    {"id": "geometry", "criterion": "no invalid/degenerate geometry or broken required connections", "status": "unknown", "evidence": []},
+    {"id": "function_and_export", "criterion": "declared motion/deformation/material and reimport behavior retained", "status": "unknown", "evidence": []}
+  ],
+  "notes": "Planning aid only. Review the source before freezing. Compare candidate against both frozen source and original images. Unmeasured checks stay unknown; any protected regression rejects the optimization even if the cost cap passes. Keep every failed candidate."
+}

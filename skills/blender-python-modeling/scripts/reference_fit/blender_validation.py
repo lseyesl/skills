@@ -159,8 +159,11 @@ def structure(scene,c):
         if not finite or bad or winding or degenerate or volume<=0:report['errors'].append(ob.name+': invalid topology/normals')
         bm.free();ev.to_mesh_clear()
     report['evaluated_triangles']=sum(m['evaluated_triangles'] for m in report['meshes'].values())
-    budget=c['validation'].get('max_triangles');report['triangle_budget']=budget
-    if budget is not None and report['evaluated_triangles']>budget:report['errors'].append('Evaluated triangle budget exceeded; prepare a reviewed realtime derivative')
+    # This static fitter reconstructs the source, not the optimized delivery copy.
+    budget=c['validation'].get('working_max_triangles');report['triangle_budget']=budget
+    final=c['validation'].get('max_triangles');report['delivery_triangle_budget']=final
+    report['delivery_budget_passed']=None if final is None else report['evaluated_triangles']<=final
+    if budget is not None and report['evaluated_triangles']>budget:report['errors'].append('Explicit source working-resource triangle budget exceeded')
     targets=[o for o in scene.objects if o.get(OWNER)==owner and o.type=='MESH']
     audit=inspect_asset(targets,stage='refine',max_triangles=budget,require_closed=True,
         min_triangle_area=c['validation'].get('min_triangle_area',5e-13))

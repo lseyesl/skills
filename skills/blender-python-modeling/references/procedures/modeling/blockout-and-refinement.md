@@ -45,12 +45,25 @@
 
 修改正式模板中的构建/细化函数时同时移除对应的 placeholder 标记。多个语义模块允许绑定同一个连续网格；默认状态会保守检查整个共享对象，局部清理不能删除其他模块仍使用的对象。
 
-## Resource-aware method selection
+## 先还原源模型，再优化交付副本
 
-Before building, populate the plan's resource_budget: target rationale, required flag, final max_triangles, optional blockout_max_triangles, world-space min_triangle_area and require_closed. Realtime/export targets with a hard cap use required=true; an unknown cap must be resolved rather than silently removed. Original render-only tasks may explicitly omit a cap and retain the reason; budget_passed then remains unknown, not certified.
+面数分为两个问题：还原阶段是否正确表达参考，以及目标消费者是否能承受交付资产。不要把两者合成一个门禁。流程为：粗模 → 实际粗模审查 → 还原细化 → 原图忠实度与结构验收 → 冻结源模型 → 派生优化 → 同条件损失审查 → 交付。粗模仍保持低成本以便调形；不要求所有资产一开始高模，也不靠增加细分自动获得正确曲面。
 
-Choose a representation per module using the [reference interpretation branches](../../reference-image-analysis.md#interpret-the-reference-before-tracing-or-choosing-geometry). Inspect one representative cast sector, joint, cavity or accessory before multiplying expensive geometry. Estimate repetition/subdivision/remesh cost, but gate on actual evaluated aggregate counts. Coarse controls and refined copies are separate representations; the budget applies to the intended current output, not to every hidden historical snapshot combined.
+计划的 resource_budget 区分：
 
-The template uses resource_limits(plan, stage) and require_asset_geometry after build/refine. It counts all same-phase owned modules, including unaffected ones, so a local operation cannot reuse the whole allowance per object. Plan limits, tolerances and checker code participate in receipt freshness. The delivery adapter receives the same final limit explicitly; omitting max_triangles does not prove a limited target passed. Modifiers and every declared animation sample can change evaluated cost/validity.
+| 字段 | 生效阶段 | 含义 |
+| --- | --- | --- |
+| max_triangles | delivery / reimport | 最终用途预算；不自动用于粗模/还原细化 |
+| blockout_max_triangles | blockout | 可选的显式粗模工作资源上限；缺省不继承最终预算 |
+| working_max_triangles | refine | 可选的显式还原工作资源上限；不是最终交付目标 |
+| required | delivery / reimport | 为 true 时最终预算必须在交付前明确；不阻止先开展源模型还原 |
 
-When a phase fails, preserve the candidate/report and reconsider the implicated representation within the already declared run budget. Do not globally subdivide or remesh merely to smooth a silhouette. Any alternate low-cost output needs the same reference, cross-section, connection and motion checks; report changed/unchanged/worse/unknown under the original test policy. Do not overwrite a frozen test result with a repaired model's score.
+工作资源有实际时间、内存或交互限制时声明理由和限额，避免无限细分；资源不足应报告、改局部表示或分批处理，不能默默丢掉参考特征。require_closed、世界单位 min_triangle_area 及非有限/退化三角形检查仍按阶段执行。max_triangles 缺省时 budget_passed=null；这表示本阶段没有声明面数验收，不代表已满足交付预算。
+
+正式模板用 resource_limits(plan, stage) 选择本阶段限额，对完整同阶段资产求值计数，包含未修改模块，不累计隐藏历史快照。计划、工作限额与检测器参与审查签名；修改后需重新检查。
+
+细化源模型先按 [忠实度与完成](../../fidelity-and-completion.md) 检查局部曲率、孔形、连接、配件宽度、胎纹/文字等实际参考特征。保存实际原图对照、结构检查和用途范围；未通过者仍是源模型候选，不能先减面再称还原完成。已存在且足够合格的源模型可直接验收冻结，不强制重建。
+
+通过后保存不覆盖的 source.blend、源账本/审查与文件哈希，再按 [优化流程](../delivery/realtime-optimization.md) 生成不同路径的 delivery 候选。高质量源模型可能已在最终预算内；此时允许验证后直接交付其副本，不强制减面。源文件保留不等于其忠实度自动通过。
+
+优化失败保留候选与测量，返回具体退化特征，不全局盲调细分或提高上限。最终预算仍由交付适配器明确执行；源模型通过但优化副本失败应分别报告，不能用外观分抵消交付超限，也不能用减面收益抵消外观损失。

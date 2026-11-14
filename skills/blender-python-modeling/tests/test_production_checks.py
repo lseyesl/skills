@@ -48,6 +48,12 @@ class ProductionChecks(unittest.TestCase):
             ('保留节点优化','optimize','blender.realtime-optimization')]:
             with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
 
+    def test_source_then_optimization_routes(self):
+        entries=load_catalog(ROOT.parent)
+        for query,task,expected in [('先还原再减面','optimize','blender.realtime-optimization'),
+                                    ('源模型与交付副本','create','blender.blockout-and-refinement')]:
+            with self.subTest(query=query):self.assertEqual(search(entries,query,task)[0]['id'],expected)
+
     def test_modeling_method_and_acceptance_routes(self):
         entries=load_catalog(ROOT.parent)
         for query,task,expected in [
@@ -79,13 +85,34 @@ class ProductionChecks(unittest.TestCase):
         for value in (0,-1,True,40000.5,'40000'):
             with self.subTest(value=value),self.assertRaises(ValueError):
                 resource_limits({'resource_budget':{'max_triangles':value,'reason':'test'}},'refine')
-        with self.assertRaises(ValueError):resource_limits({'resource_budget':{'required':True}},'blockout')
+        with self.assertRaises(ValueError):resource_limits({'resource_budget':{'required':True,'reason':'delivery unresolved'}},'delivery')
         with self.assertRaises(ValueError):resource_limits({'resource_budget':{'max_triangles':100}},'blockout')
         plan={'resource_budget':{'required':True,'max_triangles':40000,'blockout_max_triangles':2000,'reason':'test target','require_closed':True}}
         self.assertEqual(resource_limits(plan,'blockout')['max_triangles'],2000)
-        self.assertEqual(resource_limits(plan,'refine')['max_triangles'],40000)
+        self.assertIsNone(resource_limits(plan,'refine')['max_triangles'])
+        self.assertEqual(resource_limits(plan,'delivery')['max_triangles'],40000)
         self.assertFalse(resource_limits(plan,'blockout')['require_closed'])
         self.assertTrue(resource_limits(plan,'delivery')['require_closed'])
+
+    def test_delivery_budget_never_leaks_into_source_construction(self):
+        from blockout_gate import resource_limits
+        plan={'resource_budget':{'required':True,'max_triangles':100,'reason':'consumer cap'}}
+        for stage in ['blockout','refine']:
+            self.assertIsNone(resource_limits(plan,stage)['max_triangles'])
+        for stage in ['delivery','reimport']:
+            self.assertEqual(resource_limits(plan,stage)['max_triangles'],100)
+        plan['resource_budget']['working_max_triangles']=100000
+        self.assertEqual(resource_limits(plan,'refine')['max_triangles'],100000)
+        self.assertIsNone(resource_limits(plan,'blockout')['max_triangles'])
+        for value in (True,0,-1,float('nan')):
+            plan['resource_budget']['working_max_triangles']=value
+            with self.subTest(value=value),self.assertRaises(ValueError):resource_limits(plan,'refine')
+
+    def test_source_may_precede_resolved_delivery_budget(self):
+        from blockout_gate import resource_limits
+        plan={'resource_budget':{'required':True,'reason':'target budget pending; source reconstruction first'}}
+        self.assertIsNone(resource_limits(plan,'refine')['max_triangles'])
+        with self.assertRaises(ValueError):resource_limits(plan,'reimport')
 
     def test_fitter_task_budget_validation(self):
         import copy
@@ -95,6 +122,10 @@ class ProductionChecks(unittest.TestCase):
             candidate=copy.deepcopy(config);candidate['validation']['max_triangles']=budget
             with self.subTest(budget=budget),self.assertRaises(ValueError):validate(candidate)
         config['validation']['max_triangles']=80000;validate(config)
+        config['validation']['working_max_triangles']=160000;validate(config)
+        config['validation']['working_max_triangles']=True
+        with self.assertRaises(ValueError):validate(config)
+        del config['validation']['working_max_triangles']
         for value in (-1,True,float('nan')):
             candidate=copy.deepcopy(config);candidate['validation']['min_triangle_area']=value
             with self.subTest(area=value),self.assertRaises(ValueError):validate(candidate)

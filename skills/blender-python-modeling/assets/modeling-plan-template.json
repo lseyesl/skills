@@ -36,8 +36,9 @@
     "required": false,
     "max_triangles": null,
     "blockout_max_triangles": null,
+    "working_max_triangles": null,
     "min_triangle_area": 5e-13,
     "require_closed": false,
-    "reason": "Replace with target/scale rationale; realtime hard limits require required=true and an explicit positive max_triangles"
+    "reason": "max_triangles is the final delivery cap, enforced only at delivery/reimport. Optional blockout/working caps protect runtime resources and never inherit the delivery cap. Resolve required final caps before delivery; do not omit source features to meet them."
   }
 }

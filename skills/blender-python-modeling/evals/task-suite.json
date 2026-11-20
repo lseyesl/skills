@@ -40,6 +40,26 @@
       ]
     },
     {
+      "id": "hand.rest-overlap",
+      "split": "dev",
+      "prompt": "检查放松下垂的静态角色双手，局部修正手型，保留原姿态和整体轮廓。",
+      "setup": "Prepare paired independent cases with similar front silhouettes: one has distal finger penetration, the other has anatomically ordered fingers occluding each other or touching. Record both hands and camera before work.",
+      "checks": [
+        {
+          "id": "distinguish",
+          "kind": "structure",
+          "required": true,
+          "criterion": "在掌面与侧向或截面中逐指定位，区分轮廓遮挡、允许接触与实际穿入；指根和虎口位置可辨。"
+        },
+        {
+          "id": "appearance",
+          "kind": "visual",
+          "required": true,
+          "criterion": "最终求值网格双手局部从原视角和能展开指列的角度复查，穿入样例完成局部纠正，合法接触样例保留姿态。"
+        }
+      ]
+    },
+    {
       "id": "hand.repair",
       "split": "dev",
       "prompt": "修复手部：先根据现场资产制定处理方案。检查张手、握拳、拇指对掌；保留原动作与指部身份。优化必须记录前后基线，回归必须覆盖未修改能力；未知项不得宣称通过。",
@@ -944,6 +964,26 @@
           "kind": "visual",
           "required": true,
           "criterion": "预算内产物仍保留原图主要形状和所需动作"
+        }
+      ]
+    },
+    {
+      "id": "reference.occluded-strap",
+      "split": "dev",
+      "prompt": "根据这张肩带绕过肩部、在躯干侧面消失的正面图制作角色模型。保留图中可见的穿戴方式。",
+      "setup": "Run the same source as two independent cases. Use the prompt as written for an ordinary belt. For the exception add an explicit instruction that the rear strap segment floats clear of the garment as a magical effect. Keep the camera, visible anchors and review distance fixed.",
+      "checks": [
+        {
+          "id": "visible",
+          "kind": "visual",
+          "required": true,
+          "criterion": "原视角核对肩带可见起止点、宽度与遮挡顺序。"
+        },
+        {
+          "id": "hidden",
+          "kind": "structure",
+          "required": true,
+          "criterion": "在同一模型的斜后方或剖面追踪肩带。普通穿戴的部件连续绕身或合理固定，显式悬浮版本只在指定段留隙；隐藏形态标为推定。"
         }
       ]
     }

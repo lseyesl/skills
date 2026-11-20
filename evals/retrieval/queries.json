@@ -33,6 +33,16 @@
       "subject": "hand"
     },
     {
+      "id": "rest-hand-overlap",
+      "query": "静止手指堆叠",
+      "task": "repair",
+      "expected": [
+        "blender.hand-construction"
+      ],
+      "split": "dev",
+      "subject": "hand"
+    },
+    {
       "id": "wheel-zh",
       "query": "车轮偏心",
       "task": "repair",

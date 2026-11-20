@@ -86,4 +86,8 @@ Blender 内新增的网格恢复/数据迁移、关节修正、法线烘焙/布�
 
 图片到可用模型的执行路径补充 [空任务场景与隔离交付](skills/blender-python-modeling/references/production-workspace.md)、[容器/连接诊断修复](skills/blender-python-modeling/references/procedures/modeling/containers-and-connections.md) 和 [用途分级验收](skills/blender-python-modeling/references/acceptance/usable-asset.md)；角色拟合、持久绑定与动画交付分别检查，不以静态外观代替可用性。
 
+参考图未显示的结构默认按对象的解剖、材料或装配关系补全，粗模换角检查，用户指定的特殊构造按其范围处理。见[隐藏结构补全](skills/blender-python-modeling/references/reference-image-analysis.md#complete-hidden-structure)。
+
+角色整模中的独立手指按[手部制作](skills/blender-python-modeling/references/procedures/characters/hand-construction.md)摆放指根与指节，静止时已堆叠的手按[手部姿势验收](skills/blender-python-modeling/references/acceptance/hand-poses.md)区分遮挡、接触与穿入。
+
 复杂 Blender 建模的方法选择、基础形体检查与细化前置条件见 [blockout 流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)；允许盒式建模和已有资产复用，保持单一 Blender Skill 入口。

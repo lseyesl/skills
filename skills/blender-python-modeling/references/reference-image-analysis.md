@@ -6,6 +6,12 @@ Use reference images as evidence for a parametric model, not as proof of hidden 
 
 When only one design view exists and the user first needs inferred modeling artwork, use `concept-multiview-sheet` to generate the missing controlling views, or a full five- or six-view sheet when the task requires it. Treat its output as a design hypothesis: retain its observed/inferred/unknown ledger and run the consistency checks below before blockout.
 
+## Complete hidden structure
+
+Identify what disappears behind what, then follow the part in object space. Use the simplest construction consistent with the visible entry and exit points, the object's type and intended use. A relaxed hand keeps its finger order even when fingertips overlap in projection. A wrap crossing the chest follows the torso or ends at a plausible attachment. An axle hidden by its hub shares the wheel axis. Preserve visible asymmetry and stylization. Leave hidden decoration and irrelevant internal mechanisms unspecified.
+
+Use ordinary construction as the default for routine gaps. Record consequential choices as inferred, then check them on the model. A user-specified exception takes precedence for the affected relation: a deliberately floating accessory may have a gap, or a stage flat may be designed for one camera. A request for likeness, a static pose or a single supplied photo still calls for a coherent 3D object unless the user specifies such an exception. Ask only when the remaining choice materially affects identity, fit or function and the source, intended use and ordinary construction cannot resolve it.
+
 ## Input priority
 
 The most useful package is:

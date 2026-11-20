@@ -35,11 +35,12 @@
     },
     {
       "id": "blender.hand-construction",
-      "title": "可变形人手制作",
+      "title": "静态与可变形人手制作、静止堆指修正",
       "entry": "references/procedures/characters/hand-construction.md",
       "kind": "procedure",
       "tasks": [
-        "create"
+        "create",
+        "repair"
       ],
       "subjects": [
         "hand"
@@ -48,13 +49,16 @@
         "人手",
         "手掌",
         "finger",
-        "hand topology"
+        "hand topology",
+        "静止手指堆叠",
+        "指根拥挤",
+        "手指穿插"
       ],
       "applies_when": [
-        "先完成现场诊断并核对正文条件"
+        "新建有独立手指的手，或静止姿态已有指根拥挤、指节穿插"
       ],
       "exclude_when": [
-        "与目标用途或正文排除条件冲突"
+        "仅由蒙皮或动作导致的异常进入手部形变诊断"
       ],
       "required_facts": [
         "intended_use"
@@ -943,7 +947,9 @@
         "reference image analysis",
         "遮挡误判",
         "照片黑区",
-        "负空间建模"
+        "负空间建模",
+        "隐藏结构补全",
+        "遮挡部件延续"
       ],
       "applies_when": [
         "Read this guide when its documented task and prerequisites match the observed asset."
@@ -953,7 +959,9 @@
       ],
       "required_facts": [],
       "requires": [],
-      "verification": [],
+      "verification": [
+        "blender.acceptance.blockout"
+      ],
       "conditions": {},
       "status": "experimental",
       "tool_dependencies": [

@@ -2,6 +2,8 @@
 
 新任务的按需入口见 [通用工具](tools.md)：`blender_io.py` 支持静态素材、局部骨架和明确轨迹，无固定节点数、动作名或必须存在的默认场景对象。下文 `blender_rig.py` 的 motion_plan/target_ranges 是旧版完整动作范围试验协议，仅在选择该试验模式时适用。
 
+Blender 是需要可编辑工程或目标渲染时的选项，不是连续预览前置条件。`blender_io.py --render` 目前只渲染给定关键帧，不会输出完整连续动作。先用 `toolbox.py animate` 对同一 `clips[].frames` 逐帧预览；涉及材质、形变或运行时差异时，再在 Blender 对所选 Action 的完整帧范围渲染并连续观看。不能把关键帧拼图当作动画通过。
+
 
 ## motion_plan.json
 

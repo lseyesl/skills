@@ -10,6 +10,8 @@
 
 导演负责镜头决策和专业复审，制片／总控负责阶段推进，项目后端负责装配与渲染。当前提供工作流规范、能力工具及[交接契约校验与环境检查](skills/ancient-tales-production/references/交接校验与环境检查.md)，不会自动调度导演或授予批准。资产基础检查使用 `assets verify`，严格身份／回执检查使用 `assets validate`；旧清单迁移见[资产校验契约](skills/ancient-tales-pipeline/references/资产校验契约.md)。
 
+皮影制作优先跑通“必要素材 → 动作装配 → 连续预览 → 局部返修”，再扩展镜头；不要求先完成全角色拆件或逐层审批。二维预览使用 [toolbox animate](skills/shadow-puppet-part-splitter/references/tools.md)，正式影片仍沿用既有 Gate。
+
 ## 安装到项目
 
 需要 Python 3.10+ 和 Git。先把本库克隆到独立的源码目录，而不是把整个仓库嵌套进某个客户端的单个 Skill 目录：

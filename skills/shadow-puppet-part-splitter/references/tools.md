@@ -8,12 +8,35 @@
 python examples/create_demo.py --output /tmp/puppet-demo
 python scripts/toolbox.py run --config /tmp/puppet-demo/pipeline.json --report /tmp/puppet-demo/run.json
 python scripts/toolbox.py run --config /tmp/puppet-demo/pipeline.json --report /tmp/puppet-demo/run.json
+python scripts/toolbox.py animate --config /tmp/puppet-demo/animate.json
 python scripts/toolbox.py blender --config /tmp/puppet-demo/blender.json
 ```
 
 前两条产生一个无人体假设的机械铰链样例、回组图、关节图、拆件表、给定姿态表、连接测量和 ZIP。第二次运行复用成功且输入/产物未变的步骤。Blender 示例有两个 Action，轨迹已经写在 `motion.json`，工具只负责写入与核验。
 
 修改示例或素材前先复制到自己的目录。示例生成器会更新该目录的示例文件；Blender 为避免覆盖编辑成果，已有 `rig.blend` 时要求换一个输出目录。
+
+## 素材与动作的连续返修入口
+
+先用实际部件做一个完整行为，正常速度观看，再修 mask、搭接、锚点、轨迹或时序，重跑同一片段。`preview` 是诊断拼图，`animate` 才会采样关键帧之间的每一帧。
+
+```bash
+python scripts/toolbox.py animate --manifest manifest.json --motion-plan motion_plan.json --output preview/v1
+```
+
+最小动作直接沿用 Blender IO 的数据，不另建审批或动作规划文档：
+
+```json
+{"fps":24,"clips":[{"id":"reach-and-settle","frames":[{"frame":1},{"frame":9,"angles":{"arm":-20}},{"frame":17,"angles":{"arm":-30}},{"frame":25,"angles":{"arm":-30}}]}]}
+```
+
+此例仅说明时间格式；实际节点、支点和角度须依据素材与目标行为设计。每个关键帧是完整姿态，未写通道回默认值；角度按数值线性插值，不自动走最短弧。缓入缓出、接触、支撑与次级运动由执行者安排并写入采样键，工具不理解动作名称。
+
+默认对每个 clip 从首帧到末帧（两端包含）逐帧出图，并各自编码 GIF、联系表，输出 `clip-000/frames`、`clip-000/media` 与一个 `preview.json`。片段不会串成一个动作，目录用序号避免名称进入路径。`--clip-id` 选择单段；`--stage stage.png` 合入同 `source_size` 的背景，按实际画幅和比例审查。需前景遮挡时放进 manifest 的静态层并明确 z，不能靠底图表达前景。
+
+配置可写 `formats:["gif","mp4","sheet"]`，MP4 才需要 FFmpeg；编码缺失保留 GIF 并返回 partial。GIF 有时间量化，精确节拍以原始帧、fps 和 MP4 为准。`max_frames` 默认 2400，超出先选片段或明确提高预算；预览会加载图像序列，长片分段制作。每轮选择新的输出目录（如 preview/v2），不覆盖素材或前一版；已有目录非空会拒绝，可使用 run 的成功缓存复用未变结果。
+
+`enforce_limits:false` 仅用于保留失败目标的试验预览，报告会标明，不能当作已验收范围。当前工具仅支持明确的层级平移／旋转／缩放；不实现换图、换父级、动态 z 或局部网格形变。选用这些方法须在项目脚本／目标运行时实现并连续检查。所有输出 `visual_review` 仍为 pending，不自动宣称美术或表演通过。
 
 ## 操作及通用场景
 
@@ -28,6 +51,7 @@ python scripts/toolbox.py blender --config /tmp/puppet-demo/blender.json
 | `patch` | `source, patch, mask, output`，可选 `protect_mask` | 已配准补片按遮罩合成；保护遮罩任何非零像素都逐像素保留原值 |
 | `render` | `manifest, output`，可选 `pose, enforce_limits` | 静态层、任意层级已有组件回组，或按明确变换预览 |
 | `preview` | `manifest, output`，可选 `poses, reference, columns, cell_size, font` | 回组、带 ID 拆件表；有节点才画关节，有推测 mask 才高亮，有姿态/参考图才生成对应图 |
+| `animate` | `manifest, motion_plan, output`，可选 `clip_id, stage, formats, max_frames` | 按明确关键帧逐帧插值，生成每段 GIF／可选 MP4、联系表和预览元数据 |
 | `check` | `manifest`，可选 `poses, radius, alpha_threshold, review, output` | 引用、图像、父子和坐标检查；给定姿态的连接交叠像素与几何越界测量 |
 | `blender` | `manifest, output`，可选 `motion_plan, render, resolution, blender, threads` | 静态平面或刚性骨架导入、贴图打包、给定轨迹写入 Action、顶点检查和保存 |
 | `reopen` | `blend, scene_report, output`，可选 `blender, threads` | 从保存文件检查已声明对象、单骨权重、层次深度、打包纹理、关键帧及区间中点变换 |

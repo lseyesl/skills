@@ -144,7 +144,9 @@ def validate_contract(root, contract, check_environment=False):
             artifact = json.loads(path.read_text(encoding='utf-8-sig'))
             if not isinstance(artifact, dict) or artifact.get('status') != 'locked' or artifact.get('version') != ref['version']:
                 raise ValueError('Upstream declarations differ from artifact')
-    if contract.get('hidden_region_policy') == 'inferred-repair':
+    # Hidden overlap repair is a normal authoring method, not another approval gate.
+    # Validate an explicitly supplied legacy policy receipt, but do not require one.
+    if contract.get('hidden_region_policy') == 'inferred-repair' and 'policy_approval' in contract:
         policy_path = evidence(root, contract.get('policy_approval'))
         policy = json.loads(policy_path.read_text(encoding='utf-8-sig'))
         expected = {key: contract[key] for key in ('repository_id', 'project_id', 'route_id', 'hidden_region_policy')}

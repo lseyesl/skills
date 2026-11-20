@@ -61,8 +61,9 @@
       "optional": ["shadow-puppet-image", "blender-python-modeling"],
       "external": [
         {"name": "Pillow", "kind": "python-package", "when": "Deterministic image processing tools"},
-        {"name": "Blender", "kind": "tool", "when": "Rigging and animated range-of-motion verification"},
-        {"name": "FFmpeg", "kind": "tool", "when": "Optional video preview and media operations"}
+        {"name": "Blender", "kind": "tool", "when": "Optional editable rig or target-engine verification; 2D continuous preview uses Pillow"},
+        {"name": "FFmpeg", "kind": "tool", "when": "Optional MP4 preview; continuous GIF preview uses Pillow"},
+        {"name": "image generation", "kind": "tool", "when": "Only when missing material or pose artwork needs generative repair"}
       ]
     },
     "epub-xhtml-to-markdown": {

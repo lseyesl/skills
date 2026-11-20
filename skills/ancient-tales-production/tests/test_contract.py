@@ -61,13 +61,19 @@ class ContractTests(unittest.TestCase):
         (self.root / 'content/definition.json').write_text('changed')
         with self.assertRaisesRegex(ValueError, 'changed'): validator.validate_contract(self.root, self.contract)
 
-    def test_hidden_policy_requires_explicit_approval_and_static_pose_cannot_be_components(self):
+    def test_hidden_repair_has_no_extra_approval_gate_and_legacy_receipt_is_checked(self):
         self.contract['hidden_region_policy'] = 'inferred-repair'
-        with self.assertRaises(ValueError): validator.validate_contract(self.root, self.contract)
+        result = validator.validate_contract(self.root, self.contract)
+        self.assertFalse(result['approval_granted'])
         policy = {key: self.contract[key] for key in ('repository_id', 'project_id', 'route_id', 'hidden_region_policy')}
         policy.update(upstream_sha256=[ref['sha256'] for ref in self.contract['upstream']], approved_by='fixture', approved_at='2026-11-05')
         self.contract['policy_approval'] = self.proof('content/policy.json', policy)
         validator.validate_contract(self.root, self.contract)
+        policy['upstream_sha256'] = ['wrong']
+        self.contract['policy_approval'] = self.proof('content/policy.json', policy)
+        with self.assertRaisesRegex(ValueError, 'does not bind'):
+            validator.validate_contract(self.root, self.contract)
+        del self.contract['policy_approval']
         self.contract['route_id'] = 'static-pose'
         with self.assertRaisesRegex(ValueError, 'asset_unit'): validator.validate_contract(self.root, self.contract)
 

@@ -172,6 +172,111 @@ class ToolboxTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             t.safe_output(dict(files=[self.path('delivery.zip.json')], output=self.path('delivery.zip')))
 
+    def moving(self):
+        manifest = self.static()
+        data = t.read(manifest)
+        data['nodes'] = [dict(id='root', pivot_global=[4, 5], rotation_range=[-30, 30])]
+        data['parts'][0]['node'] = 'root'
+        t.write(manifest, data)
+        motion = self.put('motion.json', dict(fps=24, clips=[dict(id='move', frames=[
+            dict(frame=10), dict(frame=14, translations={'root': [12, 0]})])]))
+        return dict(manifest=manifest, motion_plan=motion, output=self.path('take-1'))
+
+    def test_animation_renders_every_frame_with_timing_and_stage(self):
+        c = self.moving()
+        Image.new('RGB', (40, 30), 'blue').save(self.path('stage.png'))
+        r = t.animate(dict(c, stage=self.path('stage.png')))
+        self.assertEqual(r['frame_count'], 5)
+        self.assertEqual(r['visual_review'], 'pending')
+        self.assertEqual(r['clips'][0]['start_frame'], 10)
+        self.assertEqual(r['clips'][0]['duration_seconds'], 5/24)
+        # Real image positions, including an interpolated frame rather than just the keys.
+        for index, x in ((0, 4), (2, 10), (4, 16)):
+            with Image.open(self.path(f'take-1/clip-000/frames/{index:08d}.png')) as im:
+                self.assertEqual(im.getpixel((x, 5)), (255, 0, 0, 255))
+                self.assertEqual(im.getpixel((x-1, 5)), (0, 0, 255, 255))
+        with Image.open(self.path('take-1/clip-000/media/animation.gif')) as im:
+            self.assertEqual(im.n_frames, 5)
+        self.assertTrue(Path(self.path('take-1/preview.json')).is_file())
+
+    def test_animation_uses_default_pose_at_each_key_and_separates_clips(self):
+        c = self.moving()
+        motion = t.read(c['motion_plan'])
+        motion['clips'][0]['frames'] = [dict(frame=1, translations={'root': [12, 0]}), dict(frame=5)]
+        motion['clips'].append(dict(id='../untrusted-name', frames=[dict(frame=1), dict(frame=2)]))
+        t.write(c['motion_plan'], motion)
+        r = t.animate(c)
+        self.assertEqual([v['frame_count'] for v in r['clips']], [5, 2])
+        with Image.open(self.path('take-1/clip-000/frames/00000004.png')) as im:
+            self.assertEqual(im.getbbox(), (4, 5, 24, 17))
+        self.assertTrue(Path(self.path('take-1/clip-001/media/animation.gif')).exists())
+
+    def test_animation_rejects_bad_motion_before_writing(self):
+        c = self.moving()
+        original = t.read(c['motion_plan'])
+        for changes in (
+            dict(frames=[dict(frame=1), dict(frame=1)]),
+            dict(frames=[dict(frame=1, angles={'root': 31})]),
+            dict(frames=[dict(frame=1, translations={'unknown': [0, 0]})]),
+            dict(frames=[dict(frame=True)]),
+            dict(frames=[dict(frame=1, visibility={'prop': False})]),
+        ):
+            motion = copy.deepcopy(original)
+            motion['clips'][0].update(changes)
+            t.write(c['motion_plan'], motion)
+            with self.assertRaises(ValueError):
+                t.animate(c)
+            self.assertFalse(Path(c['output']).exists())
+        t.write(c['motion_plan'], original)
+        for extra in (dict(max_frames=4), dict(fps=12), dict(clip_id='missing'), dict(formats=['sheet'])):
+            with self.assertRaises(ValueError):
+                t.animate(dict(c, **extra))
+
+    def test_animation_interpolates_rotation_scale_and_parent_follow(self):
+        c = self.moving()
+        data = t.read(c['manifest'])
+        del data['nodes'][0]['rotation_range']
+        data['nodes'].append(dict(id='child', parent='root', pivot_global=[14, 5]))
+        data['parts'][0]['node'] = 'child'
+        t.write(c['manifest'], data)
+        motion = t.read(c['motion_plan'])
+        motion['clips'][0]['frames'] = [dict(frame=1), dict(frame=5, angles={'root': 90, 'child': -30},
+            translations={'root': [4, 6]}, scales={'root': [2, 1]})]
+        t.write(c['motion_plan'], motion)
+        t.animate(c)
+        expected = render(c['manifest'], pose=dict(angles={'root': 45, 'child': -15},
+            translations={'root': [2, 3]}, scales={'root': [1.5, 1]}))
+        with Image.open(self.path('take-1/clip-000/frames/00000002.png')) as actual:
+            self.assertEqual(actual.tobytes(), expected.tobytes())
+
+    def test_animation_revision_keeps_source_and_previous_preview(self):
+        c = self.moving()
+        t.animate(c)
+        with self.assertRaisesRegex(ValueError, 'new preview'):
+            t.animate(c)
+        source_hash = t.digest(c['manifest'])
+        motion = t.read(c['motion_plan'])
+        motion['clips'][0]['frames'][-1]['translations']['root'] = [6, 0]
+        t.write(c['motion_plan'], motion)
+        t.animate(dict(c, output=self.path('take-2')))
+        self.assertEqual(t.digest(c['manifest']), source_hash)
+        with Image.open(self.path('take-1/clip-000/frames/00000004.png')) as a, Image.open(self.path('take-2/clip-000/frames/00000004.png')) as b:
+            self.assertNotEqual(a.tobytes(), b.tobytes())
+
+    def test_selected_animation_does_not_wait_for_unfinished_clips(self):
+        c = self.moving()
+        motion = t.read(c['motion_plan'])
+        motion['clips'].append(dict(id='unfinished', frames=[]))
+        t.write(c['motion_plan'], motion)
+        r = t.animate(dict(c, clip_id='move'))
+        self.assertEqual([clip['id'] for clip in r['clips']], ['move'])
+
+    def test_animation_missing_encoder_retains_playable_preview_and_failure(self):
+        c = self.moving()
+        r = t.animate(dict(c, formats=['gif', 'mp4'], ffmpeg='__missing_encoder__'))
+        self.assertEqual(r['status'], 'partial')
+        self.assertTrue(Path(self.path('take-1/clip-000/media/animation.gif')).exists())
+
 
 if __name__ == '__main__':
     unittest.main()

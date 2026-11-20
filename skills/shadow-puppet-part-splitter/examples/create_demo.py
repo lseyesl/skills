@@ -34,6 +34,8 @@ def create(out):
         dict(id='preview', op='preview', config=dict(manifest='manifest.json', poses='poses.json', output='results/preview')),
         dict(id='archive', op='package', depends_on=['rest', 'inspect'], config=dict(manifest='manifest.json', files=['manifest.json', 'panel.png', 'flap.png', 'results/rest.png', 'results/check.json'], output='results/assets.zip'))]))
     write('blender.json', dict(manifest='manifest.json', motion_plan='motion.json', output='blender', render=True))
+    write('animate.json', dict(manifest='manifest.json', motion_plan='motion.json', output='preview-v1',
+                               formats=['gif', 'sheet']))
     print(out/'pipeline.json')
 
 

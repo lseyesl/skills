@@ -40,7 +40,7 @@ def result(artifacts=(), issues=(), **extra):
     return dict(status='ok', artifacts=[str(Path(x).resolve()) for x in artifacts], issues=list(issues), **extra)
 
 
-PATH_KEYS = {'source', 'mask', 'protect_mask', 'patch', 'manifest', 'poses', 'reference',
+PATH_KEYS = {'source', 'mask', 'protect_mask', 'patch', 'manifest', 'poses', 'reference', 'stage',
              'frames', 'output', 'motion_plan', 'font', 'review', 'blend', 'report', 'scene_report', 'archive_root'}
 
 
@@ -300,6 +300,97 @@ def natural(path):
     return [int(v) if v.isdigit() else v.lower() for v in re.split(r'(\d+)', str(path))]
 
 
+def animate(c):
+    """Sample explicit keys at every frame; keep the source motion unchanged for revision."""
+    data = load_manifest(c['manifest'])
+    motion = read(c['motion_plan'])
+    require(isinstance(motion, dict), 'motion_plan must be an object')
+    require(motion.get('angle_convention', 'relative-clockwise') == 'relative-clockwise', 'unsupported angles')
+    fps = motion.get('fps', 24)
+    require(isinstance(fps, int) and not isinstance(fps, bool) and fps > 0, 'motion fps must be positive integer')
+    require('fps' not in c or c['fps'] == fps, 'preview fps must match motion fps')
+    clips = motion.get('clips')
+    require(isinstance(clips, list) and clips, 'motion needs clips with explicit frames')
+    ids = set()
+    selected = []
+    total = 0
+    for clip in clips:
+        require(isinstance(clip, dict), 'clip must be an object')
+        key = clip.get('id')
+        require(isinstance(key, str) and key and key not in ids, 'invalid/duplicate clip id')
+        ids.add(key)
+        if c.get('clip_id') is not None and c['clip_id'] != key:
+            continue
+        keys = clip.get('frames')
+        require(isinstance(keys, list) and keys, 'clip has no frames')
+        seen = set()
+        for pose in keys:
+            require(isinstance(pose, dict), 'frame must be an object')
+            require(set(pose) <= {'id', 'frame', 'angles', 'translations', 'scales', 'notes'},
+                    'unsupported frame fields: animate only applies angles, translations and scales')
+            frame = pose.get('frame')
+            require(isinstance(frame, int) and not isinstance(frame, bool) and frame not in seen, 'invalid/duplicate frame')
+            require('root_offset' not in pose, 'convert root_offset to translations')
+            seen.add(frame)
+            pose_transforms(data, pose, c.get('enforce_limits', True))
+        keys = sorted(keys, key=lambda p: p['frame'])
+        selected.append((key, keys))
+        total += keys[-1]['frame'] - keys[0]['frame'] + 1
+    require(selected, 'unknown clip_id')
+    budget = c.get('max_frames', 2400)
+    require(isinstance(budget, int) and not isinstance(budget, bool) and budget > 0, 'max_frames must be positive integer')
+    require(total <= budget, 'preview exceeds max_frames; select a clip or explicitly raise the budget')
+    formats = c.get('formats', ['gif', 'sheet'])
+    require(isinstance(formats, list) and set(formats) <= {'gif', 'mp4', 'sheet'}
+            and bool(set(formats) & {'gif', 'mp4'}), 'animate needs gif or mp4 for continuous playback')
+    stage = None
+    if c.get('stage'):
+        with Image.open(c['stage']) as im:
+            require(list(im.size) == data['source_size'], 'stage dimensions must match source_size')
+            stage = im.convert('RGBA')
+    out = safe_output(c)
+    require(not out.exists() or out.is_dir() and not any(out.iterdir()), 'choose a new preview output directory')
+    out.mkdir(parents=True, exist_ok=True)
+    artifacts, issues, records = [], [], []
+    for ci, (key, keys) in enumerate(selected):
+        folder = out / f'clip-{ci:03d}'
+        frames = folder / 'frames'
+        frames.mkdir(parents=True)
+        segment = 0
+        for index, frame in enumerate(range(keys[0]['frame'], keys[-1]['frame'] + 1)):
+            while segment + 1 < len(keys) and frame > keys[segment + 1]['frame']:
+                segment += 1
+            a, b = keys[segment], keys[min(segment + 1, len(keys) - 1)]
+            u = (frame - a['frame']) / (b['frame'] - a['frame']) if b['frame'] != a['frame'] else 0
+            pose = {}
+            for channel, default in (('angles', 0), ('translations', [0, 0]), ('scales', [1, 1])):
+                pose[channel] = {}
+                for node in set(a.get(channel, {})) | set(b.get(channel, {})):
+                    x, y = a.get(channel, {}).get(node, default), b.get(channel, {}).get(node, default)
+                    pose[channel][node] = [v + (w-v)*u for v, w in zip(x, y)] if isinstance(default, list) else x + (y-x)*u
+            image = render(c['manifest'], pose=pose, enforce_limits=c.get('enforce_limits', True))
+            if stage is not None:
+                image = Image.alpha_composite(stage, image)
+            artifacts.append(save(image, frames / f'{index:08d}.png'))
+        encoded = media(dict(c, frames=str(frames), output=str(folder/'media'), fps=fps,
+                             formats=formats))
+        artifacts.extend(encoded['artifacts'])
+        issues.extend(encoded['issues'])
+        records.append(dict(id=key, start_frame=keys[0]['frame'], end_frame=keys[-1]['frame'],
+                            frame_count=keys[-1]['frame']-keys[0]['frame']+1,
+                            duration_seconds=(keys[-1]['frame']-keys[0]['frame']+1)/fps,
+                            status=encoded['status'], media=encoded['artifacts']))
+    r = result(artifacts, issues, clips=records, fps=fps, frame_count=total,
+               visual_review='pending', preview_scope='2d-explicit-transforms',
+               interpolation='linear', limits_enforced=c.get('enforce_limits', True))
+    if any(record['status'] != 'ok' for record in records):
+        r['status'] = 'partial'
+    report = out/'preview.json'
+    write(report, r)
+    r['artifacts'].append(str(report.resolve()))
+    return r
+
+
 def media(c):
     frames = sorted((p for p in Path(c['frames']).iterdir() if p.suffix.lower() in {'.png', '.jpg', '.jpeg', '.webp'}), key=natural)
     require(frames, 'no image frames')
@@ -440,7 +531,7 @@ def blender(c, reopen=False):
 
 
 OPS = {'info': image_info, 'extract': extract, 'masks': combine_masks, 'register': register,
-       'patch': patch, 'render': render_op, 'preview': preview, 'check': check, 'media': media, 'package': package,
+       'patch': patch, 'render': render_op, 'preview': preview, 'animate': animate, 'check': check, 'media': media, 'package': package,
        'blender': blender, 'reopen': lambda c: blender(c, reopen=True)}
 
 
@@ -519,7 +610,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('operation', choices=[*OPS, 'run'])
     parser.add_argument('--config', type=Path)
-    for key in ('source', 'mask', 'manifest', 'poses', 'reference', 'frames', 'output', 'report'):
+    for key in ('source', 'mask', 'manifest', 'poses', 'reference', 'frames', 'output', 'report', 'motion_plan', 'stage', 'clip_id'):
         parser.add_argument('--'+key.replace('_', '-'))
     parser.add_argument('--formats', help='comma-separated gif,mp4,sheet')
     parser.add_argument('--fps', type=float)
@@ -529,9 +620,11 @@ def main():
         base = args.config.resolve().parent if args.config else Path.cwd()
         raw = read(args.config) if args.config else {}
         c = resolve_config(raw, base)
-        for key in ('source', 'mask', 'manifest', 'poses', 'reference', 'frames', 'output', 'report'):
+        for key in ('source', 'mask', 'manifest', 'poses', 'reference', 'frames', 'output', 'report', 'motion_plan', 'stage'):
             if getattr(args, key) is not None:
                 c[key] = str(Path(getattr(args, key)).resolve())
+        if args.clip_id is not None:
+            c['clip_id'] = args.clip_id
         if args.formats:
             c['formats'] = args.formats.split(',')
         if args.fps is not None:

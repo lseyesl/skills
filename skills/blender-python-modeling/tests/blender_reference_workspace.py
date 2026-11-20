@@ -57,6 +57,12 @@ def main():
                   'review_artifacts': ['reference.png']}
         design_path = root/'design-review.json';design_path.write_text(json.dumps(design))
         config['multiview_review'] = 'design-review.json'
+        front_only = {'views': {'front': config['views']['front']},
+                      'required_landmarks': {'right': ['probe']}}
+        rejects('profile edit lacks controlling side guide',
+                lambda: setup_references(scene, task, front_only, root))
+        assert not any(o.get(OWNER) == task for o in scene.objects)
+        config['required_landmarks'] = {'right': ['probe']}
         record = setup_references(scene, task, config, root)
         sig = workspace_signature(scene, task)
         counts = (len(scene.objects), len(bpy.data.images))
@@ -136,6 +142,13 @@ def main():
         assert json.loads(module.BUILD_RECEIPT.read_text())['status']=='failed'
         checks.append('template records failed prerequisite attempt before preserving old geometry')
         module.BLOCKOUT_PARAMETERS['depth'] = .2
+        rejects('front-only builder misses required side landmark', module.main)
+        original_build = module.build_blockout
+        def guided_build(plan, scope):
+            point = reference_landmark(scene, task, 'right', 'probe')
+            module.BLOCKOUT_PARAMETERS['depth'] = point.y * 1.6
+            return original_build(plan, scope)
+        module.build_blockout = guided_build
         module.main()
         cube = bpy.data.objects['GEO_' + task + '_body']
         assert (cube.dimensions - Vector((.4, .2, .85))).length < 1e-6

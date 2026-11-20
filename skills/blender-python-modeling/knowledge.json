@@ -984,7 +984,8 @@
       "subjects": [],
       "aliases": [
         "Apply imported references to geometry",
-        "reference workspace tool"
+        "reference workspace tool",
+        "局部修形的控制视图与参考锚点"
       ],
       "applies_when": [
         "Read this guide when its documented task and prerequisites match the observed asset."

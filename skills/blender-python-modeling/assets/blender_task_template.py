@@ -151,6 +151,9 @@ def build_task(plan):
     _activate_scene(create=True)
     _prepare_reference()
     objects=build_blockout(plan,MODELING_SCOPE);bpy.context.view_layer.update()
+    if BUILD_MODE == "reference":
+        from reference_workspace import require_landmark_use
+        require_landmark_use(bpy.context.scene, TASK_ID)
     return validate_blockout(objects,plan,MODELING_SCOPE)
 
 

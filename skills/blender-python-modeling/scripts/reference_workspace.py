@@ -41,6 +41,16 @@ def setup_references(scene, task, config, base):
         raise RuntimeError('Make the reference scene active before setup')
     if not task or not config.get('views'):
         raise ValueError('task and separate reference views are required')
+    required = config.get('required_landmarks', {})
+    if not isinstance(required, dict):
+        raise ValueError('required_landmarks must map controlling views to landmark names')
+    for view, names in required.items():
+        if view not in config['views']:
+            raise ValueError(f'Missing controlling reference view: {view}')
+        anchors = config['views'][view].get('landmarks', {})
+        if not isinstance(names, list) or not names or not all(
+                isinstance(name, str) and name.strip() and name in anchors for name in names):
+            raise ValueError(f'{view}: required landmarks must be named in the calibrated guide')
     base = Path(base).resolve()
     # Source design review precedes even guide mutation, not just geometry deletion.
     design = require_design_review(config, base)
@@ -121,6 +131,8 @@ def setup_references(scene, task, config, base):
         records[view] = {'object': name, 'path': str(path), 'sha256': source_hash,
                          'size': list(image.size), 'pixels_per_unit': ppu, 'origin_px': [cx, cy],
                          'origin_world': list(origin), 'opacity': opacity, 'landmarks': item.get('landmarks', {})}
+        if view in required:
+            records[view]['required_landmarks'] = sorted(set(required[view]))
     bpy.context.view_layer.update()
     for view, entry in records.items():
         entry['matrix'] = [list(row) for row in _object(scene, task, view).matrix_world]
@@ -198,6 +210,15 @@ def reference_landmark(scene, task, view, name):
     return point
 
 
+def require_landmark_use(scene, task):
+    records = json.loads(scene[_key(task)])
+    used = {(v['view'], v['landmark']) for v in json.loads(scene[_key(task) + '::used'])}
+    for view, record in records.items():
+        for name in record.get('required_landmarks', []):
+            if (view, name) not in used:
+                raise RuntimeError(f'Construction did not read controlling reference: {view}.{name}')
+
+
 def require_reference_review(scene, task, review_path, *, phase='calibration', objects=()):
     """Require inspected viewport artifacts; never auto-approve their content."""
     path = Path(review_path).resolve()
@@ -219,6 +240,7 @@ def require_reference_review(scene, task, review_path, *, phase='calibration', o
         if not image.is_file() or image.stat().st_size == 0:
             raise RuntimeError(view + ': review capture missing or empty')
     if phase == 'comparison':
+        require_landmark_use(scene, task)
         objects = list(objects)
         used = json.loads(scene[_key(task) + '::used'])
         if not used:

@@ -15,6 +15,8 @@ template formerly had no corresponding prerequisite; it now requires explicit
 
 For multiple construction guides, first complete the [pre-model review](../../concept-multiview-sheet/references/pre-model-review.md). Add `"multiview_review": "multiview-review.json"` to the config. If its readiness is `partial`, add explicit `"build_regions": ["body"]` (use actual reviewed regions). `setup_references` checks source hashes, view roles and scope **before any guide mutation**. A supplemental/rejected view cannot silently become a guide, and blocked parent/child regions cannot enter the declared build. The record is declared inspection evidence, not automated pixel/anatomy judgment; the actual builder must honor those region names. A single ordinary guide does not require an artificial multiview receipt.
 
+For a scoped local repair, set e.g. `"required_landmarks": {"right": ["chin_tip", "under_chin", "neck_front"]}` in the setup config. Choose anchors and view for the actual edit. Setup validates them before importing guides and starts a fresh usage record. Derive the repair from those mapped points. Inspect an overlay with the neighboring jaw and collar. A before/after render can document the delta; the comparison artifact must show the independent guide. Standalone repairs call the same setup, calibration and final comparison checks as the template or provide equivalent evidence. Legacy configs without this field retain their existing checks.
+
 Keep a project-local `reference-setup.json`, with separate image paths and reviewed
 pixel anchors. Example shape only; replace its coordinates with actual analysis:
 

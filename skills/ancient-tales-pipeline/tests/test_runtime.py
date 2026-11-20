@@ -1,6 +1,9 @@
 """Offline regression tests; real temporary Git repositories exercise locking."""
 import argparse
+import contextlib
 import hashlib
+import io
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -93,6 +96,27 @@ class PipelineTests(unittest.TestCase):
         r.write(self.root / 'assets.lock.json', lock)
         with self.assertRaises(ValueError):
             r.assets(self.args('pull'))
+
+    def test_selected_verify_and_pull_plan_are_scoped(self):
+        lock = self.lock()
+        missing = 'projects/p/missing.png'
+        lock['assets'].extend(self.lock(b'missing', missing)['assets'])
+        good = self.materialize(lock)
+        r.write(self.root / 'assets.lock.json', lock)
+        with patch.object(r, 'asset_transfer') as transfer, contextlib.redirect_stdout(io.StringIO()) as output:
+            r.assets(self.args('verify', path=[lock['assets'][0]['path']]))
+            output.seek(0)
+            output.truncate(0)
+            r.assets(self.args('pull', path=[missing], dry_run=True))
+            self.assertEqual(json.loads(output.getvalue()), {'restore': [missing], 'conflicts': [], 'present': []})
+            transfer.assert_not_called()
+            r.assets(self.args('pull', path=[missing]))
+            self.assertEqual([entry['path'] for entry in transfer.call_args.args[1]['assets']], [missing])
+        self.assertEqual(good.read_bytes(), b'good')
+        with self.assertRaisesRegex(ValueError, 'Missing or corrupt'):
+            r.assets(self.args('verify'))
+        with self.assertRaisesRegex(ValueError, 'absent from lock'):
+            r.assets(self.args('verify', path=['unknown.png']))
 
     def test_corrupt_local_asset(self):
         lock = self.lock(); p = self.materialize(lock, b'evil')

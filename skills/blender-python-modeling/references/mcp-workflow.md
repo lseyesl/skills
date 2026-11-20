@@ -2,6 +2,8 @@
 
 This skill targets the installed `ahujasid/mcp-for-blender` tool namespace. Tool availability is runtime-dependent; use only tools actually exposed in the current session.
 
+For an isolated file task compatible with background execution, use the persistent task script with `blender --background <task-copy.blend> --python-exit-code 1 --python <script.py>`. Verify the saved artifact and rendered evidence. Use the live MCP workflow for operations that need the user's current scene or viewport.
+
 ## Missing MCP: install the upstream integration, then verify
 
 Use the official [ahujasid/mcp-for-blender repository](https://github.com/ahujasid/mcp-for-blender). The current package is `mcp-for-blender` (formerly `blender-mcp`); an older working installation does not need renaming merely for this task. Check the installed client/server/add-on before adding another copy. Installation is two parts: a stdio MCP server in the AI client, and the matching socket add-on inside Blender. Installing only one does not establish a connection.

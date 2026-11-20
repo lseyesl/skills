@@ -16,7 +16,9 @@
       "aliases": [
         "皮影动画",
         "皮影镜头",
-        "shadow puppet animation"
+        "shadow puppet animation",
+        "道具挂接",
+        "接触释放"
       ],
       "applies_when": [
         "任务与正文适用条件、所需输入及所选后端一致"

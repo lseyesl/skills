@@ -43,7 +43,8 @@ python <skill-dir>/scripts/runtime.py git-check --project <project>
 - 字节未变的已有条目原样保留，包括业务版本、项目身份、批准回执与扩展字段；扫描不重新批准或重命名版本。清单级扩展元数据也保留。
 - 需要移除引用时显式 `assets forget --path <relative-path>`；批准或锁定记录另需 `--allow-locked`。forget 只生成待变更清单；push 后才晋升，远端对象和本地文件都不删除。
 - push 上传并回读验证后才替换正式锁；移除记录必须有明确 forget 标记。远端对象按内容哈希寻址，新发现条目默认以哈希初始化版本；已有业务版本不重写，approved/locked 文件改变必须新建路径。
-- pull 先验证全部远端内容，再安装缺失项，不覆盖本地改动。正式构建先 verify，缺失或损坏立即停止。
+- pull 先验证所选远端内容，再安装缺失项，保留本地改动。局部制作可从镜头依赖表取锁中的准确路径，用可重复的 `--path` 缩小 pull 或 verify 的范围。省略路径仍检查全量。
+- `assets pull --project <project> --path projects/p/hero.png --dry-run` 离线输出待恢复、已有和冲突路径。用相同路径执行 pull 和 verify 可检查局部素材，正式整体验收仍执行全量校验。
 - 凭据沿用用户现有 `hf auth`，不得打印 token 或写入仓库；这些命令不表示获得视觉批准。
 - `verify` 检查路径、大小、SHA-256、已知状态与内容寻址 URI；已有 project_id 须匹配 projects/<id>/ 路径或配置的 project_id。兼容缺少身份字段的旧清单，但不为其补造批准。
 - `validate` 是正式交接的严格模式：要求 asset_id、project_id、version，approved/locked 条目还需哈希绑定的 JSON 批准回执。格式与迁移见[资产校验契约](references/资产校验契约.md)。检查已有记录的一致性不等于证明人工批准真实性，也不判断画面或 Gate。

@@ -133,12 +133,29 @@ def assets(args):
     if not policy.get('enabled') or policy.get('repository_id') in {'skills', 'obsidian_note'}:
         raise ValueError('This repository does not use HF asset storage')
     path = root / 'assets.lock.json'
+    selected = set(getattr(args, 'path', None) or [])
+    dry_run = getattr(args, 'dry_run', False)
+    if selected and args.action not in {'forget', 'pull', 'verify'}:
+        raise ValueError('--path is supported by forget, pull and verify')
+    if dry_run and args.action != 'pull':
+        raise ValueError('--dry-run is supported by pull')
     def checked_lock(lock_path):
         lock = read(lock_path)
         if (lock.get('repository_id'), lock.get('bucket')) != (policy['repository_id'], policy['bucket']):
             raise ValueError('Asset manifest namespace differs from repository policy')
         asset_contract.validate_manifest(lock, root=root, expected_project=policy.get('project_id'))
         return lock
+
+    def selected_lock():
+        lock = checked_lock(path)
+        if not selected:
+            return lock
+        entries = [entry for entry in lock['assets'] if entry['path'] in selected]
+        unknown = selected - {entry['path'] for entry in entries}
+        if unknown:
+            raise ValueError('Asset paths absent from lock: ' + ', '.join(sorted(unknown)))
+        return {**lock, 'assets': entries}
+
     if args.action == 'index':
         if args.repository_id != policy['repository_id'] or args.bucket != policy['bucket']:
             raise ValueError('Repository/bucket differs from assets.config.json')
@@ -192,13 +209,26 @@ def assets(args):
         write(path, {k: v for k, v in lock.items() if k != 'removed_paths'})
         pending.unlink(missing_ok=True)
     elif args.action == 'pull':
-        asset_transfer(root, checked_lock(path), 'pull')
+        lock = selected_lock()
+        if dry_run:
+            plan = {'restore': [], 'present': [], 'conflicts': []}
+            for entry in lock['assets']:
+                local = safe(root, entry['path'])
+                if not local.exists():
+                    plan['restore'].append(entry['path'])
+                elif local.is_file() and local.stat().st_size == entry['size'] and digest(local) == entry['sha256']:
+                    plan['present'].append(entry['path'])
+                else:
+                    plan['conflicts'].append(entry['path'])
+            print(json.dumps(plan, ensure_ascii=False))
+        else:
+            asset_transfer(root, lock, 'pull')
     elif args.action == 'validate':
         lock = checked_lock(path)
         asset_contract.validate_manifest(lock, root=root, strict=True, expected_project=policy.get('project_id'))
         print('ASSETS_VALIDATE_OK', asset_verify(root, lock))
     else:
-        print('ASSETS_VERIFY_OK', asset_verify(root, checked_lock(path)))
+        print('ASSETS_VERIFY_OK', asset_verify(root, selected_lock()))
 
 def git_bytes(source, *args, input=None):
     return subprocess.check_output(['git', '-C', str(source), *args], input=input)
@@ -378,7 +408,8 @@ def main():
     p.add_argument('--project', default='.')
     p.add_argument('--bucket', default='lseyesl/mv_assets')
     p.add_argument('--repository-id')
-    p.add_argument('--path', action='append', help='Explicit local asset record to forget (repeatable)')
+    p.add_argument('--path', action='append', help='Exact locked asset path for forget, pull or verify (repeatable)')
+    p.add_argument('--dry-run', action='store_true', help='Preview pull without contacting HF')
     p.add_argument('--allow-locked', action='store_true', help='Allow forgetting approved/locked records')
     p.set_defaults(func=assets)
     p = subs.add_parser('skills')

@@ -273,6 +273,17 @@ def main():
         for index, (marker, region) in enumerate(zip(selected_markers, regions), 1):
             manifest["frames"].append({"id": f"{index:02d}", "source_frame": marker["frame"],
                                        "phase": marker["phase"], "region": region})
+    fps = scene.render.fps / scene.render.fps_base
+    final_frame = clip['frame_end']
+    if clip['loop_hint']:
+        # The catalog omits a repeated endpoint. Wrap back to the first sampled phase.
+        final_frame = frames[0] + clip['frame_end'] - clip['frame_start']
+    else:
+        final_frame += 1  # Inclusive source frame range.
+    manifest["timing"] = {"source_fps": fps, "loop": clip["loop_hint"],
+                          "start_source_frame": frames[0], "end_source_frame_exclusive": final_frame}
+    for entry, next_frame in zip(manifest["frames"], [*frames[1:], final_frame]):
+        entry["duration_seconds"] = (next_frame - entry["source_frame"]) / fps
     (output / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
     if options.format == "sheet":
         print("ACTION_REFERENCE_IMAGE", manifest["reference_image"])

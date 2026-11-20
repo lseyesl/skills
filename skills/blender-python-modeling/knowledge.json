@@ -18,7 +18,8 @@
       "aliases": [
         "Blender",
         "建模",
-        "场景"
+        "场景",
+        "局部返修预览"
       ],
       "applies_when": [
         "用户目标符合本 Skill 的入口描述"

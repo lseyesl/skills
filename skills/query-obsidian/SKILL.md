@@ -33,7 +33,7 @@ If the request combines retrieval with an explicit write-back request, complete 
 
 If the user explicitly supplies a vault root for the current request, validate and use it only for this run. If a test or temporary task explicitly supplies a separate candidate-location file, use only that file and do not read the persistent device list.
 
-Otherwise, read [references/vault-locations.md](references/vault-locations.md) and check candidate roots in priority order. A candidate is valid only when `<vault-root>/ai-wiki/AGENTS.md` exists.
+Otherwise, use the shared device-level `AI_WIKI_VAULT_ROOT` when configured. Validate it before access. If it is unset, use [the device fallback](references/vault-locations.md). A candidate is valid only when `<vault-root>/ai-wiki/AGENTS.md` exists.
 
 - One valid candidate: use it.
 - Several valid candidates: use the highest-priority candidate and mention the choice only when it could surprise the user.
@@ -60,7 +60,7 @@ Use `wiki/index.md` to identify likely domain, concept, project, overview, or sh
 1. exact title, filename, alias, or technical identifier matches;
 2. index and domain-page links;
 3. headings and frontmatter such as `tags` or `domains`;
-4. body-text matches and nearby wikilinks.
+4. body-text matches and nearby wikilinks. Break ties using direct evidence and coverage of the question. Cite the heading or source segment that supports the claim. Where dates or source changes affect the answer, surface the recorded version or uncertainty.
 
 Use literal searches for user-provided terms so punctuation in APIs or identifiers is not interpreted as a regular expression. Read a small, relevant candidate set rather than every matching note. Prefer pages that own or synthesize the concept over pages that merely mention it.
 

@@ -271,6 +271,38 @@ class ToolboxTests(unittest.TestCase):
         r = t.animate(dict(c, clip_id='move'))
         self.assertEqual([clip['id'] for clip in r['clips']], ['move'])
 
+    def test_24fps_gif_preserves_total_duration(self):
+        frames = self.root / 'timing'
+        frames.mkdir()
+        for i in range(24):
+            Image.new('RGB', (8, 8), (i * 10, 30, 80)).save(frames / f'{i:02}.png')
+        t.media(dict(frames=str(frames), output=self.path('timed'), formats=['gif'], fps=24))
+        with Image.open(self.path('timed/animation.gif')) as image:
+            durations = []
+            for i in range(image.n_frames):
+                image.seek(i)
+                durations.append(image.info['duration'])
+        self.assertEqual(sum(durations), 1000)
+        self.assertEqual(set(durations), {40, 50})
+
+    def test_pin_bakes_prop_contact_and_releases_back_to_authored_track(self):
+        c = self.moving()
+        data = t.read(c['manifest'])
+        data['nodes'].append(dict(id='prop', pivot_global=[0, 0]))
+        t.write(c['manifest'], data)
+        motion = t.read(c['motion_plan'])
+        motion['clips'][0]['pins'] = [
+            dict(node='prop', point=[0, 0], target=dict(node='root', point=[4, 5]), frames=[11, 13])
+        ]
+        t.write(c['motion_plan'], motion)
+        result = t.animate(c)
+        poses = t.read(result['clips'][0]['poses'])
+        for pose in poses[1:-1]:
+            matrices = pose_transforms(load_manifest(c['manifest']), pose)
+            self.assertEqual(apply(matrices['prop'], [0, 0]), apply(matrices['root'], [4, 5]))
+        self.assertNotIn('prop', poses[0]['translations'])
+        self.assertNotIn('prop', poses[-1]['translations'])
+
     def test_animation_missing_encoder_retains_playable_preview_and_failure(self):
         c = self.moving()
         r = t.animate(dict(c, formats=['gif', 'mp4'], ffmpeg='__missing_encoder__'))

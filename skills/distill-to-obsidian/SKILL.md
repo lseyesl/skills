@@ -31,7 +31,7 @@ If the user only asks for a temporary summary, explanation, ordinary Markdown, p
 
 If the user explicitly supplies a vault root for the current request, validate and use it for this run. If the user explicitly supplies a separate candidate-location file for a test or temporary environment, use only that file for the current run. Do not add either override to the persistent list without asking.
 
-Otherwise, read [references/vault-locations.md](references/vault-locations.md) and check candidate roots in listed priority order. A candidate is valid only when `<vault-root>/ai-wiki/AGENTS.md` exists.
+Otherwise, use the shared device-level `AI_WIKI_VAULT_ROOT` when configured. Validate it before access. If it is unset, use [the device fallback](references/vault-locations.md). A candidate is valid only when `<vault-root>/ai-wiki/AGENTS.md` exists.
 
 - One valid candidate: use it.
 - Several valid candidates: use the highest-priority candidate and mention the choice in the completion report.
@@ -91,6 +91,8 @@ Search the index, titles, aliases, tags, headings, body text, and backlinks for 
 3. Update a domain entry only when its route, core links, recent sources, or open questions materially change.
 4. Update the global index only when global navigation changes.
 5. Append the required ingest/query log entry; never rewrite history.
+
+Match sources by canonical URL and captured version, or by repository, immutable commit, file and symbol. Check the owning Wiki page for an existing claim and source link before editing. An identical ingestion can report the existing note with zero content changes. Where the vault requires a log, follow its rule and record a reuse rather than a new ingestion. Keep a contradictory finding alongside the prior claim with both citations. Verify the final diff touches only the owning page and necessary links.
 
 Avoid one-note-per-source accumulation. A new source should strengthen, qualify, contradict, or connect existing knowledge whenever possible.
 

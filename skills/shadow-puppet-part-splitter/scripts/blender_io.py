@@ -32,6 +32,7 @@ def prepare(manifest, motion=None):
         require(isinstance(clip, dict), 'clip must be an object')
         require(isinstance(clip.get('id'), str) and clip['id'] and clip['id'] not in ids, 'invalid/duplicate clip id')
         ids.add(clip['id']); frames = set()
+        require(not clip.get('pins'), 'Bake pins with toolbox animate and use its poses.json as clip frames')
         require(clip.get('frames'), 'clip has no frames')
         for case in clip['frames']:
             require('root_offset' not in case, 'convert root_offset to an explicit translations mapping')

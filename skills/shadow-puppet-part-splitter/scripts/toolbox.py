@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import re
 import shutil
@@ -13,8 +14,8 @@ import time
 import zipfile
 
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
-from puppet import load_manifest, render
-from puppet_core import asset, apply, pose_transforms, require
+from puppet import load_manifest, prepare_renderer, render
+from puppet_core import asset, apply, pair, pose_transforms, require
 
 
 def read(path):
@@ -302,7 +303,8 @@ def natural(path):
 
 def animate(c):
     """Sample explicit keys at every frame; keep the source motion unchanged for revision."""
-    data = load_manifest(c['manifest'])
+    data, draw = prepare_renderer(c['manifest'])
+    nodes = {node['id']: node for node in data['nodes']}
     motion = read(c['motion_plan'])
     require(isinstance(motion, dict), 'motion_plan must be an object')
     require(motion.get('angle_convention', 'relative-clockwise') == 'relative-clockwise', 'unsupported angles')
@@ -326,15 +328,38 @@ def animate(c):
         seen = set()
         for pose in keys:
             require(isinstance(pose, dict), 'frame must be an object')
+            require('root_offset' not in pose, 'convert root_offset to translations')
             require(set(pose) <= {'id', 'frame', 'angles', 'translations', 'scales', 'notes'},
                     'unsupported frame fields: animate only applies angles, translations and scales')
             frame = pose.get('frame')
             require(isinstance(frame, int) and not isinstance(frame, bool) and frame not in seen, 'invalid/duplicate frame')
-            require('root_offset' not in pose, 'convert root_offset to translations')
             seen.add(frame)
             pose_transforms(data, pose, c.get('enforce_limits', True))
         keys = sorted(keys, key=lambda p: p['frame'])
-        selected.append((key, keys))
+        pins = clip.get('pins', [])
+        require(isinstance(pins, list), 'pins must be an array')
+        intervals = {}
+        for pin in pins:
+            require(isinstance(pin, dict), 'pin must be an object')
+            node, target, span = pin.get('node'), pin.get('target'), pin.get('frames')
+            require(isinstance(node, str) and node in nodes and nodes[node]['parent'] is None,
+                    'pinned node must be an existing root')
+            require(isinstance(target, dict) and pair(pin.get('point')) and pair(target.get('point')),
+                    'pin anchors must be pixel pairs')
+            target_node = target.get('node')
+            require(target_node is None or isinstance(target_node, str) and target_node in nodes,
+                    'unknown pin target')
+            require(pair(span, integer=True) and keys[0]['frame'] <= span[0] <= span[1] <= keys[-1]['frame'],
+                    'pin range must lie within the clip')
+            spans = intervals.setdefault(node, [])
+            require(all(span[1] < start or span[0] > end for start, end in spans), 'overlapping pins on one root')
+            spans.append(span)
+        for pin in pins:
+            target = pin['target'].get('node')
+            while target is not None:
+                require(target not in intervals, 'pin target must be independent of pinned roots')
+                target = nodes[target]['parent']
+        selected.append((key, keys, pins))
         total += keys[-1]['frame'] - keys[0]['frame'] + 1
     require(selected, 'unknown clip_id')
     budget = c.get('max_frames', 2400)
@@ -352,11 +377,12 @@ def animate(c):
     require(not out.exists() or out.is_dir() and not any(out.iterdir()), 'choose a new preview output directory')
     out.mkdir(parents=True, exist_ok=True)
     artifacts, issues, records = [], [], []
-    for ci, (key, keys) in enumerate(selected):
+    for ci, (key, keys, pins) in enumerate(selected):
         folder = out / f'clip-{ci:03d}'
         frames = folder / 'frames'
         frames.mkdir(parents=True)
         segment = 0
+        evaluated = []
         for index, frame in enumerate(range(keys[0]['frame'], keys[-1]['frame'] + 1)):
             while segment + 1 < len(keys) and frame > keys[segment + 1]['frame']:
                 segment += 1
@@ -368,10 +394,22 @@ def animate(c):
                 for node in set(a.get(channel, {})) | set(b.get(channel, {})):
                     x, y = a.get(channel, {}).get(node, default), b.get(channel, {}).get(node, default)
                     pose[channel][node] = [v + (w-v)*u for v, w in zip(x, y)] if isinstance(default, list) else x + (y-x)*u
-            image = render(c['manifest'], pose=pose, enforce_limits=c.get('enforce_limits', True))
+            active = [pin for pin in pins if pin['frames'][0] <= frame <= pin['frames'][1]]
+            if active:
+                matrices = pose_transforms(data, pose, c.get('enforce_limits', True))
+                for pin in active:
+                    node, target = pin['node'], pin['target']
+                    current = apply(matrices[node], pin['point'])
+                    desired = apply(matrices[target.get('node')], target['point'])
+                    offset = pose['translations'].get(node, [0, 0])
+                    pose['translations'][node] = [value + (end - start)
+                                                  for value, start, end in zip(offset, current, desired)]
+            evaluated.append(dict(pose, frame=frame))
+            image = draw(pose, enforce_limits=c.get('enforce_limits', True))
             if stage is not None:
                 image = Image.alpha_composite(stage, image)
             artifacts.append(save(image, frames / f'{index:08d}.png'))
+        artifacts.append(write(folder/'poses.json', evaluated))
         encoded = media(dict(c, frames=str(frames), output=str(folder/'media'), fps=fps,
                              formats=formats))
         artifacts.extend(encoded['artifacts'])
@@ -379,7 +417,7 @@ def animate(c):
         records.append(dict(id=key, start_frame=keys[0]['frame'], end_frame=keys[-1]['frame'],
                             frame_count=keys[-1]['frame']-keys[0]['frame']+1,
                             duration_seconds=(keys[-1]['frame']-keys[0]['frame']+1)/fps,
-                            status=encoded['status'], media=encoded['artifacts']))
+                            status=encoded['status'], poses=str(folder/'poses.json'), media=encoded['artifacts']))
     r = result(artifacts, issues, clips=records, fps=fps, frame_count=total,
                visual_review='pending', preview_scope='2d-explicit-transforms',
                interpolation='linear', limits_enforced=c.get('enforce_limits', True))
@@ -414,8 +452,14 @@ def media(c):
         rgb.append(canvas)
     if 'gif' in formats:
         path = out/'animation.gif'
-        rgb[0].save(path, save_all=True, append_images=rgb[1:], duration=round(1000/fps), loop=0)
-        artifacts.append(path)
+        if fps > 100:
+            issues.append('GIF cannot represent more than 100 fps; use MP4')
+        else:
+            # Quantize cumulative timestamps to centiseconds so rounding does not drift.
+            durations = [10 * (round((i + 1) * 100 / fps) - round(i * 100 / fps))
+                         for i in range(len(rgb))]
+            rgb[0].save(path, save_all=True, append_images=rgb[1:], duration=durations, loop=0)
+            artifacts.append(path)
     if 'sheet' in formats:
         stride = max(1, math.ceil(len(images)/c.get('sheet_max_frames', 24)))
         path = out/'contact-sheet.png'
@@ -432,14 +476,21 @@ def media(c):
                 for i, im in enumerate(rgb):
                     im.save(Path(temp)/f'{i:08d}.png')
                 path = out/'animation.mp4'
-                proc = subprocess.run([executable, '-y', '-v', 'error', '-framerate', str(fps), '-i', str(Path(temp)/'%08d.png'),
-                                       '-c:v', 'libx264', '-pix_fmt', 'yuv420p', str(path)], capture_output=True, text=True)
+                threads = str(max(1, (os.cpu_count() or 1) // 2))
+                nice = shutil.which('nice') if os.name == 'posix' else None
+                priority = [nice, '-n', '10'] if nice else []
+                proc = subprocess.run([*priority, executable, '-y', '-v', 'error',
+                                       '-filter_threads', threads, '-filter_complex_threads', threads,
+                                       '-threads', threads, '-framerate', str(fps), '-i', str(Path(temp)/'%08d.png'),
+                                       '-c:v', 'libx264', '-threads', threads, '-pix_fmt', 'yuv420p', str(path)],
+                                      capture_output=True, text=True,
+                                      **({'creationflags': subprocess.BELOW_NORMAL_PRIORITY_CLASS} if os.name == 'nt' else {}))
                 if proc.returncode:
                     issues.append('MP4 failed: '+proc.stderr[-1000:])
                 else:
                     artifacts.append(path)
     r = result(artifacts, issues, frame_count=len(frames), visual_review='pending')
-    if issues and 'mp4' in formats and out/'animation.mp4' not in artifacts:
+    if any(out/name not in artifacts for fmt, name in (('mp4', 'animation.mp4'), ('gif', 'animation.gif')) if fmt in formats):
         r['status'] = 'partial'
     return r
 

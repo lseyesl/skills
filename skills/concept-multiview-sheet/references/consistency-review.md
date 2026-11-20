@@ -1,5 +1,8 @@
 # Consistency Review
 
+
+For a scoped construction handoff, use the source fidelity, correspondence and projection checks below on the actual controlling views. The full-sheet inventory and layout criteria apply to the complete presentation deliverable. Record the buildable regions and missing constraints in the [pre-model review](pre-model-review.md).
+
 Inspect the image itself; a successful generation call is not acceptance evidence.
 
 First perform the independent [source-fidelity check](source-fidelity.md). This file checks whether generated views can describe one subject; it cannot by itself prove that subject is the one in the original photograph.

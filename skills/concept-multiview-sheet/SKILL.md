@@ -1,6 +1,6 @@
 ---
 name: concept-multiview-sheet
-description: Turn a single-view concept image, sketch, product design, vehicle, prop, or character reference into an inferred five-view symmetric or six-view asymmetric orthographic concept sheet with corresponding technical line art. Use when hidden views must be designed consistently for later modeling or visualization. Do not use to claim measured geometry, recover real dimensions, edit an existing 3D model, or produce a true topology wireframe.
+description: Turn a single-view concept image, sketch, product design, vehicle, prop, or character reference into scoped orthographic construction views or a full inferred five- or six-view concept sheet with matching line art. Use when hidden views must be designed consistently for later modeling or visualization. Do not use to claim measured geometry, recover real dimensions, edit an existing 3D model, or produce a true topology wireframe.
 ---
 
 # Concept Multiview Sheet
@@ -18,7 +18,11 @@ For reconstruction from a photograph or existing design, use the [source-fidelit
 - If the user needs manufacturing, assembly, fit, or dimensionally accurate views, require measurements/CAD/multiple calibrated views instead of inventing them.
 - Use the built-in image generation tool by default. Use a CLI/API fallback only when the user explicitly requests or confirms it.
 
-## Default deliverable
+## Choose the requested deliverable
+
+For a construction handoff, first identify which view would change an actual modeling decision. Reuse source views that already constrain the region, generate only the missing controlling views, and review the selected set for source fidelity and cross-view consistency. Hand off separate views, anchors and explicit allowed regions. Make presentation line art only when requested or needed to clarify a constraint. If an existing coherent blockout can explain hidden geometry, use its orthographic renders as model-derived evidence and keep their provenance distinct from the source.
+
+## Default deliverable for a full design sheet
 
 Choose view count from symmetry before generation:
 
@@ -63,13 +67,13 @@ Treat normalization readiness explicitly:
 
 1. **Inspect the input.** Treat the source as a reference image, not an edit target. If it exists only as a local file, load it with `view_image` before generation. Record whether it is front, side, rear, top, or three-quarter/perspective.
 2. **Separate evidence from invention.** Read [references/inference-contract.md](references/inference-contract.md) and [source fidelity](references/source-fidelity.md). Record the original hashes and critical observed identity/shape/count/attachment invariants before generation. Distinguish reconstruction from deliberate redesign; never silently substitute a generic subject.
-3. **Choose view count and fidelity.** Use five views only when bilateral symmetry is supported or explicitly chosen; otherwise use six. Default to one coherent interpretation. Generate alternatives only when hidden structure has multiple materially different plausible solutions or the user asks for variants.
-4. **Generate the rendered view set.** Use the input image as a design reference. Before prompting, inspect the subject palette and choose a single solid isolation-background colour. Prefer saturated magenta; if it overlaps the subject palette, choose a strongly separated colour in both hue and value. Ask for all five or six orthographic-looking views in one 2×3 render sheet so the model sees them together. Apply [references/prompt-recipes.md](references/prompt-recipes.md).
+3. **Choose view count and fidelity.** For construction, choose the smallest set that constrains the required regions. For a full sheet, use five views only when bilateral symmetry is supported or explicitly chosen. Use six for other full sheets. Default to one coherent interpretation. Generate alternatives only when hidden structure has multiple materially different plausible solutions or the user asks for variants.
+4. **Generate the rendered view set.** Use the input image as a design reference. Before prompting, inspect the subject palette and choose a single solid isolation-background colour. Prefer saturated magenta; if it overlaps the subject palette, choose a strongly separated colour in both hue and value. Keep controlling views coherent. For a full sheet, generate the five or six views together in a 2×3 render sheet. For construction, generate the missing views against the trusted anchors and camera conventions. Apply [references/prompt-recipes.md](references/prompt-recipes.md).
 
    For an image-then-model task, do this before detailed geometry; later model renders are verification, not a substitute for omitted design references. State projection expectations explicitly: a vertical flower disk, wheel or shield reads edge-on from top/bottom; broad upward-facing surfaces read broadly from above and foreshorten from the side. Labeling a panel TOP does not make it a top projection. Review these constraints before generating line art.
 5. **Review before line art.** First compare actual generated regions with the original source and fill the [source-fidelity receipt](assets/source-fidelity-review-template.json). Then separately check part count, placement, silhouette, proportions, colour blocking, symmetry, orientation, pose/configuration, anchor alignment, scale and projection across views. A coherent redesign is not a fidelity pass; a faithful-looking front is not a whole-sheet pass. Regenerate or make one targeted edit if a controlling inconsistency remains.
-6. **Create the combined sheet.** Preserve approved render panels as immutable sources. Generate matching line art separately and assemble the 4×3 layout without regenerating the accepted render rows. If line art drifts, keep it supplemental or derive contours from a reviewed blockout. Do not ask for a dense fake topology mesh.
-7. **Validate.** Apply [references/consistency-review.md](references/consistency-review.md). Iterate with one explicit correction at a time; stop when further image edits cause component drift rather than improvement.
+6. **Create the combined sheet if requested.** Preserve approved render panels as immutable sources. Generate matching line art separately and assemble the 4×3 layout without regenerating the accepted render rows. If line art drifts, keep it supplemental or derive contours from a reviewed blockout. Do not ask for a dense fake topology mesh.
+7. **Validate.** Apply the applicable checks in [references/consistency-review.md](references/consistency-review.md) and use [pre-model review](references/pre-model-review.md) for the construction handoff. Iterate with one explicit correction at a time; stop when further image edits cause component drift rather than improvement.
 8. **Deliver and hand off.** For preview-only work, display the result inline. For project work, preserve original/generated images, generation-record, source-fidelity review and multiview review. When modeling follows, provide separate uncropped views (or exact crop regions), labels, shared scale/origin, anchors, per-region reliability and conflicts. Report source fidelity separately from consistency and calibration. The Blender Skill establishes and visually checks its imported workspace before geometry; a generated sheet alone is not a calibrated setup.
 
 ## Escalate to a model-backed sheet
@@ -94,7 +98,7 @@ Report:
 - final sheet and render-only paths when saved;
 - canonical orientation and symmetry assumption;
 - normalized pose or mechanical configuration, coordinate convention, and alignment anchors;
-- whether five or six controlling views were used and which side is canonical;
+- which views control which regions and which side is canonical;
 - the most consequential inferred features and unresolved unknowns;
 - whether the line art is image-generated or model-derived;
 - whether the result is preview-only or Blender-blockout-ready, including any normalization conflicts that prevent the latter label.

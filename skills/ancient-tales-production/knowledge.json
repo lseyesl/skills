@@ -13,7 +13,8 @@
       "aliases": [
         "制作",
         "交接",
-        "Gate"
+        "Gate",
+        "镜头预览执行"
       ],
       "applies_when": [
         "用户目标符合本 Skill 的入口描述"

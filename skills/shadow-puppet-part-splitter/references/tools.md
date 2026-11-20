@@ -40,9 +40,11 @@ python scripts/toolbox.py animate --manifest manifest.json --motion-plan motion_
 
 默认对每个 clip 从首帧到末帧（两端包含）逐帧出图，并各自编码 GIF、联系表，输出 `clip-000/frames`、`clip-000/media` 与一个 `preview.json`。片段不会串成一个动作，目录用序号避免名称进入路径。`--clip-id` 选择单段；`--stage stage.png` 合入同 `source_size` 的背景，按实际画幅和比例审查。需前景遮挡时放进 manifest 的静态层并明确 z，不能靠底图表达前景。
 
-配置可写 `formats:["gif","mp4","sheet"]`，MP4 才需要 FFmpeg；编码缺失保留 GIF 并返回 partial。GIF 有时间量化，精确节拍以原始帧、fps 和 MP4 为准。`max_frames` 默认 2400，超出先选片段或明确提高预算；预览会加载图像序列，长片分段制作。每轮选择新的输出目录（如 preview/v2），不覆盖素材或前一版；已有目录非空会拒绝，可使用 run 的成功缓存复用未变结果。
+配置可写 `formats:["gif","mp4","sheet"]`，MP4 才需要 FFmpeg；编码缺失保留 GIF 并返回 partial。GIF 按累计时间舍入到 10ms，避免逐帧舍入累积误差；精确单帧节拍以原始帧、fps 和 MP4 为准。超过 100fps 时使用 MP4。`max_frames` 默认 2400，超出先选片段或明确提高预算；预览会加载图像序列，长片分段制作。每轮选择新的输出目录（如 preview/v2），不覆盖素材或前一版；已有目录非空会拒绝，可使用 run 的成功缓存复用未变结果。
 
 `enforce_limits:false` 仅用于保留失败目标的试验预览，报告会标明，不能当作已验收范围。当前工具仅支持明确的层级平移／旋转／缩放；不实现换图、换父级、动态 z 或局部网格形变。选用这些方法须在项目脚本／目标运行时实现并连续检查。所有输出 `visual_review` 仍为 pending，不自动宣称美术或表演通过。
+
+同次预览只加载和校验素材一次。每段输出 `poses.json`，保存与渲染一致的逐帧姿态。可在 clip 用 `pins` 让独立道具根节点在指定帧段跟随固定位置或其他节点锚点。例：`"pins":[{"node":"prop","point":[50,60],"target":{"node":"hand","point":[55,65]},"frames":[5,12]}]`。帧区间含首尾，点均为静止画布坐标。挂接只修正根节点平移，区间外使用原关键帧，接触与释放两侧的连续性由动作轨迹决定。其他运行时可使用 `poses.json` 烘焙结果，Blender IO 的原始动作输入仅支持关键帧变换。
 
 ## 操作及通用场景
 

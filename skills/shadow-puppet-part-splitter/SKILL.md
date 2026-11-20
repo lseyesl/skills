@@ -59,7 +59,7 @@ description: 从皮影、剪纸或平面角色参考图制作镜头需要的二�
 python scripts/toolbox.py animate --manifest /path/to/manifest.json --motion-plan /path/to/motion_plan.json --output /path/to/preview/v1
 ```
 
-默认逐帧插值并输出 GIF、联系表和同目录 `preview.json`；无需 Blender 或 FFmpeg。`--stage` 可加入同画幅场景底图；选一个片段用 `--clip-id`。MP4、完整配置和预算见 [tools](references/tools.md)。每轮用新的预览目录，保留前一版对照；同一素材和动作输入继续复用。
+默认逐帧插值并输出 GIF、联系表、每段实际求值的 `poses.json` 和同目录 `preview.json`；无需 Blender 或 FFmpeg。`--stage` 可加入同画幅场景底图；选一个片段用 `--clip-id`。MP4、完整配置和预算见 [tools](references/tools.md)。每轮用新的预览目录，保留前一版对照；同一素材和动作输入继续复用。
 
 先以目标速度完整观看，再查看接触帧、动作极值、中间帧与循环接缝。至少检查：
 

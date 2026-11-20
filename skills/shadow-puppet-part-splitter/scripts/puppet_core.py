@@ -1,4 +1,5 @@
 """Dependency-free manifest and screen-space affine math (also used in Blender)."""
+import hashlib
 import copy
 import json
 import math
@@ -75,11 +76,44 @@ def normalize(data):
             pivot = part.setdefault('pivot_local', expected)
             require(pair(pivot) and all(abs(a-b) < 1e-6 for a, b in zip(pivot, expected)), f'{key}: pivot mismatch')
         require(not part['inferred'] or part.get('inferred_region_mask'), f'{key}: inferred mask required')
+    rules = data.get('occlusion_rules', [])
+    require(isinstance(rules, list), 'occlusion_rules must be an array')
+    for rule in rules:
+        require(isinstance(rule, dict) and rule.get('front') in parts and rule.get('back') in parts,
+                'occlusion rule references unknown draw part')
+        require(rule['front'] != rule['back'], 'occlusion rule cannot reference itself')
+        if 'frames' in rule:
+            bounds = rule['frames']
+            require(pair(bounds, integer=True) and 0 <= bounds[0] <= bounds[1], 'invalid occlusion frame interval')
+        if 'region' in rule:
+            box = rule['region']
+            require(isinstance(box, list) and len(box)==4 and all(isinstance(v,int) and not isinstance(v,bool) for v in box)
+                    and 0 <= box[0] < box[2] <= data['source_size'][0]
+                    and 0 <= box[1] < box[3] <= data['source_size'][1], 'invalid occlusion region')
+    parents = data.get('expected_parents', {})
+    require(isinstance(parents, dict), 'expected_parents must be an object')
+    require(all(key in nodes and (parent is None or isinstance(parent,str) and parent in nodes)
+                for key,parent in parents.items()), 'expected_parents references unknown node')
     return data
 
 
-def read_manifest(path):
-    return normalize(json.loads(Path(path).read_text(encoding='utf-8')))
+def read_manifest(path, allow_unverified=False):
+    path = Path(path).resolve()
+    data = normalize(json.loads(path.read_text(encoding='utf-8')))
+    if data.get('compilation') and not allow_unverified:
+        report = json.loads(asset(path.parent, data['compilation']['report']).read_text(encoding='utf-8'))
+        require(report.get('status') == 'pass', 'compiled asset blocked; diagnostic access only')
+        hashes = report.get('output_sha256', {})
+        required = {path.name}
+        for part in data['parts']:
+            required.add(part['file'])
+            if part.get('inferred_region_mask'):
+                required.add(part['inferred_region_mask'])
+        require(required <= set(hashes), 'incomplete compiled asset hashes')
+        for name, expected in hashes.items():
+            require(hashlib.sha256(asset(path.parent, name).read_bytes()).hexdigest() == expected,
+                    f'compiled asset changed since validation: {name}')
+    return data
 
 
 IDENTITY = (1, 0, 0, 0, 1, 0)

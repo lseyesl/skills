@@ -1,0 +1,27 @@
+{
+  "ok": false,
+  "task_id": "wheel",
+  "target_stage": "final",
+  "required_modules": 4,
+  "counts": {
+    "matched": 0,
+    "simplified": 0,
+    "blockout": 4,
+    "missing": 0,
+    "not-applicable": 0
+  },
+  "presence_coverage": 1.0,
+  "full_fidelity_coverage": 0.0,
+  "unapproved_simplified": [],
+  "errors": [
+    "final_review.status must be passed after actual review",
+    "final_review.unresolved_issues must be an explicit empty list",
+    "module-1: blockout status cannot pass the final gate",
+    "module-2: blockout status cannot pass the final gate",
+    "module-3: blockout status cannot pass the final gate",
+    "module-4: blockout status cannot pass the final gate"
+  ],
+  "warnings": [],
+  "ready_to_claim_complete": false,
+  "metric_scope": "Ledger evidence declarations only; not measured visual or reconstruction accuracy."
+}

@@ -107,9 +107,11 @@ def main():
         rejects('stale calibration review', lambda: require_reference_review(scene, task, review_path))
         review_path.write_text(json.dumps(review))
 
-        template = SCRIPTS.parent / 'assets/blender_task_template.py'
+        template = SCRIPTS.parent / 'assets/examples/blockout_cube_example.py'
         spec = importlib.util.spec_from_file_location('task_template', template)
-        module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        example = importlib.util.module_from_spec(spec);spec.loader.exec_module(example)
+        module = example.project
+        module.SCENE_MODE = 'edit';module.SCENE_NAME = scene.name
         module.TASK_ID = task;module.COLLECTION_NAME = 'GEN_reference-workspace-test'
         sentinel = bpy.data.objects.new('owned-prior-geometry', None)
         scene.collection.objects.link(sentinel);sentinel[module.OWNER_KEY] = task
@@ -120,18 +122,26 @@ def main():
         config_path = root / 'reference-setup.json';config_path.write_text(json.dumps(config))
         module.REFERENCE_HELPER_DIR = SCRIPTS;module.REFERENCE_CONFIG = config_path
         module.CALIBRATION_REVIEW = review_path
+        module.MODELING_PLAN = root / 'modeling-plan.json'
+        module.MODELING_SCOPE = ['body']
+        source_ref={'path':'reference.png','sha256':hashlib.sha256((root/'reference.png').read_bytes()).hexdigest()}
+        existing_path=root/'existing-reference-review.json'
+        existing_path.write_text(json.dumps({'status':'passed','finding':'Synthetic calibrated image fixture only; not visual reconstruction evidence','construction_images':[source_ref]}))
+        module.REFERENCE_PREPARATION=root/'reference-preparation.json'
+        module.REFERENCE_PREPARATION.write_text(json.dumps({'schema_version':1,'task_id':task,'purpose':'synthetic calibration regression','route':'existing_reviewed','reason':'Known calibration test, no inferred missing identity','facts':{'projection':'orthographic','needs_hidden_shape':False,'needs_pose_normalization':False},'source_images':[source_ref],'construction_images':[source_ref],'existing_review':{'path':existing_path.name,'sha256':hashlib.sha256(existing_path.read_bytes()).hexdigest()}}))
+        module.MODELING_PLAN.write_text(json.dumps({'schema_version':1,'task_id':task,'modules':[{'id':'body','method':'box','reason':'reference anchor teaching cage','objects':['GEO_'+task+'_body'],'checks':[{'id':'shape','kind':'visual','criterion':'synthetic fixture only'}]}]}))
         module.BUILD_RECEIPT = root / 'build-state.json'
         rejects('missing inferred depth before deleting geometry', module.main)
         assert scene.objects.get(sentinel.name) == sentinel
         assert json.loads(module.BUILD_RECEIPT.read_text())['status']=='failed'
         checks.append('template records failed prerequisite attempt before preserving old geometry')
-        module.INFERRED_DEPTH = .2
+        module.BLOCKOUT_PARAMETERS['depth'] = .2
         module.main()
         cube = bpy.data.objects['GEO_' + task + '_body']
         assert (cube.dimensions - Vector((.4, .2, .85))).length < 1e-6
         checks.append('sample builder dimensions actually derived from imported guide anchors')
         from stage_guard import require_stage
-        require_stage(module.BUILD_RECEIPT,'build',module.stage_inputs)
+        require_stage(module.BUILD_RECEIPT,'blockout-build',module.build_inputs)
         checks.append('template successful build has fresh guarded receipt')
 
         comparison = dict(review, phase='comparison', model_signature=model_signature([cube]),
@@ -159,6 +169,16 @@ def main():
         current_comparison();camera.data.lens+=5;stale_visual('camera lens invalidates comparison')
         world=bpy.data.worlds.new('synthetic-world');world.use_nodes=True;scene.world=world
         current_comparison();next(n for n in world.node_tree.nodes if n.type=='BACKGROUND').inputs['Strength'].default_value=.2;stale_visual('world invalidates comparison')
+        if hasattr(scene, 'compositing_node_group'):
+            compositor = bpy.data.node_groups.new('synthetic-compositor', 'CompositorNodeTree')
+            scene.compositing_node_group = compositor
+        else:
+            scene.use_nodes = True
+            compositor = scene.node_tree
+        blur = compositor.nodes.new('CompositorNodeBlur')
+        current_comparison()
+        blur.mute = True
+        stale_visual('compositor node change invalidates comparison')
         group=bpy.data.node_groups.new('synthetic-group','ShaderNodeTree');node=mat.node_tree.nodes.new('ShaderNodeGroup');node.node_tree=group
         value=group.nodes.new('ShaderNodeValue')
         current_comparison();value.outputs[0].default_value=.7

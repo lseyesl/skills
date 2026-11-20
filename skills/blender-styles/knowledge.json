@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "blender-styles.overview",
+      "title": "Blender 风格选择",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [],
+      "aliases": [
+        "黏土",
+        "橡皮泥",
+        "clay",
+        "风格"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "style.soft-clay",
+      "title": "柔和黏土",
+      "entry": "styles/soft-clay/STYLE.md",
+      "kind": "style",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [
+        "style"
+      ],
+      "aliases": [
+        "柔和黏土",
+        "soft-clay"
+      ],
+      "applies_when": [
+        "已选择此风格或其某一表现层"
+      ],
+      "exclude_when": [
+        "纯二维任务"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "style.handmade-plasticine",
+      "title": "手捏橡皮泥",
+      "entry": "styles/handmade-plasticine/STYLE.md",
+      "kind": "style",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [
+        "style"
+      ],
+      "aliases": [
+        "手捏橡皮泥",
+        "handmade-plasticine"
+      ],
+      "applies_when": [
+        "已选择此风格或其某一表现层"
+      ],
+      "exclude_when": [
+        "纯二维任务"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.b397f4351068",
+      "title": "共用风格流程与验收",
+      "entry": "references/workflow-and-review.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "共用风格流程与验收",
+        "workflow and review"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.f4f392abc4c8",
+      "title": "结构与制作痕迹",
+      "entry": "styles/handmade-plasticine/references/construction.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "结构与制作痕迹",
+        "construction"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.a50949e2ddf4",
+      "title": "材质、表面与灯光",
+      "entry": "styles/handmade-plasticine/references/materials-and-lighting.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "材质、表面与灯光",
+        "materials and lighting"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.9af0b1e617be",
+      "title": "局部校准与验收",
+      "entry": "styles/handmade-plasticine/references/review-and-calibration.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "局部校准与验收",
+        "review and calibration"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.95318fc55895",
+      "title": "Clay animation and timing",
+      "entry": "styles/soft-clay/references/animation.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Clay animation and timing",
+        "animation"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.d55813343336",
+      "title": "Miniature lighting and camera",
+      "entry": "styles/soft-clay/references/lighting.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Miniature lighting and camera",
+        "lighting"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.5b2e8ba96380",
+      "title": "Clay shader and palette",
+      "entry": "styles/soft-clay/references/materials.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Clay shader and palette",
+        "materials"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.55ff52762cb6",
+      "title": "Soft low-poly modeling",
+      "entry": "styles/soft-clay/references/modeling.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Soft low-poly modeling",
+        "modeling"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.f3b5a28766c5",
+      "title": "Executable and visual acceptance",
+      "entry": "styles/soft-clay/references/quality-check.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Executable and visual acceptance",
+        "quality check"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.641b45dea991",
+      "title": "Render configuration and batch delivery",
+      "entry": "styles/soft-clay/references/rendering.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Render configuration and batch delivery",
+        "rendering"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "blender-styles.reference.45e1d2050869",
+      "title": "Minimal usage and cross-project application",
+      "entry": "styles/soft-clay/references/usage.md",
+      "kind": "knowledge",
+      "tasks": [
+        "create",
+        "inspect",
+        "repair",
+        "optimize",
+        "animate",
+        "export"
+      ],
+      "subjects": [],
+      "aliases": [
+        "Minimal usage and cross-project application",
+        "usage"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "query_exclusions": [
+    "wheel event",
+    "onwheel",
+    "浏览器滚轮",
+    "鼠标滚轮",
+    "Blender crashes",
+    "Blender installation",
+    "Blender install",
+    "启动崩溃",
+    "安装失败"
+  ],
+  "excluded_paths": {
+    "references/migration-validation.md": "Historical measurement or migration evidence; not an execution guide.",
+    "references/migration.md": "Historical measurement or migration evidence; not an execution guide.",
+    "styles/soft-clay/references/test-results.md": "Historical measurement or migration evidence; not an execution guide."
+  },
+  "context_exclusions": [
+    "React",
+    "JavaScript"
+  ],
+  "domain_terms": [
+    "Blender",
+    "bpy",
+    "GLB",
+    "glTF",
+    "FBX",
+    "建模",
+    "三维模型"
+  ]
+}

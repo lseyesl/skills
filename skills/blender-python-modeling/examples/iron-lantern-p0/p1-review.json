@@ -1,0 +1,42 @@
+{
+  "features": [
+    {
+      "id": "reservoir-width",
+      "module_id": "base",
+      "signature_feature": "Stepped reservoir silhouette and ground contact",
+      "box_px": [214, 420, 506, 712],
+      "issue": "The reservoir footprint is too wide at all three measured height bands.",
+      "change": "Use the calibrated turned profile at 1.0x width instead of 1.18x."
+    },
+    {
+      "id": "vent-opening",
+      "module_id": "vent",
+      "signature_feature": "Open vent slots between the hood and overhanging lid",
+      "box_px": [284, 169, 436, 321],
+      "issue": "An insert occludes the visible openings in the collar.",
+      "change": "Remove the insert and keep the perforated collar and the lid."
+    },
+    {
+      "id": "hood-seat",
+      "module_id": "supports",
+      "signature_feature": "Two swept tubes seated in the reservoir and hood",
+      "box_px": [375, 262, 485, 372],
+      "issue": "The upper tube ends stop outside the hood. This crop shows the right-hand seat.",
+      "change": "Extend both upper tube ends into the hood along their sweep paths."
+    }
+  ],
+  "source": {
+    "asset": "Rusty Metal 04",
+    "id": "rusty_metal_04",
+    "creator": "Amal Kumar",
+    "license": "CC0-1.0",
+    "asset_url": "https://polyhaven.com/a/rusty_metal_04",
+    "map_url_prefix": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rusty_metal_04/rusty_metal_04_",
+    "maps": {
+      "base_color": {"suffix": "diff", "sha256": "37c6757c5b6b2229f61423c7e5013f970e4dafb48070d35f53ed6d08958ed288"},
+      "roughness": {"suffix": "rough", "sha256": "02c2fe5dfd5f4f7a692659261b8c99e103f33fb1a4c363c3e763542fae32d4fe"},
+      "metallic": {"suffix": "metal", "sha256": "090689c9cc3d30f4d1a89dd1160fb85cec04d3492f75695bdc83bbb80b6ad30f"},
+      "height": {"suffix": "disp", "sha256": "a654b6fcfa804ed611db781579a91d1b4c0ade5a8fd166f9343533edecdadf2c"}
+    }
+  }
+}

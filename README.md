@@ -8,6 +8,8 @@
 
 `ancient-tales-production` 定义专业流程、Gate 和交接，`ancient-tales-pipeline` 提供技能安装及资产索引／传输工具。制作任务从项目配置选择通用 Skill 与后端；独立建模、拆件或图片任务可直接调用对应 Skill。具体调用与返回字段见[技能协作与交付契约](skills/ancient-tales-production/references/技能协作与交付契约.md)。
 
+皮影动画的资产、运动、镜头和参考品质对照使用 [shadow-puppet-animation](skills/shadow-puppet-animation/SKILL.md)，复用角色概念与拆件能力，正式项目仍遵守既有制作契约。
+
 导演负责镜头决策和专业复审，制片／总控负责阶段推进，项目后端负责装配与渲染。当前提供工作流规范、能力工具及[交接契约校验与环境检查](skills/ancient-tales-production/references/交接校验与环境检查.md)，不会自动调度导演或授予批准。资产基础检查使用 `assets verify`，严格身份／回执检查使用 `assets validate`；旧清单迁移见[资产校验契约](skills/ancient-tales-pipeline/references/资产校验契约.md)。
 
 皮影制作优先跑通“必要素材 → 动作装配 → 连续预览 → 局部返修”，再扩展镜头；不要求先完成全角色拆件或逐层审批。二维预览使用 [toolbox animate](skills/shadow-puppet-part-splitter/references/tools.md)，正式影片仍沿用既有 Gate。
@@ -60,3 +62,37 @@ python tools/check.py --group blender --blender G:/SteamLibrary/steamapps/common
 ```
 
 该检查使用隔离临时场景，技术测试通过不等于视觉批准。制作规范的迁移归档可在 Git 提交 `804ba9d` 中查看。
+
+## 知识发现与修改评测
+
+按 [架构规则](docs/skill-architecture.md) 将知识归入现有能力，不按每个对象新增 Skill。各 Skill 的 knowledge.json 与源码一同锁定安装。检索：
+
+```shell
+python tools/knowledge.py search "车轮偏心" --task repair --subject wheel
+python tools/knowledge.py retrieve blender.wheel-motion
+python tools/run_evals.py retrieval --split test --output .tmp/retrieval.json
+```
+
+锁定副本可直接运行 `<blender-skill-dir>/scripts/knowledge_catalog.py`，无需源码根目录。检索候选必须再核对现场条件。
+
+[评测入口](evals/README.md) 说明任务记录、证据哈希和版本比较；每轮按 [测试输出规范](docs/test-output-standard.md) 检验输入/输出，并明确改进、无变化、变坏和无法判断的项；[收益规则](docs/evaluation-policy.md) 区分正向、负向、取舍与证据不足。轻量 CI 覆盖知识索引、检索与评分逻辑；Blender group 增加隔离的权重/姿势/枢轴/滚动/导出技术夹具。夹具通过不等于真实建模任务或视觉评测通过。
+
+## P0 执行与验证进度
+
+现有活动参考资料已经逐项索引；检索采用紧凑知识卡片 BM25，并区分混合意图与不支持请求。收益比较需绑定运行前声明的目标、成本上限和保护项。真实 Agent 执行器、独立评分校准、内容绑定验证回执及当前鉴权阻塞见 [P0 执行记录](docs/p0-execution.md)。知识审阅与过期机制见 [知识验证规则](docs/knowledge-review.md)。
+
+Blender 新建模型从任务空场景开始；[生产工作区](skills/blender-python-modeling/references/production-workspace.md) 提供实际渲染预检与隔离 GLB 交付，避免默认对象和导出求值差异。容器连接、持久绑定和 [可用资产验收](skills/blender-python-modeling/references/acceptance/usable-asset.md) 继续归入现有 Skill；实机机制测试不等于图片还原或完整角色已通过。
+
+`python tools/knowledge_audit.py` 检查已有验证声明；`python tools/check.py --group isolation` 显式检查 Linux 评测隔离。轻量流水线覆盖 main/work 分支及定期回归；Blender 双版本工作流需要配置带 blender 标签的专用 runner，实际未运行的版本不视为兼容性认证。
+
+## Blender 制作处理流程
+
+Blender Skill 增加生成/扫描网格恢复、属性迁移、关节修正、法线烘焙、布料碰撞、glTF 验证与实时优化七条条件化流程，并配套独立验收与 [一手来源记录](skills/blender-python-modeling/references/sources/production-sources.md)。它们归入既有 Skill，默认保持 experimental。
+
+轻量检查不安装外部工具。`python tools/check.py --group blender --blender <executable>` 包含制作技术样例；显式提供 Node.js 和 gltf-validator 后，可用 `python tools/check.py --group gltf --blender <executable> --validator-module <installed-module-path>` 运行真实导出/规范验证及正反例。工具技术通过与生产级视觉/消费者验收分别记录。
+
+Blender 复杂建模现使用分模块建模计划和基础形体验收；正式模板默认不生成 Cube，教学 Cube 示例单独保存。细化依赖与当前粗模/计划/证据匹配的作用域回执；已有资产和局部修改可以复用。详见 [基础形体流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)。
+
+图片转模型先记录 [参考准备路线](skills/blender-python-modeling/references/reference-preparation.md)，并分别验证 [原图忠实度](skills/concept-multiview-sheet/references/source-fidelity.md) 与跨视图一致性。仅记录 Skill 名称或生成成功不能放行建模。
+
+Blender 阶段验收现分别记录源拓扑、求值三角形和导出重载，按完整资产合计面数执行声明预算。参考分析增加遮挡/反光、重复结构和负空间的条件分支；机制检查通过仅说明检测覆盖，建模路线效果仍需 [等预算成对评测](docs/evaluation-policy.md#建模路线的等预算对比)。

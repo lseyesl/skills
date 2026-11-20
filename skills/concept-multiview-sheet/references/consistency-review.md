@@ -2,6 +2,8 @@
 
 Inspect the image itself; a successful generation call is not acceptance evidence.
 
+First perform the independent [source-fidelity check](source-fidelity.md). This file checks whether generated views can describe one subject; it cannot by itself prove that subject is the one in the original photograph.
+
 For modeling handoff, complete the [pre-model review and scoped receipt](pre-model-review.md) before detailed geometry. Review every panel and explicitly classify controlling/supplemental/rejected views. Pose consistency, imported-image calibration, model fidelity and animation readiness are separate decisions. Critical unresolved regions cannot be approved through a generic whole-sheet pass.
 
 ## Layout and projection

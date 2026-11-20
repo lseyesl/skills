@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('create_demo', ROOT/'examples/create_demo.py')
@@ -28,14 +29,27 @@ def main():
             if proc.returncode:
                 print(proc.stdout[-3000:]+proc.stderr[-3000:], file=sys.stderr)
                 raise RuntimeError(f'Blender exited {proc.returncode}')
+        # A cropped triangular decal touches two texture borders. Wrapping would
+        # leak opaque texels into the empty opposite corner when downsampled.
+        edge = Image.new('RGBA', (64, 64))
+        ImageDraw.Draw(edge).polygon([(0, 0), (63, 0), (0, 63)], fill='red')
+        edge.save(out/'edge.png')
+        (out/'edge.json').write_text(json.dumps(dict(schema_version='1.0',
+            coordinate_system='image-pixels-y-down', source_size=[128,128],
+            parts=[dict(id='edge', file='edge.png', crop_origin=[32,32], pixel_size=[64,64])])) )
         reports = {}
-        for label, manifest, motion in [('static', 'static.json', None), ('hierarchy', 'manifest.json', 'motion.json')]:
+        for label, manifest, motion in [('static', 'static.json', None), ('hierarchy', 'manifest.json', 'motion.json'), ('edge', 'edge.json', None)]:
             target = out/label
             cmd = ['--factory-startup', '-t', '2', '--python-exit-code', '1', '--python', str(ROOT/'scripts/blender_io.py'),
                    '--', '--manifest', str(out/manifest), '--out', str(target), '--render']
             if motion:
                 cmd += ['--motion-plan', str(out/motion)]
             run(cmd)
+            if label == 'edge':
+                with Image.open(target/'preview/rest.png') as rendered:
+                    alpha = rendered.getchannel('A')
+                    assert alpha.crop((40,40,48,48)).getextrema()[1] <= 1, 'texture wraps into transparent corner'
+                    assert alpha.crop((19,19,24,24)).getextrema()[0] > 240, 'opaque triangle missing'
             report = json.loads((target/'io-report.json').read_text())
             assert report['visual_review'] == 'pending'
             assert bool(report['rig_name']) == bool(motion)

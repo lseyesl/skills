@@ -45,3 +45,13 @@
 ## 依赖与验证入口
 
 新增技能或改变依赖时同步更新 skills.json 和 index.md；必需本库依赖不得形成环，可选协作不自动安装，外部工具不由同步器安装。共享校验入口为 `python tools/check.py`，Blender 实机测试用独立 group 显式运行。活动规范不得引用 history/ 或退役后端入口；历史原文只作审计。
+
+## 知识组织与修改收益
+
+遵循 [Skill 架构](docs/skill-architecture.md) 和 [评测规则](docs/evaluation-policy.md)。新增对象、症状、风格优先归入已有 Skill 的知识/流程，不默认新增 Skill。同步 knowledge.json；能力分组维护 catalog/taxonomy.json，依赖继续维护 skills.json。修改知识时查找 requires/verification 的反向影响，复测相关任务并使旧证据失效。效果未经成对评测保持 experimental，不以单测或文件存在宣称收益。
+
+收益比较必须使用运行前绑定的目标/成本/保护项策略；缺策略或未观察到实际模型身份不得宣称正向。validated 证据按 [知识验证规则](docs/knowledge-review.md) 绑定正文、依赖、工具和评分任务；过期声明须复测。真实 Agent 运行必须保留隔离、轨迹与独立评分，不得用控制记录替代效果证据。
+
+每轮测试面向用户的输出必须遵循 [测试输出文档规范](docs/test-output-standard.md)，使用其 [报告模板](evals/templates/test-output.md)：核验实际输入和输出，逐项列出改进、无变化、变坏与无法判断。先冻结测试报告；优化 Skill/流程及再测试另立记录，不能以修补本次产物代替收益评估或回填旧成绩。
+
+提交边界：可复用 Skill 文档、脚本、模板、任务契约、夹具及测试代码随库提交；单次测试的模型、生成图、日志、评分结果与报告默认存入 Git 忽略的 `evals/runs/<run-id>/`，本地保留，不混入源码提交。不要使用全局图片/JSON 忽略规则误排除受管参考或测试夹具。

@@ -1,0 +1,1196 @@
+{
+  "case": "character",
+  "blender": "4.3.2",
+  "scope": "Blender exporter/importer technical check, not Khronos validation or target-engine certification",
+  "source": {
+    "mesh_count": 65,
+    "triangles": 152996,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_edges": 0,
+    "inconsistent_winding_edges": 0,
+    "bounds": [
+      [
+        -0.34983694553375244,
+        -0.19502179324626923,
+        0.0014981200220063329
+      ],
+      [
+        0.33429205417633057,
+        0.18009644746780396,
+        0.9850977659225464
+      ]
+    ],
+    "objects": {
+      "clay_girl_fit::head::body": {
+        "vertices": 2624,
+        "triangles": 5244,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::neck::body": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::torso::body": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::ear_L::body": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::ear_R::body": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::dress::body": {
+        "vertices": 5248,
+        "triangles": 10496,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-dress"
+        ]
+      },
+      "clay_girl_fit::dress::strap_0": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-dress"
+        ]
+      },
+      "clay_girl_fit::dress::strap_1": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-dress"
+        ]
+      },
+      "clay_girl_fit::arm_L::limb": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::arm_L::palm": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::arm_L::thumb": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::leg_L::limb": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::shoe_L::toe": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::shoe_L::upper": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::shoe_L::opening_rim": {
+        "vertices": 192,
+        "triangles": 384,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::shoe_L::sole": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::arm_R::limb": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::arm_R::palm": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::arm_R::thumb": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::leg_R::limb": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin"
+        ]
+      },
+      "clay_girl_fit::shoe_R::toe": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::shoe_R::upper": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::shoe_R::opening_rim": {
+        "vertices": 192,
+        "triangles": 384,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::shoe_R::sole": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe"
+        ]
+      },
+      "clay_girl_fit::hair::cap": {
+        "vertices": 3712,
+        "triangles": 7420,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_0": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_1": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_2": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_3": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_4": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_5": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_6": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_7": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_8": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_9": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_10": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_11": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_12": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_13": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_14": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_15": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_16": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_17": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_18": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_19": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_20": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_21": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_0": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_1": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_2": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_3": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_4": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_0": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_1": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_2": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_3": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_4": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair"
+        ]
+      },
+      "clay_girl_fit::nose::body": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-nose"
+        ]
+      },
+      "clay_girl_fit::eye_L::patch": {
+        "vertices": 1562,
+        "triangles": 3120,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black"
+        ]
+      },
+      "clay_girl_fit::eye_R::patch": {
+        "vertices": 1892,
+        "triangles": 3780,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black"
+        ]
+      },
+      "clay_girl_fit::brow_L::patch": {
+        "vertices": 1342,
+        "triangles": 2680,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black"
+        ]
+      },
+      "clay_girl_fit::brow_R::patch": {
+        "vertices": 1892,
+        "triangles": 3780,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black"
+        ]
+      },
+      "clay_girl_fit::smile::patch": {
+        "vertices": 2332,
+        "triangles": 4660,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black"
+        ]
+      }
+    }
+  },
+  "source_armatures": [],
+  "source_actions": [],
+  "materials": [
+    {
+      "name": "Clay::clay_girl_fit::material-dress",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "BUMP",
+        "OUTPUT_MATERIAL",
+        "TEX_COORD",
+        "TEX_NOISE",
+        "VALTORGB"
+      ]
+    },
+    {
+      "name": "Clay::clay_girl_fit::material-skin",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "BUMP",
+        "OUTPUT_MATERIAL",
+        "TEX_COORD",
+        "TEX_NOISE",
+        "VALTORGB"
+      ]
+    },
+    {
+      "name": "Clay::clay_girl_fit::material-shoe",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "BUMP",
+        "OUTPUT_MATERIAL",
+        "TEX_COORD",
+        "TEX_NOISE",
+        "VALTORGB"
+      ]
+    },
+    {
+      "name": "Clay::clay_girl_fit::material-black",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "BUMP",
+        "OUTPUT_MATERIAL",
+        "TEX_COORD",
+        "TEX_NOISE",
+        "VALTORGB"
+      ]
+    },
+    {
+      "name": "Clay::clay_girl_fit::material-nose",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "BUMP",
+        "OUTPUT_MATERIAL",
+        "TEX_COORD",
+        "TEX_NOISE",
+        "VALTORGB"
+      ]
+    },
+    {
+      "name": "Clay::clay_girl_fit::material-hair",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "BUMP",
+        "OUTPUT_MATERIAL",
+        "TEX_COORD",
+        "TEX_NOISE",
+        "VALTORGB"
+      ]
+    }
+  ],
+  "glb": {
+    "bytes": 2100776,
+    "mesh_count": 66,
+    "materials": 7,
+    "skins": 0,
+    "animations": [],
+    "extensions_required": [],
+    "external_resources": []
+  },
+  "reimport": {
+    "mesh_count": 66,
+    "triangles": 143858,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_edges": 216,
+    "inconsistent_winding_edges": 0,
+    "bounds": [
+      [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.0
+      ]
+    ],
+    "objects": {
+      "clay_girl_fit::head::body.001": {
+        "vertices": 2624,
+        "triangles": 5244,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::brow_L::patch.001": {
+        "vertices": 1342,
+        "triangles": 2680,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black.001"
+        ]
+      },
+      "clay_girl_fit::brow_R::patch.001": {
+        "vertices": 1892,
+        "triangles": 3780,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black.001"
+        ]
+      },
+      "clay_girl_fit::eye_L::patch.001": {
+        "vertices": 1562,
+        "triangles": 3120,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black.001"
+        ]
+      },
+      "clay_girl_fit::eye_R::patch.001": {
+        "vertices": 1892,
+        "triangles": 3780,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black.001"
+        ]
+      },
+      "clay_girl_fit::smile::patch.001": {
+        "vertices": 2332,
+        "triangles": 4660,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-black.001"
+        ]
+      },
+      "clay_girl_fit::neck::body.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::torso::body.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::ear_L::body.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::ear_R::body.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::dress::body.001": {
+        "vertices": 2624,
+        "triangles": 5120,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-dress.001"
+        ]
+      },
+      "clay_girl_fit::dress::strap_0.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-dress.001"
+        ]
+      },
+      "clay_girl_fit::dress::strap_1.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-dress.001"
+        ]
+      },
+      "clay_girl_fit::arm_L::limb.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::arm_L::palm.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::arm_L::thumb.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::leg_L::limb.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::shoe_L::toe.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::shoe_L::upper.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::shoe_L::opening_rim.001": {
+        "vertices": 192,
+        "triangles": 384,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::shoe_L::sole.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::arm_R::limb.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::arm_R::palm.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::arm_R::thumb.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::leg_R::limb.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-skin.001"
+        ]
+      },
+      "clay_girl_fit::shoe_R::toe.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::shoe_R::upper.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::shoe_R::opening_rim.001": {
+        "vertices": 192,
+        "triangles": 384,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::shoe_R::sole.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-shoe.001"
+        ]
+      },
+      "clay_girl_fit::hair::cap.001": {
+        "vertices": 1856,
+        "triangles": 3646,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_0.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_1.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_2.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_3.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_4.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_5.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_6.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_7.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_8.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_9.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_10.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_11.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_12.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_13.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_14.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_15.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_16.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_17.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_18.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_19.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_20.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::directed_lock_21.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_0.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_1.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_2.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_3.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_0_fold_4.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_0.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_1.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_2.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_3.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::hair::bun_1_fold_4.001": {
+        "vertices": 980,
+        "triangles": 1956,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-hair.001"
+        ]
+      },
+      "clay_girl_fit::nose::body.001": {
+        "vertices": 1082,
+        "triangles": 2160,
+        "uv_layers": 0,
+        "materials": [
+          "Clay::clay_girl_fit::material-nose.001"
+        ]
+      },
+      "Cube.001": {
+        "vertices": 24,
+        "triangles": 12,
+        "uv_layers": 1,
+        "materials": [
+          "Material.001"
+        ]
+      }
+    }
+  },
+  "world_bounds_max_error": 1.0014981200220063,
+  "checks": {
+    "source_nonempty_finite": true,
+    "no_degenerate_triangles": true,
+    "winding_consistent": true,
+    "triangle_budget": false,
+    "reimport_nonempty": true,
+    "bounds_preserved": false,
+    "triangles_preserved": false,
+    "embedded_resources": true,
+    "persistent_armature": false,
+    "exported_skin": false,
+    "exported_animation": false
+  }
+}

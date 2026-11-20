@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "id": "image-to-usable-3d-v1",
+  "status": "provisional-artifact-baseline",
+  "revision": "b7a0844e724471ec96918df3ffbee6a3bba19959",
+  "protocol_sha256": "04401445c32a22e16f371e6098735c0fd862c91945a003e3339c55dc5d59e2d4",
+  "freeze_sha256": "9f0c539d1cfb29c002c441f41774cbdfa281dfd90bfa7f337e69e0a2bb7d4b4e",
+  "blender": "4.3.2",
+  "model_identity": null,
+  "token_usage": null,
+  "task_count": 3,
+  "passed": 0,
+  "failed": 3,
+  "interpretation": "0/3 observed deliverables pass; not an estimated general Agent success rate",
+  "technical_calibration": {
+    "passed": true,
+    "checks": {
+      "valid_open_surface_allowed": true,
+      "degenerate_face_detected": true,
+      "renaming_does_not_change_geometry": true,
+      "positive_bounds_roundtrip": true,
+      "positive_triangle_roundtrip": true,
+      "shift_detected": true,
+      "static_glb_not_mistaken_for_rig": true
+    },
+    "blender": "4.3.2",
+    "checker_sha256": "03093675c48a837c7a692c4b777b3c5704aeb163041c015128c6404eeca9b5ab",
+    "scope": "technical helper calibration only; visual grader and real use-case functionality remain uncalibrated"
+  },
+  "records": [
+    {
+      "task_id": "mug",
+      "status": "failed",
+      "actual_stage": "failed-blockout",
+      "visual_reviewer": "current-session-Agent-self-review",
+      "review_confidence": "provisional; uncalibrated self-assessment",
+      "score": 51.75,
+      "subtotals": {
+        "fidelity": 22.5,
+        "technical": 18.0,
+        "purpose": 0,
+        "process": 11.25
+      },
+      "items": {
+        "silhouette": {
+          "level": 0.5,
+          "reason": "Tapered cup, D handle and tall spoon recognizable. Handle floats at lower attachment; photo has a continuous join. Faceted rim and cup profile remain coarse.",
+          "weight": 10,
+          "points": 5.0
+        },
+        "proportions": {
+          "level": 0.75,
+          "reason": "Cup taper roughly follows photo; spoon axis/bowl outline and handle curvature differ. Perspective was not solved, so this is qualitative, not measured reconstruction accuracy.",
+          "weight": 10,
+          "points": 7.5
+        },
+        "signature_features": {
+          "level": 0.5,
+          "reason": "Open lip, handle hole and separate spoon exist. Handle join and axial bottom fail; rolled lip and bowl concavity are not close enough for final.",
+          "weight": 15,
+          "points": 7.5
+        },
+        "materials": {
+          "level": 0.5,
+          "reason": "White ceramic colour block present; bright/noisy lighting, coarse curvature and highlight response differ from photo.",
+          "weight": 5,
+          "points": 2.5
+        },
+        "shading": {
+          "level": 0.5,
+          "reason": "No winding errors measured, but 16-sided silhouette and strong highlights expose faceting.",
+          "weight": 4,
+          "points": 2.0
+        },
+        "geometry": {
+          "level": 1,
+          "reason": "Source evaluated triangles=876, budget=25000; nonfinite=0, degenerate=0. All geometry criteria required for these 8 points.",
+          "weight": 8,
+          "points": 8
+        },
+        "material_portability": {
+          "level": 1,
+          "reason": "Base untextured PBR materials embedded; Khronos format validation passed. Extra Cube is penalized under export scope.",
+          "weight": 4,
+          "points": 4
+        },
+        "source_editability": {
+          "level": 1,
+          "reason": "Source .blend reopens with separately editable semantic parts; this does not certify a usable armature.",
+          "weight": 4,
+          "points": 4
+        },
+        "purpose_function": {
+          "level": 0,
+          "reason": "Independent ray test misses center floor; lower handle center-to-wall distance .07429 exceeds tube radius .052.",
+          "weight": 15,
+          "points": 0
+        },
+        "export_roundtrip": {
+          "level": 0,
+          "reason": "Unexpected Cube exported. Bounds max error=1.010000; source triangles=876, imported=888. Not asset-only or equivalent geometry.",
+          "weight": 10,
+          "points": 0
+        },
+        "reference_preparation": {
+          "level": 0.25,
+          "reason": "Public source, license and interpretation retained, but perspective camera/calibration and reference-visible viewport check missing.",
+          "weight": 5,
+          "points": 1.25
+        },
+        "blockout_gate": {
+          "level": 1,
+          "reason": "Actual coarse image inspected, failure recorded with current signature/evidence, gate rejects refinement, coarse source preserved. These process points do not pass the asset.",
+          "weight": 5,
+          "points": 5
+        },
+        "completion_evidence": {
+          "level": 1,
+          "reason": "Per-module unresolved differences and failed final gate retained; no modules falsely labeled matched or assets claimed final.",
+          "weight": 5,
+          "points": 5
+        }
+      },
+      "hard_gate_passed": false,
+      "source_triangles": 876,
+      "glb_triangles": 888,
+      "format_status": "passed",
+      "context_tokens": null,
+      "total_task_elapsed_seconds": null,
+      "human_interventions": 0,
+      "runtime_rescues": 0,
+      "quality_retries": 0,
+      "execution_process_costs": [
+        {
+          "command": [
+            "blender",
+            "--background",
+            "--factory-startup",
+            "-t",
+            "4",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "evals/image-to-3d-baseline-v1/record_failed_blockouts.py",
+            "--",
+            "--case",
+            "mug",
+            "--output",
+            ".tmp/image3d-baseline-20261113/mug"
+          ],
+          "elapsed_seconds": 7.703640223999173,
+          "returncode": 0,
+          "status": "failed-coarse-diagnostic-not-refinement"
+        },
+        {
+          "elapsed_seconds": 2.566157101000499,
+          "returncode": 0,
+          "command": [
+            "blender",
+            "--background",
+            "--factory-startup",
+            "-t",
+            "4",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "evals/image-to-3d-baseline-v1/check_assets.py",
+            "--",
+            "--case",
+            "mug",
+            "--source",
+            ".tmp/image3d-baseline-20261113/mug/diagnostic-asset.blend",
+            "--glb",
+            ".tmp/image3d-baseline-20261113/mug/diagnostic-asset.glb",
+            "--output",
+            ".tmp/image3d-baseline-20261113/mug/technical.json"
+          ]
+        }
+      ],
+      "evidence": {
+        "front.png": "78e98eda0d1eeb89f92dd9a4c19dbe433598dd9cdb3bb01ded7a25b91afeddfe",
+        "format.json": "b6dbcabb8c3d4c942650bee564959612a538ece6b85722a44d93faea705fb211",
+        "back.png": "4c9284482ff89121859ad05db0eadb806b729272a5bfbc93356f891101f070b3",
+        "modeling-plan.json": "09ee61942452c63df312c55c5bcfc17ddd72791966e150bfa86c8bdfb5f136eb",
+        "side.png": "f704c2924badfefe2c309a60d2ced6873afaa2d5efeac83030058fbbd5fe3010",
+        "clay.png": "ffa14ac793186e6871437a613a540b81bf40b8be3f21a5511f223c037d707e33",
+        "module-ledger.json": "e7c06976ab66e03aa9f9c436a22a5175fbbd0685650eeb870a87ea7e2c2d8049",
+        "blockout-receipt.json": "b79c322ba3d97fb69bb007c4bef3c42c1a24eb51782af7ed81569c32c7909c5e",
+        "final-gate.json": "71ca36053e50b8ec771f9cd8ca5efcaad604e3bf921f5f0cae991fe17d93c264",
+        "blockout-review.json": "62a8f2cc7add58868d4923e327c77157fe6339447e9fa93b4be325b76b138752",
+        "technical.json": "a760fa1300ae2a529249578fd222765f6afe16555c72ab0f53dc16729772e2e2",
+        "three-quarter.png": "28d05a3f6a33854517045cbe09fa07fdfe2d7bafdaf40365c7a9e4ff94b6adf4",
+        "gate-result.json": "f4213e84626bd52d855c500cf07ed8ea280767c2b4307576b0b2842711a79ef2"
+      },
+      "asset_paths": {
+        "blend": ".tmp/image3d-baseline-20261113/mug/diagnostic-asset.blend",
+        "glb": ".tmp/image3d-baseline-20261113/mug/diagnostic-asset.glb"
+      }
+    },
+    {
+      "task_id": "wheel",
+      "status": "failed",
+      "actual_stage": "failed-blockout",
+      "visual_reviewer": "current-session-Agent-self-review",
+      "review_confidence": "provisional; uncalibrated self-assessment",
+      "score": 44.5,
+      "subtotals": {
+        "fidelity": 16.25,
+        "technical": 17.0,
+        "purpose": 0,
+        "process": 11.25
+      },
+      "items": {
+        "silhouette": {
+          "level": 0.5,
+          "reason": "Round tire and radial wheel identifiable, but 20-sided tire outline and no sidewall lettering/tread differ strongly.",
+          "weight": 10,
+          "points": 5.0
+        },
+        "proportions": {
+          "level": 0.5,
+          "reason": "Normalized radii follow broad tire/rim ratio; cast spoke widths/shape and recessed hub do not match. Depth inferred, camera not solved.",
+          "weight": 10,
+          "points": 5.0
+        },
+        "signature_features": {
+          "level": 0.25,
+          "reason": "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong.",
+          "weight": 15,
+          "points": 3.75
+        },
+        "materials": {
+          "level": 0.5,
+          "reason": "Rubber/alloy separation exists; tire and cast-metal highlight response differ.",
+          "weight": 5,
+          "points": 2.5
+        },
+        "shading": {
+          "level": 0.25,
+          "reason": "Strong faceting and rounded rod-like branches do not reproduce the broad smoothly cast spokes.",
+          "weight": 4,
+          "points": 1.0
+        },
+        "geometry": {
+          "level": 1,
+          "reason": "Source evaluated triangles=3296, budget=40000; nonfinite=0, degenerate=0. All geometry criteria required for these 8 points.",
+          "weight": 8,
+          "points": 8
+        },
+        "material_portability": {
+          "level": 1,
+          "reason": "Base untextured PBR materials embedded; Khronos format validation passed. Extra Cube is penalized under export scope.",
+          "weight": 4,
+          "points": 4
+        },
+        "source_editability": {
+          "level": 1,
+          "reason": "Source .blend reopens with separately editable semantic parts; this does not certify a usable armature.",
+          "weight": 4,
+          "points": 4
+        },
+        "purpose_function": {
+          "level": 0,
+          "reason": "Coarse review failed assembly continuity; no refinement/rotation clip executed. Sampled angle remains zero. A stationary center is not evidence of successful rotation.",
+          "weight": 15,
+          "points": 0
+        },
+        "export_roundtrip": {
+          "level": 0,
+          "reason": "Unexpected Cube exported. Bounds max error=1.000000; source triangles=3296, imported=1308. Not asset-only or equivalent geometry.",
+          "weight": 10,
+          "points": 0
+        },
+        "reference_preparation": {
+          "level": 0.25,
+          "reason": "Public source, license and interpretation retained, but perspective camera/calibration and reference-visible viewport check missing.",
+          "weight": 5,
+          "points": 1.25
+        },
+        "blockout_gate": {
+          "level": 1,
+          "reason": "Actual coarse image inspected, failure recorded with current signature/evidence, gate rejects refinement, coarse source preserved. These process points do not pass the asset.",
+          "weight": 5,
+          "points": 5
+        },
+        "completion_evidence": {
+          "level": 1,
+          "reason": "Per-module unresolved differences and failed final gate retained; no modules falsely labeled matched or assets claimed final.",
+          "weight": 5,
+          "points": 5
+        }
+      },
+      "hard_gate_passed": false,
+      "source_triangles": 3296,
+      "glb_triangles": 1308,
+      "format_status": "passed",
+      "context_tokens": null,
+      "total_task_elapsed_seconds": null,
+      "human_interventions": 0,
+      "runtime_rescues": 0,
+      "quality_retries": 0,
+      "execution_process_costs": [
+        {
+          "command": [
+            "blender",
+            "--background",
+            "--factory-startup",
+            "-t",
+            "4",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "evals/image-to-3d-baseline-v1/record_failed_blockouts.py",
+            "--",
+            "--case",
+            "wheel",
+            "--output",
+            ".tmp/image3d-baseline-20261113/wheel"
+          ],
+          "elapsed_seconds": 5.496262344999195,
+          "returncode": 0,
+          "status": "failed-coarse-diagnostic-not-refinement"
+        },
+        {
+          "elapsed_seconds": 2.074946243999875,
+          "returncode": 0,
+          "command": [
+            "blender",
+            "--background",
+            "--factory-startup",
+            "-t",
+            "4",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "evals/image-to-3d-baseline-v1/check_assets.py",
+            "--",
+            "--case",
+            "wheel",
+            "--source",
+            ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.blend",
+            "--glb",
+            ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.glb",
+            "--output",
+            ".tmp/image3d-baseline-20261113/wheel/technical.json"
+          ]
+        }
+      ],
+      "evidence": {
+        "front.png": "23c33584c75643e4b317e2ee56c789ba900cf6ba31a9f23379cde3c159943302",
+        "format.json": "2150be980dc264fef57ff635d33e25cbdcaba0b5eaf6f6b08fb71f7e1a1bcd02",
+        "back.png": "50fead205cbc9f2a406c9152365986132005eede5643fbbf82fab0df835cd3c0",
+        "modeling-plan.json": "3fad3adac20a921f53ad13528b20539dcc382cb3d03861fde588d115f99f39d3",
+        "side.png": "f94114025d8745b92241068625bff942619e74cf41cf33c747b9c2b8b877b48c",
+        "clay.png": "b0d464d1e1bd23efbc4a2d87bdb4708bd15e0bdb8f88388b4e4dc0171cb04573",
+        "module-ledger.json": "e2f349eab0465c17c5145b6f3fb1558953e598f965a4f740add69d5a9a3fa530",
+        "blockout-receipt.json": "3d1dcb6eea8e710066639c6ec36a92fc8724ce81b8365521f8742c3cb2cabb3e",
+        "final-gate.json": "1154b64aa8b2d2be4c5c92107fee7470ddb9d6a84ec15cf71cb20078cf4faab3",
+        "blockout-review.json": "8d31c522504cdfa2d291495dd94a23136bd8692a471208c7ffb4d70597779121",
+        "technical.json": "c3cea835a9ad876742037bc3cbdfd219ad0917a30ef6fe8bd2e7625270627137",
+        "three-quarter.png": "ca2af6d952cb52e20899a4debbbfdc95a0705833877d59617e785648a94db097",
+        "gate-result.json": "472763da30225b64ce2b7003357af04b7609394044c6a5cc048e810028598813"
+      },
+      "asset_paths": {
+        "blend": ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.blend",
+        "glb": ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.glb"
+      }
+    },
+    {
+      "task_id": "character",
+      "status": "failed",
+      "actual_stage": "static-character-diagnostic-after-render-failure",
+      "visual_reviewer": "current-session-Agent-self-review",
+      "review_confidence": "provisional; uncalibrated self-assessment",
+      "score": 41.5,
+      "subtotals": {
+        "fidelity": 25.0,
+        "technical": 9.0,
+        "purpose": 0,
+        "process": 7.5
+      },
+      "items": {
+        "silhouette": {
+          "level": 0.75,
+          "reason": "Girl, two buns, dress, separated limbs and shoes recognizable. Head contour, hands, feet and dress hem differ; back/depth only partly observed.",
+          "weight": 10,
+          "points": 7.5
+        },
+        "proportions": {
+          "level": 0.75,
+          "reason": "Front head/body placement reasonably close. Head/skull profile, facial placement, hand/thumb shape and shoe thickness have visible discrepancies.",
+          "weight": 10,
+          "points": 7.5
+        },
+        "signature_features": {
+          "level": 0.5,
+          "reason": "Happy face and two buns present. Braided irregular hair, ceramic/clay relief, dress texture/hem and explicit hand/thumb details remain substantially simplified.",
+          "weight": 15,
+          "points": 7.5
+        },
+        "materials": {
+          "level": 0.5,
+          "reason": "Broad skin/green/red/dark colour blocks match; surface relief and hand-made material response missing or weak.",
+          "weight": 5,
+          "points": 2.5
+        },
+        "shading": {
+          "level": 0.75,
+          "reason": "Closed finite meshes and consistent winding measured; close-up form is smooth but noisy and reference-specific surface relief is absent.",
+          "weight": 4,
+          "points": 3.0
+        },
+        "geometry": {
+          "level": 0,
+          "reason": "Source evaluated triangles=152996, budget=80000; nonfinite=0, degenerate=0. All geometry criteria required for these 8 points.",
+          "weight": 8,
+          "points": 0
+        },
+        "material_portability": {
+          "level": 0.5,
+          "reason": "Base PBR materials embedded and Khronos format passed; procedural surface detail not baked/preserved.",
+          "weight": 4,
+          "points": 2.0
+        },
+        "source_editability": {
+          "level": 1,
+          "reason": "Source .blend reopens with separately editable semantic parts; this does not certify a usable armature.",
+          "weight": 4,
+          "points": 4
+        },
+        "purpose_function": {
+          "level": 0,
+          "reason": "No persistent armature, skin or exported clip; four disposable skinning probes are not production binding.",
+          "weight": 15,
+          "points": 0
+        },
+        "export_roundtrip": {
+          "level": 0,
+          "reason": "Unexpected Cube exported. Bounds max error=1.001498; source triangles=152996, imported=143858. Not asset-only or equivalent geometry.",
+          "weight": 10,
+          "points": 0
+        },
+        "reference_preparation": {
+          "level": 0.5,
+          "reason": "Existing fitter uses pixel/profile config and packed guides; side reference inconsistent. Actual reference-visible viewport calibration not performed.",
+          "weight": 5,
+          "points": 2.5
+        },
+        "blockout_gate": {
+          "level": 0,
+          "reason": "Existing fitter creates detailed geometry directly; no prior signed coarse inspection in this run.",
+          "weight": 5,
+          "points": 0
+        },
+        "completion_evidence": {
+          "level": 1,
+          "reason": "Per-module unresolved differences and failed final gate retained; no modules falsely labeled matched or assets claimed final.",
+          "weight": 5,
+          "points": 5
+        }
+      },
+      "hard_gate_passed": false,
+      "source_triangles": 152996,
+      "glb_triangles": 143858,
+      "format_status": "passed",
+      "context_tokens": null,
+      "total_task_elapsed_seconds": null,
+      "human_interventions": 0,
+      "runtime_rescues": 1,
+      "quality_retries": 0,
+      "execution_process_costs": [
+        {
+          "command": [
+            "blender",
+            "--background",
+            "--factory-startup",
+            "-t",
+            "4",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "evals/image-to-3d-baseline-v1/inspect_character.py",
+            "--",
+            "--input",
+            ".tmp/image3d-baseline-20261113/character",
+            "--output",
+            ".tmp/image3d-baseline-20261113/character-salvage"
+          ],
+          "elapsed_seconds": 12.385776560999147,
+          "returncode": 0,
+          "status": "diagnostic-rescue"
+        },
+        {
+          "elapsed_seconds": 3.576041697000619,
+          "returncode": 0,
+          "command": [
+            "blender",
+            "--background",
+            "--factory-startup",
+            "-t",
+            "4",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "evals/image-to-3d-baseline-v1/check_assets.py",
+            "--",
+            "--case",
+            "character",
+            "--source",
+            ".tmp/image3d-baseline-20261113/character-salvage/asset.blend",
+            "--glb",
+            ".tmp/image3d-baseline-20261113/character-salvage/asset.glb",
+            "--output",
+            ".tmp/image3d-baseline-20261113/character-salvage/technical.json"
+          ]
+        }
+      ],
+      "evidence": {
+        "front.png": "5ec2ae38d4ea318ff59a4a9a72054ef6cc44f538e6db6cd374ddf818592749b1",
+        "format.json": "a45c146f591129ec89acab8d6ae75ed63a592e8f448516179949292d355dc04a",
+        "back.png": "4b8e89fb9a9547a88c47068ec0b943292c2dd1e4f287740666ac20680873285d",
+        "side.png": "54249a8450e6631d85405490ed5133c36e24fcddc0c60cbbd407c8d079bc19c0",
+        "original-failure.log": "f792134b67a105286377cf021773f20a19537971dde200d343dc34fa8e2360eb",
+        "clay.png": "2f164c5668645c3689c6e2e69fe94731a4f621494eae3658eff56d26b58052bf",
+        "module-ledger.json": "78ee7578a7d0767f46b785108daa99f8827c17933726291107c189e54a2cb8e7",
+        "final-gate.json": "363ae44459be19e5ca744db93a64350ade9fedcd11e5a1913658c51149a0e484",
+        "salvage.json": "cb4c0f81c9c6292479c01c8492ac26bce7523f81296c3b3acd10212b3e488cb6",
+        "technical.json": "d54cda184f448b787a7780fce299571020c03686046c28247ae462112b57574a",
+        "three-quarter.png": "067138d74a5fc1c0276c67fbcf2a5a5c514b61a3e998b72e88d2551052344f4e",
+        "original-structure.json": "7b792b13284894b9362173e2ca85e3c0ce8b5c1016b854110d22ee0344b8512c"
+      },
+      "asset_paths": {
+        "blend": ".tmp/image3d-baseline-20261113/character-salvage/asset.blend",
+        "glb": ".tmp/image3d-baseline-20261113/character-salvage/asset.glb"
+      }
+    }
+  ],
+  "limitations": "One run per case, same Agent builds and reviews, no model identity/tokens observed, no isolated grader calibration for visual scores. This is a provisional artifact baseline; no Skill improvement or statistical success-rate claim. Freeze inputs/protocol and repeat with independent review before formal comparisons.",
+  "skill_source_modified": false,
+  "recorded_utc": "2026-11-13T06:25:17.654808+00:00"
+}

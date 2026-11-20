@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "pending",
+  "source_images": [{"path": "source.png", "sha256": null}],
+  "regions": [{
+    "id": "replace-me",
+    "source_region": "identify the actual photo region",
+    "observed_boundary": null,
+    "projection": "unknown",
+    "occlusion_or_reflection": "unknown",
+    "hypotheses": [],
+    "selected_interpretation": null,
+    "evidence_for_and_against": [],
+    "repetition": {"count": null, "source_support": null, "exceptions": []},
+    "representation": null,
+    "construction_guide": null,
+    "independent_source_check": null,
+    "inferred_hidden_geometry": [],
+    "stop_or_uncertainty_condition": null
+  }],
+  "scope": "Analysis aid only; source fidelity, calibration, blockout and final acceptance remain separate"
+}

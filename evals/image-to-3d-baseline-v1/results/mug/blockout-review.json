@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "task_id": "mug",
+  "status": "failed",
+  "reviewer": "current-session-Agent-self-review",
+  "inspection_signature": "92927a0dc2a23049fb72d1bd76e07057a2b50ceed14b67ad67e03ba8649abb90",
+  "modules": {
+    "mug": {
+      "unresolved_issues": [
+        "Inspected blockout.png: lower handle endpoint at x=.398,z=.225 lies outside the tapered cup wall (~x=.322); tube radius .052 leaves a visible gap. The lathe also leaves a small axial hole through the intended bottom. Required connection/cavity-bottom checks fail."
+      ],
+      "checks": {
+        "shape": {
+          "status": "failed",
+          "finding": "Inspected blockout.png: lower handle endpoint at x=.398,z=.225 lies outside the tapered cup wall (~x=.322); tube radius .052 leaves a visible gap. The lathe also leaves a small axial hole through the intended bottom. Required connection/cavity-bottom checks fail.",
+          "view": "three-quarter",
+          "evidence": [
+            {
+              "path": "blockout.png",
+              "sha256": "fbe5350dc646a56fbf2144047d53f24ba2c8541a48feb5764d34d2b7a66960cf"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

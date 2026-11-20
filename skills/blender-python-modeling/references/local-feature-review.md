@@ -1,8 +1,7 @@
 # Local shape, relief and render review
 
-Use before expensive full renders of reference-driven organic forms or readable
-surface detail. Catch wrong geometry before repeatedly rendering a valid but
-visually wrong asset.
+Use before expensive full renders of reference-driven models. Catch wrong
+geometry in the evaluated mesh and inspect surface detail at its intended scale.
 
 ## Independent shape constraints
 
@@ -51,6 +50,50 @@ smoothing, material contrast, light direction and occlusion. Change the cause,
 not every bump or the whole style. For a correction, compare before/after with
 the same camera, light and material. Label isolation renders and restore hidden
 parts; they supplement the assembly image and cannot prove attachment/occlusion.
+
+## Fixed-camera review for a local correction
+
+Use [the Blender review renderer](../scripts/render_feature_review.py) on saved
+before/after snapshots in an isolated process. For each defect it writes a
+reference crop, before/after clay and before/after material images, and a
+manifest bound to the module ID and its ledger feature. Keep the attachment and
+its receiving part in the same crop. Use snapshots saved at the same pose. Both
+channels use a common orthographic camera, studio rig, and exposure. Clay overrides the materials to expose
+the shape. The material channel uses the snapshot's assigned shaders, or the
+same project-specific preview material setup for both snapshots.
+
+```bash
+blender --background --factory-startup --disable-autoexec --python-exit-code 1 \
+  --python scripts/render_feature_review.py -- review-config.json --out review
+```
+
+The config uses schema version 1. Paths are relative to the config unless absolute.
+`snapshots` names `before` and `after` Blender files. Supply `ledger`, square
+`resolution`, Cycles `samples`, and `studio` with a world-space `center` and
+positive `scale` to size the lights. List any unpacked material textures in
+`material_files` so their contents participate in the run receipt.
+Each entry in `features` names an `id`,
+`module_id`, exact ledger `signature_feature`, `issue`, and `change`.
+Its `camera` specifies world-space `target`, viewing `direction` from the target
+to the camera, and square orthographic `span`. Its `reference` specifies `image`,
+`view`, and top-left, end-exclusive `box_px` as `[left, top, right, bottom]`.
+When comparing an orthographic guide, derive target and span from the calibrated
+crop. For a perspective photo without a solved camera, treat the crop as visual
+context and record the projection difference in the comparison.
+
+Pass `--feature <id>` (repeatable) to rerender only the affected crops. A
+`receipt.json` binds each run's inputs and artifacts, and `feature.json` leaves
+visual review pending. Inspect the clay pair for shape and the material pair for
+surface readability, then record the observations in the ledger. The
+[lantern P1 replay](../examples/iron-lantern-p0/README.md#p1-fixed-camera-feature-and-material-review)
+shows a project wrapper, source map provenance, and three matched-camera crops.
+
+For a realistic surface, choose a sourced PBR set per reference material region
+and record its origin, creator, licence, files and intended usage. Compare base
+color under the fixed lighting, roughness by the size and strength of highlights,
+and wear by where exposed material appears on the form. Use the source map as
+supporting evidence for roughness and wear. A photo highlight cannot uniquely
+determine base color or roughness. Follow [material map routing](materials-and-nodes.md#texture-based-pbr).
 
 ## Evidence and iteration cost
 

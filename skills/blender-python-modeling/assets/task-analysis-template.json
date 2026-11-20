@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "task_type": "repair",
+  "target": {
+    "stable_id": null,
+    "name": null,
+    "collection": null,
+    "related_data": []
+  },
+  "intended_use": null,
+  "deliverable": null,
+  "preserve": [],
+  "baseline": {
+    "snapshot": null,
+    "signatures": {},
+    "evidence": []
+  },
+  "observations": [],
+  "hypotheses": [],
+  "decision": {
+    "knowledge_id": null,
+    "reason": null,
+    "rejected_alternatives": [],
+    "scope": [],
+    "stop_conditions": []
+  },
+  "acceptance": [],
+  "unknowns": [],
+  "modeling_plan": {
+    "path": null,
+    "scope": [],
+    "review_receipt": null,
+    "reuse_reason": null
+  },
+  "scene": {
+    "mode": null,
+    "name": null,
+    "owner": null,
+    "role_collections": {}
+  },
+  "runtime_preflight": {
+    "path": null,
+    "effective_denoising": null,
+    "fallback_reason": null
+  },
+  "delivery_contract": {
+    "mode": null,
+    "objects": [],
+    "triangle_budget": null,
+    "frames": [],
+    "required_clips": [],
+    "spatial_tolerance": null,
+    "report": null,
+    "min_triangle_area": null,
+    "require_closed": null,
+    "geometry_reports": []
+  },
+  "repair_budget": {
+    "maximum_attempts": null,
+    "maximum_seconds": null
+  },
+  "repair_attempts": [],
+  "reference_preparation": {
+    "decision_path": null,
+    "source_fidelity_review_path": null,
+    "multiview_review_path": null,
+    "interpretation_path": null
+  }
+}

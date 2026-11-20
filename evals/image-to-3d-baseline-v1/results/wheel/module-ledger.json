@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "task_id": "wheel",
+  "target_stage": "final",
+  "modules": [
+    {
+      "id": "module-1",
+      "name": "rounded tire sidewall and tread",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "primary",
+      "required": true,
+      "expected_instances": 1,
+      "implemented_instances": 1,
+      "signature_features": [
+        "rounded tire sidewall and tread"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "tire_shell",
+        "rim_lip",
+        "hub_cap",
+        "spokes_0_-1",
+        "spokes_0_1",
+        "lugs_0",
+        "spokes_1_-1",
+        "spokes_1_1",
+        "lugs_1",
+        "spokes_2_-1",
+        "spokes_2_1",
+        "lugs_2",
+        "spokes_3_-1",
+        "spokes_3_1",
+        "lugs_3",
+        "spokes_4_-1",
+        "spokes_4_1",
+        "lugs_4",
+        "valve_stem"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong. Aggregate assembly entry, not a declaration that each signature is matched."
+    },
+    {
+      "id": "module-2",
+      "name": "double-five-spoke rim and ten openings",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "primary",
+      "required": true,
+      "expected_instances": 10,
+      "implemented_instances": 10,
+      "signature_features": [
+        "double-five-spoke rim and ten openings"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "tire_shell",
+        "rim_lip",
+        "hub_cap",
+        "spokes_0_-1",
+        "spokes_0_1",
+        "lugs_0",
+        "spokes_1_-1",
+        "spokes_1_1",
+        "lugs_1",
+        "spokes_2_-1",
+        "spokes_2_1",
+        "lugs_2",
+        "spokes_3_-1",
+        "spokes_3_1",
+        "lugs_3",
+        "spokes_4_-1",
+        "spokes_4_1",
+        "lugs_4",
+        "valve_stem"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong. Aggregate assembly entry, not a declaration that each signature is matched."
+    },
+    {
+      "id": "module-3",
+      "name": "five lug fasteners and center cap",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "secondary",
+      "required": true,
+      "expected_instances": 5,
+      "implemented_instances": 5,
+      "signature_features": [
+        "five lug fasteners and center cap"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "tire_shell",
+        "rim_lip",
+        "hub_cap",
+        "spokes_0_-1",
+        "spokes_0_1",
+        "lugs_0",
+        "spokes_1_-1",
+        "spokes_1_1",
+        "lugs_1",
+        "spokes_2_-1",
+        "spokes_2_1",
+        "lugs_2",
+        "spokes_3_-1",
+        "spokes_3_1",
+        "lugs_3",
+        "spokes_4_-1",
+        "spokes_4_1",
+        "lugs_4",
+        "valve_stem"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong. Aggregate assembly entry, not a declaration that each signature is matched."
+    },
+    {
+      "id": "module-4",
+      "name": "valve",
+      "evidence": "observed",
+      "source_views": [
+        "perspective-photo"
+      ],
+      "priority": "secondary",
+      "required": true,
+      "expected_instances": 1,
+      "implemented_instances": 1,
+      "signature_features": [
+        "valve"
+      ],
+      "matched_signature_features": [],
+      "feature_reviews": [],
+      "review_invalidated": "",
+      "status": "blockout",
+      "implementation_objects": [
+        "tire_shell",
+        "rim_lip",
+        "hub_cap",
+        "spokes_0_-1",
+        "spokes_0_1",
+        "lugs_0",
+        "spokes_1_-1",
+        "spokes_1_1",
+        "lugs_1",
+        "spokes_2_-1",
+        "spokes_2_1",
+        "lugs_2",
+        "spokes_3_-1",
+        "spokes_3_1",
+        "lugs_3",
+        "spokes_4_-1",
+        "spokes_4_1",
+        "lugs_4",
+        "valve_stem"
+      ],
+      "user_approved_simplification": false,
+      "simplification_reason": "",
+      "notes": "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong. Aggregate assembly entry, not a declaration that each signature is matched."
+    }
+  ],
+  "final_review": {
+    "status": "failed",
+    "structural_report": "technical.json",
+    "contact_sheet": "../report.html",
+    "perspective_view": "three-quarter.png",
+    "unresolved_issues": [
+      "Coarse review failed assembly continuity; no refinement/rotation clip executed. Sampled angle remains zero. A stationary center is not evidence of successful rotation.",
+      "Unexpected Cube exported. Bounds max error=1.000000; source triangles=3296, imported=1308. Not asset-only or equivalent geometry.",
+      "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong."
+    ]
+  }
+}

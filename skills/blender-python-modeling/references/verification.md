@@ -2,6 +2,8 @@
 
 Select checks proportional to the deliverable. Structural success alone is insufficient for a visual scene, and a good screenshot alone is insufficient for an exportable model.
 
+New creation starts in an owned empty task scene with no startup objects. Verify the saved file opens in that scene without a verifier selecting it on the user's behalf. Before render comparisons, execute and record the [render preflight](production-workspace.md). Before final claims, apply [use-specific acceptance](acceptance/usable-asset.md); a static fitter or disposable rig test cannot certify an animation asset.
+
 ## Structural checks
 
 - Expected collection, object, material, camera, light, armature, action, and node-group names exist.
@@ -87,3 +89,15 @@ Report:
 - structural and visual checks performed;
 - render, `.blend`, GLB, or FBX paths and sizes when produced;
 - unresolved warnings or assumptions.
+
+## Source, evaluated triangles and reimport are distinct layers
+
+Use production_checks.inspect_mesh for source topology plus evaluated triangulation. The existing degenerate_faces field measures original polygon area in mesh-local coordinates; degenerate_triangles measures the actual tessellation in world coordinates, including object transforms. A positive-area n-gon can contain zero-area triangles. Defaults use min_triangle_area=5e-13 world-unit squared; record a purpose/scale-derived tolerance rather than treating it as a universal physical threshold. Reports include offending triangle/polygon IDs, retained source diagnostics and evaluated structural_issues. A legal open control cage closed by a modifier is inspected as two different representations.
+
+Use inspect_asset / require_asset_geometry on the complete explicit asset whitelist at blockout, refine and delivery. They count evaluated triangles in aggregate; missing max_triangles is budget_passed=null, not a budget success. An exception preserves the measured report and does not repair geometry. The template binds limits in modeling-plan.json; the static fitter uses validation.working_max_triangles and validation.min_triangle_area for source checks, and separately reports the eventual validation.max_triangles delivery target. Use resource_limits(plan, stage): final max_triangles applies only at delivery/reimport; blockout_max_triangles and working_max_triangles are optional explicit working-resource caps, with no fallback to the final cap. Invalid geometry or a failed explicit working cap blocks that stage. An otherwise valid refined source may exceed the delivery cap and proceed to source-fidelity review, not budgeted delivery acceptance. Freeze a reviewed source, then verify its optimized copy separately; see [realtime optimization](procedures/delivery/realtime-optimization.md).
+
+asset_delivery.export_glb accepts max_triangles, min_triangle_area and require_closed. It rejects bad current evaluated geometry before export and checks every declared animation sample in the disposable package and actual reimport. Source preflight and worker failure reports are retained; a format-valid GLB may still fail these checks.
+
+GLB attribute/normal seams can split vertices even for a closed cube. Raw reimport boundary counts remain in the report; when require_closed is requested, the worker additionally measures geometric closure on a temporary position-welded copy at the declared spatial tolerance. This does not modify the imported/source mesh, close genuine holes or certify printability, self-intersections or thin-wall strength. Inspect the recorded tolerance and both raw/seam-welded results; never rename that check as proof of raw topological manifoldness.
+
+Constant PBR transport checks do not prove source appearance. Retain original-source comparisons independently of construction-mask agreement, and preserve source/clay/material views when optimizing topology or resources.

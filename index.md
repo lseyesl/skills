@@ -12,13 +12,19 @@
 
 ## 通用视觉能力
 
+### 皮影动画
+
+| 技能 | 适用场景与交付 |
+|---|---|
+| [shadow-puppet-animation](skills/shadow-puppet-animation/SKILL.md) | 基于双参考的皮影镜头制作与审阅：角色、服装、场景道具、可动性、接触与运动逻辑、表演、镜头叙事和品质对照；复用概念图／拆件技能，不替代后端或影片批准。 |
+
 ### 概念设计与二维资产
 
 | 技能 | 适用场景与交付 |
 |---|---|
-| [concept-multiview-sheet](skills/concept-multiview-sheet/SKILL.md) | 从单视图概念图推演五视图或六视图设计稿及技术线稿；隐藏视图属于设计推测，不代表实测几何或真实拓扑。 |
+| [concept-multiview-sheet](skills/concept-multiview-sheet/SKILL.md) | 从单视图生成规范参考及五/六视图；先独立验收原图忠实度，再检查跨视图一致性，合格后制作线稿；隐藏视图属于设计推测，不代表实测几何或真实拓扑。 |
 | [shadow-puppet-image](skills/shadow-puppet-image/SKILL.md) | 生成或修正皮影角色概念图，约束平面分件、搭接与遮挡；交付静态参考，不替代独立组件制作、绑定或活动验证。 |
-| [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 从参考图制作镜头所需的最少二维素材，装配动作、逐帧连续预览并局部返修；支持已有素材确定性处理，按需要绑定、补全或使用项目运行时。 |
+| [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 从参考图经局部标注／编译制作镜头所需的最少二维素材，装配动作、逐帧连续预览并局部返修；支持装配诊断和已有素材确定性处理，按需绑定与补全。 |
 
 ### 三维建模与风格
 
@@ -71,3 +77,13 @@
 - 每个 `skills/<skill-name>/SKILL.md` 在对应用途分类中保留一个主入口。
 - 本索引只保存选择入口所需的信息，详细流程、工具接口和契约保留在对应技能中。
 - 未找到匹配项时，继续搜索 `skills/`，检查是否存在尚未同步的技能。
+
+## 知识与问题定位
+
+Skill 主分组见 [机器分类](catalog/taxonomy.json)，每个 Skill 的 knowledge.json 按任务、对象、症状及适用条件索引知识。源码查询：`python tools/knowledge.py search "握拳塌陷" --task repair --subject hand`。结果列出匹配依据、排除条件和缺失事实；必须核对正文后执行。组织规则见 [架构](docs/skill-architecture.md)。
+
+Blender 内新增的网格恢复/数据迁移、关节修正、法线烘焙/布料诊断及 glTF 验证/优化流程继续由 blender-python-modeling 一个入口组织，按 [知识索引](skills/blender-python-modeling/knowledge.json) 加载。
+
+图片到可用模型的执行路径补充 [空任务场景与隔离交付](skills/blender-python-modeling/references/production-workspace.md)、[容器/连接诊断修复](skills/blender-python-modeling/references/procedures/modeling/containers-and-connections.md) 和 [用途分级验收](skills/blender-python-modeling/references/acceptance/usable-asset.md)；角色拟合、持久绑定与动画交付分别检查，不以静态外观代替可用性。
+
+复杂 Blender 建模的方法选择、基础形体检查与细化前置条件见 [blockout 流程](skills/blender-python-modeling/references/procedures/modeling/blockout-and-refinement.md)；允许盒式建模和已有资产复用，保持单一 Blender Skill 入口。

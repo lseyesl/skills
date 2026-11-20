@@ -2,6 +2,8 @@
 
 Use before handing generated construction views to Blender. Inspect actual images before detailed geometry; neither successful generation, a completed JSON form, nor later model renders can retroactively certify this step.
 
+For generated references, retain an independent [source-fidelity receipt](source-fidelity.md) binding original and generated hashes, observed invariants and regional comparisons. The appearance/structure checks below do not replace it. Do not approve a consistent generic redesign as a faithful reconstruction.
+
 ## Review in this order
 
 1. **Pose suitability:** intended use, head-to-spine orientation (a camera-facing head can contradict a neutral torso), shoulder/pelvis state, joint bends, limb separation and tail/wing clearance. Static sculptures retain their specified pose.

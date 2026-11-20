@@ -1,0 +1,93 @@
+{
+  "purpose": "Reference study excerpts, not production assets or animation-quality proof",
+  "sources": {
+    "reference-a": {
+      "uri": "hf://buckets/lseyesl/mv_assets/ancient-tales-blender/参考.mp4",
+      "sha256": "b4784a71e6b0a1a92819d73e1f8af37c6ff1c70783139826df38d87bcab47afe",
+      "duration_seconds": 331.442018
+    },
+    "reference-b": {
+      "uri": "hf://buckets/lseyesl/mv_assets/ancient-tales-blender/参考2.mp4",
+      "sha256": "47b0ef11aa6dcf1ad042f4b680647772bffd36a6b1e8d201bec829dd48f0cd62",
+      "duration_seconds": 622.866625
+    }
+  },
+  "evidence": [
+    {
+      "file": "reference-a.jpg",
+      "source": "reference-a",
+      "source_frame_indices": [
+        600,
+        1140,
+        3120,
+        4620,
+        4980,
+        5640,
+        6600,
+        9540
+      ],
+      "time_basis": "zero-based decoded frames; displayed labels are source PTS",
+      "sha256": "7b35099231955e60fe27007b4e7cd78cff442598363d53e021972637344c0b5d"
+    },
+    {
+      "file": "reference-b.jpg",
+      "source": "reference-b",
+      "source_frame_indices": [
+        600,
+        2400,
+        3600,
+        9120,
+        12120,
+        15300,
+        16050,
+        17940
+      ],
+      "time_basis": "zero-based decoded frames; displayed labels are source PTS",
+      "sha256": "fb9116819fc26050c9ce20e48c04efd3b77725e2865c2257e121e276b29edca7"
+    },
+    {
+      "file": "a-bow.jpg",
+      "source": "reference-a",
+      "range_seconds": [
+        186,
+        191
+      ],
+      "frame_step": 8,
+      "time_basis": "source PTS; not continuous playback",
+      "sha256": "cadf85a0c64b58be4766d46e2b6309158c587a3c07f0ffe0a3f06118b8a2d328"
+    },
+    {
+      "file": "b-transform.jpg",
+      "source": "reference-b",
+      "range_seconds": [
+        80,
+        84
+      ],
+      "frame_step": 4,
+      "time_basis": "source PTS; not continuous playback",
+      "sha256": "e03ce937dcf0063938cb590fd3ab42b9e47c37bc23de0583fdad4f359031866a"
+    },
+    {
+      "file": "b-attack.jpg",
+      "source": "reference-b",
+      "range_seconds": [
+        118,
+        122
+      ],
+      "frame_step": 4,
+      "time_basis": "source PTS; not continuous playback",
+      "sha256": "f04236731aedd60bac10ddfc6a6df83e2289dfce6e74bd49a3b00ca2316ee3ba"
+    },
+    {
+      "file": "b-flip.jpg",
+      "source": "reference-b",
+      "range_seconds": [
+        508,
+        512
+      ],
+      "frame_step": 4,
+      "time_basis": "source PTS; not continuous playback",
+      "sha256": "213beaecce2fee249591eb939fc67f22e1461666dbf9ea7e330319e6a26df54f"
+    }
+  ]
+}

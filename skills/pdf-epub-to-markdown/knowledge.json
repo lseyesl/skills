@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "pdf-epub-to-markdown.overview",
+      "title": "PDF OCR 文档转换",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "convert"
+      ],
+      "subjects": [],
+      "aliases": [
+        "PDF",
+        "OCR",
+        "文档转换"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "excluded_paths": {}
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "objective": {"metric": "success_rate", "min_improvement": 0.05},
+  "minimum_distinct_tasks": 10,
+  "max_mean_increase": {"elapsed_seconds": 30, "context_tokens": 2000, "human_interventions": 0},
+  "max_per_run": {"elapsed_seconds": 600, "context_tokens": 20000, "human_interventions": 0},
+  "protected_checks": ["preservation"]
+}

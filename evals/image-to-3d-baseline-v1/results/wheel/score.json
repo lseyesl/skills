@@ -1,0 +1,169 @@
+{
+  "task_id": "wheel",
+  "status": "failed",
+  "actual_stage": "failed-blockout",
+  "visual_reviewer": "current-session-Agent-self-review",
+  "review_confidence": "provisional; uncalibrated self-assessment",
+  "score": 44.5,
+  "subtotals": {
+    "fidelity": 16.25,
+    "technical": 17.0,
+    "purpose": 0,
+    "process": 11.25
+  },
+  "items": {
+    "silhouette": {
+      "level": 0.5,
+      "reason": "Round tire and radial wheel identifiable, but 20-sided tire outline and no sidewall lettering/tread differ strongly.",
+      "weight": 10,
+      "points": 5.0
+    },
+    "proportions": {
+      "level": 0.5,
+      "reason": "Normalized radii follow broad tire/rim ratio; cast spoke widths/shape and recessed hub do not match. Depth inferred, camera not solved.",
+      "weight": 10,
+      "points": 5.0
+    },
+    "signature_features": {
+      "level": 0.25,
+      "reason": "Ten branches and five lugs exist, but spoke roots are disconnected, hub detail/logo missing, tire tread/lettering absent, and cast opening profiles wrong.",
+      "weight": 15,
+      "points": 3.75
+    },
+    "materials": {
+      "level": 0.5,
+      "reason": "Rubber/alloy separation exists; tire and cast-metal highlight response differ.",
+      "weight": 5,
+      "points": 2.5
+    },
+    "shading": {
+      "level": 0.25,
+      "reason": "Strong faceting and rounded rod-like branches do not reproduce the broad smoothly cast spokes.",
+      "weight": 4,
+      "points": 1.0
+    },
+    "geometry": {
+      "level": 1,
+      "reason": "Source evaluated triangles=3296, budget=40000; nonfinite=0, degenerate=0. All geometry criteria required for these 8 points.",
+      "weight": 8,
+      "points": 8
+    },
+    "material_portability": {
+      "level": 1,
+      "reason": "Base untextured PBR materials embedded; Khronos format validation passed. Extra Cube is penalized under export scope.",
+      "weight": 4,
+      "points": 4
+    },
+    "source_editability": {
+      "level": 1,
+      "reason": "Source .blend reopens with separately editable semantic parts; this does not certify a usable armature.",
+      "weight": 4,
+      "points": 4
+    },
+    "purpose_function": {
+      "level": 0,
+      "reason": "Coarse review failed assembly continuity; no refinement/rotation clip executed. Sampled angle remains zero. A stationary center is not evidence of successful rotation.",
+      "weight": 15,
+      "points": 0
+    },
+    "export_roundtrip": {
+      "level": 0,
+      "reason": "Unexpected Cube exported. Bounds max error=1.000000; source triangles=3296, imported=1308. Not asset-only or equivalent geometry.",
+      "weight": 10,
+      "points": 0
+    },
+    "reference_preparation": {
+      "level": 0.25,
+      "reason": "Public source, license and interpretation retained, but perspective camera/calibration and reference-visible viewport check missing.",
+      "weight": 5,
+      "points": 1.25
+    },
+    "blockout_gate": {
+      "level": 1,
+      "reason": "Actual coarse image inspected, failure recorded with current signature/evidence, gate rejects refinement, coarse source preserved. These process points do not pass the asset.",
+      "weight": 5,
+      "points": 5
+    },
+    "completion_evidence": {
+      "level": 1,
+      "reason": "Per-module unresolved differences and failed final gate retained; no modules falsely labeled matched or assets claimed final.",
+      "weight": 5,
+      "points": 5
+    }
+  },
+  "hard_gate_passed": false,
+  "source_triangles": 3296,
+  "glb_triangles": 1308,
+  "format_status": "passed",
+  "context_tokens": null,
+  "total_task_elapsed_seconds": null,
+  "human_interventions": 0,
+  "runtime_rescues": 0,
+  "quality_retries": 0,
+  "execution_process_costs": [
+    {
+      "command": [
+        "blender",
+        "--background",
+        "--factory-startup",
+        "-t",
+        "4",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "evals/image-to-3d-baseline-v1/record_failed_blockouts.py",
+        "--",
+        "--case",
+        "wheel",
+        "--output",
+        ".tmp/image3d-baseline-20261113/wheel"
+      ],
+      "elapsed_seconds": 5.496262344999195,
+      "returncode": 0,
+      "status": "failed-coarse-diagnostic-not-refinement"
+    },
+    {
+      "elapsed_seconds": 2.074946243999875,
+      "returncode": 0,
+      "command": [
+        "blender",
+        "--background",
+        "--factory-startup",
+        "-t",
+        "4",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "evals/image-to-3d-baseline-v1/check_assets.py",
+        "--",
+        "--case",
+        "wheel",
+        "--source",
+        ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.blend",
+        "--glb",
+        ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.glb",
+        "--output",
+        ".tmp/image3d-baseline-20261113/wheel/technical.json"
+      ]
+    }
+  ],
+  "evidence": {
+    "front.png": "23c33584c75643e4b317e2ee56c789ba900cf6ba31a9f23379cde3c159943302",
+    "format.json": "2150be980dc264fef57ff635d33e25cbdcaba0b5eaf6f6b08fb71f7e1a1bcd02",
+    "back.png": "50fead205cbc9f2a406c9152365986132005eede5643fbbf82fab0df835cd3c0",
+    "modeling-plan.json": "3fad3adac20a921f53ad13528b20539dcc382cb3d03861fde588d115f99f39d3",
+    "side.png": "f94114025d8745b92241068625bff942619e74cf41cf33c747b9c2b8b877b48c",
+    "clay.png": "b0d464d1e1bd23efbc4a2d87bdb4708bd15e0bdb8f88388b4e4dc0171cb04573",
+    "module-ledger.json": "e2f349eab0465c17c5145b6f3fb1558953e598f965a4f740add69d5a9a3fa530",
+    "blockout-receipt.json": "3d1dcb6eea8e710066639c6ec36a92fc8724ce81b8365521f8742c3cb2cabb3e",
+    "final-gate.json": "1154b64aa8b2d2be4c5c92107fee7470ddb9d6a84ec15cf71cb20078cf4faab3",
+    "blockout-review.json": "8d31c522504cdfa2d291495dd94a23136bd8692a471208c7ffb4d70597779121",
+    "technical.json": "c3cea835a9ad876742037bc3cbdfd219ad0917a30ef6fe8bd2e7625270627137",
+    "three-quarter.png": "ca2af6d952cb52e20899a4debbbfdc95a0705833877d59617e785648a94db097",
+    "gate-result.json": "472763da30225b64ce2b7003357af04b7609394044c6a5cc048e810028598813"
+  },
+  "asset_paths": {
+    "blend": ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.blend",
+    "glb": ".tmp/image3d-baseline-20261113/wheel/diagnostic-asset.glb"
+  }
+}

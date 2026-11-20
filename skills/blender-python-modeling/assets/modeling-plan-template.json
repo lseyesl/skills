@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "task_id": "replace-me",
+  "intended_use": "replace with static/animated/mechanical/other delivery purpose",
+  "modules": [
+    {
+      "id": "body",
+      "ledger_module_id": null,
+      "method": "box",
+      "reason": "Replace with subject-specific reason; a cube is a low-resolution control cage, not a finished object",
+      "objects": [
+        "replace_with_actual_coarse_object_name"
+      ],
+      "depends_on": [],
+      "connections": "Record continuous surface, independent part or attachment and the reason",
+      "checks": [
+        {
+          "id": "proportions",
+          "kind": "structural",
+          "criterion": "Replace with measured dimensions/landmarks and purpose-derived tolerance"
+        },
+        {
+          "id": "silhouette",
+          "kind": "visual",
+          "criterion": "Inspect controlling views, thickness and negative space at intended scale"
+        },
+        {
+          "id": "connections",
+          "kind": "visual",
+          "criterion": "Inspect intended attachments/continuity; state not-applicable reason in finding when legitimately independent"
+        }
+      ]
+    }
+  ],
+  "resource_budget": {
+    "required": false,
+    "max_triangles": null,
+    "blockout_max_triangles": null,
+    "working_max_triangles": null,
+    "min_triangle_area": 5e-13,
+    "require_closed": false,
+    "reason": "max_triangles is the final delivery cap, enforced only at delivery/reimport. Optional blockout/working caps protect runtime resources and never inherit the delivery cap. Resolve required final caps before delivery; do not omit source features to meet them."
+  }
+}

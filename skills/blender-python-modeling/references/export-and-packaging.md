@@ -58,7 +58,7 @@ Failing on unsupported options is safer than silently dropping a setting that ch
 
 ## Stable selection and export examples
 
-Before a selection-limited export, enter Object Mode, deselect everything, select the exact task-owned objects, set a meaningful active object, and verify the selected-name set. Restore the user's selection afterwards when practical.
+Before a selection-limited export, enter Object Mode and constrain both the active scene and exact task-owned objects. Deselecting the current view layer alone does not clear selections in other scenes. Prefer the [isolated delivery adapter](production-workspace.md) within its supported scope; explicit current-scene settings and independent whitelist checks remain necessary for other adapters. Restore the user's selection afterwards when practical.
 
 Minimal Blender 4.5-compatible GLB call:
 
@@ -68,6 +68,7 @@ call_supported(
     filepath=str(output_path),
     export_format="GLB",
     use_selection=True,
+    use_active_scene=True,
     export_apply=False,
     export_texcoords=True,
     export_normals=True,
@@ -80,6 +81,8 @@ call_supported(
 ```
 
 Enable tangents only when the mesh has a valid UV map and the target needs tangent-space normals. Choose `export_apply` only after testing rigs, shape keys, instances, and Geometry Nodes evaluation.
+
+Do not use this minimal call as a complete delivery pipeline. Static assets should freeze evaluated copies so bevel/subdivision/curve results are retained. Rigged assets require prepared copies that preserve skin and shape-key correspondence; blanket application of all modifiers is not a repair. Source and imported evaluated surfaces must agree at declared sample frames. `asset_delivery.py` implements isolated constant-PBR static/object-animation/linear-skin cases and refuses unsupported graphs, constraints and shape keys; richer textured and character cases keep their dedicated audits.
 
 Typical FBX settings include `use_selection=True`, `axis_forward="-Z"`, `axis_up="Y"`, `apply_unit_scale=True`, `use_mesh_modifiers=True`, and explicit animation/NLA options. These are common starting values, not a universal engine preset. OBJ uses `wm.obj_export` with `export_selected_objects`; STL uses `wm.stl_export` with `export_selected_objects` and optionally `use_scene_unit`. Inspect runtime RNA before passing them.
 
@@ -130,6 +133,40 @@ File existence is only the first check. Validate high-risk exports in a disposab
 6. capture a screenshot or render and report deviations.
 
 Never round-trip into the user's working scene. Import operator names are version-sensitive just like export operators; discover their RNA at runtime.
+
+### Static textured GLB audit
+
+Use [the executable audit](../scripts/validate_glb_roundtrip.py) on the exact
+binary to deliver, with the prepared export collection as the baseline. The
+script opens the source in a disposable process, inventories its evaluated
+meshes, resets to an empty Blender scene, then imports the GLB.
+
+```bash
+blender --background --factory-startup --disable-autoexec --python-exit-code 1 \
+  --python scripts/validate_glb_roundtrip.py -- prepared.blend COLLECTION final.glb --report roundtrip.json
+```
+
+The static audit checks named mesh bounds and triangle counts, material
+assignments, and raw GLB positions under the Blender-to-glTF axis conversion
+`(x, y, z) -> (x, z, -y)`, with one Blender unit per meter. It verifies a
+single 0–1 UV set, degenerate UV triangles, and unchanged world-position/UV
+pairs. Sampled overlap is measured per mesh on a 384×384 grid. Use
+`--allow-uv-overlap` only for documented stacks or mirrors within a mesh.
+Reusing a texture across separate meshes is independent of that policy.
+
+The supported material paths are Principled constants, direct image inputs,
+and separated metallic/roughness image channels. The audit compares imported
+image pixels, sizes and color spaces and records the hash of each embedded
+image. Convert incompatible procedural graphs to supported maps before audit.
+The raw axis check uses dense float position accessors. This recipe covers
+static textured props with those accessors and exact triangle counts. Adapt
+the audit before using a different vertex encoding or an intentional
+simplification budget.
+
+The [lantern replay](../examples/iron-lantern-p0/README.md#p2-isolated-glb-round-trip)
+uses the same audit with project-specific opening and seat probes on the
+imported meshes. It publishes only the verified candidate bytes and records
+post-import review renders alongside the report.
 
 ## Export acceptance checks
 

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "task_id": "wheel",
+  "intended_use": "detached rotating wheel",
+  "modules": [
+    {
+      "id": "wheel",
+      "method": "primitives",
+      "reason": "Low-resolution revolution profiles and curves preserve cavity and radial structures; hidden depth inferred from mechanics",
+      "objects": [
+        "tire_shell",
+        "rim_lip",
+        "hub_cap",
+        "spokes_0_-1",
+        "spokes_0_1",
+        "lugs_0",
+        "spokes_1_-1",
+        "spokes_1_1",
+        "lugs_1",
+        "spokes_2_-1",
+        "spokes_2_1",
+        "lugs_2",
+        "spokes_3_-1",
+        "spokes_3_1",
+        "lugs_3",
+        "spokes_4_-1",
+        "spokes_4_1",
+        "lugs_4",
+        "valve_stem"
+      ],
+      "checks": [
+        {
+          "id": "shape",
+          "kind": "visual",
+          "criterion": "Coarse profile, negative space and count support refinement; not final likeness"
+        }
+      ]
+    }
+  ]
+}

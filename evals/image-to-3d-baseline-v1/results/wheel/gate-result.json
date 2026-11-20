@@ -1,0 +1,8 @@
+{
+  "refinement_executed": false,
+  "rejected": {
+    "record": "Review identity/status did not pass",
+    "refine-prerequisite": "Predecessor stage has not passed: blockout-review"
+  },
+  "finding": "Inspected blockout.png: ten branches are present but radial spoke roots start at r=.20 whereas the center cap ends at r=.155, leaving a disconnected radial gap. The photo has continuous cast-metal joins. Required assembly continuity fails."
+}

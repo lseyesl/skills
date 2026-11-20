@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "ancient-tales-pipeline.overview",
+      "title": "技能安装与资产管理",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "install"
+      ],
+      "subjects": [],
+      "aliases": [
+        "安装",
+        "锁定",
+        "依赖",
+        "HF"
+      ],
+      "applies_when": [
+        "用户目标符合本 Skill 的入口描述"
+      ],
+      "exclude_when": [
+        "不满足 SKILL.md 的触发条件"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "ancient-tales-pipeline.reference.8eda25d5c34d",
+      "title": "资产校验契约",
+      "entry": "references/资产校验契约.md",
+      "kind": "knowledge",
+      "tasks": [
+        "install"
+      ],
+      "subjects": [],
+      "aliases": [
+        "资产校验契约",
+        "资产校验契约"
+      ],
+      "applies_when": [
+        "Read this guide when its documented task and prerequisites match the observed asset."
+      ],
+      "exclude_when": [
+        "Do not infer unsupported capabilities from a lexical match."
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "excluded_paths": {}
+}

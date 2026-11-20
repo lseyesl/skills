@@ -15,15 +15,18 @@ uv run --project skills/blender-python-modeling python \
   --config skills/blender-python-modeling/examples/clay-girl-fit/character.json \
   --output output/my-fit-analysis
 
-# One-command reproducible full case; output directory must be empty.
+# Fresh construction requires a reviewed reference-preparation decision; output directory must be empty.
 uv run --project skills/blender-python-modeling python \
   skills/blender-python-modeling/scripts/fit_character.py optimize \
   --config skills/blender-python-modeling/examples/clay-girl-fit/character.json \
   --output output/my-fit-run --rig-test \
+  --reference-preparation output/reference-preparation.json \
   --blender /Applications/Blender.app/Contents/MacOS/Blender
 ```
 
 `build` creates one model/render/measurement; `render --source accepted.blend` validates matching geometry/material config and refreshes reference calibration plus render outputs without rebuilding geometry; `evaluate` remeasures an existing render directory; `baseline --source existing.blend` applies the example's configurable legacy object-to-label mapping in a disposable process. `optimize --source accepted/scene.blend --config accepted/config.json` resumes an existing owned configuration, requiring shape/material identity. Baseline/source files are never overwritten. Every run retains its Blender log and a worker timeout (default 600 seconds). Existing output directories are rejected instead of overwriting review evidence.
+
+Creation now uses a task-owned empty scene; its startup Cube/Camera/Light are absent. Rendering performs a real small CPU preflight before setting comparison appearance. Unavailable denoising is explicitly recorded and disabled consistently for beauty/clay, while unrelated failures remain errors. `render-record.json` retains the decision. This is still a **static fitter**: `--rig-test` is disposable and `worker-result.json` explicitly does not certify a production rig or final delivery. `validation.max_triangles` records the eventual delivery target; source fitting reports `delivery_budget_passed` without treating delivery overage as a source geometry failure. Only an explicit `validation.working_max_triangles` limits reconstruction resources. Geometry defects still fail structure. Freeze the reviewed fitted source, then validate a separate optimized delivery copy with the final cap; this fitter does not certify final budget compliance. Persistent binding follows the existing [rigging procedure](../procedures/characters/rigging-and-skinning.md).
 
 See [architecture.md](architecture.md) for the audited reuse decisions and module boundaries. This is an additive system; no old API migration is required.
 
@@ -91,3 +94,7 @@ uv run --project skills/blender-python-modeling python \
 Keep the original `blender-styles/scripts/test_soft_clay.py --render` regression suite. See the run-specific report for actual counts and failures; command exit success alone does not validate reference agreement.
 
 Generate a paired report with `scripts/report_fit_run.py --baseline BASELINE --run RUN --delivery FINAL_RENDER_DIR --output REPORT_DIR`. Verify real snapshots/candidate history with `scripts/verify_fit_run.py --run RUN --baseline BASELINE --output REPORT.json`.
+
+## Reference preparation gate
+
+Fresh build/optimize runs must supply --reference-preparation with the [reviewed route decision](../reference-preparation.md). The example config does not certify its images as suitable construction references. Analysis/render/evaluate and source-based repair do not require generating new views. Diagnostic experiments require both an explicit diagnostic_only decision and --diagnostic-only; their results cannot be promoted to accepted construction. The worker independently checks this before creating its task scene.

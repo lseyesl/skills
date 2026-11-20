@@ -1,0 +1,8 @@
+{
+  "refinement_executed": false,
+  "rejected": {
+    "record": "Review identity/status did not pass",
+    "refine-prerequisite": "Predecessor stage has not passed: blockout-review"
+  },
+  "finding": "Inspected blockout.png: lower handle endpoint at x=.398,z=.225 lies outside the tapered cup wall (~x=.322); tube radius .052 leaves a visible gap. The lathe also leaves a small axial hole through the intended bottom. Required connection/cavity-bottom checks fail."
+}

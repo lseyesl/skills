@@ -7,6 +7,7 @@ from .blender_builder import OWNER,STYLE
 sys.path.insert(0,str(STYLE))
 from clay_common import linear_rgba,merge_config
 from setup_render import setup_render
+from production_workspace import apply_render_preflight
 
 
 def workspace(scene,c,base):
@@ -48,6 +49,7 @@ def setup(scene,c):
     cfg=merge_config({'render':{'engine':r['engine'],'device':'CPU','width':ref['image_size'][0],
         'height':ref['image_size'][1],'samples':r['samples'],'transparent':True,'view_transform':r['view_transform'],'exposure':r['exposure']}})
     setup_render(scene,cfg)
+    scene['render_preflight']=json.dumps(apply_render_preflight(scene))
     scene.render.image_settings.color_mode='RGBA';scene.render.film_transparent=True
     scene.render.resolution_percentage=100
     if not scene.world or scene.world.get(OWNER)!=owner:
@@ -105,7 +107,7 @@ def render_channels(scene,c,folder,quick=False):
                 scene.cycles.samples=8 if channel!='clay' else min(c['render']['samples'],8)
                 # Denoising discrete IDs can change a distant part boundary when
                 # an unrelated limb changes. Metric passes must remain local.
-                scene.cycles.use_denoising=channel=='clay'
+                scene.cycles.use_denoising=channel=='clay' and bool(json.loads(scene.get('render_preflight','{}')).get('use_denoising',False))
             cache={}
             for ob in meshes:
                 label=ob.get('fit_label',ob['fit_component']);source=saved[ob.name][0]
@@ -131,7 +133,7 @@ def render_channels(scene,c,folder,quick=False):
                 if anchor['selector']=='min_z':position.z=min(v.z for v in points)
                 if anchor['selector']=='max_z':position.z=max(v.z for v in points)
                 q=world_to_camera_view(scene,scene.camera,position);landmarks[name]=[q.x*w,(1-q.y)*h]
-        record={'blender':bpy.app.version_string,'engine':scene.render.engine,'resolution':[w,h],'view_transform_beauty':c['render']['view_transform'],'exposure_beauty':c['render']['exposure'],'metric_pass_transform':'Standard exposure=0 gamma=1','part_colors':colors,'landmarks_px':landmarks,'camera':{'type':'ORTHO','position':list(scene.camera.location),'ortho_scale':scene.camera.data.ortho_scale},'scope':'visible semantic parts; albedo is unlit base color, no reference relighting','quick':quick}
+        record={'blender':bpy.app.version_string,'engine':scene.render.engine,'resolution':[w,h],'view_transform_beauty':c['render']['view_transform'],'exposure_beauty':c['render']['exposure'],'metric_pass_transform':'Standard exposure=0 gamma=1','part_colors':colors,'landmarks_px':landmarks,'camera':{'type':'ORTHO','position':list(scene.camera.location),'ortho_scale':scene.camera.data.ortho_scale},'scope':'visible semantic parts; albedo is unlit base color, no reference relighting','quick':quick,'render_preflight':json.loads(scene.get('render_preflight','{}'))}
         (folder/'render-record.json').write_text(json.dumps(record,indent=2));return record
     finally:
         for ob in meshes:ob.data.materials.clear();[ob.data.materials.append(m) for m in saved[ob.name]]
@@ -143,6 +145,7 @@ def render_channels(scene,c,folder,quick=False):
 
 
 def structure(scene,c):
+    from production_checks import inspect_asset
     owner=c['character_id'];report={'meshes':{},'errors':[],'warnings':[],'intersection_scope':'Connection endpoints and AABB broad phase only; arbitrary mesh self/intersections not certified.','rig_status':'not_requested'}
     for ob in scene.objects:
         if ob.get(OWNER)!=owner or ob.type!='MESH':continue
@@ -151,9 +154,21 @@ def structure(scene,c):
         winding=sum(e.is_manifold and not e.is_contiguous for e in bm.edges)
         volume=bm.calc_volume(signed=True)
         finite=all(math.isfinite(v) for p in mesh.vertices for v in p.co)
-        report['meshes'][ob.name]={'non_manifold_edges':bad,'inconsistent_winding_edges':winding,'degenerate_faces':degenerate,'signed_volume':volume,'finite':finite,'dimensions':list(ob.dimensions)}
+        mesh.calc_loop_triangles()
+        report['meshes'][ob.name]={'evaluated_triangles':len(mesh.loop_triangles),'non_manifold_edges':bad,'inconsistent_winding_edges':winding,'degenerate_faces':degenerate,'signed_volume':volume,'finite':finite,'dimensions':list(ob.dimensions)}
         if not finite or bad or winding or degenerate or volume<=0:report['errors'].append(ob.name+': invalid topology/normals')
         bm.free();ev.to_mesh_clear()
+    report['evaluated_triangles']=sum(m['evaluated_triangles'] for m in report['meshes'].values())
+    # This static fitter reconstructs the source, not the optimized delivery copy.
+    budget=c['validation'].get('working_max_triangles');report['triangle_budget']=budget
+    final=c['validation'].get('max_triangles');report['delivery_triangle_budget']=final
+    report['delivery_budget_passed']=None if final is None else report['evaluated_triangles']<=final
+    if budget is not None and report['evaluated_triangles']>budget:report['errors'].append('Explicit source working-resource triangle budget exceeded')
+    targets=[o for o in scene.objects if o.get(OWNER)==owner and o.type=='MESH']
+    audit=inspect_asset(targets,stage='refine',max_triangles=budget,require_closed=True,
+        min_triangle_area=c['validation'].get('min_triangle_area',5e-13))
+    report['geometry_audit']=audit
+    report['errors'].extend(audit['issues'])
     # Minimum depth floor protects against a front-view optimizer flattening the head.
     for key,p in c['shape'].items():
         if p['kind']=='head':

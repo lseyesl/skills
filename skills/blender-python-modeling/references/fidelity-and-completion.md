@@ -5,6 +5,10 @@ photos, diagrams, or AI-generated multi-view sheets. A silhouette match proves
 only the outer envelope. It does not prove that the visible design has been
 modeled at the requested level of detail.
 
+## Source acceptance and optimized delivery are separate
+
+First review the reconstructed source against the original images, local signature features and structural requirements. Final consumer polygon limits are not a reason to omit those features. Freeze the reviewed source, ledger and evidence with content hashes; optimization uses a separate copy and a separate ledger/review. Reuse this completion gate for each representation within its declared scope. A source can pass reconstruction yet remain unsuitable for budgeted delivery; an optimized copy can fit its budget yet fail fidelity preservation. Never transfer matched statuses to a decimated mesh without reinspection. Follow [realtime optimization](procedures/delivery/realtime-optimization.md).
+
 ## Module versus Blender object
 
 A **module** is a semantic assembly that a reviewer can identify and judge,
@@ -121,6 +125,10 @@ Gate:
 
 Allowed report language: "blockout complete" or "primary proportions pass".
 Do not say "model complete".
+
+For complex creation, also require the scoped [blockout acceptance](acceptance/blockout.md). Record the selected modeling method and inspection evidence in the project modeling plan/review, and reference their paths in the existing task record or ledger notes. Do not change ledger schema or duplicate its module completion labels. A successful builder or object-presence count cannot authorize refinement. A built but unreviewed coarse model is reported as "blockout built, review pending".
+
+A blockout inspection signature ties the reviewed scope to the actual source state and dependencies. After a relevant change, an unchanged old review cannot simply be recorded again. Retain a coarse snapshot/control state for continued refinement and invalidate affected detailed visual evidence separately. Existing reference-fitting snapshots can implement equivalent checks; a 2D threshold alone is not equivalent.
 
 ### Feature-complete
 

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "image-to-usable-3d-v1",
+  "source_revision": "b7a0844e724471ec96918df3ffbee6a3bba19959",
+  "created_date": "2026-11-13",
+  "mode": "exploratory current-session execution; visible rubric and self visual review, not isolated/blind Agent evaluation",
+  "runtime": "Blender 4.3.2 CPU batch; Blender MCP tools unavailable in this session",
+  "model_identity": null,
+  "token_usage": null,
+  "budget": {"candidate_builds_per_case": 1, "blockout_inspections_before_refinement": 1, "quality_retries": 0, "per_process_timeout_seconds": 600, "renders": "fixed front/side/back/three-quarter; material and clay where supported"},
+  "deliverables": ["editable .blend", "selected asset-only .glb", "isolated GLB reimport report", "fixed-view images", "analysis and module ledger", "scores with evidence"],
+  "score_items": {
+    "silhouette": {"weight": 10, "type": "visual", "criterion": "Observed outer contour and negative spaces agree at comparable view"},
+    "proportions": {"weight": 10, "type": "visual", "criterion": "Visible part ratios and placement; do not score unseen depth as measured"},
+    "signature_features": {"weight": 15, "type": "visual", "criterion": "All separately readable reference-specific features and counts, including accessories"},
+    "materials": {"weight": 5, "type": "visual", "criterion": "Reference colour blocks, roughness and material distinctions; not mere object colours"},
+    "geometry": {"weight": 8, "type": "structural", "criterion": "Nonempty finite evaluated geometry, nonzero-area triangles, task triangle budget"},
+    "shading": {"weight": 4, "type": "structural-and-visual", "criterion": "No flipped orientation or conspicuous smoothing artifacts; judge intended surfaces"},
+    "material_portability": {"weight": 4, "type": "structural", "criterion": "GLB retains needed PBR materials and embedded resources; UV required if image textures used"},
+    "source_editability": {"weight": 4, "type": "structural", "criterion": "Separate semantic parts or controllable mesh, modifiers/rig retained; source reopens"},
+    "purpose_function": {"weight": 15, "type": "behavior-and-visual", "criterion": "Case-specific actual functional behavior, not bone/object count"},
+    "export_roundtrip": {"weight": 10, "type": "behavior", "criterion": "New-process GLB import preserves source asset world bounds and triangle/material requirements; requested rig and animation retained"},
+    "reference_preparation": {"weight": 5, "type": "process", "criterion": "Source attribution, calibrated guides and actual reference-overlay inspection; perspective photos not called orthographic measurements"},
+    "blockout_gate": {"weight": 5, "type": "process", "criterion": "Actual coarse inspection before refinement, fresh signed evidence and preserved coarse source"},
+    "completion_evidence": {"weight": 5, "type": "process", "criterion": "Honest module statuses, local feature comparisons, pending issues and final gate"}
+  },
+  "visual_levels": {"0": "absent or contradicted", "0.25": "coarse category resemblance; major mismatches", "0.5": "recognizable but material identity/shape gaps", "0.75": "close with concrete remaining mismatches", "1": "inspected match in declared scope"},
+  "unknown_policy": "Unknown receives no awarded points and keeps a separate possible-score ceiling; it is not evidence of asset failure",
+  "pass_policy": {"minimum_total": 80, "minimum_fidelity": 28, "minimum_technical": 14, "minimum_purpose": 20, "minimum_process": 10, "hard_gates": ["source and GLB reopen", "input hashes unchanged", "required signature counts present", "case-specific functionality independently measured and visually inspected", "required export behavior retained", "no unresolved primary shape failure"]},
+  "cases": [
+    {"id": "mug", "use": "editable untextured realtime static ceramic cup with separate matching spoon", "input": "inputs/mug/reference.jpg", "triangle_budget": 25000, "required_modules": ["tapered hollow cup and rolled lip", "D-shaped attached handle and open hole", "spoon stem and concave bowl"], "function": "Actual cavity and bottom thickness, handle negative space, separate spoon; no watertight fused print claim", "scale": "normalized cup height 1; absolute size unknown"},
+    {"id": "wheel", "use": "reusable detached rotating wheel asset, not full vehicle", "input": "inputs/wheel/reference.jpg", "triangle_budget": 40000, "required_modules": ["rounded tire sidewall and tread", "double-five-spoke rim and ten openings", "five lug fasteners and center cap", "valve"], "function": "Y-axis center pivot, parented tire/rim/fasteners rotate at 0/90/180/270/360 degrees without center orbit; clip survives export; not road-contact/steering certification", "scale": "normalized tire radius 1; hidden width inferred"},
+    {"id": "character", "use": "editable rigged stylized girl with basic shoulder/elbow/knee poses and exported clip", "input": "inputs/character/front.png", "triangle_budget": 80000, "required_modules": ["head ears and happy facial features", "braided hair and two buns", "green dress and torso", "arms hands and thumbs", "legs and red shoes"], "function": "Persistent armature, actual skin weights, shoulder/elbow/knee pose inspection and exported animation; disposable rig probe does not pass", "scale": "normalized height; side appearance inferred; seen regression fixture, not unseen test"}
+  ],
+  "comparison_limits": "One run per case, same Agent builds and reviews, no model identity/tokens observed, no isolated grader calibration for visual scores. This is a provisional artifact baseline; no Skill improvement or statistical success-rate claim. Freeze inputs/protocol and repeat with independent review before formal comparisons."
+}

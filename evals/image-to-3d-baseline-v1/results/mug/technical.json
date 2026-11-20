@@ -1,0 +1,169 @@
+{
+  "case": "mug",
+  "blender": "4.3.2",
+  "scope": "Blender exporter/importer technical check, not Khronos validation or target-engine certification",
+  "source": {
+    "mesh_count": 4,
+    "triangles": 876,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_edges": 48,
+    "inconsistent_winding_edges": 0,
+    "bounds": [
+      [
+        -0.4699999988079071,
+        -0.4699999988079071,
+        0.009999999776482582
+      ],
+      [
+        0.7930333614349365,
+        0.4699999988079071,
+        1.3700000047683716
+      ]
+    ],
+    "objects": {
+      "cup_body": {
+        "vertices": 224,
+        "triangles": 448,
+        "uv_layers": 0,
+        "materials": [
+          "GlazedCeramic"
+        ]
+      },
+      "handle_D": {
+        "vertices": 78,
+        "triangles": 128,
+        "uv_layers": 1,
+        "materials": [
+          "GlazedCeramic"
+        ]
+      },
+      "spoon_stem": {
+        "vertices": 36,
+        "triangles": 44,
+        "uv_layers": 1,
+        "materials": [
+          "GlazedCeramic"
+        ]
+      },
+      "spoon_bowl": {
+        "vertices": 128,
+        "triangles": 256,
+        "uv_layers": 0,
+        "materials": [
+          "GlazedCeramic"
+        ]
+      }
+    }
+  },
+  "source_armatures": [],
+  "source_actions": [],
+  "materials": [
+    {
+      "name": "GlazedCeramic",
+      "has_nodes": true,
+      "node_types": [
+        "BSDF_PRINCIPLED",
+        "OUTPUT_MATERIAL"
+      ]
+    }
+  ],
+  "cup_function": {
+    "handle_endpoint_surface_distances": [
+      0.012576019391417503,
+      0.07429025322198868
+    ],
+    "handle_tube_radius": 0.052000001072883606,
+    "both_ends_reach_cup": false,
+    "center_floor_ray_hit": null,
+    "offaxis_floor_ray_hit": [
+      0.10000000149011612,
+      0.0,
+      0.06500005722045898
+    ]
+  },
+  "glb": {
+    "bytes": 22988,
+    "mesh_count": 5,
+    "materials": 2,
+    "skins": 0,
+    "animations": [],
+    "extensions_required": [],
+    "external_resources": []
+  },
+  "reimport": {
+    "mesh_count": 5,
+    "triangles": 888,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_edges": 98,
+    "inconsistent_winding_edges": 0,
+    "bounds": [
+      [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      [
+        1.0,
+        1.0,
+        1.3700000047683716
+      ]
+    ],
+    "objects": {
+      "cup_body.001": {
+        "vertices": 224,
+        "triangles": 448,
+        "uv_layers": 0,
+        "materials": [
+          "GlazedCeramic.001"
+        ]
+      },
+      "handle_D.001": {
+        "vertices": 89,
+        "triangles": 128,
+        "uv_layers": 1,
+        "materials": [
+          "GlazedCeramic.001"
+        ]
+      },
+      "spoon_bowl.001": {
+        "vertices": 128,
+        "triangles": 256,
+        "uv_layers": 0,
+        "materials": [
+          "GlazedCeramic.001"
+        ]
+      },
+      "spoon_stem.001": {
+        "vertices": 40,
+        "triangles": 44,
+        "uv_layers": 1,
+        "materials": [
+          "GlazedCeramic.001"
+        ]
+      },
+      "Cube.001": {
+        "vertices": 24,
+        "triangles": 12,
+        "uv_layers": 1,
+        "materials": [
+          "Material.001"
+        ]
+      }
+    }
+  },
+  "world_bounds_max_error": 1.0099999997764826,
+  "checks": {
+    "source_nonempty_finite": true,
+    "no_degenerate_triangles": true,
+    "winding_consistent": true,
+    "triangle_budget": true,
+    "reimport_nonempty": true,
+    "bounds_preserved": false,
+    "triangles_preserved": false,
+    "embedded_resources": true,
+    "handle_connected": false,
+    "center_floor_exists": false
+  }
+}

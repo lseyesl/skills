@@ -67,9 +67,17 @@ class ReferencePreparationTests(unittest.TestCase):
         self.decision.update(route='existing_reviewed',existing_review=self.ref('existing.json'))
         self.assertEqual(self.require()['route'],'existing_reviewed')
     def test_valid_single_view_has_reviewed_sufficient_scope(self):
-        self.decision.update(route='single_view_sufficient',facts={'projection':'orthographic','needs_hidden_shape':False,'needs_pose_normalization':False},construction_images=[self.ref('front.png')])
+        self.decision.update(route='single_view_sufficient',facts={'scope':'local_edit','projection':'orthographic','needs_hidden_shape':False,'needs_pose_normalization':False},construction_images=[self.ref('front.png')])
         self.save('existing.json',{'status':'passed','finding':'Flat outline with explicit user depth; synthetic','construction_images':self.decision['construction_images']});self.decision['existing_review']=self.ref('existing.json')
         self.assertEqual(self.require()['route'],'single_view_sufficient')
+    def test_whole_model_requires_multiple_views_before_geometry(self):
+        self.decision['construction_images'] = [self.ref('front.png')]
+        self.decision['facts'].update(projection='orthographic', needs_hidden_shape=False)
+        for route in ('generated', 'existing_reviewed', 'single_view_sufficient'):
+            self.decision['route'] = route
+            with self.subTest(route=route), self.assertRaisesRegex(RuntimeError, 'multiview'):
+                self.require()
+
     def test_diagnostic_cannot_be_promoted(self):
         self.decision['route']='diagnostic_only'
         with self.assertRaises(RuntimeError):self.require()

@@ -198,7 +198,8 @@ def validate_ledger(payload: dict[str, Any], stage_override: str | None = None) 
         "unapproved_simplified": unapproved_simplified,
         "errors": errors,
         "warnings": warnings,
-        "ready_to_claim_complete": stage == "final" and not errors,
+        "ledger_final_passed": stage == "final" and not errors,
+        "ready_to_claim_complete": False,
         "metric_scope": "Ledger evidence declarations only; not measured visual or reconstruction accuracy.",
     }
     return report
@@ -209,9 +210,22 @@ def main() -> None:
     parser.add_argument("ledger", type=Path)
     parser.add_argument("--stage", choices=sorted(STAGES))
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--review", type=Path, help="Final delivery evidence JSON")
+    parser.add_argument("--model", type=Path, help="Actual file being delivered")
     args = parser.parse_args()
     payload = json.loads(args.ledger.read_text(encoding="utf-8"))
     report = validate_ledger(payload, args.stage)
+    if report["target_stage"] == "final":
+        from delivery_evidence import check_delivery
+        try:
+            evidence = check_delivery(payload, args.ledger, args.review, args.model)
+            report["delivery_evidence"] = evidence
+            if evidence["residuals"]:
+                report["errors"].append("Disclose remaining differences: " + ", ".join(evidence["residuals"]))
+        except (OSError, ValueError, RuntimeError, TypeError, KeyError, AttributeError) as exc:
+            report["errors"].append(f"Final delivery evidence: {exc}")
+        report["ok"] = not report["errors"]
+        report["ready_to_claim_complete"] = report["ok"]
     rendered = json.dumps(report, indent=2, ensure_ascii=False)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

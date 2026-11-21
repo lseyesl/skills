@@ -22,6 +22,8 @@ Before general animation binding, inspect edge flow and density around shoulders
 
 ## Bind readiness
 
+For posing or animation, build the [motion analysis and test plan](procedures/characters/rigging-and-skinning.md#动作分析与逐项复测) from the reviewed mesh and intended motions before choosing bones and weights. Keep the same motion list through final acceptance.
+
 Before binding:
 
 - confirm mesh and armature scale, orientation, rest pose, symmetry and intended root;

@@ -212,8 +212,11 @@
         "蒙皮",
         "绑定",
         "skinning rig export",
+        "export animated rig to gltf",
         "骨架",
         "添加骨架",
+        "骨骼分析",
+        "动作匹配与权重复测",
         "rigging",
         "armature"
       ],

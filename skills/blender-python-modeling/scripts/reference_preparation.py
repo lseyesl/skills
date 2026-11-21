@@ -70,6 +70,21 @@ def require_source_fidelity(path, expected_sources, expected_guides):
             'scope': review['scope'], 'pixel_agreement_automatically_verified': False}
 
 
+def selected_style(decision):
+    """Resolve a declared style before construction, including visual-only prompts."""
+    style = decision.get('style_selection')
+    whole = decision.get('facts', {}).get('scope', 'whole_model') == 'whole_model'
+    if style is None and not (whole and decision.get('route') in {'generated', 'existing_reviewed'}):
+        return None
+    if not isinstance(style, dict) or not all(_text(style.get(k)) for k in ('id', 'reason')):
+        raise ValueError('Record style_selection from the current reference before blockout')
+    if style['id'] == 'unlisted':
+        return None
+    if not all(_text(style.get(k)) for k in ('region', 'shape_cue', 'surface_cue')):
+        raise ValueError('Select a representative region and observed shape and surface cues')
+    return style
+
+
 def require_preparation(path, task_id, *, mode, construction_images=(), allow_diagnostic=False):
     if path is None:
         raise ValueError('Record reference preparation route before construction; do not silently skip concept-multiview-sheet')
@@ -133,6 +148,7 @@ def require_preparation(path, task_id, *, mode, construction_images=(), allow_di
                 raise RuntimeError('Construction guides are not declared generation outputs')
             fidelity_path, digest = _file(decision.get('source_fidelity_review'), path.parent)
             require_source_fidelity(fidelity_path, sources, guides)
+    selected_style(decision)
     return {'route': route, 'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
             'accepted_construction': route != 'diagnostic_only',
             'scope': 'route and evidence freshness only; actual image fidelity and decision facts require inspection'}

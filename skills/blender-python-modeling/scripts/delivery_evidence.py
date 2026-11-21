@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 from reference_review import require_design_review
-from reference_preparation import _file, require_preparation
+from reference_preparation import _file, require_preparation, selected_style
 
 
 def check_projected_features(module, region, base, digest):
@@ -38,6 +38,24 @@ def check_projected_features(module, region, base, digest):
                     and issue.get("projection_angle") == angle for issue in region.get("visual_findings", [])):
                 continue
             raise ValueError(f"Reopen {feature} in {angle}: review missing or regression unresolved")
+
+
+def check_style_sample(bundle, base, digest):
+    decision_path = Path(_file(bundle["preparation"], base)[0])
+    style = selected_style(json.loads(decision_path.read_text()))
+    if style is None:
+        return
+    review = bundle.get("style_review", {})
+    if (review.get("model_sha256"), review.get("id"), review.get("region")) != (
+            digest, style["id"], style["region"]):
+        raise ValueError("Missing or stale style review for the selected region and model")
+    evidence = [_file(review.get(key), base)[1] for key in ("reference_crop", "clay", "material")]
+    if len(set(evidence)) != len(evidence):
+        raise ValueError("Use distinct reference, clay and material samples")
+    for channel in ("shape", "surface"):
+        result = review.get(channel, {})
+        if result.get("status") != "passed" or not str(result.get("finding") or "").strip():
+            raise ValueError(f"Reopen style {channel} for {style['region']}")
 
 
 def check_refinement(ledger, ledger_path, review_path, model_path):
@@ -99,6 +117,7 @@ def check_refinement(ledger, ledger_path, review_path, model_path):
     for module in ledger["modules"]:
         if module.get("projected_features"):
             check_projected_features(module, regions[module["id"]], base, digest)
+    check_style_sample(bundle, base, digest)
     return digest
 
 

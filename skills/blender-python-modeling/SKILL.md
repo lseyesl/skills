@@ -53,7 +53,7 @@ Before choosing a representation, apply the [reference interpretation branches](
 - When iterating an existing generated asset, use the latest editable asset as the baseline and run the [fixed-view repair comparison](references/local-feature-review.md#iterate-an-existing-asset) on a derived copy.
 - When several reference views supply color to one face or marked surface, record its high-contrast landmarks in the module ledger as `projected_features` before baking. For an existing asset with duplicated markings, add them when reopening the module. Apply the [multi-view projection check](references/uv-and-texture-baking.md#multi-view-projection-check) before accepting a bake or closing a ghosting repair.
 - Before a full render suite, pass the [local shape and detail review](references/local-feature-review.md): surface orientation, thickness, attachments and signature relief in the evaluated mesh and intended lighting. For a reference-driven correction with saved snapshots, render the ledger feature's reference crop and fixed-camera clay/material pairs. A vein formula, bump shader or nonzero displacement does not prove the referenced feature is readable. Review one representative repeated part first.
-- For a requested art style, use the [blender-styles index](../blender-styles/SKILL.md), then read only the selected style and needed references. Style rules supplement this modeling/reference workflow; they do not replace proportion, geometry or delivery checks.
+- Before blockout of a whole reference model, inspect the current image for construction and surface cues even when the user supplied no style name. Record the [style decision and sample](references/fidelity-and-completion.md#style-sample) in reference preparation. For a requested or visually identified art style, use the [blender-styles index](../blender-styles/SKILL.md), then read only the selected style and needed references. Style rules supplement this modeling/reference workflow; they do not replace proportion, geometry or delivery checks.
 
 ## Workflow
 
@@ -97,7 +97,7 @@ Read only the references needed for the current request:
 
 | Task | Read |
 |---|---|
-| Soft clay, handmade plasticine, or mixed art direction | [blender-styles](../blender-styles/SKILL.md), then the selected `styles/<id>/STYLE.md` |
+| Folded paper, soft clay, handmade plasticine, or mixed art direction | [blender-styles](../blender-styles/SKILL.md), then the selected `styles/<id>/STYLE.md` |
 | AI render, photo, line drawing, or multi-view reference input | [references/reference-image-analysis.md](references/reference-image-analysis.md) and [references/fidelity-and-completion.md](references/fidelity-and-completion.md) |
 | Mesh, curve, hard-surface, repeated or organic forms | [references/modeling-recipes.md](references/modeling-recipes.md) |
 | UV unwrap, texel density, lightmap UV, UDIM, or texture baking | [references/uv-and-texture-baking.md](references/uv-and-texture-baking.md) |

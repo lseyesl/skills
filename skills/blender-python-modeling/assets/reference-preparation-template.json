@@ -5,6 +5,7 @@
   "route": "generated",
   "reason": "replace with diagnosis of why generated views, existing views, or a single view for a scoped local edit are appropriate",
   "facts": {"scope": "whole_model", "projection": "unknown", "needs_hidden_shape": true, "needs_pose_normalization": false},
+  "style_selection": {"id": null, "reason": null, "region": null, "shape_cue": null, "surface_cue": null},
   "selected_skill": "concept-multiview-sheet",
   "source_images": [{"path": "reference/source.png", "sha256": null}],
   "construction_images": [{"path": "reference/front.png", "sha256": null}, {"path": "reference/right.png", "sha256": null}],

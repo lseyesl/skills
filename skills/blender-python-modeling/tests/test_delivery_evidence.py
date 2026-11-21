@@ -34,6 +34,7 @@ class FinalDeliveryTests(unittest.TestCase):
                                 "role": "controlling", "controls": ["hull"], "finding": "fixture"} for g in guides}}
             bundle["multiview_review"] = write("design.json", design)
             prep = {"task_id": "test", "schema_version": 1, "purpose": "fixture", "reason": "fixture",
+                    "style_selection": {"id": "unlisted", "reason": "Synthetic calibration fixture"},
                     "route": "existing_reviewed", "source_images": guides, "construction_images": guides,
                     "existing_review": write("existing.json", review), "facts": {"projection": "orthographic",
                     "needs_hidden_shape": False, "needs_pose_normalization": False}}
@@ -60,6 +61,21 @@ class FinalDeliveryTests(unittest.TestCase):
             args = ["--model", "model.glb", "--review", "review.json"]
             self.assertFalse(run())
             self.assertTrue(run(*args))
+            prep["style_selection"] = dict(id="papercraft", reason="layered cut edges",
+                                            region="cuff", shape_cue="raised fold", surface_cue="fine grain")
+            bundle["preparation"] = write("prep.json", prep)
+            self.assertFalse(run(*args))
+            style = dict(id="papercraft", region="cuff", model_sha256=bundle["model"]["sha256"],
+                         reference_crop=picture, clay=write("clay.png", "clay"), material=write("color.png", "paper"),
+                         shape=dict(status="passed", finding="fold reads in silhouette"),
+                         surface=dict(status="open", finding="cuff appears uniformly smooth"))
+            bundle["style_review"] = style
+            self.assertFalse(run(*args))
+            style["surface"] = dict(status="passed", finding="fine paper variations agree at final scale")
+            self.assertTrue(run(*args))
+            style["model_sha256"] = "previous model"
+            self.assertFalse(run(*args))
+            style["model_sha256"] = bundle["model"]["sha256"]
             bundle["views"].remove(side)
             self.assertFalse(run(*args))
             bundle["views"].append(side)

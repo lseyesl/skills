@@ -16,6 +16,7 @@ class ReferencePreparationTests(unittest.TestCase):
             'invariants':[{'id':'spoke-count','critical':True,'evidence_type':'observed','status':'passed','source_region':'source front','generated_region':'generated front','finding':'Synthetic fixture, not image assessment','evidence':[self.ref('front.png')]}]}
         self.save('fidelity.json',self.fidelity)
         self.decision={'schema_version':1,'task_id':'test','purpose':'synthetic reference creation','route':'generated','reason':'Perspective source needs construction guides',
+            'style_selection':{'id':'unlisted','reason':'Calibration fixture with no art direction'},
             'facts':{'projection':'perspective','needs_hidden_shape':True,'needs_pose_normalization':False},'selected_skill':'concept-multiview-sheet',
             'source_images':[self.ref('source.png')],'construction_images':[self.ref('front.png'),self.ref('side.png')],
             'generation_record':self.ref('generation.json'),'source_fidelity_review':self.ref('fidelity.json')}
@@ -24,6 +25,11 @@ class ReferencePreparationTests(unittest.TestCase):
     def require(self,mode='reference',**kwargs):
         self.save('decision.json',self.decision)
         return require_preparation(self.root/'decision.json','test',mode=mode,**kwargs)
+    def test_whole_reference_requires_style_decision(self):
+        self.decision.pop('style_selection')
+        with self.assertRaisesRegex(ValueError, 'style_selection'):
+            self.require()
+
     def test_missing_route_blocks(self):
         with self.assertRaises(ValueError):require_preparation(None,'test',mode='reference')
     def test_explicit_no_reference_original(self):

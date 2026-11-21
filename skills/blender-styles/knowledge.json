@@ -87,6 +87,39 @@
       "status": "experimental"
     },
     {
+      "id": "style.papercraft",
+      "title": "折面纸塑与立体纸景",
+      "entry": "styles/papercraft/STYLE.md",
+      "kind": "style",
+      "tasks": [
+        "create",
+        "repair"
+      ],
+      "subjects": [
+        "style"
+      ],
+      "aliases": [
+        "纸艺",
+        "折纸角色",
+        "立体书",
+        "papercraft",
+        "pop-up paper"
+      ],
+      "applies_when": [
+        "已选择此风格或其某一表现层"
+      ],
+      "exclude_when": [
+        "纯二维任务"
+      ],
+      "required_facts": [
+        "纸件构造、控制视图和目标镜头"
+      ],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
       "id": "blender-styles.reference.b397f4351068",
       "title": "共用风格流程与验收",
       "entry": "references/workflow-and-review.md",

@@ -3,6 +3,12 @@
 Use before expensive full renders of reference-driven models. Catch wrong
 geometry in the evaluated mesh and inspect surface detail at its intended scale.
 
+## Iterate an existing asset
+
+Start from the last delivered editable scene. Freeze a baseline capture, the controlling reference and the region to protect. Choose the defect that the available view can resolve. For a silhouette, compare the projected boundary against the calibrated guide. For depth or contact, select a view that exposes the relationship. Record whether the guide was observed or inferred.
+
+Repair a copy, then repeat the capture at the same pose, lens, scale, light and frame. Inspect both versions against the same guide and inspect affected neighbors. Use a material-free pass if print or shading hides the geometry. Keep the change when the target improves and protected regions pass. Otherwise revisit the diagnosis. For an exported deliverable, repeat the decisive check on the reimported asset. Record a scoped result before choosing another defect.
+
 ## Independent shape constraints
 
 Record each important part's long axis, broad surface normal, thickness direction,

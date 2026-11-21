@@ -31,7 +31,7 @@
 | 技能 | 适用场景与交付 |
 |---|---|
 | [blender-python-modeling](skills/blender-python-modeling/SKILL.md) | Blender 建模、参考校准、材质、场景、绑定、动画、渲染和导出；交付可复现脚本、场景与验证证据，不用于仅需二维图片的任务。 |
-| [blender-styles](skills/blender-styles/SKILL.md) | 选择柔和低多边形黏土、稚拙手捏橡皮泥等 Blender 风格，提供造型、材质、灯光与节奏规则；通用建模依赖 blender-python-modeling，风格验证状态见技能内索引。 |
+| [blender-styles](skills/blender-styles/SKILL.md) | 选择柔和低多边形黏土、稚拙手捏橡皮泥、折面纸塑与立体纸景等 Blender 风格，提供造型、材质、灯光与节奏规则；通用建模依赖 blender-python-modeling，风格验证状态见技能内索引。 |
 
 ### 动作参考与序列生成
 

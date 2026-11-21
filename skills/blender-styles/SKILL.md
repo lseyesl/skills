@@ -1,6 +1,6 @@
 ---
 name: blender-styles
-description: Select and apply Blender art styles through a shared workflow and on-demand style index. Use for soft low-poly clay (柔和低多边形黏土风), rough naive handmade plasticine (稚拙手捏橡皮泥风), or a requested combination of their geometry, surface, lighting and animation traits. Routes to only the relevant style rules and reuses shared material, lighting, timing, rendering and QA tools. Use blender-python-modeling for general modeling and reference alignment. Do not use for 2D-only image generation or physical clay simulation.
+description: Select and apply Blender art styles through a shared workflow and on-demand style index. Use for soft low-poly clay (柔和低多边形黏土风), rough naive handmade plasticine (稚拙手捏橡皮泥风), folded or layered papercraft (纸艺、立体书), or a requested combination of their geometry, surface, lighting and animation traits. Routes to only the relevant style rules and reuses shared material, lighting, timing, rendering and QA tools. Use blender-python-modeling for general modeling and reference alignment. Do not use for 2D-only image generation or physical clay simulation.
 metadata:
   compatibility: Blender with bpy, bmesh and mathutils. Shared clay helpers were tested on Blender 4.5.12 LTS; other builds require capability checks. The handmade-plasticine style remains visually uncalibrated. Generic modeling/reference workflows require blender-python-modeling.
 ---
@@ -15,6 +15,7 @@ metadata:
 |---|---|---|---|
 | `soft-clay` | 柔和、圆润、整洁、经济的低多边形黏土造型，柔光微缩场景 | [STYLE.md](styles/soft-clay/STYLE.md) | 有 Blender 4.5.12 工具与示例验证，见该风格证据；不保证任意参考都能还原 |
 | `handmade-plasticine` | 稚拙手捏、挤压体积、明显拼接/指纹、局部混色，可选替换贴片五官 | [STYLE.md](styles/handmade-plasticine/STYLE.md) | 风格规范已建立，尚待实际小样视觉校准 |
+| `papercraft` | 折面纸塑角色、叠片纸景、可开合的立体书 | [STYLE.md](styles/papercraft/STYLE.md) | experimental，待项目小样视觉校准 |
 
 先根据用户明确指定的风格或最新参考选择一个主风格，读取其 `STYLE.md`，再按该文档的任务索引读取细节。不要默认把所有风格文档、样例和历史报告全部加载。只有选择混合风格或需要另一个风格的工具说明时，才补读相关部分。用户只说“黏土风”时结合参考判断；确实存在明显不同的目标且无法判断时，展示差异并询问偏好。
 

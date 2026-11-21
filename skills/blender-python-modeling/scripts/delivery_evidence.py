@@ -6,6 +6,102 @@ from reference_review import require_design_review
 from reference_preparation import _file, require_preparation
 
 
+def check_projected_features(module, region, base, digest):
+    """Validate declared cross-angle inspections; a reviewer judges the renders."""
+    features = module.get("projected_features", [])
+    if not features:
+        return
+    if not isinstance(features, list) or not all(isinstance(f, str) and f.strip() for f in features):
+        raise ValueError("Declare the projected feature names for " + module["id"])
+    review = region.get("projection_review", {})
+    if review.get("model_sha256") != digest:
+        raise ValueError("Missing or stale projection review for " + module["id"])
+    comparisons = set()
+    for angle in ("front", "oblique", "profile"):
+        shot = review.get("views", {}).get(angle, {})
+        _, image_hash = _file(shot.get("comparison"), base)
+        if image_hash in comparisons:
+            raise ValueError("Projection checks require distinct crops for each angle")
+        comparisons.add(image_hash)
+        for feature in features:
+            check = shot.get("features", {}).get(feature, {})
+            if not isinstance(check.get("finding"), str) or not check["finding"].strip():
+                raise ValueError(f"Describe {angle} placement and readability of {feature}")
+            if check.get("status") == "passed":
+                continue
+            if check.get("status") == "occluded":
+                if isinstance(check.get("occluder"), str) and check["occluder"].strip():
+                    continue
+                raise ValueError(f"Identify what occludes {feature} in {angle}")
+            if check.get("status") == "residual" and any(
+                    issue.get("status") == "exhausted" and issue.get("projected_feature") == feature
+                    and issue.get("projection_angle") == angle for issue in region.get("visual_findings", [])):
+                continue
+            raise ValueError(f"Reopen {feature} in {angle}: review missing or regression unresolved")
+
+
+def check_refinement(ledger, ledger_path, review_path, model_path):
+    """Check known visual defects even when source provenance prevents certification."""
+    if not review_path or not model_path:
+        raise ValueError("Refinement review requires --review and --model")
+    base = review_path.resolve().parent
+    bundle = json.loads(review_path.read_text())
+    model, digest = _file(bundle["model"], base)
+    if Path(model) != model_path.resolve() or Path(_file(bundle["ledger"], base)[0]) != ledger_path.resolve():
+        raise ValueError("Refinement review is for a different ledger or model")
+    regions = bundle["regions"]
+    required = {m["id"] for m in ledger["modules"] if m.get("required")}
+    if not required or not isinstance(regions, dict) or not required <= regions.keys():
+        raise ValueError("Missing required region reviews")
+    if bundle["actionable_items"] != []:
+        raise ValueError("Continue the remaining actionable items")
+    for name, region in regions.items():
+        findings = region.get("visual_findings", [])
+        if not isinstance(findings, list) or region["state"] not in ("reviewed", "residual"):
+            raise ValueError("Open or malformed visual review: " + name)
+        if region["state"] == "residual" and not findings:
+            raise ValueError("Reopen " + name + ": residual needs a specific finding and repair evidence")
+        for field in ("local", "surroundings"):
+            _file(region[field], base)
+        residual = False
+        for finding in findings:
+            for key in ("symptom", "view", "change", "result"):
+                if not isinstance(finding.get(key), str) or not finding[key].strip():
+                    raise ValueError("Missing " + key + " for " + name)
+            if finding["view"] not in {v.get("name") for v in bundle["views"]}:
+                raise ValueError("Missing controlling comparison view for " + name)
+            if finding.get("model_sha256") != digest:
+                raise ValueError("Recheck " + name + " against the current model")
+            source = finding.get("reference_status")
+            if source not in ("existing_sufficient", "supplement_reviewed"):
+                raise ValueError("Use concept-multiview-sheet for missing or unclear views: " + name)
+            reference = _file(finding["reference"], base)
+            if source == "supplement_reviewed":
+                record_path = Path(_file(finding["generation_record"], base)[0])
+                record = json.loads(record_path.read_text())
+                if reference not in {_file(item, record_path.parent) for item in record["outputs"]}:
+                    raise ValueError("Generation record does not include the reviewed supplement for " + name)
+            if _file(finding["before"], base)[1] == _file(finding["after"], base)[1]:
+                raise ValueError("Provide the tested repair candidate or rejected trial for " + name)
+            state = finding["status"]
+            if state not in ("fixed", "exhausted"):
+                raise ValueError("Continue repair: " + name)
+            if state == "exhausted":
+                if not isinstance(finding.get("reopen_when"), str) or not finding["reopen_when"].strip():
+                    raise ValueError("Missing condition to revisit " + name)
+                residual = True
+        if residual != (region["state"] == "residual"):
+            raise ValueError("Region status contradicts visual findings: " + name)
+        if residual:
+            _file(region["attempt_log"], base)
+            if not isinstance(region.get("reason"), str) or not region["reason"].strip():
+                raise ValueError("Missing residual diagnosis for " + name)
+    for module in ledger["modules"]:
+        if module.get("projected_features"):
+            check_projected_features(module, regions[module["id"]], base, digest)
+    return digest
+
+
 def check_delivery(ledger, ledger_path, review_path, model_path):
     if not review_path or not model_path:
         raise ValueError("Final delivery requires --review and --model")
@@ -60,20 +156,6 @@ def check_delivery(ledger, ledger_path, review_path, model_path):
         if json.loads(Path(design).read_text())["readiness"] != "passed":
             raise ValueError("Partial construction review cannot certify a final whole-model match")
     regions = bundle["regions"]
-    required = {m["id"] for m in ledger["modules"] if m.get("required")}
-    if not required or not isinstance(regions, dict) or not required <= regions.keys():
-        raise ValueError("Missing required region reviews")
-    for name, region in regions.items():
-        if region["state"] not in ("reviewed", "residual"):
-            raise ValueError("Open work remains in " + name)
-        for field in ("local", "surroundings"):
-            _file(region[field], base)
-        if region["state"] == "residual":
-            _file(region["attempt_log"], base)
-            if not isinstance(region["reason"], str) or not region["reason"].strip():
-                raise ValueError("Missing residual diagnosis for " + name)
-    if bundle["actionable_items"] != []:
-        raise ValueError("Whole-model review still has actionable items")
     for key in ("structural_report", "contact_sheet", "perspective_view"):
         path, _ = _file(bundle[key], base)
         if Path(path) != (ledger_path.resolve().parent / ledger["final_review"][key]).resolve():

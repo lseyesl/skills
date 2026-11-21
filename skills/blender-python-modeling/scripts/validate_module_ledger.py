@@ -216,7 +216,13 @@ def main() -> None:
     payload = json.loads(args.ledger.read_text(encoding="utf-8"))
     report = validate_ledger(payload, args.stage)
     if report["target_stage"] == "final":
-        from delivery_evidence import check_delivery
+        from delivery_evidence import check_delivery, check_refinement
+        report["refinement_evidence_checked"] = False
+        try:
+            report["refinement_model_sha256"] = check_refinement(payload, args.ledger, args.review, args.model)
+            report["refinement_evidence_checked"] = True
+        except (OSError, ValueError, RuntimeError, TypeError, KeyError, AttributeError) as exc:
+            report["errors"].append(f"Refinement evidence: {exc}")
         try:
             evidence = check_delivery(payload, args.ledger, args.review, args.model)
             report["delivery_evidence"] = evidence

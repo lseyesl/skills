@@ -252,3 +252,16 @@ In the review JSON, each file reference contains its path relative to this JSON 
 - In `views`, use one record per controlling direction with its design-review `name`, `reference` file, exported `model_sha256`, `comparison` file, and `before` and `after` render records. Each render record contains an `image` file and the actual `camera` settings captured at render time: flattened 16-number `world_matrix`, flattened 16-number `projection_matrix`, and pixel `resolution` [width, height]. Keep the full frame when cropping detail comparisons.
 - In `regions`, key records by module ID. Each has a `local` comparison file, a wider `surroundings` comparison file, and a `state` of `reviewed` or `residual`. For residuals include the `attempt_log` file and a specific `reason`. Continue other regions. Supply `actionable_items` as a list after the whole-model review.
 - Archive the CLI report alongside the reviewed revision. A ledger-only API result reports `ledger_final_passed`; only the final CLI can set `ready_to_claim_complete`. The checks verify declared settings and artifact freshness; a reviewer still inspects the images.
+
+### Visible defect repair
+
+用户指出或在固定视图看到的可定位异常，立即登记到对应部位的 `visual_findings`，重新打开此前的验收结论。逐一放大检查各控制方向的高风险接合处，尤其是侧面的耳廓与鬓发、下颌与衣领、腕掌与指根。只有全身轮廓重合不足以关闭这些问题。
+
+- 已有参考能辨认结构时直接返修。看不清遮挡、层次、指序或连接时，带原图或已审设计图、具体部位、疑点和目标角度实际调用多视图技能。审查补图与既定造型的关系，保留生成记录；隐藏结构仍标为推定。如果生成暂时不可用，将该项留在待办中，继续其他可修部位。
+- 同一镜头比较修改前、候选和参考，再看相邻部位及整模。局部改好但邻区变坏，回退或缩小修改范围。能列出下一种可检验修法就继续。只有多次有区别的尝试后仍有明确限制，才记录剩余差异、失败尝试和重开条件。
+- 每项记录 `symptom`、控制视图 `view`、`reference_status`、实际 `reference`、`change`、`result`、固定视图 `before` / `after`、最终复查的 `model_sha256` 和 `status`。文件沿用 path/sha256 格式。参考充足填 `existing_sufficient`，补图审查后填 `supplement_reviewed` 并引用 `generation_record`，其中 outputs 必须包含本次使用的补图。修好填 `fixed`；已用尽可检验方案填 `exhausted` 并写明 `reopen_when`，部位保留 residual、reason 和 attempt_log。没有发现异常的已审部位可沿用原记录。
+- 正式命令独立输出 `refinement_evidence_checked` 与 `ready_to_claim_complete`。缺原图哈希时保持来源问题开放，仍执行视觉返修检查。交付带剩余差异的最佳已审模型也须先通过返修证据检查。检查器核验证据和版本，审阅者负责从实际画面发现遗漏。
+
+### Projected feature evidence
+
+For each ledger module with `projected_features` (a list of landmark names), supply `regions[id].projection_review` with the reviewed export's `model_sha256` and a `views` object keyed by `front`, `oblique`, and `profile`. Each angle has its own hashed `comparison` crop or panel and a `features` entry per landmark. Record `status` and a concrete `finding` about count, placement, and readability relative to the reference. For `occluded`, identify the visible occluder in `occluder`. A `residual` must link to an exhausted visual finding through the same `projected_feature` and `projection_angle`; any actionable regression stays open. Use the [projection diagnosis](uv-and-texture-baking.md#multi-view-projection-check) for capture and repair. These are reviewer declarations, not automated image measurements.

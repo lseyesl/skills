@@ -24,7 +24,7 @@ For a construction handoff, first identify which view would change an actual mod
 
 ### Follow-up from Blender
 
-When modeling or refinement reveals an unclear region, accept the original image, approved views, region and specific question (for example, where a strap attaches behind the shoulder). Generate the missing direction or detail crop at the established pose, orientation and anchors. Preserve approved panels. Compare the supplement with the original and adjoining regions, label hidden construction as inferred, and return its view, crop, provenance and reviewed scope. Blender resumes the affected region and refreshes its comparisons. Independent regions may proceed while the supplement is unresolved.
+When modeling or refinement reveals an unclear region, accept the original image, approved views, region and specific question (for example, where a strap attaches behind the shoulder). Generate the missing direction or detail crop at the established pose, orientation and anchors. Return the actual image and its generation record with hashed outputs so the specific Blender finding can be reopened and tested. Preserve approved panels. Compare the supplement with the original and adjoining regions, label hidden construction as inferred, and return its view, crop, provenance and reviewed scope. Blender resumes the affected region and refreshes its comparisons. Independent regions may proceed while the supplement is unresolved.
 
 ## Default deliverable for a full design sheet
 

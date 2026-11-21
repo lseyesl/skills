@@ -72,5 +72,64 @@ class FinalDeliveryTests(unittest.TestCase):
             region = bundle["regions"].pop("hull")
             self.assertFalse(run(*args))
             bundle["regions"]["hull"] = region
+            region.update(state="residual", reason="side unclear", attempt_log=write("attempt.txt", "trial"))
+            self.assertFalse(run(*args))
+            finding = dict(symptom="missing profile", view="side", change="rebuild profile",
+                           result="shape reviewed", model_sha256=bundle["model"]["sha256"],
+                           reference_status="missing", reference=guides[1], before=picture,
+                           after=write("candidate.png", "trial render"), status="fixed")
+            region.update(state="reviewed", visual_findings=[finding])
+            self.assertFalse(run(*args))
+            finding["reference_status"] = "supplement_reviewed"
+            finding["generation_record"] = write("generation.json", {"outputs": [guides[0]]})
+            self.assertFalse(run(*args))
+            finding["generation_record"] = write("generation.json", {"outputs": [guides[1]]})
+            self.assertTrue(run(*args))
+            # Reproduces the false close: front looks clean, profile lip disappeared.
+            record["modules"][0]["projected_features"] = ["eyes", "lip"]
+            bundle["ledger"] = write("ledger.json", record)
+            self.assertFalse(run(*args))
+            angles = {}
+            for angle in ("front", "oblique", "profile"):
+                angles[angle] = {"comparison": write(angle + "-crop.png", angle),
+                                 "features": {f: {"status": "passed", "finding": "fixture alignment"}
+                                              for f in ("eyes", "lip")}}
+            projection = {"model_sha256": bundle["model"]["sha256"], "views": angles}
+            region["projection_review"] = projection
+            self.assertTrue(run(*args))
+            profile = angles["profile"]["features"]
+            profile["lip"] = {"status": "open", "finding": "lip line faded after removing frontal duplicate"}
+            self.assertFalse(run(*args))
+            profile["lip"]["status"] = "passed"
+            profile["lip"]["finding"] = "lip visible at the guide corner after UV adjustment"
+            profile["eyes"]["status"] = "occluded"
+            self.assertFalse(run(*args))
+            profile["eyes"]["occluder"] = "nose hides far eye; near eye checked"
+            self.assertTrue(run(*args))
+            comparisons = angles.pop("oblique")
+            self.assertFalse(run(*args))
+            angles["oblique"] = comparisons
+            projection["model_sha256"] = "old revision"
+            self.assertFalse(run(*args))
+            projection["model_sha256"] = bundle["model"]["sha256"]
+            # A provenance failure must not suppress the independent refinement result.
+            prep["source_images"] = []
+            bundle["preparation"] = write("prep.json", prep)
+            def report():
+                run(*args, "--output", "result.json")
+                return json.loads((base / "result.json").read_text())
+            finding["status"] = "open"
+            result = report()
+            self.assertFalse(result["refinement_evidence_checked"])
+            self.assertTrue(any("Continue repair" in err for err in result["errors"]))
+            finding.update(status="exhausted", reopen_when="new measured depth")
+            region["state"] = "residual"
+            result = report()
+            self.assertTrue(result["refinement_evidence_checked"])
+            self.assertFalse(result["ready_to_claim_complete"])
+            prep["source_images"] = guides
+            bundle["preparation"] = write("prep.json", prep)
+            finding["status"] = "fixed"
+            region["state"] = "reviewed"
             write("model.glb", "updated")
             self.assertFalse(run(*args))

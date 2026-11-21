@@ -226,9 +226,29 @@ Run the deterministic ledger check with the skill environment:
 uv run --project /absolute/path/to/blender-python-modeling \
   python /absolute/path/to/blender-python-modeling/scripts/validate_module_ledger.py \
   /absolute/task/module-ledger.json \
+  --stage final --model /absolute/task/model.glb --review /absolute/task/delivery-review.json \
   --output /absolute/task/module-coverage-report.json
 ```
 
 The validator checks bookkeeping and completion claims. It cannot decide
 whether a mesh visually matches the reference; that still requires rendered
 view inspection.
+
+## Fixed-camera refinement loop
+
+1. 粗模验收后，保存已组装的模型和与控制视图配准的镜头。在第一次精修前，按视图保存原图或已审参考、模型渲染和叠图，登记轮廓、比例、遮挡、接合与材质分区差异。锁定相机变换、投影、取景、分辨率和比较用光照。后续局部裁切取自同一套渲染；若校准有误，先修正校准并重渲基线。
+2. 从影响整体比例或遮挡关系最大的差异开始，每次记录目标部位、诊断、修改方法、受影响部位和修改前版本。图中看不清形状或连接时，携带原图、已审视图和具体疑点回到多视图技能补相应角度或特写。复审后标明原图可见与隐藏推定的界限；新证据触及已审部位时重新打开该项。
+3. 在固定镜头下同时比较参考、修改前与候选版本。先看目标特写，再扩大到相邻、对称、连接以及共享网格、材质或骨架的部位，最后查看各控制视角下的整模。记录改善、无变化和退化。候选破坏已确认特征时，回到上一个较好版本或缩小修改范围，重新比较。例如改肩宽还要对照衣领、袖口、两手位置和整身剪影。
+4. 多次尝试仍未匹配时，把该部位暂缓并继续队列中的其他部位。在项目的逐部位日志中记录部位、参考视角、最佳版本、参考／修改前／候选对比图路径、各次尝试和结果、残差、已知原因或待证假设，以及重开条件。使用原有模块台账的实际验收状态；暂缓只影响工作顺序。有新参考、相邻结构变化或新的可检验修法时重开。
+5. 局部队列走完后，做整体精修，重新检查体量、重心、比例、剪影、连续性以及材质关系，对发现的问题重复上述循环。最后以同一模型版本重渲所有固定视图，检查整模和受影响的局部，并复核暂缓项。尚有可验证的改进就继续；尝试次数本身不能作为全局停止条件。
+6. 所有可执行项均已处理，且最终复核找不到有参考依据、能改善模型并保住已确认特征的下一步时，导出最佳已审版本，附固定镜头对比和剩余差异日志。有未匹配项时标明当前证据下的最佳结果，并保留原有完成门槛与导出回读检查。
+
+### Final evidence file
+
+For reference-model delivery use the final command above on the actual exported file. Earlier stages can run without delivery arguments. Treat an export without a passing report as a preview or a disclosed best-reviewed version with residuals. Rerun the command after edits and compare the reported model digest with the file being handed off.
+
+In the review JSON, each file reference contains its path relative to this JSON and the SHA-256 of its bytes. Provide file references for `ledger`, `model`, `preparation`, `multiview_review` (multiple construction views), `structural_report`, `contact_sheet`, and `perspective_view`. The last three also correspond to the paths in the ledger's final review.
+
+- In `views`, use one record per controlling direction with its design-review `name`, `reference` file, exported `model_sha256`, `comparison` file, and `before` and `after` render records. Each render record contains an `image` file and the actual `camera` settings captured at render time: flattened 16-number `world_matrix`, flattened 16-number `projection_matrix`, and pixel `resolution` [width, height]. Keep the full frame when cropping detail comparisons.
+- In `regions`, key records by module ID. Each has a `local` comparison file, a wider `surroundings` comparison file, and a `state` of `reviewed` or `residual`. For residuals include the `attempt_log` file and a specific `reason`. Continue other regions. Supply `actionable_items` as a list after the whole-model review.
+- Archive the CLI report alongside the reviewed revision. A ledger-only API result reports `ledger_final_passed`; only the final CLI can set `ready_to_claim_complete`. The checks verify declared settings and artifact freshness; a reviewer still inspects the images.

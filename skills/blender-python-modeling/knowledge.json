@@ -558,7 +558,9 @@
       "subjects": [],
       "aliases": [
         "Reference Fidelity and Completion Gates",
-        "fidelity and completion"
+        "fidelity and completion",
+        "固定镜头对比与整体精修",
+        "局部未匹配日志"
       ],
       "applies_when": [
         "Read this guide when its documented task and prerequisites match the observed asset."

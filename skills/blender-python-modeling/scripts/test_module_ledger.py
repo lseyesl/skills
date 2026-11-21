@@ -53,7 +53,7 @@ def main() -> None:
     assert not unapproved["ok"] and unapproved["unapproved_simplified"] == ["seat"]
 
     approved = MODULE.validate_ledger(ledger("final", [item("hull", "primary", "matched"), item("seat", "secondary", "simplified", approved=True)]))
-    assert approved["ok"] and approved["ready_to_claim_complete"]
+    assert approved["ok"] and approved["ledger_final_passed"] and not approved["ready_to_claim_complete"]
     assert approved["presence_coverage"] == 1.0 and approved["full_fidelity_coverage"] == 0.5
 
     repeated = MODULE.validate_ledger(ledger("final", [item("thrusters", "secondary", "matched", expected=2, implemented=1)]))
@@ -63,7 +63,7 @@ def main() -> None:
     # Old label-only ledgers must not claim a visual pass.
     labels_only = copy.deepcopy(valid)
     del labels_only["modules"][0]["feature_reviews"]
-    assert not MODULE.validate_ledger(labels_only)["ready_to_claim_complete"]
+    assert not MODULE.validate_ledger(labels_only)["ledger_final_passed"]
 
     incomplete = copy.deepcopy(valid)
     incomplete["modules"][0]["signature_features"].append("readable branching veins")
@@ -81,11 +81,11 @@ def main() -> None:
 
     stale = copy.deepcopy(valid)
     stale["modules"][0]["review_invalidated"] = "User reports no visible secondary veins"
-    assert not MODULE.validate_ledger(stale)["ready_to_claim_complete"]
+    assert not MODULE.validate_ledger(stale)["ledger_final_passed"]
 
     no_final = copy.deepcopy(valid)
     del no_final["final_review"]
-    assert not MODULE.validate_ledger(no_final)["ready_to_claim_complete"]
+    assert not MODULE.validate_ledger(no_final)["ledger_final_passed"]
     for field in ("structural_report", "contact_sheet", "perspective_view", "unresolved_issues"):
         no_final = copy.deepcopy(valid)
         del no_final["final_review"][field]
@@ -102,7 +102,8 @@ def main() -> None:
     duplicate = copy.deepcopy(valid)
     duplicate["modules"][0]["feature_reviews"] *= 2
     assert not MODULE.validate_ledger(duplicate)["ok"]
-    assert MODULE.validate_ledger(valid)["ready_to_claim_complete"]
+    assert MODULE.validate_ledger(valid)["ledger_final_passed"]
+    assert not MODULE.validate_ledger(valid)["ready_to_claim_complete"]
     print("module ledger tests: ok (original gates, per-feature evidence, stale feedback, final review, malformed records)")
 
 

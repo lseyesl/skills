@@ -102,6 +102,11 @@ def require_preparation(path, task_id, *, mode, construction_images=(), allow_di
         if facts.get('projection') not in {'perspective', 'orthographic', 'unknown'} or any(
                 type(facts.get(k)) is not bool for k in ('needs_hidden_shape', 'needs_pose_normalization')):
             raise ValueError('Record source projection, hidden-shape and pose-normalization facts')
+        scope = facts.get('scope', 'whole_model')
+        if scope not in {'whole_model', 'local_edit'}:
+            raise ValueError('Specify whole_model or local_edit reference scope')
+        if scope == 'whole_model' and (route == 'single_view_sufficient' or len({digest for _, digest in guides}) < 2):
+            raise RuntimeError('A new whole model requires separate reviewed multiview guides before blockout')
         if route == 'single_view_sufficient' and (
                 facts['needs_hidden_shape'] or facts['needs_pose_normalization'] or facts['projection'] != 'orthographic'):
             raise RuntimeError('Single-view bypass contradicts the declared task facts')

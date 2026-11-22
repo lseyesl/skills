@@ -19,6 +19,16 @@ class BlockoutTests(unittest.TestCase):
     def save(self):self.review.write_text(json.dumps(self.data))
     def record(self):return record_blockout_review(self.receipt,self.plan,['body'],self.review,self.state)
     def require(self):return require_blockout_review(self.receipt,self.plan,['body'],self.review,self.state)
+    def test_planned_profile_requires_profile_review(self):
+        self.plan['modules'][0]['checks'][0]['view']='right'
+        draft=make_review_draft(self.plan,['body'],self.state)
+        self.assertEqual(draft['modules']['body']['checks']['silhouette']['view'],'right')
+        self.sign();self.save()
+        with self.assertRaisesRegex(ValueError,'planned view'):
+            self.record()
+        self.data['modules']['body']['checks']['silhouette']['view']='right'
+        self.save();self.record();self.require()
+
     def test_draft_is_not_an_approval(self):
         self.data=make_review_draft(self.plan,['body'],self.state);self.save()
         with self.assertRaises(ValueError):self.record()

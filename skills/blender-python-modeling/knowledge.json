@@ -564,6 +564,7 @@
         "Reference Fidelity and Completion Gates",
         "fidelity and completion",
         "固定镜头对比与整体精修",
+        "五官发型特征线叠图",
         "局部未匹配日志",
         "可见缺陷补图返修"
       ],
@@ -1727,6 +1728,7 @@
         "box modeling",
         "blockout refinement",
         "复用已有模型",
+        "粗模剪影对比",
         "阶段面数预算",
         "源模型与交付副本",
         "还原面数限制"

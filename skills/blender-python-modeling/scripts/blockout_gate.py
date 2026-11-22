@@ -54,6 +54,8 @@ def validate_plan(plan):
         for check in checks:
             if not isinstance(check.get('id'),str) or not check['id'].strip() or check['id'] in check_ids:raise ValueError('Missing/duplicate check ID')
             check_ids.add(check['id'])
+            if 'view' in check and (check.get('kind') != 'visual' or not isinstance(check['view'], str) or not check['view'].strip()):
+                raise ValueError('A planned view needs a visual check and a named view')
             if check.get('kind') not in CHECK_KINDS or not isinstance(check.get('criterion'),str) or not check['criterion'].strip():raise ValueError('Check kind and criterion required')
         if not any(c['kind']=='visual' for c in checks):raise ValueError('A blockout needs actual visual inspection: '+ident)
         if 'world_dimensions' in module:
@@ -111,6 +113,8 @@ def _check_review(plan,scope,review,expected_signature):
         for key,check in actual.items():
             if check.get('status')!='passed' or not isinstance(check.get('finding'),str) or not check['finding'].strip():raise ValueError('Unreviewed/failed check: '+key)
             if expected[key]['kind']=='visual' and not check.get('view'):raise ValueError('Visual check needs view identification')
+            if 'view' in expected[key] and check.get('view') != expected[key]['view']:
+                raise ValueError('Review view differs from planned view: '+key)
             evidence=check.get('evidence')
             if not isinstance(evidence,list) or not evidence:raise ValueError('Actual evidence required: '+key)
             for ref in evidence:
@@ -128,7 +132,7 @@ def make_review_draft(plan,scope,state,dependencies=None):
     return {'schema_version':1,'task_id':plan['task_id'],'status':'pending','reviewer':None,
             'inspection_signature':review_signature(plan,scope,state,dependencies),
             'modules':{ident:{'unresolved_issues':['Not inspected yet'],'checks':{
-                c['id']:{'status':'unknown','finding':'','evidence':[],**({'view':''} if c['kind']=='visual' else {})}
+                c['id']:{'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
                 for c in modules[ident]['checks']}} for ident in scope}}
 
 

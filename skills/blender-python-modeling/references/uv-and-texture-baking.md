@@ -2,6 +2,8 @@
 
 UVs are part of the output contract, not a cosmetic final step. Decide the target texture resolution, material boundaries, required UV sets, and whether procedural materials must be baked before final topology changes.
 
+For a newly built whole reference model, begin production painting, atlas generation, projection and baking only after the [clay review and snapshot](fidelity-and-completion.md#clay-review-before-production-texturing). UV planning and localized material trials may precede this review.
+
 ## Choose the projection
 
 | Asset | Preferred starting point |

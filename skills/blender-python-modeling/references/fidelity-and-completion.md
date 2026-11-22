@@ -130,6 +130,15 @@ For complex creation, also require the scoped [blockout acceptance](acceptance/b
 
 A blockout inspection signature ties the reviewed scope to the actual source state and dependencies. After a relevant change, an unchanged old review cannot simply be recorded again. Retain a coarse snapshot/control state for continued refinement and invalidate affected detailed visual evidence separately. Existing reference-fitting snapshots can implement equivalent checks; a 2D threshold alone is not equivalent.
 
+### Clay review before production texturing
+
+新建参考整模按以下顺序执行。粗模剪影通过后，继续在白模上精修。早期可以规划 UV、材质分区和分辨率，并在单个代表性部位试验风格。全身图集的绘制、参考图投射、烘焙和正式挂图放在白模验收之后；构建脚本应将这些操作与几何生成分成可独立运行的步骤。
+
+1. 在已组装的精模上使用统一中性哑光材质，关闭表面颜色、贴花和着色器凹凸等会混入形体判断的效果。保留实际交付所依赖的轮廓几何和修改器。按计划区分需要几何表现的体积、接合与遮挡，以及留给贴图的平面标记。纸艺角色的鼻唇侧影、下颌到颈肩、发束体积和衣领叠层应在白模下可辨；眼线、纸纹等可列为表面特征。
+2. 用校准镜头对照参考、整模剪影与局部特写。角色至少检查正面、侧面和四分之三视角，按适用控制视图补看背面。记录每个几何特征的结论及证据，注明推定范围。可定位的形体偏差退回几何返修，复拍目标、邻区和全身；某部位暂缓时继续精修其他部位，整模白模验收保持待定。
+3. 各项形体通过后保存独立白模快照。在现有项目审阅记录中登记快照路径、SHA-256、固定镜头图和通过结论，然后从该版本开始正式贴图。若交付范围经用户确认调整，记录具体部位和允许的简化。导出后补拍的白模只能说明导出时的形体，不能追认贴图前的审阅。
+4. 贴图后，在相同镜头、照明和裁框下对照白模与着色版。若白模也出现偏差，重开对应几何项；几何修改后更新快照与受影响的对比，检查 UV 拉伸、接缝和投射锚点，重新烘焙受影响的贴图。若差异仅见于着色版，则先检查材质、UV 和投影。
+
 ### Feature-complete
 
 Purpose: establish the complete recognizable design before micro-detail.

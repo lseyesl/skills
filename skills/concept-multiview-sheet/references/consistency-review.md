@@ -97,3 +97,12 @@ For later modeling, provide:
 - unresolved cross-view conflicts, including any pose/configuration drift that prevents Blender readiness.
 
 The Blender stage should use real orthographic cameras and derive final line/wire views from one model, replacing image-generated geometry claims with model-backed evidence.
+
+## Directional landmarks
+
+For each visibly directional feature that affects modeling (a tilted bun, ponytail, horn or ribbon), identify the same attachment and distal landmark across panels. For a round bun use the centre of the tie and the centre of the bun; for a curved feature also mark the bend. Check the root against a stable head or body landmark so a whole feature moved sideways is detected even when its tilt stays constant.
+
+1. Lock anatomical left/right, forward and up, the head pose, and each camera's viewing direction. In the source record the observable components of the root-to-tip direction; mark hidden depth unknown or explicitly inferred. Carry that one interpretation into the generation prompt for every view.
+2. On the actual generated images, mark the root and tip with an arrow on common-scale crops. For each visible component compare its projected direction and approximate displacement, normalized to a shared scale such as head height. For upright, unmirrored orthographic cameras, a tip clearly left of its root on screen in front view should appear right of its root in back view, with comparable horizontal displacement and the same vertical offset. Use the profile with its stated nose direction to check forward/backward displacement. A feature may lean both laterally and forward; the rear panel alone cannot establish depth.
+3. Keep annotated crops in the review artifacts. In the projection finding identify the feature, landmarks, expected versus observed offsets by view, any occlusion and the verdict. Allow for landmark uncertainty near zero; a hidden or end-on tip gives no reliable sign for that component. If a modeling decision depends on it, request a scoped top or oblique view with the approved pose and anchors.
+4. A clear reversal, shifted root or incompatible tilt reopens the affected region. Preserve approved views, correct the conflicting panel and compare it with the source and all applicable views again, including corresponding line art when present. Exclude that region from the allowed modeling scope until the projections agree.

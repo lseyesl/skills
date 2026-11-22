@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "purpose": "Human/agent style brief; not executable Blender or shared clay-tool configuration",
+  "purpose": "供人和代理使用的风格说明；可执行的 Blender 或共用黏土工具配置另行填写。",
   "style_id": "handmade-plasticine",
   "validation_status": "unverified",
   "reference_images": [],

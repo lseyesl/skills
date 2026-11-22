@@ -1,100 +1,120 @@
-# Character Delivery
+<a id="character-delivery"></a>
 
-Treat the editable rig, deformation mesh, baked export rig, and exported clips as separate deliverables. Do not apply transforms, collapse modifiers, rename bones, or replace actions on the editable source merely to satisfy an exporter.
+# 角色交付
 
-## Reference and rest pose before modeling
+将可编辑的骨架、变形网格、烘焙导出骨架以及导出的片段视为独立的交付成果。不要仅为满足导出器的要求而对可编辑的源文件进行变换、折叠修改器、重命名骨骼或替换动作操作。
 
-Decide this at character design/reference generation, not when the user later asks for bones. For reusable characters and unspecified character-model requests, prepare a neutral bind-pose image, then generate the controlling multiview sheet in that same pose. A seated, crouched or action concept can define identity, palette and surface treatment, but cannot be the sole construction reference for a general-purpose deforming character. Explicit fixed-pose sculptures may stay in their requested pose without an extra animation workflow.
+<a id="reference-and-rest-pose-before-modeling"></a>
 
-- **Humanoids/bipeds:** choose relaxed A-pose by default; use T-pose when the intended rig/retargeting convention calls for it. Keep arms clear of the torso, legs separated, hands open/readable, spine and pelvis neutral, feet on one plane, and slight joint bends where needed to establish bend direction. Record the selected angles rather than treating the name “A-pose” as sufficient.
-- **Quadrupeds:** use a balanced four-foot standing rest, neutral back/head, readable shoulder/hip attachments, modest elbow/knee/hock bends, separated limb volumes and a relaxed tail clear of the legs. Do not force humanoid A/T poses onto animals. Occlusion in a true side view is legitimate; use front/back/top or supplemental joint close-ups to explain overlap rather than staggering a limb in one panel.
-- **Other anatomies:** choose a relaxed, structurally readable rest configuration; keep wings, tentacles or accessories clear of deforming joints where practical, preserving identity and anatomy.
+## 建模前确定参考和静止姿势
 
-Record intended use, reference roles (appearance versus bind-pose construction), neutral-pose image/sheet paths, axes/ground, joint state, inferred hidden regions and review findings in the project reference record. Import/calibrate the neutral construction views using the normal reference-workspace workflow, derive mesh proportions/joint landmarks from them, and compare the actual unposed mesh before skinning. Presentation poses are subsequent rig poses or separate static variants. Do not fuse adjacent limbs, tail-to-leg contacts or clothing to skin merely because they touch in the beauty reference.
+在字符层面做出决定设计、参考图生成过程，而不是在用户后来请求骨骼时生成。对于可重复使用的角色以及未指定角色模型的请求，需要准备一个中性绑定姿势的图像，然后以相同的姿势生成控制的多视角图纸。坐姿、蹲姿或动作概念可以定义身份、调色板和表面处理，但不能作为通用变形角色的唯一构建参考。明确的固定姿势雕塑可以在没有额外动画工作流程的情况下保持其请求的姿势。
 
-If animation is requested only after a posed model exists, inspect topology and pose suitability first. Preserve that source and derive a neutral version; revise topology/weights or rebuild affected regions when necessary. Do not assume adding bones or rotating sitting limbs makes the asset walk-ready. Existing compatible rigs/rest references may be reused; generating a new image is unnecessary for an ordinary animation edit that already has an adequate rest mesh.
+- **Humanoids/bipeds:** 默认选择放松的A姿势；当所需的rig/retargeting姿势要求时，使用T姿势。保持手臂远离躯干，双腿分开，双手open/readable，脊柱和骨盆保持中立位置，双脚在同一平面上，并在需要的地方进行轻微的关节弯曲以确定弯曲方向。记录选定的角度，而不是仅仅使用“A姿势”这一名称。
+- 四足动物：使用平衡的、四英尺高的站立支架，中性背面、头部, 易读shoulder/hip附件，谦逊肘部、膝关节、跗关节弯曲的肢体，分开的肢体体积，以及放松的尾部，没有腿部。不要强制使用人形A/T将物体放置到动物身上。在真正的侧视图中，遮挡是合法的；使用正面、背面、顶部或者，使用补充性关节特写来解释重叠情况，而不是将肢体在一个面板中分开展示。
+- **其他解剖结构：** 选择一种放松且结构清晰休息姿势；在实际可行的情况下，保持翅膀、触手或配件远离变形关节，以保留其身份和解剖结构。
 
-## Animation mesh before binding
+记录预期使用方式、参考角色（外观与绑定姿势构建）、中性姿势image/sheet路径轴向、地面在项目参考记录中，记录关节状态、推断出的隐藏区域以及评审结果。Import/calibrate使用正常参考工作空间流程，从中性构建视图中导出网格比例、关节从它们中提取标志点，并在进行贴身处理之前，比较实际的未定位网格。演示pose是后续的rig pose或单独的静态变体。不要因为美观参考中的接触而合并相邻的肢体、尾部与腿部接触点或衣物与皮肤。
 
-Distinguish the high-resolution clay sculpt from the deformation mesh. Record a target appropriate to the intended renderer, shot size, runtime/export limits and expected motion; do not prescribe one universal polygon count. A dense voxel-fused surface can be a valid sculpt, but face count, watertightness and smooth shading do not establish useful joint topology.
+如果仅在存在姿态模型后才请求动画，请先检查拓扑结构和姿态的适用性。保留该源文件，并派生出一个中性版本；在必要时对 拓扑、权重 或重建受影响的区域。不要假设添加骨骼或旋转坐着的肢体就能使资产准备好行走。现有的兼容 绑定、静止姿势 引用可以重复使用；对于已经拥有足够简化网格的普通动画编辑，生成新的图像是不必要的。
 
-Before general animation binding, inspect edge flow and density around shoulders, hips, elbows, knees/hocks, wrists/ankles and any deforming face. Keep the sculpt for shape/normal detail and prepare a simpler animation mesh with joint loops where required. Avoid collapsing a bending joint to a pole or placing uncontrolled overlapping/internal surfaces there. A sculpt used directly for limited clay/stop-motion poses needs deformation and performance evidence for that limited use; do not label it production-animation-ready by default. Resolve topology before final weights/shape keys to avoid repeated skinning work.
+<a id="animation-mesh-before-binding"></a>
 
-## Bind readiness
+## 绑定前准备动画网格
 
-For posing or animation, build the [motion analysis and test plan](procedures/characters/rigging-and-skinning.md#动作分析与逐项复测) from the reviewed mesh and intended motions before choosing bones and weights. Keep the same motion list through final acceptance.
+区分高分辨率陶塑作品与变形网格。记录与预期渲染器、拍摄尺寸相适应的目标信息。运行时、导出限制和预期的运动；不要规定一个通用的多边形数量。一个密集的体素融合表面可以是一个有效的雕塑，但面数、水密性和光滑的阴影效果并不能确定有用的关节拓扑结构。
 
-Before binding:
+在进行整体动画绑定之前，需要检查肩膀、臀部、肘部周围的边缘流动和密度。膝关节、跗关节,腕部、踝部以及任何变形的面。保留雕塑的形状、法线详细准备一个更简单的动画网格，并在需要的地方使用关节循环。避免将弯曲关节压缩为杆状结构，或放置出人意料的形状。overlapping/internal那些表面。直接用于有限的clay/stop-motion该软件/工具需要针对有限使用场景提供变形和性能方面的证据；默认情况下，不要将其标记为适用于制作动画的软件。在最终确定之前，先解决拓扑问题。权重、形状避免重复进行皮肤化操作的键。
 
-- confirm mesh and armature scale, orientation, rest pose, symmetry and intended root;
-- compare the rest mesh to the reviewed neutral-pose references and confirm separate limb volumes, readable joint attachments and room for the intended range of motion; a consistent sheet or correct weight sums alone do not establish this;
-- resolve non-manifold geometry, duplicate vertices, accidental internal faces, and invalid normals;
-- preserve modifier order, especially Mirror/Subdivision relative to Armature;
-- ensure bone roll and local axes are stable before weights or animations are authored;
-- decide whether clothing/accessories use deformation, rigid parenting, surface deform, or their own skeleton.
+<a id="bind-readiness"></a>
 
-Automatic weights are a starting point. They require object selection and an active armature; inspect runtime operator options rather than assuming a UI command maps unchanged across versions. Always review high-curvature joints, fingers, face, shoulders, hips, loose garments, and overlapping shells manually or with scripted diagnostics.
+## 绑定前检查
 
-## Weight validation
+在建模或动画制作中，在选择骨骼和权重之前，先根据审核过的网格和预期的动作来构建 [运动分析与测试计划](procedures/characters/rigging-and-skinning.md#动作分析与逐项复测)。在整个最终验收过程中，保持相同的动作列表不变。
 
-For each deforming mesh, inspect only vertex groups that correspond to deform bones. Report:
+绑定之前：
 
-- unweighted vertices;
-- weights whose deform-group sum is outside tolerance of 1.0;
-- influences below the cleanup threshold;
-- vertices exceeding the target's influence limit;
-- left/right naming or symmetry mismatches;
-- weights assigned to missing or non-deform bones.
+- 确认网格和骨架的缩放、方向、静止姿势、对称性以及预期的根节点；
+- 将剩余的网格与已审核的中性姿势参考进行对比，确认各个肢体的体积、可识别的关节连接以及预期的运动范围；仅依靠一致的网格结构或正确的重量分配是无法达成这一目标的。
+- 解决非流形几何问题，复制顶点，处理意外产生的内部面，以及处理无效的法线；
+- 保留修改顺序，尤其是Mirror/Subdivision相对于 Armature；
+- 在创建权重或动画之前，请确保骨骼旋转和局部轴是稳定的；
+- 决定是否clothing/accessories使用变形、刚性父子关系、表面变形，或它们自己的骨架。
 
-Context-sensitive cleanup operators include `vertex_group_clean`, `vertex_group_normalize_all`, and `vertex_group_limit_total`. Use them only on the intended mesh in Weight Paint or Object Mode as required by the running API, and revalidate after each operation. Do not normalize non-deform control groups into the skin weights accidentally.
+自动权重是一个起点。它们需要对象选择和一个激活的骨架；检查运行时操作选项，而不是假设用户界面命令在不同版本中保持不变。始终手动或使用脚本化的诊断工具来检查高曲率关节、手指、面部、肩膀、臀部、宽松衣物以及重叠的壳。
 
-Test deformation poses, not only numerical sums: arms up/down, elbow/knee extremes, shoulder twist, hip flexion, wrist/ankle rotation, facial extremes, and any gameplay-critical silhouette.
+<a id="weight-validation"></a>
 
-## Separate animation acceptance levels
+## 权重验证
 
-- **Basic FK binding:** rest mesh, hierarchy/weights, neutral-pose equivalence and representative small poses checked. State this scope explicitly; finite coordinates and normalized weights alone are insufficient even here.
-- **Motion validated:** inspect the intended range with actual materials: joint compression/volume, creasing, self-intersection, gaps, eye/ear/muzzle attachments, paw deformation and texture stability. IK controls, facial shapes and retargeting require their own checks when requested.
-- **Locomotion validated:** review at least one complete stride, its support/swing transitions and loop boundary from side and three-quarter views. Check actual evaluated sole contact, penetration, unintended foot sliding during stance, swing clearance, weight transfer and root travel. Ankle-target error is not sole-contact evidence. For a traveling loop, compare matching phases after removing intended root translation; also inspect texture/material continuity.
+对于每一个变形网格，仅检查与变形骨骼相对应的顶点组。报告：
 
-Choose motion/contact tolerances for character scale and style, record them with observations, and sample critical contacts rather than just start/middle/end. A few pleasant stills or a zero-nonfinite-vertex test cannot authorize a walking/running-ready claim. Do not generate an animation solely because the user mentioned possible future use; establish the neutral mesh/basic scope and preserve the validation backlog.
+- 未加权顶点；
+- 那些变形组之和超出1.0容限的权重；
+- 影响低于清理阈值；
+- 顶点超出目标的影响范围；
+- 左侧、右侧命名或对称性不匹配；
+- 分配给缺失或未变形的骨骼的权重。
 
-## Armature and modifier contract
+与上下文相关的清理操作包括 `vertex_group_clean`、 `vertex_group_normalize_all` 和 `vertex_group_limit_total`。仅在需要运行 API 时，在“权重绘制”或“对象模式”下对目标网格使用这些操作，并在每次操作后重新验证。切勿意外地将非变形控制组归一化为皮肤权重。
 
-- Keep one explicit armature modifier per intended deform rig unless the design requires layered deformation.
-- Verify modifier target, vertex-group/multi-modifier options, preserve-volume choice, and order relative to corrective modifiers.
-- Export only deform bones when the target allows it; control/mechanism bones may be required for baking but not runtime.
-- Avoid scale compensation tricks that produce non-unit bone/object scale at export.
-- Preserve an editable rig and create a task-owned export rig if constraints, drivers, custom shapes, or unsupported bone structures must be baked away.
+测试变形姿势, 不仅数字总和: 手臂up/down,肘部、膝关节 极端，肩部扭动，臀部弹性，腕部、踝部 旋转，面部极端，以及任何游戏游戏批评剪影.
 
-## Shape keys
+<a id="separate-animation-acceptance-levels"></a>
 
-Shape-key vertex correspondence is topology-sensitive. Do not change vertex count/order, apply incompatible modifiers, or join/split the mesh after shape keys are authored.
+## 分级验收动画
 
-- Keep Basis stable and name keys deterministically.
-- Validate slider ranges and combinations, not only individual keys.
-- Check corrective keys with their driver poses and ensure dependencies do not form cycles.
-- Confirm whether the target exports morph normals/tangents and whether animation of shape-key values is supported.
+- **基本FK绑定：** 剩余网格、层级、权重、中性姿态等价性以及代表性的小姿态均被检查。需明确说明此范围；仅使用有限坐标和归一化权重是不足以满足需求的。
+- **运动验证：** 使用实际材料检查预定范围：关节压缩、体积, 褶皱, 自交, 间隙,眼、耳、口鼻部附件、爪子的变形以及纹理的稳定性。当需要控制IK时，面部形状和重新定位则需要单独进行验证。
+- **运动验证：** 至少检查一个完整的步态，其support/swing从侧面和四分之三视角观察过渡和循环边界。检查实际评估的单一接触、穿透、站立时非预期脚部滑动、摆动间隙、重量转移以及根部移动。踝关节目标误差并非单一接触的证据。对于移动循环，在去除预期的根部移动后，比较相应的阶段；同时进行检查。texture/material连续性。
 
-## Actions, clips, and root motion
+选择motion/contact对角色比例和风格的容差进行记录，并附上观察结果，同时选取关键接触点进行采样，而不仅仅是start/middle/end.一些令人愉悦的静态图像或零非有限顶点测试并不能证明walking/running-ready声明。不要仅仅因为用户提到了可能的未来用途就生成动画；要建立一个中立的mesh/basic保留验证积压任务。
 
-Define ownership before baking:
+<a id="armature-and-modifier-contract"></a>
 
-- one action per clip, NLA strips, or the target exporter's supported convention;
-- exact frame ranges, FPS, sampling step, loop boundary, and naming;
-- root-motion source bone/object and whether motion remains in-place or extracted;
-- reference/rest pose expectations and negative-frame policy.
+## 骨架与修改器要求
 
-Bake constraints/drivers to an export copy only when needed. Preserve the source actions and verify start, middle, end, contacts, loop seam, and root displacement for every clip. Avoid exporting all actions simply because an exporter offers that checkbox; filter to the intended character and clips.
+- 除非设计要求进行分层变形，否则每个预期的变形装备中都应保留一个明确的骨架修改器。
+- 验证修改目标，vertex-group/multi-modifier选项、保留体积的选项，以及相对于修正修饰符的顺序。
+- 仅当目标允许时导出骨骼变形；control/mechanism骨骼可能需要在烘焙时使用，但在运行时并不需要。
+- 避免产生非单位的缩放补偿技巧bone/object导出时的缩放比例。
+- 保留可编辑的骨骼结构，并在需要保留约束、驱动、自定义形状或不受支持的骨骼结构时，创建由任务管理的导出骨骼结构。
 
-## Character export acceptance
+<a id="shape-keys"></a>
 
-Read [export-and-packaging.md](export-and-packaging.md), then verify:
+## 形态键
 
-- mesh, skeleton and root have the intended scale, axes and pivots;
-- no unweighted vertices or excess influences remain;
-- rest pose, bone hierarchy, bone axes and deform-only filtering survive;
-- modifier evaluation and shape keys survive without topology drift;
-- animation names, ranges, FPS, root motion and loop behavior survive;
-- materials, UVs, normals, tangents and transparency match the consumer;
-- each LOD remains bound to the compatible skeleton where required;
-- the exported character is reopened in a disposable scene or tested in the destination engine.
+形状键顶点对应关系对拓扑结构敏感。请勿更改顶点count/order应用不兼容的修改器，或join/split在形状键被创建之后，网格就形成了。
+
+- 保持基础稳定，并确定性地命名键。
+- 验证滑块范围和组合，而不仅仅是单个键。
+- 请检查校正键与其驱动姿势之间的关系，确保不存在依赖循环。
+- 确认目标文件是否支持形态导出。normals/tangents以及是否支持对形状键值进行动画处理。
+
+<a id="actions-clips-and-root-motion"></a>
+
+## 动作、片段与根运动
+
+在烘焙之前定义所有权：
+
+- 每个片段一个动作，NLA条带，或目标导出器支持的约定；
+- 精确的帧范围、FPS、采样步长、循环边界以及命名；
+- 根运动源bone/object以及运动是保持原位还是被提取；
+- 参考图、静止姿势 姿态预期和负面框架政策。
+
+烘焙约束、驱动器仅在需要时将文件导出为副本。保留原始操作，并验证每个片段的起始、中间、结束、接触点、循环接缝以及根部位移。避免仅仅因为导出工具提供了该选项而导出所有操作；只导出目标角色和片段。
+
+<a id="character-export-acceptance"></a>
+
+## 角色导出验收
+
+阅读 [export-and-packaging.md](export-and-packaging.md)，然后确认：
+
+- 网格、骨架和根节点具有预期的规模、轴点和旋转中心；
+- 没有未加权顶点或多余的影响因素存在；
+- 静止姿态、骨骼层次结构、骨骼轴以及仅变形过滤仍然有效；
+- 修改器评估和形状键在拓扑变化的情况下仍然有效；
+- 动画名称、范围、FPS、基础运动以及循环行为保持不变；
+- 材料、UV坐标、法线、切线以及透明度都与用户需求相匹配；
+- 每个 LOD 在需要时仍与兼容的骨架绑定；
+- 所导出的角色会在一次性场景中重新打开，或者在目标引擎中进行测试。

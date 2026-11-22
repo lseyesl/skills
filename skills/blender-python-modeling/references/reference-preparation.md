@@ -8,9 +8,9 @@
 
 ## 选择路线
 
-| route | 使用条件 | 不允许的替代 |
+| 路线 | 使用条件 | 不允许的替代 |
 |---|---|---|
-| generated | 透视/遮挡、隐藏结构或姿态影响本次构建，需要生成规范视图 | 只导入照片、凭经验写坐标、拿模型渲染倒充前置参考 |
+| 生成的 | 透视/遮挡、隐藏结构或姿态影响本次构建，需要生成规范视图 | 只导入照片、凭经验写坐标、拿模型渲染倒充前置参考 |
 | existing_reviewed | 已有适合本次范围、实际审查过的视图或校准资料 | 有几个图片文件就认定可用；参数配方代替视图证据 |
 | single_view_sufficient | 仅限已有模型局部编辑（facts.scope=local_edit），合适正交单视图足以约束当前范围，无待补隐藏体积/姿态 | 对复杂透视产品图一律说“单图足够” |
 | no_reference | 真正无视觉源的原创任务 | 用户提供图片却选择 original 绕行 |
@@ -38,9 +38,9 @@ generated 路线还需要：
 
 fitter 新建 build / 无 source 的 optimize 必须传 --reference-preparation。已有 source 的局部优化/render 不强制重生成图。实验仍需显式 diagnostic_only 决策并传 --diagnostic-only，不能升级为正式建模通过。
 
-    from reference_preparation import require_preparation
-    decision = require_preparation(
-        project / "reference-preparation.json", task_id, mode="reference",
-        construction_images=[project/"references/front.png", project/"references/right.png"])
+    从reference_preparation 导入require_preparation
+    decision = require_preparation
+        项目 / "reference-preparation.json", task_id, 模式="参考",
+        construction_images=[project/"references/front.png", project/"references/right.png])
 
 源图检查通过仅证明声明和证据新鲜，还必须验证一致性、标定和视觉结果。不允许任意直接 bpy 脚本绕过后宣称完整执行 Skill。评测应独立检查路由、实际生成记录、源图审查和标定；缺失是前置失败，不能只扣少量过程分后继续算可用交付。

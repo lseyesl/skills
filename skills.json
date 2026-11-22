@@ -6,27 +6,27 @@
       "requires": ["ancient-tales-pipeline"],
       "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-animation", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action", "concept-multiview-sheet", "query-obsidian"],
       "external": [
-        {"name": "sprite-gen", "kind": "skill", "when": "Selected sprite generation/post-processing route; integration documented against 2.1.0, inspect the installed interface before use"},
-        {"name": "image generation", "kind": "tool", "when": "Generating storyboard panels, visual concepts or character frames"},
-        {"name": "FFmpeg", "kind": "tool", "when": "Animatic assembly or video/audio encoding selected by the project backend"}
+        {"name": "sprite-gen", "kind": "skill", "when": "选择精灵图生成或后处理方案时使用；现有集成按 2.1.0 编写，使用前核查已安装版本的接口"},
+        {"name": "image generation", "kind": "tool", "when": "生成分镜、视觉概念图或角色帧"},
+        {"name": "FFmpeg", "kind": "tool", "when": "项目后端选择拼接动态分镜或编解码音视频时"}
       ]
     },
     "ancient-tales-pipeline": {
       "directory": "skills/ancient-tales-pipeline",
       "requires": [],
       "optional": [],
-      "external": [{"name": "hf", "kind": "tool", "when": "HF transfers in explicitly enabled production repositories only"}]
+      "external": [{"name": "hf", "kind": "tool", "when": "仅用于明确启用 HF 传输的制作仓库"}]
     },
     "blender-python-modeling": {
       "directory": "skills/blender-python-modeling",
       "requires": [],
       "optional": ["concept-multiview-sheet", "blender-styles"],
       "external": [
-        {"name": "Blender >=4.5", "kind": "tool", "when": "Blender scene operations or rendering"},
-        {"name": "mcp-for-blender", "kind": "tool", "when": "Live Blender control required by the modeling workflow"},
-        {"name": "uv", "kind": "tool", "when": "Host reference-image analysis environment"},
-        {"name": "Node.js + gltf-validator", "kind": "tool", "when": "Independent glTF/GLB format audit explicitly selected; provide a locked validator module, not installed by the Skill synchronizer"},
-        {"name": "gltfpack", "kind": "tool", "when": "Optional realtime glTF optimization backend explicitly selected and consumer extension support is confirmed"}
+        {"name": "Blender >=4.5", "kind": "tool", "when": "操作或渲染 Blender 场景"},
+        {"name": "mcp-for-blender", "kind": "tool", "when": "建模流程需要实时控制 Blender 时"},
+        {"name": "uv", "kind": "tool", "when": "在宿主机上分析参考图"},
+        {"name": "Node.js + gltf-validator", "kind": "tool", "when": "明确选择独立审计 glTF/GLB 格式时，须提供版本已锁定的验证器模块；技能同步工具不会安装它"},
+        {"name": "gltfpack", "kind": "tool", "when": "明确选择实时 glTF 优化，并已确认下游支持所用扩展时"}
       ]
     },
     "blender-styles": {
@@ -39,16 +39,16 @@
       "directory": "skills/concept-multiview-sheet",
       "requires": [],
       "optional": ["blender-python-modeling"],
-      "external": [{"name": "image generation", "kind": "tool", "when": "Generating inferred concept views"}]
+      "external": [{"name": "image generation", "kind": "tool", "when": "生成推定的概念视图"}]
     },
     "continuous-action": {
       "directory": "skills/continuous-action",
       "requires": [],
       "optional": ["blender-python-modeling"],
       "external": [
-        {"name": "Blender", "kind": "tool", "when": "Rendering keyframes from the bundled A.blend"},
-        {"name": "image generation", "kind": "tool", "when": "Creating character frames from validated keyframe references"},
-        {"name": "sprite-gen", "kind": "skill", "when": "Optional sprite assembly/export route"}
+        {"name": "Blender", "kind": "tool", "when": "从随附的 A.blend 渲染动作关键帧"},
+        {"name": "image generation", "kind": "tool", "when": "依据已核验的关键帧参考生成角色动作帧"},
+        {"name": "sprite-gen", "kind": "skill", "when": "选用精灵图组装或导出流程时"}
       ]
     },
     "shadow-puppet-animation": {
@@ -56,27 +56,27 @@
       "requires": [],
       "optional": ["shadow-puppet-image", "shadow-puppet-part-splitter", "blender-python-modeling", "ancient-tales-production"],
       "external": [
-        {"name": "image generation", "kind": "tool", "when": "Generating or editing character, scene, prop and state concepts"},
-        {"name": "FFmpeg", "kind": "tool", "when": "Reference-frame extraction or media inspection and encoding"},
-        {"name": "animation backend", "kind": "tool", "when": "Actual scene assembly, contact animation and rendering; use the selected project backend"},
-        {"name": "video/audio playback", "kind": "tool", "when": "Continuous original-speed visual and audio review"}
+        {"name": "image generation", "kind": "tool", "when": "生成或编辑角色、场景、道具及不同状态的概念图"},
+        {"name": "FFmpeg", "kind": "tool", "when": "提取参考帧，检查媒体或进行编码"},
+        {"name": "animation backend", "kind": "tool", "when": "实际组装场景、制作接触动作或渲染时，使用项目选定的后端"},
+        {"name": "video/audio playback", "kind": "tool", "when": "按原速连续审看画面和试听音频"}
       ]
     },
     "shadow-puppet-image": {
       "directory": "skills/shadow-puppet-image",
       "requires": [],
       "optional": ["shadow-puppet-part-splitter"],
-      "external": [{"name": "image generation", "kind": "tool", "when": "Generating or editing character concept images"}]
+      "external": [{"name": "image generation", "kind": "tool", "when": "生成或编辑角色概念图"}]
     },
     "shadow-puppet-part-splitter": {
       "directory": "skills/shadow-puppet-part-splitter",
       "requires": [],
       "optional": ["shadow-puppet-image", "blender-python-modeling"],
       "external": [
-        {"name": "Pillow", "kind": "python-package", "when": "Deterministic image processing tools"},
-        {"name": "Blender", "kind": "tool", "when": "Optional editable rig or target-engine verification; 2D continuous preview uses Pillow"},
-        {"name": "FFmpeg", "kind": "tool", "when": "Optional MP4 preview; continuous GIF preview uses Pillow"},
-        {"name": "image generation", "kind": "tool", "when": "Only when missing material or pose artwork needs generative repair"}
+        {"name": "Pillow", "kind": "python-package", "when": "执行可复现的图像处理"},
+        {"name": "Blender", "kind": "tool", "when": "选用可编辑绑定或目标引擎验证时；二维连续预览使用 Pillow"},
+        {"name": "FFmpeg", "kind": "tool", "when": "选择 MP4 预览时；连续 GIF 预览使用 Pillow"},
+        {"name": "image generation", "kind": "tool", "when": "仅在缺失素材或姿态图需要生成式修复时"}
       ]
     },
     "epub-xhtml-to-markdown": {
@@ -90,23 +90,23 @@
       "requires": [],
       "optional": ["epub-xhtml-to-markdown"],
       "external": [
-        {"name": "uv", "kind": "tool", "when": "Managing the converter environment"},
-        {"name": "marker-pdf", "kind": "python-package", "when": "Document conversion that needs Marker/OCR; reflowable EPUB uses the optional XHTML route"}
+        {"name": "uv", "kind": "tool", "when": "管理转换工具的运行环境"},
+        {"name": "marker-pdf", "kind": "python-package", "when": "转换需要 Marker 或 OCR 的文档；流式 EPUB 可选 XHTML 读取流程"}
       ]
     },
     "query-obsidian": {
       "directory": "skills/query-obsidian",
       "requires": [],
       "optional": ["distill-to-obsidian"],
-      "external": [{"name": "obsidian-cli", "kind": "skill", "when": "Optional live Obsidian navigation; filesystem queries do not require it"}]
+      "external": [{"name": "obsidian-cli", "kind": "skill", "when": "可选，用于在运行中的 Obsidian 内导航；文件系统检索可独立运行"}]
     },
     "distill-to-obsidian": {
       "directory": "skills/distill-to-obsidian",
       "requires": [],
       "optional": ["query-obsidian"],
       "external": [
-        {"name": "defuddle", "kind": "skill", "when": "Web-page ingestion"},
-        {"name": "obsidian-markdown", "kind": "skill", "when": "Formatting guidance while editing Obsidian Markdown"}
+        {"name": "defuddle", "kind": "skill", "when": "采集网页内容"},
+        {"name": "obsidian-markdown", "kind": "skill", "when": "编辑 Obsidian Markdown 时查阅格式规范"}
       ]
     }
   }

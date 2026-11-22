@@ -1,23 +1,29 @@
-# UV and Texture Baking
+<a id="uv-and-texture-baking"></a>
 
-UVs are part of the output contract, not a cosmetic final step. Decide the target texture resolution, material boundaries, required UV sets, and whether procedural materials must be baked before final topology changes.
+# UV 接缝与贴图烘焙
 
-For a newly built whole reference model, begin production painting, atlas generation, projection and baking only after the [clay review and snapshot](fidelity-and-completion.md#clay-review-before-production-texturing). UV planning and localized material trials may precede this review.
+在定稿拓扑前，明确交付所需的贴图分辨率、材质边界、UV 集，以及程序化材质是否需要烘焙。
 
-## Choose the projection
+按参考图新建整模时，先完成[白模审查并保存快照](fidelity-and-completion.md#clay-review-before-production-texturing)，再正式绘制贴图、生成图集、投影和烘焙。可以提前规划 UV 或做局部材质试验。
 
-| Asset | Preferred starting point |
+<a id="choose-the-projection"></a>
+
+## 投影方式
+
+| 资产 | 建议方法 |
 |---|---|
-| Character or organic hero asset | intentional seams plus Angle Based unwrap |
-| Hard-surface asset | seams along panel breaks plus Conformal unwrap |
-| Fast background prop | Smart UV Project, followed by packing inspection |
-| Planar label, screen, or decal | planar or project-from-view mapping |
-| Game lighting | a second non-overlapping lightmap UV set |
-| Large environment | tiled UVs or UDIM only when the target supports them |
+| 角色或重点展示的有机模型 | 手动指定接缝，使用基于角度的展开（Angle Based） |
+| 硬表面模型 | 沿面板交界设置接缝，使用保角展开（Conformal） |
+| 快速制作的背景道具 | 使用 Smart UV Project，检查 UV 岛的排列 |
+| 平面标签、屏幕或贴花 | 使用平面投影或从视图投影 |
+| 游戏光照 | 使用第二套互不重叠的光照贴图 UV |
+| 大型环境 | 目标平台支持时才使用平铺 UV 或 UDIM |
 
-Hide seams on less visible edges, material transitions, sharp corners, or existing construction breaks. Do not add seams to every hard edge automatically: shading splits and UV splits serve different purposes. Finish topology before final packing; topology edits can invalidate island layout and baked maps.
+将接缝放在不显眼的边、材质交界、锐角或已有结构分界处。硬边用于控制着色，UV 接缝用于展开，无需将每条硬边都设为接缝。拓扑定稿后再排列 UV 岛；后续改动拓扑可能使布局和已烘焙的贴图失效。
 
-## Multi-view projection check
+<a id="multi-view-projection-check"></a>
+
+## 多视图投影检查
 
 适用于多个参考视角给同一表面供色，以及已有模型出现重复眉眼、双唇线或接缝残影。烘焙前在部位台账列出容易重复或消失的标记。脸部通常包括左右眉眼、鼻翼和唇线。以下步骤也适用于跨投影接缝的徽记、文字和服装图案。
 
@@ -26,9 +32,11 @@ Hide seams on less visible edges, material transitions, sharp corners, or existi
 3. 同镜头逐个复查数量、位置和清晰度。例如正面每只眼只有一道眼形；斜前方眼角不分叉；侧面近眼与鼻梁的间距、嘴角位置和唇线可读性接近该方向的参考。远眼可被鼻梁遮住。观察发际、面颊和耳前是否染色，旋转检查视角间的过渡。侧面眼位前移或唇线消失时，重开对应项，校正眼窝深度、表面锚点或局部 UV，再烘焙。仅在参考无法约束该部位时调用多视图技能补特写。
 4. 按[正式交付证据](fidelity-and-completion.md#final-evidence-file)保存各方向的逐项结论及特写。完整模型的轮廓分数不能替代五官位置和唇线检查。
 
-## Create and identify UV layers
+<a id="create-and-identify-uv-layers"></a>
 
-Use the data API for layer ownership and operators only for unwrap/packing:
+## 创建和识别 UV 层
+
+通过数据 API 管理网格上的 UV 层，仅在展开和排列时使用操作器。
 
 ```python
 mesh = obj.data
@@ -37,9 +45,9 @@ mesh.uv_layers.active = uv
 uv.active_render = True
 ```
 
-Use stable semantic names such as `UVMap`, `Lightmap`, or a target-required name. Never rely on `mesh.uv_layers[0]` when editing an existing file. For export, verify which layer is active for rendering and whether the destination supports multiple sets.
+使用语义明确且稳定的名称，如 `UVMap`、`Lightmap` 或目标平台指定的名称。编辑现有文件时不要假定 `mesh.uv_layers[0]` 就是所需层。导出前核实当前渲染使用的 UV 层，以及目标平台是否支持多套 UV。
 
-Mark seams through mesh data when possible:
+尽量直接通过网格数据标记接缝。
 
 ```python
 for edge in mesh.edges:
@@ -47,11 +55,13 @@ for edge in mesh.edges:
 mesh.update()
 ```
 
-When seam selection depends on topology, derive it from explicit rules such as material boundary, marked sharp edge, dihedral angle, or named vertex group. Record the rule; do not preserve a fragile list of indices across topology rebuilds.
+如果接缝取决于拓扑，应按材质边界、已标记的锐边、二面角或命名顶点组等明确规则选择，并记录规则。重建拓扑后应重新计算，避免沿用旧边索引。
 
-## Context-safe unwrap and packing
+<a id="context-safe-unwrap-and-packing"></a>
 
-UV operators require a mesh object in Edit Mode with faces selected. Isolate the operation and restore mode/selection afterwards:
+## 展开与排列
+
+UV 操作器需要活动对象为网格，处于编辑模式且已选中面。隔离本次操作，结束后恢复原模式和选择状态。
 
 ```python
 def unwrap_object(obj, method="ANGLE_BASED", margin=0.02):
@@ -74,50 +84,56 @@ def unwrap_object(obj, method="ANGLE_BASED", margin=0.02):
         bpy.ops.object.mode_set(mode="OBJECT")
 ```
 
-Treat the keywords as runtime API. Inspect `bpy.ops.uv.unwrap.get_rna_type().properties` and `bpy.ops.uv.pack_islands.get_rna_type().properties` before using newer options. Blender 5.x Geometry Nodes UV features such as newer Minimum Stretch or custom pack-region behavior are not part of the Blender 4.x baseline.
+参数以运行版本为准。使用新选项前，检查 `bpy.ops.uv.unwrap.get_rna_type().properties` 和 `bpy.ops.uv.pack_islands.get_rna_type().properties`。Blender 5.x 几何节点中较新的最小拉伸和自定义排列区域功能不属于 4.x 基线。
 
-For scripted production work, make the margin policy explicit. Pixel padding is approximately `margin_uv * texture_resolution`; mipmapped game textures usually need more padding than a still render. Packing a 1K and 4K target with the same pixel padding requires different normalized margins.
+在制作脚本中明确留边规则。像素间距约为 `margin_uv * texture_resolution`。使用多级渐远纹理的游戏通常需要比静帧渲染更宽的留边。要在 1K 和 4K 贴图中保留同样的像素间距，需要不同的归一化边距。
 
-## Texel density and multiple UV sets
+<a id="texel-density-and-multiple-uv-sets"></a>
 
-Texel density must be compared in evaluated world scale, not raw object coordinates. Apply scale only if the downstream format requires it; otherwise include object scale in the density calculation. For each island, compare UV area with corresponding world-space surface area and normalize islands toward the approved pixels-per-unit target.
+## 纹素密度与多套 UV
 
-- Preserve intentionally higher density for faces carrying labels or close-up detail only when documented.
-- Allow mirrored/stacked islands for symmetric reusable detail only when unique baking, lightmaps, or the target engine do not require unique UVs.
-- Lightmap UVs must stay inside the 0–1 tile, have no overlaps, and use target-appropriate padding.
-- UDIM tiles require explicit tile numbering, saved images, and confirmation that the exporter/consumer supports them. Do not assume GLB preserves an arbitrary UDIM workflow.
+比较纹素密度时，使用求值后的世界空间尺寸。仅在下游格式要求时应用缩放，否则应将对象缩放计入密度。逐岛比较 UV 面积与对应表面的世界空间面积，调整至已确认的单位长度像素数。
 
-## Bake procedural materials
+- 仅在有明确记录时，为标签或近景细节保留更高的纹素密度。
+- 对于可复用的对称细节，只有在烘焙、光照贴图和目标引擎都允许 UV 共用时，才能镜像或叠放 UV 岛。
+- 光照贴图的 UV 必须位于 0–1 范围内，互不重叠，并按目标平台要求留边。
+- 明确 UDIM 各图块的编号，保存对应图像，确认导出器及下游软件都支持。逐项验证 GLB 能保留哪些 UDIM 数据。
 
-Use baking when the destination cannot reproduce Blender's node tree. Keep the editable procedural material and bake to a separate task-owned material or delivery copy.
+<a id="bake-procedural-materials"></a>
 
-1. Confirm final transforms, normals, triangulation policy, UV layer, cage/high-poly source, and low-poly target.
-2. Create each target image at the approved resolution and colour space.
-3. Add an Image Texture node for that image to every target material and make that node active; it need not be connected while baking.
-4. Use Cycles for the bake unless the running Blender build documents another supported path.
-5. Select source objects first and the low-poly target last for selected-to-active baking. Validate cage extrusion or ray distance on a small test.
-6. Bake one map at a time and save it immediately to an absolute project path.
+## 程序化材质烘焙
 
-Colour handling:
+当目标软件无法复现 Blender 的节点树时，保留可编辑的程序化材质，并将结果烘焙到本任务独立使用的材质或交付副本。
 
-- Base Color and Emission are colour data, normally saved as sRGB delivery textures.
-- Roughness, Metallic, AO, masks, Height, and Normal are non-colour data.
-- Confirm tangent-space normal orientation expected by the consumer; engines may differ on the green/Y channel convention.
-- Do not bake lighting into Base Color unless the deliverable explicitly requests it.
+1. 确认最终变换、法线、三角化规则、UV 层、投射笼、高模源及低模目标。
+2. 按已确认的分辨率和色彩空间创建各目标图像。
+3. 在每个目标材质中为该图像添加 Image Texture 节点，并设为活动节点。烘焙时可以不接入节点树。
+4. 使用 Cycles 烘焙，除非当前 Blender 构建的文档明确支持其他方式。
+5. 从选中对象烘焙到活动对象时，先选源对象，最后选低模目标。先做小样，检查投射笼外扩量或射线距离。
+6. 每次烘焙一张贴图，完成后立即保存至项目中的绝对路径。
 
-`bpy.ops.object.bake` is context-sensitive. Before calling it, set the render engine, bake type, active target object, selected source objects, active UV layer, active image node, and image save path. Read the running operator properties instead of copying Blender 5.x-only parameters.
+色彩空间
 
-## UV and bake validation
+- 基础色（Base Color）与自发光（Emission）属于颜色数据，通常以 sRGB 贴图交付。
+- 粗糙度、金属度、环境光遮蔽（AO）、遮罩、高度和法线属于非颜色数据。
+- 确认下游软件对切线空间法线的约定。不同引擎对绿色（Y）通道的方向可能有不同要求。
+- 仅在交付要求明确指定时，才把光照烘焙进基础色。
 
-Before delivery, verify:
+`bpy.ops.object.bake` 依赖当前上下文。调用前设置渲染引擎、烘焙类型、活动目标对象、选中的源对象、活动 UV 层、活动图像节点和保存路径。读取实际运行版本的操作器属性，避免引用 5.x 独有参数。
 
-- every textured mesh has the expected named UV layers and active render layer;
-- all loop UV coordinates are finite;
-- islands are in the allowed tile range;
-- no unintended overlap, flips, extreme stretching, or microscopic islands exist;
-- padding is sufficient at the final texture resolution and mip level;
-- baked images exist on disk, have the expected dimensions and colour space, and are linked by the delivery material;
-- tangent normals render correctly after triangulation and export;
-- a checker texture and final baked material have both been visually inspected.
+<a id="uv-and-bake-validation"></a>
 
-Do not treat a successful operator return as proof of a usable UV layout. Capture a UV/checker preview and inspect seams, distortion, density, and padding.
+## UV 与烘焙验收
+
+交付前逐项核验。
+
+- 每个带贴图的网格都有约定名称的 UV 层，并正确指定渲染使用的活动层。
+- 所有面角的 UV 坐标均为有限数值。
+- 所有 UV 岛都位于允许的图块范围内。
+- 没有意外的重叠、翻转、严重拉伸或过小的 UV 岛。
+- 最终分辨率及目标渐远纹理级别下仍有足够的留边。
+- 烘焙图像已写入磁盘，尺寸及色彩空间正确，交付材质已链接这些图像。
+- 三角化和导出后，切线空间法线渲染正确。
+- 已目视检查棋盘格测试贴图和最终烘焙材质。
+
+保存 UV 布局和棋盘格预览，检查接缝、变形、密度和留边。操作器成功返回只是执行结果，布局仍须目视核验。

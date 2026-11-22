@@ -6,7 +6,7 @@
   "modules": {
     "body": {
       "unresolved_issues": [
-        "Not inspected yet"
+        "尚未检查"
       ],
       "checks": {
         "proportions": {

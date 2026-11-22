@@ -30,7 +30,7 @@
     },
     {
       "id": "query-obsidian.reference.31268bf73b3c",
-      "title": "Obsidian vault locations",
+      "title": "Obsidian 笔记库位置",
       "entry": "references/vault-locations.md",
       "kind": "knowledge",
       "tasks": [
@@ -42,10 +42,10 @@
         "vault locations"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "task_id": "replace-me",
-  "purpose": "replace with intended modeling use",
+  "purpose": "填写建模用途",
   "route": "generated",
-  "reason": "replace with diagnosis of why generated views, existing views, or a single view for a scoped local edit are appropriate",
+  "reason": "说明为什么需要生成视图、可以复用已有视图，或为什么当前局部编辑只需单视图",
   "facts": {"scope": "whole_model", "projection": "unknown", "needs_hidden_shape": true, "needs_pose_normalization": false},
   "style_selection": {"id": null, "reason": null, "region": null, "shape_cue": null, "surface_cue": null},
   "selected_skill": "concept-multiview-sheet",

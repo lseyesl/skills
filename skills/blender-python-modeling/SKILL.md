@@ -1,86 +1,100 @@
 ---
 name: blender-python-modeling
-description: Create, inspect, or modify Blender models and scenes with reproducible Python (`bpy`) scripts and the locally configured `mcp-for-blender` server. Use for AI/reference-image analysis, modeling, UVs, texture baking, materials, geometry nodes, game or character assets, scene assembly, asset libraries, cameras, lights, rendering/compositing, animation, physics, `.blend` work, or export. Includes concrete recipes validated on Blender 4.5 LTS with runtime guards for other 4.x/5.x versions. Do not use for another DCC, Blender installation, or a request that only needs a 2D image.
+description: "通过可复现的 Python（`bpy`）脚本和本地 `mcp-for-blender` 服务创建、检查或修改 Blender 模型与场景。适用于参考图分析、建模、UV、贴图烘焙、材质、几何节点、场景搭建、绑定、动画、物理、灯光、渲染合成、`.blend` 文件编辑和资产导出。配方以 Blender 4.5 LTS 为测试基线，版本相关接口需在实际运行的 4.x 或 5.x 版本中核验。其他数字内容制作软件、Blender 本体安装及纯二维生图需求另选相应流程。"
 ---
 
-# Blender Python Modeling
+<a id="blender-python-modeling"></a>
 
-Inspect the task scene, execute a persistent script, and verify scene structure and appearance. Use Blender MCP for live work. For isolated file tasks that allow background execution, run the same scripts against a task-owned copy with the Blender CLI.
+# 使用 Python 在 Blender 中建模
 
-## Decision workflow
+检查任务场景，运行保存到文件的脚本，然后核验场景结构和外观。实时工作使用 Blender MCP；允许后台运行的独立文件任务可通过 Blender CLI 在任务专属副本上运行同一脚本。
 
-Before choosing geometry or tools, classify the task as create/inspect/repair/optimize/animate/export. Read [task analysis](references/task-analysis.md), inspect the existing scene using [scene diagnosis](references/scene-diagnosis.md), then select a conditional path using [procedure selection](references/procedure-selection.md) and [knowledge index](knowledge.json). The portable `scripts/knowledge_catalog.py` searches sibling installed manifests; missing facts are inspection requirements, not permission to guess.
+<a id="decision-workflow"></a>
 
-Record facts, hypotheses, selected method, preserved data, baseline and acceptance in project-local task-analysis.json or the equivalent existing project record. Store shared inputs once and reference the same source hashes and artifacts from stage-specific checks. For a local repair, render the affected region using the same camera, scale and lighting before and after the change. For repairs, reproduce before changing; for optimization, measure the baseline and declare benefit/regression limits first. Existing compatible rigs or local animation edits reuse adequate assets and references; do not force a new design-sheet workflow. New reference-driven construction still follows the scoped reference requirements below.
+## 任务判断
 
-For a 3D model, preserve the visible design and complete occluded regions using the ordinary structure of that particular subject, material and pose. Apply explicitly requested exceptions within their stated scope. At blockout, inspect the actual geometry from a direction that reveals the hidden relationship. See [interpreting hidden structure](references/reference-image-analysis.md#complete-hidden-structure).
+先判断任务属于创建、检查、修复、优化、动画还是导出。阅读 [任务分析](references/task-analysis.md)，根据 [场景诊断](references/scene-diagnosis.md) 检查现有场景，再参照 [流程选择](references/procedure-selection.md) 和 [知识索引](knowledge.json) 决定执行路径。可移植脚本 `scripts/knowledge_catalog.py` 可搜索同级已安装技能的清单。缺少事实时先检查现场。
 
-Before reference-driven creation, complete the [reference route decision](references/reference-preparation.md). For a new whole model from an image, prepare and review a multiview reference set before the first geometry, including blockout. Reuse suitable reviewed views and generate missing directions. Reserve single-view preparation for a scoped local edit. If generation is needed, actually invoke concept-multiview-sheet with the source images; optional installation does not mean optional execution of a selected route. No-reference/user-waived/diagnostic paths must be explicit and truthful. Missing preparation is a failed prerequisite, not a minor score deduction.
+在项目的 `task-analysis.json` 或等效记录里写明事实、假设、方法、需保留的数据、基线和验收标准。共用输入只保存一份，各阶段引用相同的源哈希和证据。修复前先重现问题，再用相同镜头、比例和照明拍摄修改前后的局部。优化前先测基线，明确收益与允许的退化范围。局部动画编辑或已有兼容绑定可复用已有资产与参考。新建整模按下文准备参考。
 
-Choose a representative local experiment, execute through the existing staged guard, verify against independent acceptance and regress unchanged capabilities. Failed acceptance returns to the contradicted diagnosis, not an unbounded parameter search. Domain routes: [hand construction](references/procedures/characters/hand-construction.md), [hand deformation](references/procedures/characters/hand-deformation.md), [wheel construction](references/procedures/vehicles/wheel-construction.md), [wheel motion](references/procedures/vehicles/wheel-motion.md), [rigging and skinning](references/procedures/characters/rigging-and-skinning.md). For a whole character with individually modeled fingers, apply hand construction to each hand during blockout and check the posed finger volumes before detailing, including static deliveries. These new routes are experimental until task/visual evidence establishes their supported scope.
+保留原图可见设计，根据对象、材质及姿态的常规结构补全遮挡部位。用户指定的例外只适用于其声明范围。粗模阶段应从能揭示遮挡关系的角度检查实际几何。见 [隐藏结构的解读](references/reference-image-analysis.md#complete-hidden-structure)。
 
-## Blockout before refinement
+创建参考模型前先完成 [参考准备](references/reference-preparation.md)。单图新建整模时，从粗模开始前就要备齐并审阅多视图；复用合适的已审视图，用原图实际调用 `concept-multiview-sheet` 补足缺失方向。单视图准备适用于限定范围的局部编辑。无参考、用户豁免或仅诊断均须如实登记；缺少必要准备时保留未通过状态。
 
-Generated guides must independently pass original-source fidelity and cross-view consistency. Use the concept Skill's observed invariant ledger and source-fidelity receipt. A coherent redesign is not a faithful reference, and a faithful-looking front is not a whole-sheet pass. Keep source/prompt/output hashes and regional comparisons before geometry; do not let an old parameter recipe silently replace reference preparation.
+选择有代表性的局部试验，使用已有的分阶段校验流程执行，独立验收并回归检查其他能力。失败时回查与结果相矛盾的诊断。专项流程包括 [手部建模](references/procedures/characters/hand-construction.md)、[手部形变](references/procedures/characters/hand-deformation.md)、[车轮建模](references/procedures/vehicles/wheel-construction.md)、[车轮运动](references/procedures/vehicles/wheel-motion.md) 和 [骨骼绑定与蒙皮](references/procedures/characters/rigging-and-skinning.md)。逐指建模的角色应在粗模阶段分别检查双手及摆姿后的手指体积，静态角色也适用。这些流程的适用范围仍需实际任务和视觉证据验证。
 
-For complex creation or major shape changes, follow [blockout and refinement](references/procedures/modeling/blockout-and-refinement.md): decompose the asset, record each module's method/reason, build a low-resolution representation, inspect it, then refine the appropriate parts. Cube-based box modeling is a valid blockout route; primitives, surfaces, curves, sculpting and suitable existing assets are also valid. No universal cube, mesh count or subdivision level proves readiness.
+<a id="blockout-before-refinement"></a>
 
-Before refinement require fresh scoped [blockout acceptance](references/acceptance/blockout.md) evidence bound to the current coarse geometry, plan and dependencies. Reuse existing coarse assets for local tasks; do not rebuild unaffected parts. Keep the reviewed coarse source or an equivalent frozen control state. Existing fitters may supply equivalent checks through their snapshots/reviews rather than adopting a second orchestration framework.
+## 粗模验收后再精修
 
-Before choosing a representation, apply the [reference interpretation branches](references/reference-image-analysis.md#interpret-the-reference-before-tracing-or-choosing-geometry): separate boundaries from occlusion/reflection and justify repeated structure. Declare target-derived delivery limits in the modeling plan, separately from optional runtime safeguards. **Build and review a faithful source first, freeze it, then optimize a derived delivery copy** using [realtime optimization](references/procedures/delivery/realtime-optimization.md). Never remove observed features or flatten important curves just to meet the final triangle cap during reconstruction. Low-resolution blockout remains a shape decision, not final delivery acceptance; extra polygons alone do not establish fidelity. Run [source/evaluated-triangle/reimport checks](references/verification.md#source-evaluated-triangles-and-reimport-are-distinct-layers) at each meaningful stage; source geometry still must be sound. Keep original-source fidelity checks independent of construction-mask agreement. Report source quality and optimized-copy quality/cost separately; a cheaper but visibly degraded copy fails its preservation gate.
+生成的参考图要分别通过原图忠实度和跨视图一致性审阅。使用多视图技能的可见特征台账和原图核对记录。建模前保留原图、提示词、生成图的哈希和局部对照。复用旧参数时仍须检查本次的参考图。
 
-## Core contract
+复杂创建或主要形体修改遵循 [粗模与精修](references/procedures/modeling/blockout-and-refinement.md)：分解资产，记录各模块的方法和理由，建立低分辨率形体，检查后按部位细化。可选盒式建模、基本体组合、曲面、曲线、雕刻或复用资产。检查实际形体后再决定能否细化。
 
-- Prefer a reusable `.py` file over a long one-off MCP code string. In an existing project, follow its script layout; otherwise use `scripts/blender/<task-name>.py`.
-- Use the configured `mcp__blender__*` tools from `ahujasid/mcp-for-blender`. Do not substitute similarly named tools from other Blender MCP implementations.
-- Before mutation, call `get_addon_status` and `get_scene_info`. Pass the user's latest Blender request verbatim as `user_prompt` on every MCP call; do not replace it with an internal plan step.
-- For new models, open a task-owned empty scene and remove/avoid its startup Cube, Camera and Light before creation. Use [production workspace](references/production-workspace.md); create only the references/studio needed by the task. Existing-scene edits preserve existing work and never clear unowned data. Give generated objects stable ownership and replace only the intended modules; never overwrite a user's `.blend` merely for repeatability.
-- Prefer `bpy.data`, `bmesh`, and direct property assignment to context-sensitive `bpy.ops`. Use operators only when there is no practical data-API equivalent, and establish the required mode, active object, selection, area, and override explicitly.
-- Treat Blender version, RNA properties, enum identifiers, node sockets, and operator signatures as runtime facts. Use `bpy_api_lookup` or `describe_node_type` before relying on uncertain or version-sensitive details.
-- Treat Blender 4.5.12 LTS as the tested baseline, not as proof of compatibility with every 4.x or 5.x build. Read [references/compatibility.md](references/compatibility.md) before using version-sensitive features.
-- Run host-side reference-image tools through this skill's uv project (`uv run --project <skill-dir> ...`). Do not install OpenCV/NumPy into Blender's bundled Python or the user's global Python.
-- For “generate a design image, then make its model” tasks, include `concept-multiview-sheet` for missing controlling views before detailed geometry, reviewed for consistent pose and projection. Use a full five- or six-view sheet when the task calls for it. Do not wait for the user to request missing views. For a new model from one photo, generate the missing construction directions before blockout; do not force image generation for trivial edits or an explicitly waived sheet. Generated hidden views are inferences, not measurements. A flawed sheet stays preview-only; a later model render cannot retroactively satisfy pre-model reference preparation.
-- Choose a character's intended use and bind/rest pose **before generating its first modeling reference**. For reusable characters or an unspecified character-model request, default to an anatomy-appropriate neutral pose that supports later rigging: humanoid A/T pose or quadruped standing pose, with separated limbs and readable attachments. Keep seated/dynamic concept images as appearance/performance references; generate and review a separate neutral-pose reference and its consistent multiviews before geometry. Explicit static sculptures or user-required fixed poses retain that pose. Follow [character-delivery.md](references/character-delivery.md#reference-and-rest-pose-before-modeling); a neutral image alone does not prove rig readiness.
-- Before building reference-driven geometry, establish an in-Blender reference workspace: separate view images, axis-aligned Image Empties, calibrated scale/origin, adjustable opacity, front depth display, and axis-view visibility. Inspect actual front/side overlays before proceeding; an image-analysis JSON or imported-object count does not replace this step. Follow [references/reference-image-analysis.md](references/reference-image-analysis.md).
-- Before importing multiple construction views, require a project `multiview_review` with source hashes, inspected pose/proportion/projection/structure/appearance/axis findings and `passed`/`partial`/`blocked` readiness. Partial evidence needs explicit `build_regions`; blocked regions cannot enter detailed geometry. The workspace helper enforces declared scope and source freshness, not visual agreement. See the [pre-model review](../concept-multiview-sheet/references/pre-model-review.md).
-- For a reference-driven local shape edit, including a standalone Blender script, identify the changed profile and adjacent contacts. Declare the controlling view and anchors in `required_landmarks` before geometry changes. Start a fresh reference setup for the edit, use its mapped coordinates in the deformation, and require a current comparison against the reference before delivery. Compare neighboring contacts in the same overlay. When the necessary view is missing, return to reference preparation and label generated hidden views as inferred.
-- Make those guides participate in construction: use the [executable reference workspace](references/reference-workspace-tool.md) in generic builders, derive coordinates/profiles with its landmark mapping, and run its live-state/review checks before rebuilding geometry and before final delivery. The template requires an explicit reference/original/user-waived mode. Existing fitters may retain their calibrated pixel/profile mapping and comparison pipeline; a bare image import or packed image does not satisfy that equivalent path.
-- Treat AI references as fallible design evidence. Resolve local artifacts using reliable source evidence, anatomy/mechanics, and consistent views; record the interpretation. When materially different plausible interpretations remain and evidence cannot decide, ask for human judgment on the affected region and continue independent work. Do not reproduce impossible geometry or silently redesign identity-defining features to fit a generated panel.
-- For reference-driven work, read [references/fidelity-and-completion.md](references/fidelity-and-completion.md) and create a module ledger before detailed geometry. Track semantic modules and their signature features separately from Blender object count.
-- Treat `blockout`, `feature-complete`, and `final` as different acceptance stages. A good silhouette, attractive hero render, high object count, or presence of a coarse primitive does not authorize claiming that the referenced model is complete.
-- Never hide simplification inside a single completion percentage. Report matched, simplified, blockout, and missing module counts, separating presence from reference agreement. Any coverage fractions derived from ledger labels are bookkeeping, not measured reconstruction accuracy; a `matched` label needs view-specific comparison evidence.
-- After every meaningful stage, verify it. A task is not complete until the expected objects/data exist and the visual result has been inspected.
-- When iterating an existing generated asset, use the latest editable asset as the baseline and run the [fixed-view repair comparison](references/local-feature-review.md#iterate-an-existing-asset) on a derived copy.
-- When several reference views supply color to one face or marked surface, record its high-contrast landmarks in the module ledger as `projected_features` before baking. For an existing asset with duplicated markings, add them when reopening the module. Apply the [multi-view projection check](references/uv-and-texture-baking.md#multi-view-projection-check) before accepting a bake or closing a ghosting repair.
-- Before a full render suite, pass the [local shape and detail review](references/local-feature-review.md): surface orientation, thickness, attachments and signature relief in the evaluated mesh and intended lighting. For a reference-driven correction with saved snapshots, render the ledger feature's reference crop and fixed-camera clay/material pairs. A vein formula, bump shader or nonzero displacement does not prove the referenced feature is readable. Review one representative repeated part first.
-- Before blockout of a whole reference model, inspect the current image for construction and surface cues even when the user supplied no style name. Record the [style decision and sample](references/fidelity-and-completion.md#style-sample) in reference preparation. For a requested or visually identified art style, use the [blender-styles index](../blender-styles/SKILL.md), then read only the selected style and needed references. Style rules supplement this modeling/reference workflow; they do not replace proportion, geometry or delivery checks.
+精修前取得与当前粗模、计划和依赖相符的 [粗模验收](references/acceptance/blockout.md) 证据。局部任务复用合适的粗模，保留审阅过的源资产或等效的冻结状态。已有拟合流程可用自己的快照和审阅记录完成等效检查。
 
-## Workflow
+先按 [参考解读](references/reference-image-analysis.md#interpret-the-reference-before-tracing-or-choosing-geometry) 区分真实边界、遮挡与反射，说明重复结构的依据。在建模计划中区分交付指标与可选的运行资源限制。先建成忠实于原图的源模型，审阅并冻结后，按 [实时优化](references/procedures/delivery/realtime-optimization.md) 处理派生交付副本。还原过程中保留可见结构和重要曲率。粗模分辨率、增加面数或施工遮罩吻合度都不能决定最终还原度。在关键阶段执行 [源几何与回读检查](references/verification.md#source-evaluated-triangles-and-reimport-are-distinct-layers)，独立检查原图忠实度。分别报告源模型的质量和优化副本的质量与成本；外观明显退化时保护项未通过。
 
-1. **Resolve the deliverable.** Identify the requested model/scene change, real-world scale, output format and path, reference images, and whether the current `.blend` must be preserved. For characters, establish static versus reusable/riggable intent and select the reference/model rest pose before image generation; preserve an explicitly requested fixed presentation pose separately when both are needed. Infer ordinary artistic details, but do not invent dimensions or destructive scope that materially changes the result.
-2. **Analyze references when present.** Read [references/reference-image-analysis.md](references/reference-image-analysis.md) and [references/fidelity-and-completion.md](references/fidelity-and-completion.md). Extract normalized silhouettes and per-view ratios, then inventory visible modules, repeated counts, deliberate asymmetry, and signature features in a module ledger. Identify trustworthy regions, AI artifacts, and cross-view conflicts; choose controlling evidence per region and record reasoned inferences. Ask for human judgment only when an unresolved choice materially changes the result. Without a scale anchor, keep the model normalized and label absolute size as unknown.
-3. **Inspect Blender.** If relevant MCP tools are missing, follow the [upstream installation procedure](references/mcp-workflow.md#missing-mcp-install-the-upstream-integration-then-verify), install/configure both server and add-on for the actual client, verify their connection, then continue the saved modeling stage. Call `get_addon_status`, then `get_scene_info`. Inspect specific existing objects with `get_object_info`. If Blender is unreachable, follow the bounded connection recovery in [references/mcp-workflow.md](references/mcp-workflow.md): check whether Blender is running, launch it in normal UI mode if absent (the window may stay in the background or minimized), and retry before asking the user to start it manually. Do not use `--background` / `-b` headless mode to recover an MCP connection. A code-only script remains an option when that satisfies the request; label it unexecuted.
-4. **Initialize the correct workspace.** For create, activate a task-owned empty scene with Asset/Coarse/References/Studio roles; default startup objects must not remain in it. For edit, name and inspect the existing scene without clearing it. Choose stable ownership, units, axes and edit scope. Save/reopen must preserve the intended active scene. See [production workspace](references/production-workspace.md).
-5. **Establish the reference workspace before geometry.** For reference-driven tasks, import the separate views into a task-owned collection as Image Empties facing their corresponding orthographic axes. Set adjustable opacity (start around 0.35–0.5), front depth display, and appropriate front-side/axis-only visibility; lock selection/transforms after calibration. Align centerline, ground/origin, scale and semantic landmarks, keeping unreliable views supplemental. Inspect front/side screenshots with the reference visible; preserve the packed images and calibration/interpretation record in the deliverable. If Blender cannot be run, label this prerequisite unexecuted instead of claiming reference-guided modeling. Skip this stage only when the task has no visual reference or the user explicitly waives it.
-6. **Choose a content recipe and target stage.** Record a per-module modeling plan with representation, reason, object bindings, connections/dependencies and checks; choose blockout before refinement for complex creation. Complete the diagnosis and conditional procedure selection above; route by the table below, then design the object hierarchy, construction method, modifier/node stack, materials, lighting, and output constraints before coding. State whether this pass targets blockout, feature-complete, or final; do not silently lower that target because detailed modules are harder to script.
-7. **Write the script.** Start from [assets/blender_task_template.py](assets/blender_task_template.py) when useful. Keep `build_*`, `update_*`, `validate_*`, and optional `export_*` functions separable. Read [references/python-modeling.md](references/python-modeling.md) for robust `bpy` patterns. Derive reference-driven positions and proportions from the calibrated landmarks/profiles, not unexplained hand-picked coordinates.
-8. **Run in stages.** For a reference-based character, complete the [registered silhouette comparisons](references/acceptance/blockout.md#参考角色的粗模剪影) on the assembled blockout before detailing. Plan separate whole-body, face, neck and torso checks in each applicable controlling view and retain the overlays with the coarse snapshot. Separate blockout construction, actual review, and refinement; bind the refinement to a fresh scoped source review before any mutation. Add content-specific [connection/cavity checks](references/procedures/modeling/containers-and-connections.md). On failure use a bounded diagnose–local repair–fresh review loop, preserving attempts and invalidating old evidence. Run the actual render preflight before fixing visual comparison settings. Load the saved script through a small `execute_blender_code` bootstrap. For large work, use guarded build/rig/verify/render stages; inspect actual MCP error text and require fresh predecessors. See [staged execution](references/staged-execution.md) and [MCP workflow](references/mcp-workflow.md).
-9. **Verify and iterate against the references.** Follow the [fixed-camera refinement loop](references/fidelity-and-completion.md#fixed-camera-refinement-loop). Compare the assembled model before choosing edits, widen each comparison to connected regions and the whole asset, then perform a whole-model refinement pass. Use scene/object inspection and viewport screenshots with the relevant reference visible. Inspect matched-camera overlays and local landmark/profile differences, including head proportions and limb thickness. For detailed facial features or hair, apply the [fixed-camera feature comparison](references/fidelity-and-completion.md#fixed-camera-feature-comparison) before choosing a repair and repeat it on the candidate. Use the analyzer as supporting evidence; whole-object silhouette overlap cannot validate these local features. For new whole reference models, finish and freeze the [reviewed clay model](references/fidelity-and-completion.md#clay-review-before-production-texturing) before painting, projecting or baking production textures. Keep early style tests on a representative patch. After texturing, compare clay and shaded renders from the locked cameras. Reconsider suspected AI artifacts using the recorded evidence policy, and ask for human judgment when it cannot resolve a material ambiguity. Update module statuses from these comparisons and adjust the persistent script.
-   For every assembled character, revisit its intended use. For posing or animation, complete the [motion analysis and test plan](references/procedures/characters/rigging-and-skinning.md#动作分析与逐项复测) before binding. For each motion, record the intended posing controls or direct FK bones, exercise those inputs in the editable rig, and verify both control behavior and mesh deformation after repair and in final regression. For static delivery, record that scope in the modeling plan.
-10. **Apply the completion gate.** For final reference-model delivery, run the [final evidence command](references/fidelity-and-completion.md#final-evidence-file) on the exported file after reimport checks. Use its current report before claiming acceptance. Run `scripts/validate_module_ledger.py` with per-feature comparison records and final review evidence, and inspect a multi-view contact sheet plus a perspective view. The validator checks evidence declarations, not image agreement; do not mark modules `matched` in bulk because they exist. User corrections invalidate affected matches and final review until repaired and re-reviewed. Before labeling any visible defect a residual, follow the [visible defect repair rule](references/fidelity-and-completion.md#visible-defect-repair). Missing source hashes block certification only. Continue visual repairs using available views, invoke concept-multiview-sheet when a direction or detail is unclear, and inspect the revised mesh in the failing view. If a region stalls, log its evidence, retain the best reviewed revision, and continue the remaining modules. Deliver the best reviewed model with residuals only after the final whole-model review finds no actionable improvement; never relabel a blockout or feature-complete asset as final.
-11. **Persist deliberately.** Save or export only to the requested or clearly derived path. Constrain export to the explicit task scene/object whitelist, independently of selections in other scenes. Use MCP `export_scene` only if it can enforce the required settings; otherwise run the persistent [isolated delivery adapter](references/production-workspace.md) through MCP within its stated material/animation scope. Preserve the editable source. Verify source/evaluated geometry and required skin/clips after isolated reimport. For static textured GLB, use the [existing audit](references/export-and-packaging.md#static-textured-glb-audit). Apply [usable-asset acceptance](references/acceptance/usable-asset.md) and [verification](references/verification.md) before completion claims.
+<a id="core-contract"></a>
 
-## Production repair routes
+## 执行约定
 
-For generated/scanned mesh recovery use [mesh recovery](references/procedures/modeling/generated-mesh-recovery.md) and [data transfer](references/procedures/modeling/data-transfer-repair.md). After basic rig diagnosis, use [joint correctives](references/procedures/characters/joint-correctives.md). Surface and simulation faults route to [normal bake repair](references/procedures/surfacing/normal-bake-repair.md) or [cloth contact repair](references/procedures/simulation/cloth-collision-repair.md). Delivery work uses [glTF validation](references/procedures/delivery/gltf-validation.md) and [realtime optimization](references/procedures/delivery/realtime-optimization.md).
+- 将可复用的代码保存在 `.py` 文件。已有项目沿用其脚本布局，新项目使用 `scripts/blender/<task-name>.py`。
+- 使用已配置的 `ahujasid/mcp-for-blender` 提供的 `mcp__blender__*` 工具。其他实现的同名工具不保证兼容。
+- 修改前调用 `get_addon_status` 和 `get_scene_info`。每次 MCP 调用都将用户最新的 Blender 请求原文传给 `user_prompt`。
+- 新建模型使用 [制作工作区](references/production-workspace.md)，在任务专属空场景中移除或避开默认立方体、相机和灯光，按需创建参考与摄影棚。编辑已有场景时保留用户数据。生成对象需有稳定的归属标记，仅替换目标模块，不得因重复运行而覆盖用户的 `.blend`。
+- 优先使用 `bpy.data`、`bmesh` 和直接属性赋值。只有数据 API 缺少合适方法时才使用 `bpy.ops`，并显式设置模式、活动对象、选择、区域及上下文覆盖。
+- 在运行时核对 Blender 版本、RNA 属性、枚举标识、节点插口和操作器签名。不确定或受版本影响时查询 `bpy_api_lookup` 或 `describe_node_type`。
+- Blender 4.5.12 LTS 是已测试基线。使用依赖版本的功能前查阅 [版本兼容性](references/compatibility.md)，并核实当前 4.x 或 5.x 环境。
+- 宿主侧参考图工具使用本技能的 uv 项目（`uv run --project <skill-dir> ...`）。不要向 Blender 自带或用户全局 Python 安装 OpenCV、NumPy。
+- 先生成设计图再建模时，主动用 `concept-multiview-sheet` 补控制视图并审查姿态、投影。需要完整图集时使用五或六视图。单张照片新建整模应在粗模前补方向；简单编辑或用户明确豁免时可跳过。生成的隐藏面标记为推定。存在问题的图集仅供预览，事后模型渲染不能补证建模前的审阅。
+- 第一张建模参考图生成前确定角色用途和绑定／静止姿势。可复用角色或用途未指定时，默认采用解剖结构适合的中立姿态，如人体 A/T 姿势、四足站姿，四肢分开、连接处清晰。坐姿或动作图保留为外观及表演参考，另生成并审查中立姿态的多视图。明确要求固定姿势或静态雕塑时保留该姿势。见 [角色交付](references/character-delivery.md#reference-and-rest-pose-before-modeling)；仍须实际检查绑定条件。
+- 建模前在 Blender 中搭建参考工作区。各图分别以沿对应轴摆放的图像空物体导入，校准比例和原点，设置透明度、前置显示和按轴可见性。在正面和侧面核查真实叠图；图像分析 JSON 或导入数量不足以证明校准。见 [参考图分析](references/reference-image-analysis.md)。
+- 导入多张施工视图前检查项目的 `multiview_review`，其中包含源哈希、姿态、比例、投影、结构、外观、轴向，以及 `passed`、`partial` 或 `blocked` 状态。部分通过时明确 `build_regions`，受阻部位不得开始精模。工作区工具检查范围和源文件版本，视觉一致性需要审图。见 [建模前审阅](../concept-multiview-sheet/references/pre-model-review.md)。
+- 根据参考图局部改形时（包括独立 Blender 脚本），先确定要修改的轮廓和相邻接触点。修改前在 `required_landmarks` 声明控制视角与锚点，为本次修改重新设置参考并使用映射坐标驱动形变。交付前在同一叠图核对目标与相邻接触。缺方向时先补参考，生成的遮挡面标为推定。
+- 通用构建器使用 [可执行参考工作区](references/reference-workspace-tool.md)，通过特征点映射取得坐标或截面，在重建及交付前检查场景状态和审阅记录。模板须显式声明有参考、原创无参考或用户豁免。现有拟合器可继续使用等效的校准像素映射和对照流程。仅导入或打包图片不能证明参考参与了建模。
+- AI 参考图可能出错。依据可靠原图、解剖或机械结构及一致的视图解释伪影，并记录解决办法。重大歧义无法按证据消解时向用户确认，其他部位继续制作。保留身份特征，避免复刻不可能的结构。
+- 参考驱动任务先读 [还原度与完成条件](references/fidelity-and-completion.md)，精模前建立部位台账，分别跟踪语义模块和识别特征，不按 Blender 对象数推算完成度。
+- 分开验收 `blockout`、`feature-complete` 和 `final`。轮廓相似、主视图美观、物体多或存在占位体都不足以认定最终还原完成。
+- 分别报告匹配、简化、粗模和缺失的模块数。台账覆盖率表示记录数量；认定 `matched` 还需要指定视角的对比证据。
+- 每个实质阶段都要验证预期对象、数据和实际视觉结果。
+- 修改已有生成资产时，以最新可编辑版本为基线，在派生副本上执行 [固定镜头返修对比](references/local-feature-review.md#iterate-an-existing-asset)。
+- 多视图共同向同一表面供色时，烘焙前在台账的 `projected_features` 登记高对比特征。修复已有模型上的重复标记时也要补录。按 [多视图投射检查](references/uv-and-texture-baking.md#multi-view-projection-check) 检查烘焙或重影修复。
+- 批量渲染前通过 [局部形体与细节审阅](references/local-feature-review.md)，在实际求值的网格和预期照明下检查表面朝向、厚度、连接与标志性浮雕。已有快照时，保留参考裁图与固定镜头的白模／材质对照。先验收一个代表性重复部件，确认实际渲染中能读出对应细节。
+- 即使用户只给图，也应在整模粗模前识别造型和表面线索，在参考准备中记录 [风格选择与试样](references/fidelity-and-completion.md#style-sample)。按用户指定或图中可辨的风格查阅 [风格索引](../blender-styles/SKILL.md)，仅加载选定风格和必要参考；仍须核查比例、几何和交付质量。
 
-Each route declares its inputs, conditional diagnosis and independent acceptance. Source authority and adoption limits are recorded in [production sources](references/sources/production-sources.md). Read only the relevant route; do not load all references or silently install optional add-ons. These routes remain experimental until actual task/visual evidence establishes their supported scope.
+<a id="workflow"></a>
 
-## Loading a persistent script through MCP
+## 工作流程
 
-For repeated character/reference fitting, use the executable [reference-fitting workflow](references/reference-fitting/workflow.md) and `scripts/fit_character.py`: reviewed semantic masks/anchors, fixed render channels, component metrics, configurable builders, bounded local candidates, locks, immutable snapshots and rollback. Read the [architecture audit](references/reference-fitting/architecture.md) before extending it. Keep subject-specific coordinates in JSON and reuse existing geometry/style helpers. A 2D threshold or temporary limb rig test does not satisfy final 3D/animation acceptance.
+1. **确定交付。** 明确场景或模型改动、实际尺度、格式、输出路径、参考图和现有 `.blend` 的保留要求。角色在生成参考前确定静态、复用或绑定用途及静止姿态；同时需要固定展示姿势时另行保留。可推定普通美术细节，影响结果的尺寸和破坏性改动须有依据。
+2. **分析参考。** 阅读 [参考图分析](references/reference-image-analysis.md) 和 [还原度与完成条件](references/fidelity-and-completion.md)。提取归一化剪影和各视角比例，登记可见模块、重复数量、刻意的不对称及识别特征。逐区确认可靠证据、AI 伪影和跨视图冲突，记录推定依据。重大选择仍无法判断时再询问用户。缺乏尺度锚点时采用归一化尺度，实际尺寸标为未知。
+3. **检查 Blender。** MCP 工具缺失时按 [上游安装步骤](references/mcp-workflow.md#missing-mcp-install-the-upstream-integration-then-verify) 为实际客户端配置服务端和插件，核验连接后继续原阶段。依次调用 `get_addon_status`、`get_scene_info`，必要时用 `get_object_info` 查具体对象。连接失败按 [MCP工作流程](references/mcp-workflow.md) 有限重试，先检查进程，必要时用正常界面启动 Blender（可最小化），重试后才请求用户手动启动。不要用 `--background` 或 `-b` 恢复 MCP。若用户只需要脚本，可交付脚本并标明未执行。
+4. **初始化工作区。** 新建时激活任务专属空场景，按 Asset、Coarse、References、Studio 区分对象，移除默认启动对象。编辑时明确已有场景并检查，保留原有数据。确定归属、单位、轴向、范围，保存重开后核对活动场景。见 [制作工作区](references/production-workspace.md)。
+5. **建立参考工作区。** 将各视图导入专属集合，作为朝向对应正交轴的图像空物体。透明度可从 0.35–0.5 起调，设置前置显示和按面／轴可见性。校准中线、地面、原点、比例和特征点后锁定选择与变换。可靠性不足的视图只作补充。实际查看可见参考的正面和侧面截图，并保留打包的图像及校准、解读记录。仅在无视觉参考或用户明确豁免时跳过；无法运行 Blender 时如实标记未执行。
+6. **规划建模。** 按模块记录表示方法、选型依据、关联对象、连接、依赖及检查项。复杂创建先粗模再精修。完成诊断并按下表选择流程后，再设计层级、建模方法、修改器／节点、材质、灯光和输出约束。写明本轮目标阶段，不因实现困难擅自降低标准。
+7. **编写脚本。** 可从 [任务模板](assets/blender_task_template.py) 开始，拆分 `build_*`、`update_*`、`validate_*` 和按需使用的 `export_*`。按 [Python建模](references/python-modeling.md) 使用可靠的 `bpy` 写法，依据校准的特征点和轮廓确定坐标与比例。
+8. **分阶段执行。** 参考角色进入精模前，在已组装粗模上完成 [剪影对比](references/acceptance/blockout.md#参考角色的粗模剪影)。每个适用控制视角分别检查整身、脸型、颈部和躯干，保存叠图与粗模快照。构建、视觉审阅和精修分开运行，修改前将精修绑定到当前范围的审阅。按对象增加 [连接与空腔检查](references/procedures/modeling/containers-and-connections.md)。失败时诊断、局部修复、重新审阅，保留尝试并使旧证据失效。实际渲染预检后锁定比较设置。用简短的 `execute_blender_code` 引导代码加载脚本；大型任务按构建、绑定、验证、渲染分阶段检查前序版本和 MCP 原始错误。见 [分阶段执行](references/staged-execution.md) 和 [MCP工作流程](references/mcp-workflow.md)。
+9. **对照参考迭代。** 按 [固定镜头精修](references/fidelity-and-completion.md#fixed-camera-refinement-loop) 先审 组装后的整模，再选局部修改；扩大到相邻区域，最后整体精修。保留参考可见的视口截图，检查图像叠加、头部比例和肢体厚度。五官与发型使用 [固定镜头特征对比](references/fidelity-and-completion.md#fixed-camera-feature-comparison)，候选修改后再复拍。分析工具只作辅助。粗模、贴图前白模和最终导出都要在原图对应姿势和镜头下直接核查可见特征。生成正视图可辅助施工，原图可见特征仍须对照上传原图。新建整模在正式绘制、投射或烘焙贴图前先完成并冻结 [已审白模](references/fidelity-and-completion.md#clay-review-before-production-texturing)；早期风格试验限于局部。贴图后用相同镜头比较白模和材质渲染。按证据处理 AI 伪影；重大歧义需用户判断。根据实查更新模块状态和脚本。
+   角色组装后复核用途。需要摆姿或动画时，在绑定前完成 [动作分析与测试计划](references/procedures/characters/rigging-and-skinning.md#动作分析与逐项复测)。逐个动作记录控制器或直接操纵的 FK 骨，在可编辑绑定中实际操作，返修后及最终回归时同时核验控制行为与网格形变。静态交付在建模计划中登记范围。
+10. **执行完成验收。** 回读导出文件后，对实际交付件执行 [正式验收命令](references/fidelity-and-completion.md#final-evidence-file)，依据本版报告决定是否通过。用 `scripts/validate_module_ledger.py` 核查逐项比较和最终证据，查看多视图总览及透视图。验证器检查证据声明，视觉判断仍须审图。禁止仅凭模块存在就批量标记为 `matched`。用户纠正会使受影响的匹配项及最终审阅失效。把可见缺陷列为剩余差异前先执行 [可见缺陷修复](references/fidelity-and-completion.md#visible-defect-repair)。缺原图哈希会阻断认证，视觉修复仍应继续；缺少视角或细节时调用 `concept-multiview-sheet` 补图，从失败视角检查修改后的网格。局部停滞时记下证据并保留最佳已审版，继续其余部位。最终整模审阅确认无可执行的改进后，才可交付带差异说明的最佳版本；粗模与特征完成阶段保留其真实阶段名称。
+11. **保存与导出。** 只写入指定或可明确推导的路径；导出限制在任务场景与对象白名单内，不依赖其他场景的选择。MCP 的 `export_scene` 能执行所需设置时方可使用，否则在支持的材质与动画范围内调用 [隔离交付适配器](references/production-workspace.md)。保留可编辑源，隔离回读后复查几何、蒙皮和动作片段。静态贴图 GLB 执行 [静态审计](references/export-and-packaging.md#static-textured-glb-audit)，交付前完成 [资产可用性验收](references/acceptance/usable-asset.md) 和 [验证](references/verification.md)。
 
-Send only this style of bootstrap through `execute_blender_code`, substituting an absolute path safely:
+<a id="production-repair-routes"></a>
+
+## 常见修复流程
+
+扫描或生成网格的修复见 [网格修复](references/procedures/modeling/generated-mesh-recovery.md) 和 [数据传递](references/procedures/modeling/data-transfer-repair.md)。基础绑定诊断后可使用 [关节校正](references/procedures/characters/joint-correctives.md)。表面与模拟问题分别查 [法线烘焙修复](references/procedures/surfacing/normal-bake-repair.md) 或 [布料接触修复](references/procedures/simulation/cloth-collision-repair.md)；交付阶段可查 [glTF验证](references/procedures/delivery/gltf-validation.md) 和 [实时优化](references/procedures/delivery/realtime-optimization.md)。
+
+每条流程都说明输入、适用条件、诊断与独立验收。资料来源和适用边界见 [制作资料来源](references/sources/production-sources.md)。按需阅读，避免静默安装可选插件；实际任务和视觉证据确定适用范围前，这些流程保持实验状态。
+
+<a id="loading-a-persistent-script-through-mcp"></a>
+
+## 通过 MCP 加载已保存的脚本
+
+重复拟合角色或参考时使用 [参考拟合流程](references/reference-fitting/workflow.md) 和 `scripts/fit_character.py`。使用已审语义遮罩、锚点、固定渲染通道、模块指标、可配置构建器、有界候选、锁定、快照与回退。扩展前阅读 [架构审计](references/reference-fitting/architecture.md)，对象专属坐标放入 JSON，复用已有几何和风格工具。二维阈值或临时肢体测试不足以证明最终三维和动画验收通过。
+
+只通过 `execute_blender_code` 发送以下引导代码，安全替换为实际绝对路径：
 
 ```python
 from pathlib import Path
@@ -90,36 +104,40 @@ scope = {"__name__": "__main__", "__file__": str(script_path)}
 exec(compile(script_path.read_text(encoding="utf-8"), str(script_path), "exec"), scope)
 ```
 
-If Blender cannot read the project path, execute the same script in several small, self-contained MCP chunks. Each chunk must re-import its modules and retrieve prior objects by stable name or owner tag; do not depend on Python globals surviving between calls.
+如果 Blender 无法读取项目路径，将同一脚本拆成若干自包含的小段执行。每段重新导入模块，用稳定名称或归属标记取回对象，不依赖跨调用保留的 Python 全局变量。
 
-## Content routing
+<a id="content-routing"></a>
 
-Read only the references needed for the current request:
+## 按任务查阅资料
 
-| Task | Read |
+只读取当前请求需要的参考：
+
+| 任务 | 参考资料 |
 |---|---|
-| Folded paper, soft clay, handmade plasticine, or mixed art direction | [blender-styles](../blender-styles/SKILL.md), then the selected `styles/<id>/STYLE.md` |
-| AI render, photo, line drawing, or multi-view reference input | [references/reference-image-analysis.md](references/reference-image-analysis.md) and [references/fidelity-and-completion.md](references/fidelity-and-completion.md) |
-| Mesh, curve, hard-surface, repeated or organic forms | [references/modeling-recipes.md](references/modeling-recipes.md) |
-| UV unwrap, texel density, lightmap UV, UDIM, or texture baking | [references/uv-and-texture-baking.md](references/uv-and-texture-baking.md) |
-| PBR/procedural materials or Geometry Nodes | [references/materials-and-nodes.md](references/materials-and-nodes.md) |
-| Retopology, polygon budgets, LODs, collision meshes, or game-engine naming | [references/game-assets.md](references/game-assets.md) |
-| Cameras, studio lighting, world, render settings | [references/scene-lighting-rendering.md](references/scene-lighting-rendering.md) |
-| Render passes, Cryptomatte, denoise, compositing, or multilayer EXR | [references/compositing-and-passes.md](references/compositing-and-passes.md) |
-| Keyframes, constraints, drivers, armatures | [references/animation-and-rigging.md](references/animation-and-rigging.md) |
-| Skin weights, deform rigs, shape keys, root motion, or character export | [references/character-delivery.md](references/character-delivery.md) |
-| Rigid bodies, cloth, fluids, soft bodies, force fields, or caches | [references/physics-and-simulation.md](references/physics-and-simulation.md) |
-| Asset Browser, reusable assets, linked/appended libraries, or overrides | [references/asset-libraries.md](references/asset-libraries.md) |
-| Still image, animation, game asset, 3D-print output, or target selection | [references/output-targets.md](references/output-targets.md) |
-| Save, GLB/glTF, FBX, OBJ, STL, asset packaging, or round-trip validation | [references/export-and-packaging.md](references/export-and-packaging.md) |
-| Blender version uncertainty or an API mismatch | [references/compatibility.md](references/compatibility.md) |
+| 折纸、软黏土、手捏橡皮泥或混合风格 | [blender-styles](../blender-styles/SKILL.md)，然后查阅选定的 `styles/<id>/STYLE.md` |
+| AI 渲染图、照片、线稿或多视图输入 | [references/reference-image-analysis.md](references/reference-image-analysis.md) 和 [references/fidelity-and-completion.md](references/fidelity-and-completion.md) |
+| 网格、曲线、硬表面、重复或有机形体 | [references/modeling-recipes.md](references/modeling-recipes.md) |
+| UV 展开、纹素密度、光照贴图 UV、UDIM 或烘焙 | [references/uv-and-texture-baking.md](references/uv-and-texture-baking.md) |
+| PBR、程序材质或几何节点 | [references/materials-and-nodes.md](references/materials-and-nodes.md) |
+| 重拓扑、面数、LOD、碰撞网格或引擎命名 | [references/game-assets.md](references/game-assets.md) |
+| 相机、棚拍灯光、世界环境和渲染设置 | [references/scene-lighting-rendering.md](references/scene-lighting-rendering.md) |
+| 渲染通道、Cryptomatte、降噪、合成或多层 EXR | [references/compositing-and-passes.md](references/compositing-and-passes.md) |
+| 关键帧、约束、驱动器、骨架 | [references/animation-and-rigging.md](references/animation-and-rigging.md) |
+| 蒙皮权重、形变绑定、形态键、根运动或角色导出 | [references/character-delivery.md](references/character-delivery.md) |
+| 刚体、布料、流体、软体、力场或缓存 | [references/physics-and-simulation.md](references/physics-and-simulation.md) |
+| 资产浏览器、复用资产、链接或追加库及库覆盖 | [references/asset-libraries.md](references/asset-libraries.md) |
+| 静帧、动画、游戏资产、3D 打印或目标选择 | [references/output-targets.md](references/output-targets.md) |
+| 保存、GLB/glTF、FBX、OBJ、STL、打包或回读 | [references/export-and-packaging.md](references/export-and-packaging.md) |
+| Blender 版本或 API 差异 | [references/compatibility.md](references/compatibility.md) |
 
-The cross-cutting references remain applicable:
+以下通用资料也适用：
 
-- For tool order, exact local MCP names, connection failures, and staged execution, read [references/mcp-workflow.md](references/mcp-workflow.md).
-- For idempotence, context safety, transforms, naming, and performance, read [references/python-modeling.md](references/python-modeling.md).
-- For structural, geometric, visual, render, save, and export acceptance checks, read [references/verification.md](references/verification.md).
+- 工具顺序、本地 MCP 工具名、连接失败及分步执行，见 [MCP工作流程](references/mcp-workflow.md)。
+- 幂等性、上下文安全、变换、命名与性能，见 [Python建模](references/python-modeling.md)。
+- 结构、几何、视觉、渲染、保存和导出检查，见 [验收验证](references/verification.md)。
 
-## Completion report
+<a id="completion-report"></a>
 
-Report the selected knowledge ID, diagnosis evidence, baseline/regression findings, script path, scene changes, validation performed, and any `.blend`/render/export paths. For reference-driven models, include the reference collection/calibration record and comparison evidence, target stage, required module count, matched/simplified/blockout/missing counts, and every user-approved simplification. If reporting presence/full-fidelity coverage fields, identify them as ledger-derived counts, not image similarity or measured reconstruction accuracy. State rejected AI artifacts, inferred corrections, unresolved choices and assumptions affecting scale, topology, materials or fidelity. Distinguish a verified Blender result from an unexecuted script. Use unqualified words such as "finished" or "complete" only when the final ledger gate reports `ready_to_claim_complete: true` and reference comparisons plus rendered views have passed review.
+## 完成报告
+
+报告选用的知识条目 ID、诊断依据、基线与回归结果、脚本路径、场景修改、已运行的验证，以及 `.blend`、渲染图和导出文件路径。参考建模还须给出参考集合、校准与对比证据、目标阶段、必需模块数及匹配、简化、粗模、缺失数量和用户允许的每项简化。台账覆盖率不能解释为图像相似度或实测还原精度。说明已排除的 AI 伪影、推定修正，以及影响尺度、拓扑、材质或还原度的假设和未决事项。区分实机验证与仅写脚本；只有 `ready_to_claim_complete: true` 且参考对比和渲染审阅通过后，才能称为完成。

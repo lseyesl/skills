@@ -1,4 +1,4 @@
 interface:
-  display_name: "Concept Multiview Sheet"
-  short_description: "Infer five- or six-view sheets from one design image"
-  default_prompt: "Use $concept-multiview-sheet to preserve the observed identity of this reference, review source fidelity independently of cross-view consistency, and create inferred orthographic views. Generate matching line art only after rendered views pass both reviews."
+  display_name: "概念多视图"
+  short_description: "从单张概念图补充建模视角，或生成五／六视图"
+  default_prompt: "使用 $concept-multiview-sheet 保留参考图中可观察的主体特征并补充正交视图。分别审阅原图忠实度和跨视图一致性，两项均通过后再生成对应线稿。"

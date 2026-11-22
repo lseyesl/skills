@@ -1,11 +1,13 @@
-# Clay girl fitting regression case
+<a id="clay-girl-fitting-regression-case"></a>
 
-This is a separate version-1 character configuration, not a universal clay-person template. Reference images come from the project's AI-generated girl sheet. Front controls placement; side is slightly rotated/inconsistent and only guides assumed depth. Absolute physical units are unknown.
+# 黏土女孩参考拟合回归案例
 
-`character.json` separates shape, material, fixed render and validation/search controls. Object coordinates and hair guides are case data; generic code does not import the old output recipe. `references/annotations.json` points to visible-region masks. The masks were generated with localized case-specific HSV/color evidence and visually reviewed; confidence 0.75–0.8 is qualitative annotation reliability, not an automatic classifier probability. Version 2 removes an artificial head-crop boundary discovered during review. Covered torso remains `not_evaluable`.
+这是一个独立的版本1角色配置，并非通用的黏土人物模板。参考图片来自项目的人工智能生成的女孩图片库。前端的控制布局；侧面部分略有...rotated/inconsistent仅指导假设的深度。绝对物理单位未知。
 
-`materials.*.color` stores observed reference-mask medians. Their source illumination is unknown. They are reproducible initial colors, not recovered intrinsic pigment. `hair` is locked in the example to demonstrate unrelated-component protection; that computational state does not mean the user has approved its shape or style. New subjects require their own masks, dimensions, flow guides and candidate ranges.
+`character.json`包括形状、材质、固定渲染以及validation/search控制项。对象坐标和头发引导线属于案例数据；通用代码不会导入旧的输出配方。`references/annotations.json`指向可见区域的遮罩。这些遮罩是根据本地化的案例特定HSV/color证据生成的，并且经过了视觉审核；置信度为0.75–0.8，这是定性注释的可靠性，而不是自动分类器的概率。版本2去除了在审核过程中发现的人造头部裁剪边界。覆盖的躯干仍然保持`not_evaluable`状态。
 
-Run the repository-root commands in [the workflow](../../references/reference-fitting/workflow.md). Use a fresh output directory. `optimize` produces an initial snapshot, four rounds with bounded minus/plus candidates, selected-state logs and a final `.blend` with packed references. It can stop with unresolved parts; inspect the actual metrics and views.
+`materials.*.color`存储了观测到的参考掩膜中位数。它们的源照明是未知的。它们是可重复的初始颜色，并非恢复的内在色素。`hair`被锁定在示例中，以展示无关组件的保护功能；但这种计算状态并不意味着用户已经批准了其形状或风格。新的实验对象需要自己的掩膜、尺寸、流动引导线和候选范围。
 
-The original three-expression model is preserved in the project's historical outputs. This new baseline fixture models the reference happy expression only; arbitrary expression generation/swap sets are not added to the fitter. No production armature is delivered: `--rig-test` skins and bends disposable copies as a smoke test.
+在 [工作流程](../../references/reference-fitting/workflow.md) 中运行仓库根目录的命令。使用新的输出目录。 `optimize` 会生成一个初始快照，四轮有界 minus/plus 候选者，选定状态的日志，以及最终的 `.blend`，其中包含打包的引用信息。它可以停止在未解决的部分上；检查实际的指标和视图。
+
+原始的三重表达式模型在项目的历史输出中得以保留。这个新的基准夹具模型仅模拟参考的“快乐表情”；任意表达式generation/swap这些集合不会被添加到拟合工具中。不会交付任何生产用的骨架模型。`--rig-test`将皮肤和弯曲部分作为烟雾测试的一次性副本。

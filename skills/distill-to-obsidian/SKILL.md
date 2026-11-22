@@ -1,149 +1,179 @@
 ---
 name: distill-to-obsidian
-description: Distill durable, reusable knowledge from the source code, repositories, articles, documents, or discussion currently being read into the user's Obsidian knowledge base. Use this skill whenever the user asks to “提取到知识库”、“蒸馏到知识库”、“沉淀到 Obsidian / ai-wiki”、“把刚才读到的内容保存下来”、“把这个知识点记到我的知识库”, or otherwise expresses an intent to preserve current material as long-term personal knowledge—even if they do not name this skill. Do not trigger for a temporary summary, ordinary project documentation, “记住这个” without durable knowledge-base intent, or verbatim archival without knowledge distillation.
-compatibility: Requires filesystem search/read/write access. Web-page ingestion also requires the defuddle skill. Obsidian Markdown editing should use the obsidian-markdown skill; Obsidian CLI is optional.
+description: 从正在阅读的源码、仓库、文章、文档或讨论中提炼可复用的知识，写入用户的 Obsidian 笔记库。用户说“提取到知识库”“蒸馏到知识库”“沉淀到 Obsidian / ai-wiki”“把刚才读到的内容保存下来”或“把这个知识点记到我的知识库”时均可触发。临时摘要、普通项目文档、缺少长期保存意图的“记住这个”和原样归档不适用。
+compatibility: 需要文件系统搜索、读取和写入权限。采集网页还需要 defuddle 技能。编辑 Obsidian Markdown 应使用 obsidian-markdown 技能。Obsidian CLI 可选。
 ---
 
-# Distill to Obsidian
+<a id="distill-to-obsidian"></a>
 
-Turn the material the user is currently studying into a small, durable improvement to their existing Obsidian Wiki. Treat this as knowledge integration, not transcript dumping or one-source-one-summary note taking.
+# 提炼知识并写入 Obsidian
 
-## Core contract
+从用户正在研究的材料中提炼可长期复用的知识，对现有 Obsidian Wiki 做一次范围明确的更新。把新内容整合到相关知识页，避免堆放原文或为每个来源各写一篇孤立摘要。
 
-- The user's explicit request to extract, distill, preserve, or save current material to their knowledge base authorizes the necessary minimal writes to the matched vault.
-- Prefer improving an existing concept, shared framework, project page, or domain page over creating a parallel summary.
-- Preserve provenance and uncertainty. A generated Wiki page is a synthesis layer, not a substitute for checking its sources.
-- Do not scan an entire repository, vault, or large collection merely because it is available.
-- Never write to a guessed vault. Resolve and validate the target first.
-- Never expose or preserve credentials, tokens, private keys, personal data, or other secrets found in source material.
+<a id="core-contract"></a>
 
-## 1. Resolve the material being referenced
+## 基本约定
 
-Infer “这些内容”, “刚才的内容”, or similar references from the current task context. Normally this means the most recently read or discussed source files, symbols, article, document, or excerpt and the user's current question about them.
+- 用户明确要求提取、提炼、保存或将其当前材料保存到知识库，这授权了对相应笔记库进行必要的最小程度记录。
+- 更倾向于改进现有的概念、共享框架、项目页面或领域页面，而不是创建平行的总结。
+- 保留来源和不确定性信息。此生成的维基页面仅作为综合内容，并不能替代核实其来源。
+- 不要仅因为某个仓库、笔记库或大量资料可用就对其进行扫描。
+- 切勿向未知的笔记库发送内容。请先确定并验证目标。
+- 切勿泄露或保存源材料中发现的凭据、令牌、私钥、个人数据或其他机密信息。
 
-Include only information that is directly relevant to the user's focus and likely to remain useful. Exclude transient debugging attempts, conversational filler, tool output, and unsupported speculation.
+<a id="1-resolve-the-material-being-referenced"></a>
 
-If the user explicitly names several sources, that is authorization to process that bounded set. If several sources are merely present in context and the intended set is ambiguous, list the proposed sources and ask for confirmation. Do not silently widen the scope.
+## 1. 确认要提炼的材料
 
-If the user only asks for a temporary summary, explanation, ordinary Markdown, project documentation, or verbatim archival—and does not express durable knowledge-base intent—do not run this workflow.
+根据当前任务上下文，推断出自 “这些内容”、 “刚才的内容” 或类似的引用。通常这意味着最近阅读或讨论过的源文件、符号、文章、文档或摘录，以及用户关于它们的当前问题。
 
-## 2. Resolve and validate the vault
+仅包含直接与用户焦点相关且可能仍然有用的信息。不包括瞬间调试尝试、对话填充器、工具输出和不支持的猜测。
 
-If the user explicitly supplies a vault root for the current request, validate and use it for this run. If the user explicitly supplies a separate candidate-location file for a test or temporary environment, use only that file for the current run. Do not add either override to the persistent list without asking.
+如果用户明确指定了多个来源，那么就意味着有权处理该受限制的集合。如果多个来源仅存在于上下文中，而目标集合存在歧义，那么应列出这些可能的来源并请求确认。切勿默默地扩大范围。
 
-Otherwise, use the shared device-level `AI_WIKI_VAULT_ROOT` when configured. Validate it before access. If it is unset, use [the device fallback](references/vault-locations.md). A candidate is valid only when `<vault-root>/ai-wiki/AGENTS.md` exists.
+如果用户仅请求临时摘要、解释、普通的Markdown文本、项目文档或逐字存档——并且没有表达建立持久知识库的需求——请不要执行此工作流程。
 
-- One valid candidate: use it.
-- Several valid candidates: use the highest-priority candidate and mention the choice in the completion report.
-- No valid candidate: stop before writing, ask for the vault root, and validate it. Then ask whether to add the new root to the location list.
+<a id="2-resolve-and-validate-the-vault"></a>
 
-The knowledge workspace is `<vault-root>/ai-wiki/`. Never create a replacement `ai-wiki` structure merely to make an invalid candidate pass validation.
+## 2. 定位并验证笔记库
 
-## 3. Load the vault's local rules
+若用户在本次请求中明确给出笔记库根目录，验证后仅在本次使用。若用户为测试或临时环境指定了单独的候选路径文件，本次只使用该文件。将任何一项写入持久列表前须先征得同意。
 
-Before deciding what to change:
+否则，使用已配置的共享设备级 `AI_WIKI_VAULT_ROOT`。在访问之前进行验证。如果未设置，则使用 [设备备用方案](references/vault-locations.md)。候选者只有在 `<vault-root>/ai-wiki/AGENTS.md` 存在时才有效。
 
-1. Read `<vault-root>/ai-wiki/AGENTS.md` completely.
-2. Read the Wiki entry point required by that file, normally `wiki/index.md`.
-3. Load `obsidian-markdown` before creating or editing Markdown notes.
-4. Use `obsidian-cli` when its search, navigation, or vault-aware operations materially help; ordinary file edits do not require the CLI.
-5. Load any source-specific skill required by `AGENTS.md`, such as `defuddle` for a web page.
+- 一个有效的候选方案：使用它。
+- 几名有效的候选方案：使用优先级最高的方案，并在完成报告中提及该选择。
+- 没有有效的候选方案：在编写之前停止，询问 vault 根目录，并对其进行验证。然后决定是否将新的根目录添加到位置列表中。
 
-The vault's `AGENTS.md` overrides this skill on directory ownership, schema, naming, ingestion, indexing, logs, and confirmation boundaries. If its rules cannot be followed, stop and explain the conflict rather than inventing a parallel structure.
+知识工作区是 `<vault-root>/ai-wiki/`。切勿仅为了让无效的候选结构通过验证而创建替代 `ai-wiki` 结构。
 
-## 4. Preserve provenance according to source type
+<a id="3-load-the-vaults-local-rules"></a>
 
-### Web page
+## 3. 读取笔记库的本地规则
 
-Use the `defuddle` skill to extract clean Markdown. Before saving, search the source layer for the canonical URL or an existing snapshot.
+在决定要修改什么之前：
 
-- Reuse an existing matching source instead of duplicating it.
-- For a new page, save the cleaned source under the source directory required by `AGENTS.md`, with source URL, title, and capture date in its metadata.
-- Do not overwrite an older immutable snapshot. If a materially changed version must be retained, create a dated version and relate it to the older source.
+1. 阅读 `<vault-root>/ai-wiki/AGENTS.md` 的内容。
+2. 阅读该文件所需的 Wiki 条目说明，通常表示为 `wiki/index.md`。
+3. 在创建或编辑 Markdown 笔记之前，请先加载 `obsidian-markdown`。
+4. 使用 `obsidian-cli` 表示其搜索、导航或笔记库操作对功能有实质性帮助；普通的文件编辑不需要使用命令行界面。
+5. 加载 `AGENTS.md` 所需的任何特定于源的技能，例如用于网页的 `defuddle`。
 
-### Local source code or repository
+目录归属、数据结构、命名、摄取、索引、日志及确认要求，以笔记库的 `AGENTS.md` 为准。遇到无法遵守的规则时停止并说明冲突，不要另建一套结构。
 
-Do not copy an entire repository into the vault. Record enough stable provenance to find the code again:
+<a id="4-preserve-provenance-according-to-source-type"></a>
 
-- repository name and remote URL when available;
-- commit hash or release/tag;
-- repository-relative file path;
-- symbol, class, function, or module name;
-- relevant line range as a convenience, recognizing that lines drift;
-- whether the working tree had relevant uncommitted changes.
+## 4. 按来源类型记录出处
 
-Prefer symbols and commit-pinned links over bare line numbers. Include only small code excerpts necessary to preserve the idea. Do not reproduce large copyrighted files or secrets.
+<a id="web-page"></a>
 
-### Existing source in `ai-wiki/sources/`
+### 网页
 
-Treat it as immutable input. Read it and update the generated Wiki layer; do not clean up, reformat, rename, or summarize in place.
+使用 `defuddle` 技能提取清晰的 Markdown 格式文本。在保存之前，请搜索源层中的标准 URL 或现有快照。
 
-### Ephemeral or conversation-only material
+- 重新使用现有的匹配源，而不是进行复制。
+- 对于新页面，将清理后的源文件保存在 `AGENTS.md` 要求的源目录下，并在其元数据中添加源 URL、标题和捕获日期。
+- 不要覆盖较旧的不可修改的快照。如果必须保留有实质性变化的版本，请创建一个带有日期的版本，并将其与较旧的源文件关联起来。
 
-When the material cannot be recovered later, save a compact source snapshot with date and context before synthesis. Preserve only the evidence needed for the durable claims, not the entire conversation.
+<a id="local-source-code-or-repository"></a>
 
-## 5. Find the smallest useful integration
+### 本地源码或仓库
 
-Search the index, titles, aliases, tags, headings, body text, and backlinks for related concepts. Then decide on the smallest coherent change set:
+不要将整个仓库复制到安全存储中。记录足够的稳定来源信息，以便能够再次找到代码：
 
-1. Update an existing concept, shared framework, or project page when it already owns the idea.
-2. Create a page only when the topic is likely to recur, needs a stable hub, or the user explicitly requested an independent note.
-3. Update a domain entry only when its route, core links, recent sources, or open questions materially change.
-4. Update the global index only when global navigation changes.
-5. Append the required ingest/query log entry; never rewrite history.
+- 仓库名称和远程 URL（如已知）
+- 提交哈希或 release/tag（发行版本或标签）；
+- 仓库相对文件路径；
+- 符号、类、函数或模块名称；
+- 为了方便起见，将相关行范围视为一个整体，同时认识到行与行之间可能存在差异；
+- 工作树是否有相关的未提交更改。
 
-Match sources by canonical URL and captured version, or by repository, immutable commit, file and symbol. Check the owning Wiki page for an existing claim and source link before editing. An identical ingestion can report the existing note with zero content changes. Where the vault requires a log, follow its rule and record a reuse rather than a new ingestion. Keep a contradictory finding alongside the prior claim with both citations. Verify the final diff touches only the owning page and necessary links.
+建议使用符号和已提交链接，而不是纯文本的数字编号。仅包含对保留思路必要的少量代码片段。不要复制大型受版权保护的文件或秘密信息。
 
-Avoid one-note-per-source accumulation. A new source should strengthen, qualify, contradict, or connect existing knowledge whenever possible.
+<a id="existing-source-in-ai-wikisources"></a>
 
-## 6. Distill for understanding and retrieval
+### `ai-wiki/sources/` 中已有的来源
 
-Adapt the page to its topic rather than forcing a rigid template. Preserve the following when they add value:
+将其视为不可更改的输入。阅读后更新生成的 Wiki 层；不要进行清理、重新格式化、重命名或就地总结。
 
-- a one-sentence core conclusion;
-- key concepts and their relationships;
-- mechanism, causal chain, or design rationale;
-- where the idea applies and where it breaks down;
-- for code, important symbols, control/data flow, invariants, and concise excerpts;
-- counterexamples, common confusions, tradeoffs, and uncertainty;
-- source links or source-note wikilinks;
-- aliases, original terminology, and search terms that improve later retrieval;
-- wikilinks to genuinely related existing notes.
+<a id="ephemeral-or-conversation-only-material"></a>
 
-Use Chinese by default unless the vault or user requires another language. Keep identifiers, APIs, commands, paths, project names, and established technical terms in their original form when translation would reduce precision.
+### 临时材料或仅出现在对话中的材料
 
-Do not add flashcards, exercises, or a long tutorial by default. Add memory prompts or practice material only when the user also asks to learn, remember, or review the topic.
+当材料无法在以后恢复时，请在合成之前保存一个包含日期和上下文的紧凑源快照。仅保留用于持久性声明所需的证据，而不是整个对话内容。
 
-## 7. Handle evidence and uncertainty
+<a id="5-find-the-smallest-useful-integration"></a>
 
-Default to the current sources plus the local vault. Do not turn a distillation request into open-ended web research.
+## 5. 确定最小的有效更新范围
 
-- Attribute source-specific claims.
-- Separate observed behavior from interpretation.
-- Mark weak, conflicting, stale, or unverified claims as such.
-- If a contradiction materially affects the note, preserve both positions and identify what would resolve it.
-- Ask before doing external research unless the user also requested verification, supplementation, or current information.
+搜索索引、标题、别名、标签、标题文本和反向链接，以查找相关概念。然后确定最小的一致变更集：
 
-## 8. Write and validate
+1. 更新一个现有的概念、共享框架或项目页面，前提是它们已经包含了该想法。
+2. 创建页面时，仅适用于主题可能反复出现的情况、需要稳定中心节点的场景，或用户明确请求独立笔记的情况。
+3. 仅当域名条目对应的路由、核心链接、最新来源或开放问题发生实质性变化时，才更新该条目。
+4. 仅在全球导航菜单发生变化时更新全球索引。
+5. 请添加所需的 ingest/query 日志条目；切勿重写历史记录。
 
-Perform the minimal authorized writes directly; a separate preview is not required after an explicit distillation request. Pause only when the target vault is unresolved, source scope is ambiguous, a conflict risks destructive overwrite, or the operation has expanded into an unexpectedly large batch.
+通过规范的 URL 和捕获的版本，或者通过仓库、不可变的提交、文件和符号来匹配源文件。在编辑之前，请检查拥有该页面的 Wiki 页面，查看是否存在现有的声明和源链接。相同的导入操作可以在不更改内容的情况下更新现有的笔记。如果笔记库需要日志记录，请遵循其规则，记录的是重复使用的版本，而不是新的导入版本。将矛盾的发现与之前的声明一起保留，并附上相应的引用。确认最终的差异仅影响拥有该页面的必要链接。
 
-After editing:
+避免单一来源的堆积。只要可能，新的来源应强化、补充、反驳或连接现有的知识。
 
-1. Verify required properties and allowed values from `AGENTS.md`.
-2. Check that new wikilink targets and referenced local sources exist.
-3. Confirm immutable source files were not modified.
-4. Confirm logs were appended rather than rewritten.
-5. Review the diff or changed files for accidental unrelated edits and secrets.
+<a id="6-distill-for-understanding-and-retrieval"></a>
 
-## Completion report
+## 6. 提炼便于理解和检索的知识
 
-Tell the user:
+根据主题调整页面，而不是强制使用固定的模板。在添加价值时，请保留以下内容：
 
-- which vault was selected;
-- which source material was distilled;
-- which files were created or updated;
-- the most important knowledge added or revised;
-- any uncertainty, conflict, or follow-up question that remains.
+- 一句话的核心结论；
+- 关键概念及其关系；
+- 机制、因果链或设计原理；
+- 在适用的情况下，以及在不适用的情况下；
+- 对于代码、重要的符号、control/data流程、不变量以及简洁的摘录；
+- 反例、常见混淆点、权衡因素以及不确定性；
+- 源链接或源注释维基链接；
+- 别名、原始术语以及有助于后续检索的搜索词；
+- 指向真正相关现有笔记的链接。
 
-Keep the report concise and link to local files when the interface supports clickable paths.
+默认使用中文，除非存储库或用户需要其他语言。在翻译可能降低精度的情况下，保留标识符、API、命令、路径、项目名称以及已确立的技术术语的原始形式。
+
+默认情况下，不要添加闪卡、练习或长篇教程。只有当用户同时请求学习、记忆或复习该主题时，才添加记忆提示或练习材料。
+
+<a id="7-handle-evidence-and-uncertainty"></a>
+
+## 7. 处理证据与不确定性
+
+默认使用当前的源文件以及本地笔记库。请勿将蒸馏请求转化为开放式的网络搜索。
+
+- 属性来源特定声明。
+- 将观察到的行为与解释区分开来。
+- 将那些 weak、conflicting、stale 或未经过验证的声明标记为此类。
+- 如果某种矛盾对笔记内容产生了实质性影响，请保留两种观点，并明确指出如何解决这种矛盾。
+- 在进行外部研究之前，请先提问；除非用户同时要求验证、补充或获取最新信息。
+
+<a id="8-write-and-validate"></a>
+
+## 8. 写入并验证
+
+执行最小授权操作即可；在明确下达的指令请求之后，无需进行单独的预览。仅在目标笔记库无法解决、源范围不明确、存在破坏性覆盖的风险，或者操作扩展为异常大的批量时，才需要暂停操作。
+
+在编辑后：
+
+1. 验证 `AGENTS.md` 中要求的属性和允许的值。
+2. 请检查新的维基链接是否指向了存在的本地资源。
+3. 确认原始文件未被修改。
+4. 确认日志是追加的，而非重写的。
+5. 请仔细审查这些已更改的文件，确保没有因意外而进行的无关编辑，并且没有泄露任何机密信息。
+
+<a id="completion-report"></a>
+
+## 完成报告
+
+告诉用户：
+
+- 选择了哪个笔记库；
+- 哪些原始素材被提取出来了；
+- 哪些文件被创建或更新了；
+- 最重要的知识已添加或修订；
+- 任何未解决的疑问、冲突或后续问题。
+
+请保持报告简洁，并在界面支持可点击路径时，链接到本地文件。

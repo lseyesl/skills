@@ -1,10 +1,12 @@
 ---
 name: epub-xhtml-to-markdown
-description: Convert EPUB books to chapter-by-chapter Markdown by opening the EPUB archive and reading its XHTML/HTML directly, then create an Obsidian assembly note that embeds every chapter with ![[note]]. Use this skill whenever the user asks for EPUB→Markdown/MD、EPUB 分章节、直接读取 XHTML、Obsidian include/embed 总装文件、免 OCR 转电子书或保留 EPUB 阅读顺序. Prefer it over PDF/OCR conversion for normal reflowable EPUB files; do not use it for PDF, scanned books, or fixed-layout EPUBs that require visual/OCR reconstruction.
-compatibility: Requires Python 3.10+; the bundled converter uses only the Python standard library.
+description: "从 EPUB 压缩包直接读取 XHTML/HTML，依照阅读顺序逐章转换为 Markdown，再创建使用 ![[note]] 嵌入各章的 Obsidian 总装笔记。适用于 EPUB 分章节、直接读取 XHTML 和免 OCR 的流式电子书转换。PDF、扫描书及需要版面重建或 OCR 的固定版式 EPUB 应使用其他流程。"
+compatibility: "需要 Python 3.10 或更高版本。随附转换器只使用 Python 标准库。"
 ---
 
-# EPUB XHTML → Markdown
+<a id="epub-xhtml--markdown"></a>
+
+# 将 EPUB 的 XHTML 正文转换为 Markdown
 
 将标准流式 EPUB 当作 ZIP 容器打开，读取 `META-INF/container.xml`、OPF manifest/spine 和书内 XHTML，再按阅读顺序为每章生成独立 Markdown。额外生成一个总装文件，用 Obsidian `![[note]]` 嵌入全部章节。这个流程不做 OCR，也不依赖 marker、Calibre 或 Pandoc。
 

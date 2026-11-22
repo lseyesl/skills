@@ -1,33 +1,33 @@
 {
   "schema_version": 1,
   "task_id": "replace-me",
-  "intended_use": "replace with static/animated/mechanical/other delivery purpose",
+  "intended_use": "填写交付用途，例如静态展示、动画或机械装配",
   "modules": [
     {
       "id": "body",
       "ledger_module_id": null,
       "method": "box",
-      "reason": "Replace with subject-specific reason; a cube is a low-resolution control cage, not a finished object",
+      "reason": "填写针对当前对象的选型理由。立方体只是低分辨率控制笼，仍需细化",
       "objects": [
         "replace_with_actual_coarse_object_name"
       ],
       "depends_on": [],
-      "connections": "Record continuous surface, independent part or attachment and the reason",
+      "connections": "写明各部分是连续表面、独立部件还是附着件，并说明原因",
       "checks": [
         {
           "id": "proportions",
           "kind": "structural",
-          "criterion": "Replace with measured dimensions/landmarks and purpose-derived tolerance"
+          "criterion": "填写实测尺寸或特征点，以及依据用途确定的容差"
         },
         {
           "id": "silhouette",
           "kind": "visual",
-          "criterion": "Inspect controlling views, thickness and negative space at intended scale"
+          "criterion": "按目标尺度检查控制视图、厚度和负空间"
         },
         {
           "id": "connections",
           "kind": "visual",
-          "criterion": "Inspect intended attachments/continuity; state not-applicable reason in finding when legitimately independent"
+          "criterion": "检查连接和连续性；确属独立部件时，在 finding 中说明不适用的原因"
         }
       ]
     }
@@ -39,6 +39,6 @@
     "working_max_triangles": null,
     "min_triangle_area": 5e-13,
     "require_closed": false,
-    "reason": "max_triangles is the final delivery cap, enforced only at delivery/reimport. Optional blockout/working caps protect runtime resources and never inherit the delivery cap. Resolve required final caps before delivery; do not omit source features to meet them."
+    "reason": "max_triangles 是最终交付上限，只在交付和回读时执行。粗模和工作阶段可单独设置资源保护上限。交付前确定所需上限，保留参考图中可见的结构。"
   }
 }

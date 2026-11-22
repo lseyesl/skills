@@ -1,12 +1,16 @@
-# Blender Version Compatibility
+<a id="blender-version-compatibility"></a>
 
-## Support statement
+# Blender 版本兼容性
 
-- **Executed baseline:** Blender 4.5.12 LTS, Python 3.11.11 on macOS.
-- **Other Blender 4.x builds:** supported by capability detection and API lookup, but not claimed as fully tested.
-- **Blender 5.x:** do not assume examples from a 5.x reference work unchanged. Detect the feature and verify the result in that Blender build.
+<a id="support-statement"></a>
 
-Run the bundled smoke test in a disposable session after changing recipes or when a different Blender build is installed:
+## 支持范围
+
+- **执行环境：** Blender 4.5.12 LTS，Python 3.11.11，运行于macOS系统。
+- **其他 Blender 4.x 版本：** 支持功能检测和 API 查询，但并未声称已完全测试。
+- **Blender 5.x：** 不要假设来自 5.x 版本参考文档中的示例保持不变。请检测该特性，并在相应的 Blender 版本中验证结果。
+
+在更改配方或安装不同的 Blender 版本后，请在一个一次性会话中运行捆绑的烟雾测试：
 
 ```bash
 /Applications/Blender.app/Contents/MacOS/Blender \
@@ -14,69 +18,77 @@ Run the bundled smoke test in a disposable session after changing recipes or whe
   --python scripts/validate_blender_compat.py
 ```
 
-Adjust the executable and script paths for the host project. The test creates temporary datablocks, validates the APIs used by this skill, removes them, prints JSON, and exits non-zero on required failures.
+调整主机项目的可执行文件和脚本路径。测试会创建临时数据块，验证该技能使用的API，删除这些临时数据块，打印JSON结果，并在需要失败的情况下以非零状态码退出。
 
-## Prefer capabilities over version numbers
+<a id="prefer-capabilities-over-version-numbers"></a>
 
-Backports and LTS releases make simple version assumptions unreliable. For example, Blender 4.5.12 already exposes `bpy.ops.pose.apply_to_basis`, although some Blender 5.1-oriented material describes it as new in 5.1.
+## 按实际功能判断兼容性
 
-Use this order:
+回迁版本和长期支持版本使得简单的版本假设变得不可靠。例如，Blender 4.5.12已经暴露了`bpy.ops.pose.apply_to_basis`，尽管一些针对Blender 5.1的材料将其描述为5.1版本中的新功能。
 
-1. Query `bpy_api_lookup` or `describe_node_type` through MCP.
-2. Inspect RNA or use `hasattr` for properties/operators.
-3. Create a throwaway node/modifier in a scratch datablock to prove its type exists.
-4. Use `bpy.app.version` only when behavior genuinely changed at a documented boundary.
+使用以下顺序：
 
-Never catch every exception and silently continue. A missing required capability should produce a clear error naming the Blender version and missing API.
+1. 通过 MCP查询 `bpy_api_lookup` 或 `describe_node_type`。
+2. 检查 RNA 或使用 `hasattr` 进行 properties/operators.
+3. 创建一個隨機的人节点、修改器在一个 scratch 数据块中，以证明其类型存在。
+4. 仅在使用 `bpy.app.version`时，确保其行为在已记录的边界处发生了真正的改变。
 
-## Blender 4.5.12 verified facts
+切勿捕获每一个异常并默默继续运行。缺少必要的功能应该会生成一个明确的错误，明确指出Blender的版本和缺失的API。
 
-The bundled smoke test verifies:
+<a id="blender-4512-verified-facts"></a>
 
-- BMesh cube creation and face-normal recalculation;
-- mesh UV-layer creation, loop UV assignment, active render UV, and UV unwrap/pack RNA discovery;
-- Mirror, Solidify, Bevel, Subdivision Surface, and Exact Boolean modifiers;
-- 3D Bezier curves with bevel and fill caps;
-- Principled BSDF discovery by node type and core PBR socket identifiers;
-- Noise, Color Ramp, Image Texture, and Normal Map shader nodes;
-- Geometry Nodes group interface via `node_group.interface.new_socket`;
-- Mesh Cube, Set Position, Join Geometry, Curve Line, Curve to Mesh, and Instance on Points nodes;
-- camera aiming with `to_track_quat`, Area lights, and object keyframes.
-- export-operator RNA discovery for glTF/GLB, FBX, OBJ, and STL;
-- a real one-triangle GLB export/import round trip with UV data.
-- armature Edit Mode construction, normalized deform weights, and an Armature modifier;
-- object asset marking, description, tags, and clearing;
-- Render Layers, Denoise, Cryptomatte, File Output, and Composite nodes plus required view-layer passes;
-- rigid-body creation, collision shape assignment, Cloth modifier creation, and point-cache access.
+## 已在 Blender 4.5.12 验证的行为
 
-Observed runtime values include:
+捆绑的烟雾测试用于验证：
 
-- EEVEE engine: `BLENDER_EEVEE_NEXT`;
-- image formats: PNG, JPEG, OpenEXR, TIFF, HDR, WEBP, FFMPEG, and others reported by RNA;
-- no AVIF in the tested build;
-- `scene.eevee`, `mesh.remove_doubles`, `mesh.merge_by_distance`, and `pose.apply_to_basis` are present, but presence alone does not make them the preferred cross-version API.
-- export operators are `export_scene.gltf`, `export_scene.fbx`, `wm.obj_export`, and `wm.stl_export`; discover their properties at runtime instead of copying settings from another Blender release.
+- BMesh立方体创建和面法线重新计算；
+- 网格UV层创建、循环UV分配、活动渲染UV以及UVunwrap/packRNA发现；
+- 镜像、固化、倒角、细分曲面和精确布尔修改器；
+- 3D贝塞尔曲线，包含倒角与填充功能；
+- 基于节点类型和核心 PBR 套接字标识符的实用 BSDF 发现方法；
+- 噪声、颜色渐变、图像纹理和法线贴图着色器节点；
+- 通过 `node_group.interface.new_socket` 访问 Geometry Nodes 组界面；
+- 网格立方体、设置位置、连接几何、曲线线、曲线到网格以及基于点的实例节点；
+- 使用 `to_track_quat`进行相机定位、区域灯光以及对象关键帧。
+- 导出 RNA 发现功能，适用于 glTF/GLB、FBX、OBJ 和 STL 格式；
+- 一个真正的单三角形 GLBexport/import使用 UV 数据的往返处理。
+- 骨架编辑模式构建、标准化变形权重以及使用“骨架”修改器；
+- 对象资产标记、描述、标签和清除；
+- 渲染层、去噪、Cryptomatte、文件输出以及复合节点，还包括所需的视图层处理；
+- 刚体创建、碰撞形状分配、Cloth修改器创建以及点缓存访问。
 
-## Known 5.x-only or unsafe-to-assume features
+观察到的运行时间包括：
 
-Do not use the following in a Blender 4.x-compatible script unless runtime lookup proves availability:
+- EEVEE引擎：`BLENDER_EEVEE_NEXT`；
+- 图像格式：PNG、JPEG、OpenEXR、TIFF、HDR、WEBP、FFMPEG，以及RNA报告的其它格式；
+- 测试版本中未包含 AVIF；
+- `scene.eevee`、`mesh.remove_doubles`、`mesh.merge_by_distance`和`pose.apply_to_basis`都存在，但仅有存在并不能使其成为首选的跨版本接口。
+- 导出操作符包括`export_scene.gltf`、`export_scene.fbx`、`wm.obj_export`和`wm.stl_export`；在运行时才能发现它们的属性，而不是从其他版本的 Blender 中复制设置。
 
-- For Each Element zones and Bundle nodes introduced in Blender 5.x;
-- Blender 5.1 Bone Info, shader Raycast, Font sockets, newer volume-grid and UV nodes;
-- AVIF output and HTJ2K OpenEXR codec;
-- Blender 5.1 compositor Strip Info and Mask to SDF nodes;
-- Blender 5.x-specific layered-action helpers or removed legacy conversion operators;
-- node socket names copied from screenshots or English UI labels.
+<a id="known-5x-only-or-unsafe-to-assume-features"></a>
 
-## Dynamic values
+## 5.x 专有功能及须现场确认的功能
 
-Treat these as runtime data:
+在与 Blender 4.x 兼容的脚本中，除非运行时查找证明其可用，否则不要使用以下内容：
 
-- `scene.render.engine` identifiers;
-- image/video formats and codec enums;
-- render device backends such as CUDA, OptiX, HIP, Metal, or oneAPI;
-- colour-management view transforms and looks;
-- node type availability, socket identifiers, and socket order;
-- operator parameters and modifier enum items.
+- 对于 Blender 5.x 中引入的“每个元素”区域和“捆绑”节点；
+- Blender 5.1 骨骼信息、着色器射线投射、字体插槽、更新的体积网格和UV节点；
+- AVIF输出和HTJ2K OpenEXR编解码器；
+- Blender 5.1将合成器功能中的“Strip Info”和“Mask”功能转换为SDF节点；
+- Blender 5.x特有的分层操作辅助工具，或已移除的旧版转换运算符；
+- 节点插槽名称来源于截图或英文用户界面标签。
 
-Read RNA/API metadata first. For the dynamic render-engine enum, keep the valid current value or assign the desired engine inside `try/except TypeError` and report the accepted identifiers from the exception.
+<a id="dynamic-values"></a>
+
+## 动态值
+
+请将这些视为运行时数据：
+
+- `scene.render.engine`标识符；
+- image/video格式和编解码器枚举；
+- 渲染设备后端，例如 CUDA、OptiX、HIP、Metal 或 oneAPI；
+- 色彩管理视图的变换和外观；
+- 节点类型可用性、插槽标识符以及插槽顺序；
+- 操作符参数和修改器枚举项。
+
+首先阅读 RNA/API 元数据。对于动态渲染引擎枚举，保留有效的当前值，或在 `try/except TypeError` 中指定所需的引擎，并从异常中报告接受的标识符。

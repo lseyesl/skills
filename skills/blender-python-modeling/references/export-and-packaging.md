@@ -1,39 +1,47 @@
-# Export and Asset Packaging
+<a id="export-and-asset-packaging"></a>
 
-Export is a reproducible build stage. Preserve the editable source scene and prepare a task-owned delivery copy when transforms, modifiers, triangulation, baked animation, or texture relinking must become destructive.
+# 导出与资产打包
 
-## Define the delivery contract
+导出是一个可复现的构建阶段。保留可编辑的源场景，并在需要进行转换、修改器、三角测量、烘焙动画或纹理重新链接时，准备一个由任务拥有的交付副本，以避免造成破坏。
 
-Before export, record:
+<a id="define-the-delivery-contract"></a>
 
-- destination application and format;
-- absolute output path and overwrite permission;
-- selected objects or collection;
-- unit scale, forward/up axes, origin and pivot convention;
-- modifier, instance, curve, Geometry Nodes, and triangulation policy;
-- materials, texture embedding/copying, UV sets, vertex colours, normals and tangents;
-- armature, shape-key, animation clip, FPS and frame-range requirements;
-- polygon, material, texture, bone, influence, LOD and collision budgets.
+## 明确交付要求
 
-Do not infer engine conventions from a filename alone. Unity, Unreal, web glTF, slicers, and CAD-adjacent tools have different axis, scale, animation, material, and naming expectations.
+在导出之前，请录制：
 
-## Choose the format
+- 目标应用程序和格式；
+- 绝对输出路径和覆盖权限；
+- 选定的对象或集合；
+- 单位比例、forward/up轴、原点和旋转中心约定；
+- 修改器、实例、曲线、几何节点和三角化策略；
+- 材料，纹理embedding/copyingUV集、顶点颜色、法线和切线；
+- 骨架、形状键、动画片段、FPS以及帧范围要求；
+- 多边形、材质、纹理、骨骼、影响、LOD以及碰撞预算。
 
-| Format | Use for | Important limits |
+请不要仅从文件名中推断引擎的约定。Unity、Unreal、WebGLTF、切片工具和与CAD相关的工具在轴、比例、动画、材质和命名方面都有不同的期望。
+
+<a id="choose-the-format"></a>
+
+## 选择格式
+
+| 格式 | 用于 | 重要限制 |
 |---|---|---|
-| GLB/glTF | web, real-time PBR, portable static/animated assets | constrained material model; bake unsupported procedural nodes |
-| FBX | DCC/game-engine exchange, especially rigs and clips | axis, leaf-bone, NLA/action and scale settings need target tests |
-| OBJ | simple static mesh exchange | limited hierarchy/animation/material behavior |
-| STL | 3D-print geometry | no reliable unit metadata, materials, hierarchy, UVs, or animation |
-| `.blend` | editable Blender source or reusable asset | downstream Blender version and external-file paths matter |
+| GLB/glTF | 网络，实时PBR，便携静态、动画资源 | 受限材料模型；无法烘焙不支持的过程节点 |
+| FBX | DCC/game-engine 交换，尤其是装备和片段 | 轴、叶骨、NLA/action和缩放设置需要进行目标测试 |
+| OBJ | 简单的静态网格交换 | 有限层级、动画、材质行为 |
+| STL | 3D打印几何结构 | 没有可靠的单元元数据、材质、层次结构、UVs或动画 |
+| `.blend` | 可编辑的 Blender 源代码或可重复使用的资产 | 下游的 Blender 版本和外部文件路径非常重要。 |
 
-Use `mcp__blender__export_scene` for GLB/FBX when it exposes every required option. Otherwise run a persistent `bpy` export function through MCP. Do not switch mechanisms midway without recording the effective settings.
+使用 `mcp__blender__export_scene` 来显示 GLB/FBX 中的所有必要选项。否则，需要通过 MCP 运行一个持久的 `bpy` 导出功能。在记录有效设置之前，不要中途切换机制。
 
-## Discover operators and parameters
+<a id="discover-operators-and-parameters"></a>
 
-Operator names and keyword sets differ across Blender releases and enabled extensions. Blender 4.5.12 exposes `bpy.ops.export_scene.gltf`, `bpy.ops.export_scene.fbx`, `bpy.ops.wm.obj_export`, and `bpy.ops.wm.stl_export`; older examples using `export_mesh.stl` or `export_scene.obj` may not apply.
+## 查询操作器及参数
 
-Resolve and filter explicitly:
+操作符名称和关键词集合因 Blender 版本及启用的扩展而有所不同。Blender 4.5.12 支持 `bpy.ops.export_scene.gltf`、`bpy.ops.export_scene.fbx`、`bpy.ops.wm.obj_export` 和 `bpy.ops.wm.stl_export`；使用 `export_mesh.stl` 或 `export_scene.obj` 的较旧示例可能不适用。
+
+明确解析和过滤：
 
 ```python
 def resolve_operator(path):
@@ -54,13 +62,15 @@ def call_supported(operator, **requested):
     return operator(**requested)
 ```
 
-Failing on unsupported options is safer than silently dropping a setting that changes scale, material, or animation output. Use MCP `bpy_api_lookup` first when available.
+在不受支持的选项上尝试操作比默默放弃一个会改变缩放、材质或动画输出的设置要更安全。如果有可用的MCP `bpy_api_lookup`，请优先使用它。
 
-## Stable selection and export examples
+<a id="stable-selection-and-export-examples"></a>
 
-Before a selection-limited export, enter Object Mode and constrain both the active scene and exact task-owned objects. Deselecting the current view layer alone does not clear selections in other scenes. Prefer the [isolated delivery adapter](production-workspace.md) within its supported scope; explicit current-scene settings and independent whitelist checks remain necessary for other adapters. Restore the user's selection afterwards when practical.
+## 稳定选择对象与导出示例
 
-Minimal Blender 4.5-compatible GLB call:
+在有限的选择导出之前，进入对象模式，并限制活动场景和特定任务所属对象。仅取消当前视图层的选择并不能清除其他场景中的选择。优先使用[独立传输适配器](production-workspace.md)在其支持的范围内；对于其他适配器，仍需显式设置当前场景的属性和独立的白名单检查。在实际情况允许时，恢复用户的选择。
+
+与 Blender 4.5 兼容的最低 GLB 调用：
 
 ```python
 call_supported(
@@ -80,101 +90,94 @@ call_supported(
 )
 ```
 
-Enable tangents only when the mesh has a valid UV map and the target needs tangent-space normals. Choose `export_apply` only after testing rigs, shape keys, instances, and Geometry Nodes evaluation.
+仅当网格具有有效的 UV 映射且目标需要切线空间法线时，才启用切线。选择`export_apply`仅在测试了骨架、形状键、实例和几何节点之后进行。
 
-Do not use this minimal call as a complete delivery pipeline. Static assets should freeze evaluated copies so bevel/subdivision/curve results are retained. Rigged assets require prepared copies that preserve skin and shape-key correspondence; blanket application of all modifiers is not a repair. Source and imported evaluated surfaces must agree at declared sample frames. `asset_delivery.py` implements isolated constant-PBR static/object-animation/linear-skin cases and refuses unsupported graphs, constraints and shape keys; richer textured and character cases keep their dedicated audits.
+请不要将这种简单的调用作为完整的交付流程。静态资源应该冻结评估后的副本，以便bevel/subdivision/curve结果被保留。配备特定功能的资产需要预先准备好的副本，以保留皮肤和形状关键点的对应关系；对所有修改器的统一应用并非修复措施。源文件和导入的评估表面必须在声明的样本帧数上保持一致。`asset_delivery.py`实现孤立的恒定 PBRstatic/object-animation/linear-skin在某些情况下，软件拒绝处理不支持的图表、约束和形状键；纹理更丰富且角色更丰富的案例仍会进行专门的审核。
 
-Typical FBX settings include `use_selection=True`, `axis_forward="-Z"`, `axis_up="Y"`, `apply_unit_scale=True`, `use_mesh_modifiers=True`, and explicit animation/NLA options. These are common starting values, not a universal engine preset. OBJ uses `wm.obj_export` with `export_selected_objects`; STL uses `wm.stl_export` with `export_selected_objects` and optionally `use_scene_unit`. Inspect runtime RNA before passing them.
+典型的 FBX 设置包括 `use_selection=True`、 `axis_forward="-Z"`、 `axis_up="Y"`、 `apply_unit_scale=True`、 `use_mesh_modifiers=True`，以及明确的 animation/NLA 选项。这些是常见的起始值，并非通用的引擎预设。OBJ 使用 `wm.obj_export` 与 `export_selected_objects`；STL 使用 `wm.stl_export` 与 `export_selected_objects`，并可选地使用 `use_scene_unit`。在传递这些设置之前，请先检查运行时的 RNA 参数。
 
-## Prepare delivery geometry
+<a id="prepare-delivery-geometry"></a>
 
-Keep authoring objects intact. In a separate task-owned export collection when needed:
+## 准备交付用几何
 
-- convert curves/text only if the target cannot consume them;
-- realize instances only when required and record the resulting triangle count;
-- evaluate Geometry Nodes and modifiers deliberately;
-- triangulate at a known stage so baked tangent normals and exported topology agree;
-- apply transforms only when required by the target contract;
-- remove hidden helpers, cutters, cameras, lights, and preview-only data unless requested;
-- validate normals, material slots, UV layers, vertex colours, origins and bounds.
+请保持对象的完整性。在需要的时候，将其作为一个独立的任务所属的导出集合进行处理。
 
-For game assets, include target-specific LOD and collision conventions in the contract. Generate LODs from an approved source, preserve silhouette and UV/material compatibility, and validate each evaluated triangle count. Collision meshes should be simple, closed where required, correctly named for the destination, and excluded from render geometry unless the target expects otherwise.
+- 仅当目标无法处理 曲线、文本 时，才进行转换；
+- 仅在需要时才创建实例，并记录生成的三角形数量；
+- 请仔细评估 Geometry Nodes 和修饰器的作用；
+- 在已知阶段进行三角化，以确保烘焙后的切线法线和导出的拓扑结构一致；
+- 仅在目标合同要求时应用转换；
+- 移除隐藏的辅助工具、切割器、摄像机、灯光以及仅用于预览的数据，除非有特别请求；
+- 验证法线、材质槽、UV层、顶点颜色、起点和边界。
 
-## Textures and external files
+对于游戏资源，在合同中包含特定目标的LOD和碰撞规则。从已批准的来源生成LOD，保留轮廓和UV/material兼容性，并验证每个计算出的三角形数量。碰撞网格应简单，在需要的地方是封闭的，名称应正确对应目标，并且除非目标另有要求，否则不应包含在渲染几何体中。
 
-Choose one packaging mode and report it:
+<a id="textures-and-external-files"></a>
 
-- GLB: embed supported images in the binary when requested;
-- glTF separate: keep `.gltf`, `.bin`, and texture paths together and portable;
-- FBX: copy or embed textures only if the consumer supports the chosen mode;
-- `.blend`: make paths relative or explicitly pack resources, without mutating the user's source file unexpectedly.
+## 贴图与外部文件
 
-Check `bpy.data.images` for missing files, generated/dirty images, packed state, colour space, dimensions, and duplicate logical textures. Save generated or baked images before export. Do not assume `bpy.ops.file.pack_all()` saves dirty images or makes unsupported procedural materials portable.
+请选择一种包装模式并报告它：
 
-Emit a small delivery manifest beside complex assets when useful: source Blender version, format, effective export options, axes/units, object names, evaluated triangle counts, materials, textures, animations, LODs, collisions, and known limitations.
+- GLB：在请求时，将支持的图片嵌入到二进制文件中；
+- glTF分离：保持`.gltf`、`.bin`以及纹理路径的完整性，使其具有可移植性；
+- FBX：仅当消费者支持所选模式时，才复制或嵌入纹理；
+- `.blend`：将路径设置为相对路径，或者显式打包资源，而不会意外地修改用户的源文件。
 
-For game-ready naming, texture suffixes, packed-channel conventions, LODs, collisions and evaluated budgets, apply [game-assets.md](game-assets.md). For deform rigs, skin influences, shape keys and root motion, apply [character-delivery.md](character-delivery.md).
+检查 `bpy.data.images`中缺失的文件、generated/dirty图像、打包状态、色彩空间、尺寸以及重复的逻辑纹理。在导出之前保存生成或烘焙的图像。不要假设 `bpy.ops.file.pack_all()`会保存脏图像或使不支持的过程性材料可移植。
 
-## Save `.blend` safely
+在有用时，在复杂资产旁边生成一个小交付清单：源 Blender 版本、格式、有效的导出选项、轴向、单位、对象名称、计算出的三角形数量、材质、纹理、动画、LOD、碰撞以及已知的限制。
 
-Never overwrite the user's source file unless explicitly requested. Resolve the absolute path, verify the parent directory, and use Save As or Save Copy semantics appropriate to the task. After saving, confirm `bpy.data.filepath` only when the operation was intended to change the live document path, and verify the output exists with non-zero size.
+对于游戏级命名、纹理后缀、打包通道约定、LOD、碰撞以及评估预算，请应用[game-assets.md](game-assets.md)。对于变形骨架、皮肤影响、形状键以及根运动，请应用[character-delivery.md](character-delivery.md)。
 
-A task-only dependency package written with `bpy.data.libraries.write` is not sufficient evidence of a normal user-openable scene. It can reopen with an empty/default active scene even when its asset datablocks exist. In an isolated process, select the intended scene/camera and save a normal `.blend`, then reopen that final file without a `--scene` override. Confirm the default active scene, model, packed references/materials and rig are actually available; selecting the scene inside a verifier must not conceal an incorrect opening state. Preserve the user's original live scenes and source files throughout.
+<a id="save-blend-safely"></a>
 
-## Round-trip validation
+## 安全保存 `.blend`
 
-File existence is only the first check. Validate high-risk exports in a disposable blank scene or the actual consumer:
+切勿覆盖用户的源文件，除非有明确的请求。解决绝对路径问题，验证父目录，并使用适合任务的“另存为”或“保存副本”功能。保存后，请确认。`bpy.data.filepath`仅当操作旨在更改实时文档路径时，并验证输出文件的大小不为零。
 
-1. record source object hierarchy, transforms, bounds, evaluated triangle counts, materials, UV layers, armature/bone counts, shape keys, animation ranges and texture paths;
-2. export to a new absolute path;
-3. confirm the exporter result, file extension and non-zero byte size;
-4. import into an isolated scene or open in the destination viewer/engine;
-5. compare scale, axes, hierarchy, pivots, shading, UVs, textures, animations, LODs and collisions;
-6. capture a screenshot or render and report deviations.
+使用 `bpy.data.libraries.write`编写的仅包含任务的依赖包，并不能作为正常用户可打开场景的充分证据。即使其资产数据块存在，该场景仍可能以 empty/default激活状态重新打开。在隔离的进程中，选择目标 scene/camera并保存一个正常的 `.blend`文件，然后在不进行 `--scene`覆盖的情况下重新打开该文件。确认默认的激活场景、模型、打包 references/materials和绑定实际上是可用的；在验证器中选择场景时，不得掩盖错误的打开状态。在整个过程中，保留用户的原始实时场景和源文件。
 
-Never round-trip into the user's working scene. Import operator names are version-sensitive just like export operators; discover their RNA at runtime.
+<a id="round-trip-validation"></a>
 
-### Static textured GLB audit
+## 导出回读验证
 
-Use [the executable audit](../scripts/validate_glb_roundtrip.py) on the exact
-binary to deliver, with the prepared export collection as the baseline. The
-script opens the source in a disposable process, inventories its evaluated
-meshes, resets to an empty Blender scene, then imports the GLB.
+文件存在只是第一个检查步骤。需要在一次性空白场景或实际消费者环境中对高风险导出内容进行验证：
+
+1. 记录源对象层次结构、变换、边界、计算出的三角形数量、材质、UV层、armature/bone计数、形状键、动画范围和纹理路径；
+2. 导出到新的绝对路径；
+3. 确认导出结果、文件扩展名以及非零字节大小；
+4. 导入到隔离的场景中或在目标 查看器、引擎 中打开；
+5. 比较比例、轴、层次结构、旋转点、阴影、UV、纹理、动画、LOD和碰撞；
+6. 截取屏幕截图或渲染结果，并报告偏差情况。
+
+切勿将数据直接返回到用户的工作场景。导入操作符的名称与版本相关，就像导出操作符一样；在运行时确定它们的具体功能。
+
+<a id="static-textured-glb-audit"></a>
+
+### 静态带贴图 GLB 检查
+
+使用 [可执行的审计](../scripts/validate_glb_roundtrip.py)对确切的二进制文件进行传输，以准备好的导出集合为基准。该脚本会在一次性进程中打开源文件，清点其评估过的网格，重置到空的 Blender 场景，然后导入 GLB 文件。
 
 ```bash
 blender --background --factory-startup --disable-autoexec --python-exit-code 1 \
   --python scripts/validate_glb_roundtrip.py -- prepared.blend COLLECTION final.glb --report roundtrip.json
 ```
 
-The static audit checks named mesh bounds and triangle counts, material
-assignments, and raw GLB positions under the Blender-to-glTF axis conversion
-`(x, y, z) -> (x, z, -y)`, with one Blender unit per meter. It verifies a
-single 0–1 UV set, degenerate UV triangles, and unchanged world-position/UV
-pairs. Sampled overlap is measured per mesh on a 384×384 grid. Use
-`--allow-uv-overlap` only for documented stacks or mirrors within a mesh.
-Reusing a texture across separate meshes is independent of that policy.
+在 Blender 到 glTF 的转换过程中，有一些静态审计检查，包括网格边界、三角形数量、材质分配以及原始 GLB 位置等检查。`(x, y, z) -> (x, z, -y)`，每米一个 Blender 单元。它验证了一个 0–1 的 UV 设置、退化的 UV 三角形，以及未改变的world-position/UV成对。采样重叠是按网格在 384×384 网格上测量的。使用`--allow-uv-overlap`仅适用于在网格中记录的堆栈或镜像。在不同网格之间重复使用纹理与这一政策无关。
 
-The supported material paths are Principled constants, direct image inputs,
-and separated metallic/roughness image channels. The audit compares imported
-image pixels, sizes and color spaces and records the hash of each embedded
-image. Convert incompatible procedural graphs to supported maps before audit.
-The raw axis check uses dense float position accessors. This recipe covers
-static textured props with those accessors and exact triangle counts. Adapt
-the audit before using a different vertex encoding or an intentional
-simplification budget.
+支持的材质路径包括原则性常量、直接图像输入以及分离路径。metallic/roughness图像通道。审计功能会对比导入的图像像素、尺寸和色彩空间，并记录每个嵌入图像的哈希值。在审计之前，将不兼容的过程图转换为支持的映射。原始轴检查使用密集的浮点位置访问器。此方案适用于使用这些访问器和精确三角形计数的静态纹理道具。在使用不同的顶点编码或故意简化的预算之前，需对审计功能进行适配。
 
-The [lantern replay](../examples/iron-lantern-p0/README.md#p2-isolated-glb-round-trip)
-uses the same audit with project-specific opening and seat probes on the
-imported meshes. It publishes only the verified candidate bytes and records
-post-import review renders alongside the report.
+该 [灯笼重播](../examples/iron-lantern-p0/README.md#p2-isolated-glb-round-trip) 使用与项目特定的开启和座椅探测相同的审计方法对导入的网格进行处理。它仅发布经过验证的候选字节，并在导入后审查渲染结果的同时生成报告。
 
-## Export acceptance checks
+<a id="export-acceptance-checks"></a>
 
-- Only intended objects were exported.
-- World-space bounds, units, axes, origins and pivots match the contract.
-- Evaluated geometry and triangle counts are within budget.
-- Normals, tangents, UV sets, material assignments and alpha modes survive.
-- Textures resolve on another machine or in the destination package.
-- Armature hierarchy, bone axes, skin weights, shape keys and clips survive when applicable.
-- The source scene remains editable and unchanged outside the task-owned export stage.
-- Export path, byte size, effective settings, Blender version and downstream test result are reported.
+## 导出验收
+
+- 仅导出了预定对象。
+- 世界空间的范围、单位、轴、原点和旋转中心与合同约定一致。
+- 评估后的几何形状和三角形数量都在预算范围内。
+- 法线、切线、UV集、材质分配以及阿尔法模式都保持不变。
+- 纹理可以在另一台机器或目标包中进行处理。
+- 在适用的情况下，骨架层次结构、骨骼轴、皮肤权重、形状键和剪辑会保留下来。
+- 在任务专属的导出阶段之外，源场景仍然可以编辑且保持不变。
+- 已报告导出路径、字节大小、有效设置、Blender版本以及下游测试结果。

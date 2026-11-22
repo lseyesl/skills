@@ -1,9 +1,11 @@
 ---
 name: pdf-epub-to-markdown
-description: Use when converting PDF, EPUB, DOCX, PPTX, XLSX, HTML, or image files to Markdown for an Obsidian vault. Triggers on "把 PDF 转 markdown"、"EPUB 转 md"、"导读书籍到 Obsidian"、"marker-pdf"、"批量转换文档". Detects and installs marker-pdf via uv.
+description: "将 PDF、EPUB、DOCX、PPTX、XLSX、HTML 或图片转换为适合 Obsidian 笔记库的 Markdown。适用于“把 PDF 转 markdown”“EPUB 转 md”“导读书籍到 Obsidian”“marker-pdf”或“批量转换文档”等请求。使用 uv 检测并安装 marker-pdf。"
 ---
 
-# PDF / EPUB → Markdown (Obsidian)
+<a id="pdf--epub--markdown-obsidian"></a>
+
+# 将 PDF 或 EPUB 转换为 Obsidian 笔记
 
 ## 概述
 

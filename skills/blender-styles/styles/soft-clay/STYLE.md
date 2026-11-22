@@ -1,43 +1,53 @@
-# Soft Clay Style
+<a id="soft-clay-style"></a>
 
-Produce an editable, reproducible scene plus visually reviewed render evidence. This is an art-direction layer over general Blender modeling, not a character generator or a physics simulator.
+# 柔和低多边形黏土风格
 
-All `scripts/...` paths refer to the shared `blender-styles/` root. Style examples and historical results stay in this style directory. Read the [shared workflow](../../references/workflow-and-review.md) before applying this profile.
+生成可编辑、可复制的场景，并附上经过视觉审核的渲染证据。这是一个基于一般 Blender 建模的艺术指导层，并非角色生成器或物理模拟器。
 
-## Workflow
+所有 `scripts/...` 路径都以共享的 `blender-styles/` 目录为根。风格示例与历史结果保存在本风格目录中。应用配置前先阅读[共享工作流程](../../references/workflow-and-review.md)。
 
-1. Inspect the project and current scene. Resolve asset scale, owned targets, static/animation delivery, aspect ratio, render engine, playback FPS and pose cadence. Preserve unrelated data and source `.blend` files. For live MCP work, use [blender-python-modeling](../../../blender-python-modeling/SKILL.md) for inspection, execution and save/export conventions; its rigging and reference-analysis procedures remain authoritative.
-2. Write a project-local Python recipe and JSON style profile. Load only the references needed below. Use [examples/preview.json](examples/preview.json) or [examples/portrait.json](examples/portrait.json) as partial overrides of `scripts/clay_common.py::DEFAULTS`. Keep one palette/material/color-management profile across shots. Do not copy the example character or scene layout into a production project unless requested.
-3. Build economical, rounded silhouettes and modular assets. Preserve rig topology and unapplied deformation stacks. Choose smooth organic surfaces and flat broad planar faces deliberately; keep bevels small relative to each part. Review surface orientation, thickness, connections and silhouettes before materials. Softness does not authorize erasing reference veins, grooves, cupping or pressed dents; inspect one evaluated local sample before full renders, following the [local feature review](../../../blender-python-modeling/references/local-feature-review.md).
-4. Import the bundled tools from their absolute `scripts/` directory in the project recipe. Call `create_palette`, `setup_lighting`, `setup_render`, and, for explicit animated targets, `setup_animation`. Material generation does not replace existing material slots. Lighting replaces the active world and, by default, camera references, while retaining prior datablocks; use `with_camera=False` to preserve a shot camera. Existing lights remain active and need review.
-5. Evaluate start, contact/extreme, middle, last and loop-boundary frames. Configure playback FPS separately from pose holds. For a 24-frame loop, key frames 1 and 25 to the same pose and render 1–24. A two-frame hold at 24fps gives 12 pose updates/second without slowing playback. Constrained rigs, NLA and drivers require explicit evaluated baking before the timing helper.
-6. Run `validate_scene` / `validate_clay_scene.py`. Render representative images in the chosen engine; inspect matte response, micro-relief, silhouette, framing, shadows, deformation and contacts. Automated checks do not certify proportions against a design, collision-free motion, or perceptual shot consistency. Keep those visual gates explicit.
-7. Save to a derived output path, render a restartable image sequence where appropriate, and deliver scripts, profile, `.blend`, renders, QA report, Blender version and limitations. Use `--python-exit-code 1` in batch runs so Python failures reach the shell. Do not claim a finished visual scene merely because structural QA passes.
+<a id="workflow"></a>
 
-## Load references progressively
+## 工作流程
 
-| Work | Read |
+1. 检查项目和当前场景。解决资源缩放、所属目标的问题。静态、动画交付、宽高比、渲染引擎、播放帧率以及姿态节奏。保留无关数据和来源。`.blend`文件。对于实时的MCP工作，请使用[blender-python-modeling](../../../blender-python-modeling/SKILL.md)用于检查、执行save/export相关规范、其结构设计和参考分析程序仍然具有权威性。
+2. 编写项目本地化的 Python 脚本和 JSON 样式配置文件。仅加载下方所需的引用内容。使用 [examples/preview.json](examples/preview.json) 或 [examples/portrait.json](examples/portrait.json) 作为 `scripts/clay_common.py::DEFAULTS` 的部分替代方案。在多个镜头中保持一个相同的 palette/material/color-management 配置文件。除非有特别要求，否则不要将示例角色或场景布局复制到生产项目中。
+3. 构建经济实惠、圆润的轮廓和模块化资产。保留骨骼拓扑结构和未应用的变形堆栈。选择光滑的有机表面和平坦的宽平面面；相对于每个部件，保持倒角较小。在添加材质之前，检查表面的方向、厚度、连接和轮廓。柔和度并不允许删除参考纹理、凹槽、杯状或压痕；在完整渲染之前，根据[本地功能审核](../../../blender-python-modeling/references/local-feature-review.md)标准检查一个经过评估的局部样本。
+4. 从项目配方中的绝对 `scripts/` 目录导入捆绑的工具。调用 `create_palette`、 `setup_lighting`、 `setup_render`，对于明确的动画目标，则调用 `setup_animation`。材料生成不会替代现有的材料槽位。照明会替换活动的世界，并且默认情况下会替换相机参考，同时保留之前的datablocks；使用 `with_camera=False` 来保留镜头相机。现有的灯光仍然处于活动状态，需要进行审查。
+5. 评估起始帧、第contact/extreme帧、中间帧、最后帧以及循环边界帧。将播放帧率配置与姿势保持分开。对于24帧的循环，将第1帧和第25帧设置为相同的姿势，并渲染第1至24帧。在24帧每秒的速度下，进行两帧的保持操作，可以获得12个姿势updates/second，而不会降低播放速度。对于受约束的骨架、NLA和驱动程序，需要在时间辅助工具之前进行明确的评估和处理。
+6. 运行 `validate_scene` / `validate_clay_scene.py`。使用所选引擎渲染代表性图像；检查哑光效果、微浮雕、轮廓、构图、阴影、变形和接触效果。自动检查并不能确保比例符合设计要求、运动无碰撞，或拍摄效果的一致性。这些视觉指标需要明确标注。
+7. 保存为派生输出路径，在适当的情况下渲染可重启的图像序列，并提供脚本、配置文件、`.blend`、渲染结果、质量保证报告、Blender版本及限制信息。在批量运行中使用`--python-exit-code 1`，以便Python失败时能够直接反馈到shell界面。仅仅因为结构性的质量保证通过，就声称视觉场景已经完成是不合适的。
+
+<a id="load-references-progressively"></a>
+
+## 按需查阅参考
+
+| 工作 | 阅读 |
 |---|---|
-| Mesh budget, silhouette, bevels, modular or deformable assets | [modeling](references/modeling.md) |
-| Palette, procedural shader, noise scale, material assignment | [materials](references/materials.md) |
-| Scene scale, large lights, contact shadows, camera/DOF | [lighting](references/lighting.md) |
-| Keyframes, rigs, stop-motion holds, 12/24fps, loop seam | [animation](references/animation.md) |
-| Renderer/device/OCIO compatibility, sequences/video/batch | [rendering](references/rendering.md) |
-| Executable checks, manual gates and multi-shot acceptance | [quality check](references/quality-check.md) |
-| Minimal commands and applying to an existing project | [usage](references/usage.md) |
-| Executed evidence and untested boundaries | [test results](references/test-results.md) |
+| 网格预算、轮廓、倒角、模块化或可变形资源 | [建模](references/modeling.md) |
+| 调色板、过程性着色器、噪声比例、材质分配 | [材料](references/materials.md) |
+| 场景比例、大灯光效、接触阴影、camera/DOF | [照明](references/lighting.md) |
+| 关键帧、绑定、定格动画、12/24fps、循环接缝 | [动画](references/animation.md) |
+| Renderer/device/OCIO兼容性，sequences/video/batch | [渲染](references/rendering.md) |
+| 可执行性检查、手动门控和多次拍摄的接受标准 | [质量检查](references/quality-check.md) |
+| 最少的命令和适用于现有项目 | [使用](references/usage.md) |
+| 已执行的证据与未经验证的界限 | [测试结果](references/test-results.md) |
 
-## Resource ownership and scope
+<a id="resource-ownership-and-scope"></a>
 
-- Tools tag generated datablocks with `soft_clay_owner = <owner>::<scene.name>` and `soft_clay_role`. Keep owner and scene name stable on reruns. Find resources by tags; refuse unowned name collisions and linked/override edits. Independent scenes get independent rigs/materials.
-- Never clear the user's scene, remesh a bound character, replace all material slots, apply rig transforms, or force a GPU backend as part of styling. The demo alone rebuilds its owned test meshes.
-- The animation helper copies non-owned/shared Actions, preserves the source and operates only on the object's assigned slot. It does not retarget, auto-rig or solve contacts. Reruns replace only its named timing modifiers.
-- CLI setup scripts change the current process but do not automatically save. Use a project recipe or `setup_render.py --save` to persist all stages. Avoid separate unsaved Blender processes for dependent setup stages.
-- `continuous-action` may supply motion references only when its action-library workflow is requested; this Skill has no dependency on `A.blend` or image generation. `concept-multiview-sheet` supplies inferred design views, not measured geometry.
+## 资源归属与范围
 
-## Minimal smoke test
+- 工具会为生成的数据块添加`soft_clay_owner = <owner>::<scene.name>`和`soft_clay_role`标签。在重新运行时，保持所有者和场景名称的稳定性。通过标签来查找资源；拒绝未指定所有者的名称冲突以及linked/override编辑。独立场景会获得独立的rigs/materials.。
+- 切勿在造型过程中清除用户的场景、重新划分绑定角色的网格、更换所有材质槽、应用骨骼变换，或强制使用 GPU 后端。仅通过演示即可重新生成所拥有的测试网格。
+- 该动画辅助工具复制non-owned/shared动作，保留源数据，并仅对对象指定的槽进行操作。它不进行重新目标定位、自动调整骨骼或解决接触问题。重新运行仅替换其命名的时序修饰符。
+- CLI设置脚本会改变当前进程，但不会自动保存。使用项目配方或 `setup_render.py --save` 来持久保存所有阶段。避免为依赖的设置阶段创建未保存的 Blender 进程。
+- `continuous-action`仅在其动作库工作流程被请求时提供运动参考；该技能不依赖于`A.blend`或图像生成。`concept-multiview-sheet`提供的是推断出的设计视图，而非实际测量的几何信息。
 
-From the repository root, replacing `blender` with the host's executable:
+<a id="minimal-smoke-test"></a>
+
+## 最小运行测试
+
+从仓库根目录开始，将 `blender` 替换为主机的可执行文件：
 
 ```bash
 blender --background --factory-startup --python-exit-code 1 \
@@ -46,4 +56,4 @@ blender --background --factory-startup --python-exit-code 1 \
   --output .tmp/clay-smoke --render still
 ```
 
-This creates a new abstract test scene, a saved `.blend`, a preview, and `quality.json`. It preserves the original startup scene. The default tools have no project paths; output locations come from the caller.
+这将创建一个新的抽象测试场景、一个已保存的`.blend`、一个预览，以及`quality.json`。它会保留原始的启动场景。默认的工具没有项目路径；输出位置来自调用者。

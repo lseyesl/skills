@@ -363,7 +363,7 @@
     },
     {
       "id": "blender.animation-and-rigging",
-      "title": "Animation and Rigging Recipes",
+      "title": "动画与骨骼绑定",
       "entry": "references/animation-and-rigging.md",
       "kind": "knowledge",
       "tasks": [
@@ -387,10 +387,10 @@
         "animation constraints"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -400,7 +400,7 @@
     },
     {
       "id": "blender.asset-libraries",
-      "title": "Asset Libraries and Reuse",
+      "title": "资产库与复用",
       "entry": "references/asset-libraries.md",
       "kind": "knowledge",
       "tasks": [
@@ -422,10 +422,10 @@
         "链接资产"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -435,7 +435,7 @@
     },
     {
       "id": "blender.compatibility",
-      "title": "Blender Version Compatibility",
+      "title": "Blender 版本兼容性",
       "entry": "references/compatibility.md",
       "kind": "knowledge",
       "tasks": [
@@ -456,10 +456,10 @@
         "API compatibility"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -469,7 +469,7 @@
     },
     {
       "id": "blender.compositing-and-passes",
-      "title": "Compositing and Render Passes",
+      "title": "合成与渲染通道",
       "entry": "references/compositing-and-passes.md",
       "kind": "knowledge",
       "tasks": [
@@ -492,10 +492,10 @@
         "render passes"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -505,7 +505,7 @@
     },
     {
       "id": "blender.export-and-packaging",
-      "title": "Export and Asset Packaging",
+      "title": "导出与资产打包",
       "entry": "references/export-and-packaging.md",
       "kind": "knowledge",
       "tasks": [
@@ -531,10 +531,10 @@
         "React 展示"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -548,7 +548,7 @@
     },
     {
       "id": "blender.fidelity-and-completion",
-      "title": "Reference Fidelity and Completion Gates",
+      "title": "参考还原度与完成条件",
       "entry": "references/fidelity-and-completion.md",
       "kind": "knowledge",
       "tasks": [
@@ -566,14 +566,15 @@
         "固定镜头对比与整体精修",
         "五官发型特征线叠图",
         "正式贴图前白模验收",
+        "原图直比与阶段返修",
         "局部未匹配日志",
         "可见缺陷补图返修"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -583,7 +584,7 @@
     },
     {
       "id": "blender.game-assets",
-      "title": "Game Asset Production",
+      "title": "游戏资产制作",
       "entry": "references/game-assets.md",
       "kind": "knowledge",
       "tasks": [
@@ -607,10 +608,10 @@
         "retopology"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -620,7 +621,7 @@
     },
     {
       "id": "blender.local-feature-review",
-      "title": "Local shape, relief and render review",
+      "title": "局部形体、浮雕与渲染审阅",
       "entry": "references/local-feature-review.md",
       "kind": "knowledge",
       "tasks": [
@@ -638,10 +639,10 @@
         "local feature review"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -651,7 +652,7 @@
     },
     {
       "id": "blender.materials-and-nodes",
-      "title": "Materials and Node Recipes",
+      "title": "材质与节点",
       "entry": "references/materials-and-nodes.md",
       "kind": "knowledge",
       "tasks": [
@@ -674,10 +675,10 @@
         "材质节点"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -687,7 +688,7 @@
     },
     {
       "id": "blender.mcp-workflow",
-      "title": "Local Blender MCP Workflow",
+      "title": "本地 Blender MCP 工作流程",
       "entry": "references/mcp-workflow.md",
       "kind": "knowledge",
       "tasks": [
@@ -708,10 +709,10 @@
         "安装插件"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -721,7 +722,7 @@
     },
     {
       "id": "blender.modeling-recipes",
-      "title": "Modeling Recipes",
+      "title": "建模方法",
       "entry": "references/modeling-recipes.md",
       "kind": "knowledge",
       "tasks": [
@@ -738,10 +739,10 @@
         "modeling recipes"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -751,7 +752,7 @@
     },
     {
       "id": "blender.output-targets",
-      "title": "Output-Target Recipes",
+      "title": "按交付目标选择制作方法",
       "entry": "references/output-targets.md",
       "kind": "knowledge",
       "tasks": [
@@ -768,10 +769,10 @@
         "output targets"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -781,7 +782,7 @@
     },
     {
       "id": "blender.physics-and-simulation",
-      "title": "Physics and Simulation",
+      "title": "物理与模拟",
       "entry": "references/physics-and-simulation.md",
       "kind": "knowledge",
       "tasks": [
@@ -807,10 +808,10 @@
         "布料模拟"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -837,10 +838,10 @@
         "procedure selection"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -850,7 +851,7 @@
     },
     {
       "id": "blender.python-modeling",
-      "title": "Blender Python Modeling Rules",
+      "title": "Blender Python 建模约定",
       "entry": "references/python-modeling.md",
       "kind": "knowledge",
       "tasks": [
@@ -867,10 +868,10 @@
         "python modeling"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -880,7 +881,7 @@
     },
     {
       "id": "blender-python-modeling.reference.6dd9c4a1b5a2",
-      "title": "Reference fitting audit and design",
+      "title": "参考拟合的审查与设计",
       "entry": "references/reference-fitting/architecture.md",
       "kind": "knowledge",
       "tasks": [
@@ -897,10 +898,10 @@
         "architecture"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -910,7 +911,7 @@
     },
     {
       "id": "blender-python-modeling.reference.fbb871ab7c09",
-      "title": "Executable reference-fitting workflow (Phase 0–4)",
+      "title": "可执行的参考拟合流程（阶段 0–4）",
       "entry": "references/reference-fitting/workflow.md",
       "kind": "knowledge",
       "tasks": [
@@ -927,10 +928,10 @@
         "workflow"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -940,7 +941,7 @@
     },
     {
       "id": "blender.reference-image-analysis",
-      "title": "AI Reference Image Analysis",
+      "title": "AI 参考图分析",
       "entry": "references/reference-image-analysis.md",
       "kind": "knowledge",
       "tasks": [
@@ -962,10 +963,10 @@
         "遮挡部件延续"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -980,7 +981,7 @@
     },
     {
       "id": "blender.reference-workspace-tool",
-      "title": "Apply imported references to geometry",
+      "title": "将已导入参考应用于几何",
       "entry": "references/reference-workspace-tool.md",
       "kind": "knowledge",
       "tasks": [
@@ -998,10 +999,10 @@
         "局部修形的控制视图与参考锚点"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -1028,10 +1029,10 @@
         "scene diagnosis"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -1044,7 +1045,7 @@
     },
     {
       "id": "blender.scene-lighting-rendering",
-      "title": "Scene, Lighting, and Rendering Recipes",
+      "title": "场景、布光与渲染",
       "entry": "references/scene-lighting-rendering.md",
       "kind": "knowledge",
       "tasks": [
@@ -1068,10 +1069,10 @@
         "EEVEE"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -1081,7 +1082,7 @@
     },
     {
       "id": "blender.staged-execution",
-      "title": "Fail-closed stages and selective rendering",
+      "title": "分阶段校验与按需渲染",
       "entry": "references/staged-execution.md",
       "kind": "knowledge",
       "tasks": [
@@ -1098,10 +1099,10 @@
         "staged execution"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -1128,10 +1129,10 @@
         "task analysis"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -1141,7 +1142,7 @@
     },
     {
       "id": "blender.uv-and-texture-baking",
-      "title": "UV and Texture Baking",
+      "title": "UV 接缝与贴图烘焙",
       "entry": "references/uv-and-texture-baking.md",
       "kind": "knowledge",
       "tasks": [
@@ -1168,10 +1169,10 @@
         "texel density"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -1181,7 +1182,7 @@
     },
     {
       "id": "blender.verification",
-      "title": "Blender Result Verification",
+      "title": "Blender 结果验证",
       "entry": "references/verification.md",
       "kind": "knowledge",
       "tasks": [
@@ -1201,10 +1202,10 @@
         "三角化检查"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],

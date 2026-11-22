@@ -33,7 +33,7 @@
     },
     {
       "id": "concept-multiview-sheet.reference.9c32a6c55f2c",
-      "title": "Consistency Review",
+      "title": "跨视图一致性审阅",
       "entry": "references/consistency-review.md",
       "kind": "knowledge",
       "tasks": [
@@ -47,10 +47,10 @@
         "发髻跨视图朝向校验"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -60,7 +60,7 @@
     },
     {
       "id": "concept-multiview-sheet.reference.5fbb302b01b7",
-      "title": "Single-View Inference Contract",
+      "title": "单视图推定规则",
       "entry": "references/inference-contract.md",
       "kind": "knowledge",
       "tasks": [
@@ -73,10 +73,10 @@
         "inference contract"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -86,7 +86,7 @@
     },
     {
       "id": "concept-multiview-sheet.reference.688bc77c5aba",
-      "title": "Pose and Configuration Normalization",
+      "title": "姿势与构型规范化",
       "entry": "references/pose-and-configuration-normalization.md",
       "kind": "knowledge",
       "tasks": [
@@ -99,10 +99,10 @@
         "pose and configuration normalization"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -112,7 +112,7 @@
     },
     {
       "id": "concept-multiview-sheet.reference.56aadff0826d",
-      "title": "Pre-model multiview review",
+      "title": "建模前多视图审阅",
       "entry": "references/pre-model-review.md",
       "kind": "knowledge",
       "tasks": [
@@ -125,10 +125,10 @@
         "pre model review"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -138,7 +138,7 @@
     },
     {
       "id": "concept-multiview-sheet.reference.06032bbd0b9a",
-      "title": "Prompt Recipes",
+      "title": "提示词配方",
       "entry": "references/prompt-recipes.md",
       "kind": "knowledge",
       "tasks": [
@@ -151,10 +151,10 @@
         "prompt recipes"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],

@@ -61,6 +61,25 @@ class FinalDeliveryTests(unittest.TestCase):
             args = ["--model", "model.glb", "--review", "review.json"]
             self.assertFalse(run())
             self.assertTrue(run(*args))
+            original = write("uploaded.png", "user original")
+            prep["source_images"] = [original]
+            bundle["preparation"] = write("prep.json", prep)
+            self.assertFalse(run(*args))  # Both generated views pass, original absent.
+            direct = dict(source=original, model_sha256=bundle["model"]["sha256"],
+                          registration="same frontal pose, aligned at crown and sole",
+                          clay=write("white.png", "white model"), final_render=shot["image"],
+                          comparison=write("overlay.png", "source-model overlay"),
+                          features=[dict(module=m["id"], feature=f, status="matched", finding="aligned")
+                                    for m in record["modules"] for f in m["signature_features"]])
+            bundle["original_comparisons"] = [direct]
+            self.assertTrue(run(*args))
+            direct["features"][0]["status"] = "open"
+            self.assertFalse(run(*args))
+            direct["features"][0]["status"] = "matched"
+            direct["source"] = guides[0]
+            self.assertFalse(run(*args))
+            del bundle["original_comparisons"]
+            prep["source_images"] = guides
             prep["style_selection"] = dict(id="papercraft", reason="layered cut edges",
                                             region="cuff", shape_cue="raised fold", surface_cue="fine grain")
             bundle["preparation"] = write("prep.json", prep)

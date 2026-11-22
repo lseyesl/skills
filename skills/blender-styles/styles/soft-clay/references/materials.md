@@ -1,34 +1,40 @@
-# Clay shader and palette
+<a id="clay-shader-and-palette"></a>
 
-`scripts/create_clay_material.py` creates the same procedural node topology for each named color. It does not assign slots; the project recipe chooses authorized objects and slots explicitly.
+# 黏土着色与配色
 
-| Parameter | Default | Interpretation |
+`scripts/create_clay_material.py`为每种命名颜色创建相同的程序节点拓扑结构。它不会分配插槽；项目配方会明确选择授权对象和插槽。
+
+| 参数 | 默认设置 | 解释/解读 |
 |---|---:|---|
-| roughness | 0.82 | Matte dielectric response; useful range 0.7–0.95 |
-| specular | 0.22 | Low, nonzero dielectric highlight (Specular IOR Level / legacy Specular) |
-| color_variation | 0.035 | Multiplicative dark/light endpoints around scene-linear base RGB |
-| color_scale | 3 | Broad noise frequency per reference unit |
-| micro_scale | 110 | Fine bump frequency per reference unit |
-| bump_strength | 0.12 | Restrained normal perturbation |
-| bump_distance | 0.003 | Relative Blender-unit bump distance, multiplied by scene scale |
+| 粗糙度 | 0.82 | 哑光介电响应；适用范围 0.7–0.95 |
+| 镜面反射 | 0.22 | 低非零介电亮点（镜面反射指数/传统镜面反射） |
+| color_variation | 0.035 | 在场景线性基础RGB上进行的乘法dark/light端点运算 |
+| color_scale | 3 | 每参考单位的宽噪声频率 |
+| micro_scale | 110 | 每个参考单元的精细凹凸频率 |
+| bump_strength | 0.12 | 受限法向扰动 |
+| bump_distance | 0.003 | 相对混合单元凹凸距离，乘以场景比例 |
 
-Metallic stays zero, IOR is 1.45, and no true displacement or subsurface scattering is required. Large area lights create the soft response. Roughness alone does not remove highlights; source area, specular level and exposure interact.
+金属效果为0，反射率为1.45，不需要真正的位移或次表面散射效果。大面积的灯光能够产生柔和的响应效果。仅使用粗糙度并不能消除高光效果；光源区域、镜面程度和曝光度是相互影响的。
 
-## Node topology
+<a id="node-topology"></a>
+
+## 节点连接结构
 
 ```text
-Texture Coordinate.Object → broad Noise.Fac → ColorRamp → Principled.Base Color
-Texture Coordinate.Object → fine Noise.Fac → Bump.Height → Principled.Normal
-Principled.BSDF → Material Output.Surface
+纹理坐标对象 → 宽噪声函数 → 颜色渐变 → 基础颜色
+纹理坐标对象 → 细噪声函数 → 凹凸高度 → 基于原理的法线
+Principled.BSDF → 材质输出.表面
 ```
 
-Noise scales are divided by `scale`; bump distance is multiplied by `scale`. This preserves the approximate look when geometry coordinates and light/camera layout are scaled by the same factor. Geometry should be constructed at intended local dimensions with identity object scale when safe. Arbitrary unapplied per-object scaling stretches object-coordinate noise; a style pass must not apply rig transforms to solve that.
+噪声比例被除以`scale`; 凹凸距离乘以`scale`. 这保留了几何坐标时的大致外观灯光、相机布局按照相同的比例进行缩放。在确保安全的情况下，几何图形应以预期的局部尺寸构建，并且对象的比例应保持不变。任意未应用的对象缩放会加剧对象坐标的噪声；因此，在样式处理过程中不得应用骨骼变换来解决这个问题。
 
-Object-space coordinates follow rigid object transforms but can swim across deformed surfaces. For a production skinned character, use a stable UV/rest-position shader or bake the procedural textures. The bundled tool is a rigid-asset and preview baseline, not a guarantee of deformation-stable texturing. Use the [existing UV/baking workflow](../../../../blender-python-modeling/references/uv-and-texture-baking.md) when needed.
+物体空间坐标会随刚性变换移动，但网格变形时，纹理可能在表面滑动。对需要蒙皮的生产角色，使用基于稳定 UV 或静止位置的着色器，或先烘焙程序化纹理。随附工具提供刚性资产和预览基线；角色变形时仍须核验贴图的稳定性。见[UV 与贴图烘焙](../../../../blender-python-modeling/references/uv-and-texture-baking.md)。
 
-## Colors and assignment
+<a id="colors-and-assignment"></a>
 
-Hex colors are treated as sRGB and converted to scene-linear RGB for node values. Numeric RGB(A) lists are already scene-linear in [0,1]; alpha must be 1. Replacing the `palette` configuration replaces the entire color mapping, making user-defined color names sufficient for any project. Removed colors are not automatically deleted from Blender: they may still be used by existing assets.
+## 颜色与分配
+
+Hex颜色被视为sRGB颜色，并转换为场景线性RGB值。数值RGB(A)列表在[0,1]范围内已经是场景线性值；alpha值必须为1。替换`palette`配置会替换整个颜色映射，使得用户定义的颜色名称适用于任何项目。被移除的颜色不会自动从Blender中删除：它们仍可被现有资源使用。
 
 ```python
 palette = create_palette(scene, profile, owner="shot-style")
@@ -37,8 +43,10 @@ material = palette[chosen_palette_key]
 obj.data.materials.append(material)
 ```
 
-Use one palette and node recipe across shots. Judge shades under the actual view transform and output lighting, not the solid viewport. If coarse noise makes the clay look like stone or bump sparkles during animation, reduce variation/strength/frequency and rerender at final resolution. Bump should enrich the surface without altering silhouette.
+在多个镜头中使用相同的调色板和节点配方。根据实际的视图变换来评判色调，并输出照明效果，而不是纯视觉效果。如果粗糙的噪声使得陶土看起来像石头，或者在动画过程中产生凹凸效果，请降低variation/strength/frequency值，并在最终分辨率下重新渲染。凹凸效果应该能够丰富表面，而不改变轮廓。
 
-## Ownership and compatibility
+<a id="ownership-and-compatibility"></a>
 
-Owned materials are reused by tag on reruns, their nodes rebuilt deterministically. Editing a tagged material updates all its users intentionally; duplicate it with a different owner for a different look. Tools never adopt a similarly named unowned material. Node sockets are retrieved by runtime identifiers; missing required sockets produce a version-specific error. Shader graphs are compatible with both EEVEE and Cycles on the tested build; procedural export to other engines may require baking.
+## 归属与兼容性
+
+拥有的材质在重新运行时通过标签进行复用，其节点会确定性地重建。编辑带有标签的材质会有意地更新其所有用户；可以通过不同的所有者来复制该材质，以实现不同的效果。工具永远不会采用同名但未被拥有的材质。节点接口是通过运行时标识符来检索的；缺少必要的接口会导致版本特定的错误。着色器图在测试版本中既与 EEVEE 兼容，也与 Cycles 兼容；对于其他引擎的过程导出可能需要进行烘焙处理。

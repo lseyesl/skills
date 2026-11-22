@@ -5,7 +5,7 @@
   "modules": [
     {
       "id": "main_hull",
-      "name": "Main hull",
+      "name": "主体外壳",
       "evidence": "observed",
       "source_views": ["front", "side", "top"],
       "priority": "primary",
@@ -13,7 +13,7 @@
       "expected_instances": 1,
       "implemented_instances": 0,
       "signature_features": [
-        "Replace with the visible features that make this module recognizable"
+        "填写能够辨认该模块的可见特征"
       ],
       "matched_signature_features": [],
       "feature_reviews": [],
@@ -30,6 +30,6 @@
     "structural_report": "",
     "contact_sheet": "",
     "perspective_view": "",
-    "unresolved_issues": ["Reference and rendered views have not been reviewed"]
+    "unresolved_issues": ["尚未对照参考图和渲染图完成审阅"]
   }
 }

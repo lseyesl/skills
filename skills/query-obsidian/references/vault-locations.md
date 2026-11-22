@@ -1,14 +1,18 @@
-# Obsidian vault locations
+<a id="obsidian-vault-locations"></a>
 
-Check these candidate vault roots in order. A root is valid for this skill only when `ai-wiki/AGENTS.md` exists beneath it.
+# Obsidian 笔记库位置
 
-| Priority | Vault root | Device note |
+按优先级依次检查候选根目录。只有当目录下存在 `ai-wiki/AGENTS.md` 时，才能将其用作本技能的笔记库。
+
+| 优先级 | 笔记库根目录 | 设备说明 |
 | ---: | --- | --- |
-| 1 | `/Users/q/panel/obsidian_note` | Current macOS device |
+| 1 | `/Users/q/panel/obsidian_note` | 当前 macOS 设备 |
 
-## Maintenance rules
+<a id="maintenance-rules"></a>
 
-- Keep each entry as an absolute vault-root path, not the `ai-wiki/` subdirectory.
-- Give each candidate a unique priority.
-- When a newly supplied path validates, use it for the current run but ask before adding it here.
-- Do not remove or reorder existing device paths without the user's approval.
+## 维护规则
+
+- 每项填写笔记库根目录的绝对路径，不要填到 `ai-wiki/` 子目录。
+- 每个候选目录使用唯一的优先级。
+- 用户新提供的路径通过验证后，可用于本次任务。加入此表前须先征得用户同意。
+- 移除现有设备路径或调整其顺序前，须征得用户同意。

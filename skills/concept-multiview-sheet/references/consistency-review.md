@@ -1,108 +1,117 @@
-# Consistency Review
+<a id="consistency-review"></a>
+
+# 多视图一致性审查
 
 
-For a scoped construction handoff, use the source fidelity, correspondence and projection checks below on the actual controlling views. The full-sheet inventory and layout criteria apply to the complete presentation deliverable. Record the buildable regions and missing constraints in the [pre-model review](pre-model-review.md).
+对于范围明确的构建移交，请使用以下针对实际控制视图的源 fidelity、对应性和投影检查。完整的清单和布局标准适用于完整的演示交付物。在 [预模型审核](pre-model-review.md) 中记录可构建区域和缺失的约束条件。
 
-Inspect the image itself; a successful generation call is not acceptance evidence.
+请查看图片本身；成功的生成调用并不构成验收证据。
 
-First perform the independent [source-fidelity check](source-fidelity.md). This file checks whether generated views can describe one subject; it cannot by itself prove that subject is the one in the original photograph.
+首先执行独立的 [源可信度检查](source-fidelity.md)。该文件用于检查生成的视图是否能够描述一个主题；但它本身无法证明该主题就是原始照片中的主题。
 
-For modeling handoff, complete the [pre-model review and scoped receipt](pre-model-review.md) before detailed geometry. Review every panel and explicitly classify controlling/supplemental/rejected views. Pose consistency, imported-image calibration, model fidelity and animation readiness are separate decisions. Critical unresolved regions cannot be approved through a generic whole-sheet pass.
+交给建模环节时，必须在制作细节几何前完成[建模前审查并记录获准范围](pre-model-review.md)。逐张检查，明确哪些视图可作控制依据、哪些仅作补充、哪些已否决。姿态一致性、导入后的参考校准、模型还原度和能否用于动画要分别判断。仍有关键冲突的部位不能沿用整张图的通过结论。
 
-## Layout and projection
+<a id="layout-and-projection"></a>
 
-- exactly five controlling views for an accepted symmetric design, or six for an asymmetric/uncertain design;
-- front, back, top, and bottom are always present; five-view mode has one documented canonical side, while six-view mode has both left and right;
-- the combined sheet has two render rows and two matching line-art rows in the required order;
-- every subject is fully visible, centered, and aligned;
-- every panel uses one common orthographic scale and semantic anchors; apparent scale is not independently fitted to each panel's bounding box;
-- every controlling view is an elevation rather than a three-quarter variation;
-- directional subjects use the chosen orientation consistently;
-- the background is one uniform solid isolation colour across every panel and does not create a false horizon or perspective floor;
-- the background differs clearly from every colour and material touching the subject's outer silhouette; saturated magenta is preferred unless it overlaps the subject palette;
-- no gradient, texture, scenery, contact shadow, or similar-coloured region obscures the subject/background boundary.
+## 排版与投影
 
-## Cross-view design
+- 对于被认可的对称设计，需要 exactly five 个控制视图；而对于 asymmetric/uncertain 设计，则需要 six 个控制视图。
+- 前面、后面、顶部和底部总是存在的；五视图模式有一个被记录的规范侧面，而六视图模式则同时有左右两侧。
+- 合并后的文件中有两行渲染内容，以及两行对应的线稿，顺序完全符合要求；
+- 每个主题都完全可见，居中且对齐；
+- 每个面板都使用同一个通用正交比例和语义锚点；表面比例不会单独适配到每个面板的边界框中；
+- 每个控制视图都是立面图，而不是四分之三视图；
+- 方向性对象始终使用选定的方向；
+- 背景是每个面板的统一实心隔离颜色，不会产生虚假的视距线或透视地面；
+- 背景与接触对象外轮廓的每种颜色和材质都有明显的区别；除非与对象调色板重叠，否则更倾向于使用饱和的洋红色。
+- 没有任何渐变、纹理、场景、接触阴影或类似颜色的区域遮挡subject/background边界。
 
-Check projection using each part's surface normal and expected occlusion. A
-vertical disk should be thin from above/below; an upward-facing leaf or tabletop
-should expose its broad surface from above. A face-on disk in a TOP panel or
-camera-facing leaves in every panel indicate reposing or incorrect projection.
-An underside view must respect occlusion by the base/saucer/support. Preserve a
-common orthographic scale rather than enlarging top/bottom panels to fill them.
-If adding line art rescales or changes the render panels, retain the render-only
-source and mark the combined sheet preview-only; do not claim exact preservation.
+<a id="cross-view-design"></a>
 
-Compare views component by component:
+## 跨视图设计一致性
 
-- primary body length/width/height ratios are plausible together;
-- repeated-part count agrees;
-- attachments occupy compatible longitudinal, lateral, and vertical positions;
-- windows/openings/panels continue logically around the form;
-- colour and material boundaries align;
-- symmetry and intentional asymmetry are preserved;
-- top, bottom, and back details reconcile with the corresponding attachment positions visible in other views;
-- no panel invents a second design language, extra limb, different tail, changed roof, or missing mechanism.
+使用每个部分的表面法线和预期的遮挡情况来检查投影。一个垂直的圆盘应该很薄。above/below; 向上倾斜的叶子或桌面应从上方展示其宽阔的表面。在 TOP 面板或面向摄像机的面板上，如果面板上的圆盘是正面朝向的，则表明其放置方式不正确或投影有误。从下方观察时，必须尊重遮挡关系。base/saucer/support.保留常见的正交缩放比例，而不是放大顶部、底部填充这些面板。如果添加线条艺术会导致渲染面板的重新调整或更改，请保留仅用于渲染的源文件，并标记为仅预览合并的图纸；不保证完全保留原样。
 
-Prefer the original supplied view as the controlling evidence for visible features. For hidden features, prefer the recorded inference ledger rather than whichever generated panel looks most detailed.
+逐组件比较视图：
 
-## Pose and configuration normalization
+- 主要部分长度、宽度、高度这些比例放在一起是合理的；
+- 重复部分的计数一致；
+- 附件需要占据兼容的纵向、横向和垂直位置；
+- windows/openings/panels 继续按照形式进行逻辑推导；
+- 颜色和材质的边界对齐；
+- 对称性和有意的不对称性得到了保留；
+- 顶部、底部和背部的细节与其他视图中可见的相应附件位置保持一致；
+- 没有面板能创造出第二种设计语言、额外的肢体、不同的尾部、改变的屋顶或缺失的机制。
 
-First check suitability for the declared use: a reusable character requires the reviewed neutral construction pose, with separate limb volumes and readable joint attachments across the view set. An internally consistent seated/action sheet is insufficient for this purpose. A fixed-pose sculpture may retain its specified pose. Neutral pose and multiview consistency do not certify a deformation-ready mesh.
+优先使用原始提供的视图作为可见特征的参照依据。对于隐藏的特征，优先使用记录的推理记录，而不是选择看起来最详细的生成面板。
 
-For a character or articulated subject, compare the views as projections of one frozen state:
+<a id="pose-and-configuration-normalization"></a>
 
-- head, spine, pelvis, shoulder, elbow, wrist, hand, hip, knee, ankle, foot, tail, and wing states agree wherever applicable;
-- left/right joint relationships remain intentional and do not change merely to expose a component;
-- feet or other supports share the recorded ground plane, while the root/centerline and landmark heights remain compatible across elevations;
-- hair, clothing, soft appendages, held props, and accessories use one recorded resting state rather than a different convenient silhouette per panel;
-- steering, suspension, doors, hatches, hinges, pistons, robot joints, control surfaces, and deployable tools remain in the recorded mechanical configuration;
-- an occluded part stays occluded when geometry requires it; visibility is not evidence that the pose was preserved.
+## 统一姿态与构型
 
-Any disagreement that changes a joint center, attachment origin, rest silhouette, or inferred volume blocks the **Blender-blockout-ready** label. The result may still be delivered as **preview-only** design evidence with the conflict disclosed.
+首先检查其适用于所宣称的用途：一个可重复使用的角色需要具有经过审核的中性构造姿势，同时各肢体体积要分开，且关节连接在视图集中清晰可见。内部要保持一致性。seated/action此目的所需的薄片并不充分。固定姿势的雕塑可能会保持其指定的姿势。中性姿势和多视角一致性并不能证明该网格已经准备好进行变形处理。
 
-## Render-to-line correspondence
+对于角色或 articulated subject，将视图视为一个固定状态的投影进行比较：
 
-- each line-art silhouette matches its corresponding render in the same grid position two rows above;
-- component counts and outlines match one-for-one;
-- line art is readable against the background;
-- panel lines describe the visible design without pretending to reveal hidden interiors;
-- there is no dense fake quad topology unless a 3D model supplied it.
+- 头部、脊柱、骨盆、肩部、肘部、手腕、手部、髋部、膝盖、踝关节、足部、尾部以及翅膀的状态，在适用的情况下是一致的；
+- 左侧、右侧 关节关系仍然是有意为之，并非仅仅为了展示某个组件而发生变化；
+- 双脚或其他支撑物与记录下来的地面平面共享同一平面，而root/centerline和地标的高度在多个楼层之间保持兼容；
+- 头发、衣物、柔软的附属物、手持的道具和配饰都使用一种记录的静止状态，而不是每个面板都使用不同的便捷轮廓；
+- 操控装置、悬挂系统、门、舱口、铰链、活塞、机器人关节、控制面板以及可部署工具都保留在记录的机械配置中；
+- 当几何结构需要时，被遮挡的部分会保持被遮挡的状态；可见性并不能证明姿态被保留。
 
-## Severity and iteration
+任何改变关节中心、附着点原点、静止轮廓或推断体积的冲突都会使**Blender-blockout-ready**标签失效。尽管如此，结果仍可以作为**仅预览**的设计证据提供，同时冲突情况也会被明确说明。
 
-Repair before delivery when a mismatch changes identity, silhouette, function, part count, attachment position, or modeling interpretation. Minor highlights, tiny fasteners, and lighting differences can remain if they do not alter structure.
+<a id="render-to-line-correspondence"></a>
 
-Make one targeted correction, then re-check the whole sheet. Stop image-only iteration when:
+## 渲染图与线稿对应关系
 
-- fixing one panel repeatedly breaks another;
-- orthographic views remain perspective-distorted;
-- component positions cannot be reconciled;
-- line art repeatedly diverges from the renders;
-- the user needs actual topology or dimensional consistency.
+- 每一条线描轮廓都与其对应的渲染结果在相同的网格位置、上方两行处相匹配；
+- 组件数量与概述一一对应；
+- 线条艺术在背景上清晰可见；
+- 面板线条描述了可见的设计，并没有试图揭示隐藏的内部结构；
+- 除非提供了 3D 模型，否则不会存在密集的假四边形拓扑结构。
 
-At that point, preserve the best concept sheet, document the unresolved ambiguity, and recommend a Blender blockout.
+<a id="severity-and-iteration"></a>
 
-## Handoff package
+## 问题严重程度与迭代
 
-For later modeling, provide:
+在交付前进行修复，当不匹配导致身份、轮廓、功能、部件数量、附件位置或建模解释发生变化时。如果这些变化没有改变结构，那么轻微的高光、微小的紧固件和照明差异可以保留下来。
 
-- original source image;
-- approved five- or six-view render-only sheet;
-- approved combined render/line sheet;
-- canonical orientation;
-- normalized pose or mechanical configuration, coordinate convention, ground/origin, and semantic alignment anchors;
-- observed/inferred/unknown ledger;
-- any trusted scale anchor;
-- unresolved cross-view conflicts, including any pose/configuration drift that prevents Blender readiness.
+进行一项针对性的修正，然后重新检查整个文档。在以下情况下停止仅图像迭代：
 
-The Blender stage should use real orthographic cameras and derive final line/wire views from one model, replacing image-generated geometry claims with model-backed evidence.
+- 修复一个面板可能会导致另一个面板出现故障；
+- 正交视图仍然会有透视失真；
+- 组件位置无法协调；
+- 线条艺术与渲染结果反复出现差异；
+- 用户需要实际的拓扑结构或尺寸一致性。
 
-## Directional landmarks
+在那个时候，保留最好的概念表，记录未解决的歧义，并推荐一个 Blender 的遮罩。
 
-For each visibly directional feature that affects modeling (a tilted bun, ponytail, horn or ribbon), identify the same attachment and distal landmark across panels. For a round bun use the centre of the tie and the centre of the bun; for a curved feature also mark the bend. Check the root against a stable head or body landmark so a whole feature moved sideways is detected even when its tilt stays constant.
+<a id="handoff-package"></a>
 
-1. Lock anatomical left/right, forward and up, the head pose, and each camera's viewing direction. In the source record the observable components of the root-to-tip direction; mark hidden depth unknown or explicitly inferred. Carry that one interpretation into the generation prompt for every view.
-2. On the actual generated images, mark the root and tip with an arrow on common-scale crops. For each visible component compare its projected direction and approximate displacement, normalized to a shared scale such as head height. For upright, unmirrored orthographic cameras, a tip clearly left of its root on screen in front view should appear right of its root in back view, with comparable horizontal displacement and the same vertical offset. Use the profile with its stated nose direction to check forward/backward displacement. A feature may lean both laterally and forward; the rear panel alone cannot establish depth.
-3. Keep annotated crops in the review artifacts. In the projection finding identify the feature, landmarks, expected versus observed offsets by view, any occlusion and the verdict. Allow for landmark uncertainty near zero; a hidden or end-on tip gives no reliable sign for that component. If a modeling decision depends on it, request a scoped top or oblique view with the approved pose and anchors.
-4. A clear reversal, shifted root or incompatible tilt reopens the affected region. Preserve approved views, correct the conflicting panel and compare it with the source and all applicable views again, including corresponding line art when present. Exclude that region from the allowed modeling scope until the projections agree.
+## 交接资料
+
+用于后续建模，请提供：
+
+- 原始源图片；
+- 经批准的五或六视图仅用于渲染的图纸；
+- 批准的组合渲染、线条薄片；
+- 规范方向；
+- 标准化姿态或机械配置、坐标约定、地面、原点以及语义对齐锚点；
+- observed/inferred/unknown 账簿；
+- 任何可信的缩放锚点；
+- 未解决的跨视图冲突，包括任何pose/configuration阻碍 Blender 正常运行的偏差。
+
+Blender阶段应使用真实的正交相机，并从一个模型中生成最终的line/wire视图，用模型支持的证据来替代图像生成的几何图形。
+
+<a id="directional-landmarks"></a>
+
+## 具有方向的特征点
+
+对于每一个明显具有方向性的特征，比如倾斜的发髻、马尾、角状或丝带状特征，在多个面板中都要标出相同的附着点和远端标志点。对于圆形发髻，使用发带的中心和发髻的中心作为标志点；对于弯曲的特征，还要标出弯曲的转折点。将根部分别与稳定的头部或身体标志点进行比对，这样即使某个特征在横向移动时其倾斜角度保持不变，也能被检测到。
+
+1. 锁定解剖结构左侧、右侧向前和向上，头部姿态，以及每个摄像机的观察方向。在源记录中，标记出根到尖端的可观察组成部分；将隐藏的深度标记为未知或明确推断出的。将这一解释应用到每个视图的生成提示中。
+2. 在实际生成的图片上，使用箭头标记出根部和尖端在常见比例下的位置。对于每一个可见的部件，比较其投影方向和大致位移，并归一化到相同的比例，例如头部高度。对于直立且没有镜像的正交相机，屏幕正视图中明显位于根部左侧的尖端，在后视图中应该位于根部右侧，并且具有相似的水平位移和相同的垂直偏移。使用带有指定鼻部方向的轮廓来进行检查。forward/backward位移。一个特征可能会向侧面和前方倾斜；仅靠后板是无法确定深度的。
+3. 在评审工件中保留带有注释的裁剪区域。在投影分析中，识别特征、地标、预期与观测到的偏移量、任何遮挡情况以及最终判断。允许在接近零的情况下存在地标的不确定性；隐藏或端部的特征无法为该组件提供可靠的指示。如果建模决策依赖于此，则请求以经过批准的姿态和锚点进行范围较大的顶部或斜向视图。
+4. 明显的反转、偏移的根部或不兼容的倾斜会重新打开受影响的区域。保留已批准的视图，纠正冲突的面板，并再次与源文件及所有适用的视图进行比较，包括存在的相应线艺术图。在投影结果一致之前，将该区域排除在允许的建模范围之外。

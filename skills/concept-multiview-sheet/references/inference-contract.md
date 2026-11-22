@@ -1,87 +1,105 @@
-# Single-View Inference Contract
+<a id="single-view-inference-contract"></a>
 
-The source image constrains only what it actually shows. Before prompting image generation, create a compact evidence map.
+# 单视图推定规则
 
-## Classify the source view
+源图像仅限制其实际显示的内容。在提示图像生成之前，先创建一个紧凑的证据图。
 
-Record:
+<a id="classify-the-source-view"></a>
 
-- likely view: front, rear, side, top, or three-quarter;
-- projection confidence: orthographic-like, weak perspective, or strong perspective;
-- visible axes and foreshortening;
-- crop, occlusion, transparency, reflection, or motion blur;
-- whether the design appears symmetric and along which axis.
+## 识别原图视角
 
-Do not measure pixel ratios from a perspective view as if they were orthographic dimensions.
+记录：
 
-## Choose five or six views
+- 可能的视角：正面、背面、侧面、顶部或四分之三视角；
+- 投影置信度：类似正交的、透视较弱的，还是透视较强的；
+- 可见的轴线和缩短现象；
+- 裁剪、遮挡、透明度、反射或运动模糊；
+- 设计是否对称，以及沿哪个轴对称。
 
-Use five views only when the design is bilaterally symmetric or the user explicitly accepts mirrored hidden-side assumptions. Record which side view is canonical.
+请不要从透视视图中测量像素比例，就像它们是正交尺寸一样。
 
-Upgrade to six views when:
+<a id="choose-five-or-six-views"></a>
 
-- visible left/right details differ;
-- a side-mounted door, tool, limb, weapon, intake, exhaust, control, or accessory is present;
-- asymmetry affects silhouette, function, assembly, materials, or identity;
-- symmetry is uncertain and choosing it would materially constrain later modeling.
+## 选择五视图或六视图
 
-Top and bottom remain required in both modes. A three-quarter image can clarify volume but never replaces front, back, side, top, or bottom controlling views.
+仅在设计具有双侧对称性或用户明确接受镜像隐藏面假设的情况下使用五个视图。记录哪一侧视图是标准视图。
 
-## Evidence labels
+升级到六视图模式时：
 
-Use three labels:
+- 可见的左侧、右侧细节有所不同；
+- 存在侧面安装的门、工具、肢体、武器、进气口、排气口、控制设备或附件；
+- 不对称性会影响轮廓、功能、组装、材料或身份；
+- 对称性不确定，选择对称性会大大限制后续的建模过程。
 
-- **Observed:** visible in the supplied image, such as colour blocks, openings, wheel count on the visible side, or a front silhouette.
-- **Inferred:** chosen to complete hidden views, such as rear propulsion, unseen-side symmetry, depth, or attachment layout.
-- **Unknown:** cannot be resolved without another view or user decision, such as exact back panel, interior depth, underside mechanism, or real scale.
+在两种模式下，顶部和底部都是必需的。三分之一个图像可以清晰地展示体积，但永远无法替代正面、背面、侧面、顶部或底部的控制视图。
 
-The prompt may instruct the generator to realize inferred features, but the completion report must not merge them into observed facts.
+<a id="evidence-labels"></a>
 
-## Build an invariant ledger
+## 证据分类
 
-Keep a short list that every generated view must preserve:
+使用三个标签：
 
-- primary silhouette and overall proportion family;
-- repeated-component count;
-- major openings, windows, limbs, wings, wheels, handles, or appendages;
-- attachment positions relative to the body;
-- colour/material regions;
-- symmetry or deliberate asymmetry;
-- canonical forward/up direction;
-- style, age, wear level, and surface-language density.
+- **观察结果：** 在提供的图像中可见，例如颜色块、开口、可见侧上的轮子数量，或者前侧轮廓。
+- **推断：** 用于完成隐藏视图，例如后推、不可见侧对称、深度或附件布局。
+- **未知**：在没有其他视图或用户决策的情况下，无法确定其具体含义，例如确切的背板、内部深度、底部结构或实际尺寸。
 
-Avoid arbitrary side-specific details. If only one side is visible and no asymmetry is implied, default to bilateral symmetry and state that assumption.
+提示可能会指示生成器实现推断出的特征，但完成报告不得将这些特征合并为观察到的事实。
 
-## Functional versus decorative uncertainty
+<a id="build-an-invariant-ledger"></a>
 
-Ask for clarification or produce alternatives when hidden design changes function, assembly, identity, or silhouette. Examples include wheel count, door placement, limb structure, weapon location, propulsion type, or a load-bearing joint.
+## 建立固定特征台账
 
-Infer ordinary low-impact details without blocking, such as continuation of a trim line, repeated panel spacing, or a plausible underside seam.
+请保留一个简短的列表，其中每个生成的视图都必须包含以下内容：
 
-## Scale and dimensions
+- 主要的轮廓和整体比例家族；
+- 重复分量计数；
+- 主要的开口、窗户、肢体、翅膀、轮子、把手或附属物；
+- 相对于身体的附件位置；
+- 颜色、材质地区；
+- 对称性或刻意的不对称性；
+- 规范化的forward/up方向；
+- 风格、年龄、磨损程度以及表面语言密度。
 
-Without a known dimension or semantic scale anchor:
+避免提及任意特定一侧的细节。如果只有一侧可见，且不存在不对称现象，则默认采用双侧对称，并说明这一假设。
 
-- use relative/normalized proportions only;
-- do not add rulers, measurements, grids with implied units, or dimension arrows;
-- do not infer category-average size as fact;
-- state that absolute scale remains unknown.
+<a id="functional-versus-decorative-uncertainty"></a>
 
-If the user supplies one trusted dimension, preserve it as metadata for later modeling. Image generation still cannot guarantee dimensionally exact pixels.
+## 功能性与装饰性未知项
 
-## Character-specific constraints
+在涉及隐藏的设计变更时，如功能、组装、身份或轮廓等方面，需要寻求澄清或提出替代方案。例如，车轮数量、车门位置、肢体结构、武器位置、推进方式或承载关节等。
 
-For characters, also lock:
+在不产生阻塞的情况下，推断出普通低影响细节，例如修剪线的延续、重复的面板间距，或者合理的底部接缝。
 
-- one explicit neutral A-pose/T-pose/standing pose as requested, including head, spine, pelvis, shoulder, elbow, wrist, hip, knee, ankle, hand, tail, and wing state where applicable;
-- face identity, hairstyle silhouette, age, body proportions, outfit layers, footwear and accessories;
-- left/right asymmetry that is actually observed;
-- uncovered view of hands, feet, tail, wings, props, or equipment needed for modeling.
+<a id="scale-and-dimensions"></a>
 
-Use the same joint state, ground plane, centerline, and semantic landmark heights in every controlling view. A perspective source may guide the chosen pose, but converting it into a normalized modeling pose is an inference and must be labeled as such. Read [pose-and-configuration-normalization.md](pose-and-configuration-normalization.md) for the Blender-readiness contract.
+## 尺度与尺寸
 
-Do not invent anatomy hidden by clothing as if it were documented design.
+在没有已知尺寸或语义尺度锚点的情况下：
 
-## Articulated props and machines
+- 仅使用 relative/normalized比例；
+- 请勿添加带有隐含单位的尺子、测量值、网格或尺寸箭头；
+- 请不要将类别平均大小作为事实来推断。
+- 声明绝对比例仍然未知。
 
-Lock one mechanical configuration before generation: steering angle, suspension state, doors and hatches, hinges, pistons, robot joints, control surfaces, deployable tools, and other movable assemblies. Unless the source or user requires an active state, prefer a neutral closed or zero configuration suitable for blockout. Do not use different configurations to expose otherwise hidden parts in separate views.
+如果用户提供了一个可信的维度，将其作为元数据保存，以便后续建模时使用。图像生成仍然无法保证像素在维度上的精确性。
+
+<a id="character-specific-constraints"></a>
+
+## 角色专属约束
+
+对于字符，也要锁定：
+
+- 一个明确的中性选项A-pose/T-pose/standing根据要求，包括头部、脊柱、骨盆、肩膀、肘部、手腕、髋部、膝盖、脚踝、手部、尾巴以及翅膀的状态；在适用的情况下进行描述。
+- 面部特征、发型轮廓、年龄、身体比例、服装层次、鞋类和配饰；
+- 左侧、右侧实际观察到的不对称性；
+- 未遮盖的手部、脚部、尾巴、翅膀、道具或建模所需的设备的视图。
+
+在每个控制视图中，使用相同的关节状态、地面平面、中心线和语义地标高度。透视源可能会引导所选的姿势，但将其转换为标准化建模姿势是一种推理过程，必须如此标记。请阅读 [pose-and-configuration-normalization.md](pose-and-configuration-normalization.md) 以获取 Blender 兼容性协议。
+
+请不要编造被衣物遮盖的解剖结构，仿佛它们是经过记录的设计一样。
+
+<a id="articulated-props-and-machines"></a>
+
+## 带关节的道具与机械
+
+在生成之前锁定一个机械配置：转向角度、悬挂状态、门和舱口、铰链、活塞、机器人关节、控制面、可部署工具以及其他可移动组件。除非源文件或用户要求处于活动状态，否则建议采用适合遮挡的中性闭合或零配置。不要使用不同的配置来在单独的视图中显示原本隐藏的部分。

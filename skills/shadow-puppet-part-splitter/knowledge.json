@@ -47,10 +47,10 @@
         "blender workflow"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -73,10 +73,10 @@
         "manifest"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -99,10 +99,10 @@
         "repair"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -127,10 +127,10 @@
         "逐帧动作预览"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],

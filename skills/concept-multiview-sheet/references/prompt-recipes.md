@@ -1,113 +1,127 @@
-# Prompt Recipes
+<a id="prompt-recipes"></a>
 
-For photograph-to-model reconstruction, use faithful reconstruction intent rather than default design exploration. Supply the actual source image, preserve its critical observed features and mark hidden regions inferred. Replace broad "preserve style" language with explicit source shape/count/attachment constraints. "No branding" below means no invented branding: preserve source-visible identity marks when required, and leave unreadable marks unknown. Apply [source-fidelity review](source-fidelity.md) before cross-view approval or line art.
+# 多视图提示词示例
 
-Use the `stylized-concept` image-generation category unless the source clearly requires product rendering, scientific illustration, or another established category. Keep prompts compact enough that invariants remain prominent.
+从照片重建模型时，选择忠实还原模式。提供实际原图，列出关键可见特征，并明确标记隐藏部分属于推定。把“保持风格”细化为形状、数量和连接位置等约束。下文的“无品牌标识”指禁止虚构标识；若原图可见标识属于需保留的身份特征，应照原图保留，看不清的标为未知。跨视图验收或生成线稿前，先做[原图忠实度审查](source-fidelity.md)。
 
-## Pass 1A: symmetric five-view renders
+使用 `stylized-concept` 图像生成类别，除非源文件明确要求产品渲染、科学插图或其他特定类别。确保提示语简洁明了，以便关键信息仍然清晰可见。
 
-```text
-Use case: stylized-concept
-Asset type: modeling reference / orthographic concept sheet
-Primary request: infer a coherent five-view bilaterally symmetric design from the supplied single-view reference
-Input image: design reference; preserve visible identity, silhouette language, components, palette, materials, and style
-Subject: <short subject description>
-Observed invariants: <visible facts that must remain>
-Inferred hidden design: <approved assumptions only>
-Unknowns: keep visually simple and plausible; do not imply measured certainty
-Symmetry: bilateral; the <left/right> side is canonical and the unseen opposite side mirrors it
-Canonical orientation: FRONT faces viewer; SIDE, TOP, and BOTTOM point <direction>
-Normalized state: <fixed character pose or fixed mechanical configuration; use N/A only for a truly rigid subject>
-Alignment anchors: <origin or ground contact, centerline, and stable semantic landmarks>
-Composition: clean 2-row by 3-column render sheet. Row 1: FRONT, canonical SIDE, BACK. Row 2: TOP, BOTTOM, <optional THREE-QUARTER or intentionally empty isolation-colour panel>. Same design and exact same normalized state in every controlling view, common orthographic scale, centered, fully visible, aligned by the stated anchors
-Projection: strict orthographic-looking elevation views; no three-quarter angle, lens distortion, foreshortening, or perspective floor
-Style: polished <source style> design render, clean isolated reference presentation
-Background: uniform solid <isolation colour> background, default saturated magenta. If magenta occurs prominently in the subject, use another colour strongly separated from all subject edge colours in both hue and value. Keep exactly the same background colour in every panel
-Constraints: treat the views as fixed orthographic cameras around one unmoving subject; identical joint angles or movable-part states, part count, placement, proportion family, symmetry, colour blocks, attachments, and surface details across views; crisp unambiguous subject/background boundary around the complete silhouette
-Avoid: background colours close to the subject, gradients, textures, scenery, floor or horizon, contact shadows that merge into the silhouette, dimensions, grid units, dramatic shadows, labels beyond optional short view names, prose, logos, watermark, cutaway, exploded view, cropped subject
-```
+<a id="pass-1a-symmetric-five-view-renders"></a>
 
-## Pass 1B: asymmetric six-view renders
+## 第 1A 轮：对称五视图
 
 ```text
-Use case: stylized-concept
-Asset type: modeling reference / orthographic concept sheet
-Primary request: infer a coherent complete six-view asymmetric design from the supplied single-view reference
-Input image: design reference; preserve visible identity, silhouette language, components, palette, materials, and style
-Subject: <short subject description>
-Observed invariants: <visible facts that must remain>
-Inferred hidden design: <approved assumptions only>
-Known asymmetry: <side-specific components and placements>
-Unknowns: keep visually simple and plausible; do not imply measured certainty
-Canonical orientation: FRONT faces viewer; LEFT and RIGHT mean the subject's own sides; TOP and BOTTOM point <direction>
-Normalized state: <fixed character pose or fixed mechanical configuration; use N/A only for a truly rigid subject>
-Alignment anchors: <origin or ground contact, centerline, and stable semantic landmarks>
-Composition: clean 2-row by 3-column render sheet. Row 1: FRONT, LEFT, RIGHT. Row 2: BACK, TOP, BOTTOM. Same design and exact same normalized state in every controlling view, common orthographic scale, centered, fully visible, aligned by the stated anchors
-Projection: strict orthographic-looking elevation views; no three-quarter angle, lens distortion, foreshortening, or perspective floor
-Style: polished <source style> design render, clean isolated reference presentation
-Background: uniform solid <isolation colour> background, default saturated magenta. If magenta occurs prominently in the subject, use another colour strongly separated from all subject edge colours in both hue and value. Keep exactly the same background colour in every panel
-Constraints: treat the views as fixed orthographic cameras around one unmoving subject; preserve every side-specific component while keeping joint angles or movable-part states, shared structure, proportions, colour blocks, attachments, and surface language consistent; crisp unambiguous subject/background boundary around the complete silhouette
-Avoid: background colours close to the subject, gradients, textures, scenery, floor or horizon, contact shadows that merge into the silhouette, mirrored-away asymmetry, dimensions, grid units, dramatic shadows, prose, logos, watermark, cutaway, exploded view, cropped subject
+用途类别：stylized-concept
+资产类型：建模参考/正交概念图
+主要需求：从提供的单视图参考中推断出一个连贯的、双侧对称的五视图设计
+输入图像：设计参考；保留可见的身份、轮廓语言、组件、调色板、材质和风格
+主题: 〈主体简述〉
+观察到的不变量：〈必须保留的可见特征〉
+推断的隐藏设计：〈仅填写已认可的假设〉
+未知部分：采用简洁、合理的形状，注明属于推定，避免给人已实测的印象。
+对称性：双侧；〈左或右〉侧为规范侧，而未被看见的对侧与之对称
+规范方向：正面朝向观众；侧面、顶部和底部指向 〈朝向〉
+规范化状态：〈固定人物姿势或机械构型；只有完全刚性的主体才填 N/A〉
+对齐锚点：〈原点或地面接触点、中心线及稳定的特征点〉
+构图：简洁的2行3列渲染表格。第1行：正面、标准侧面、背面。第2行：顶部、底部、〈可选的四分之三视图，或有意留空的纯色格〉。每个控制视图中的设计相同，归一化状态也完全相同，采用通用正交比例，居中显示，完全可见，按照指定的锚点对齐。
+投影：以严格正投影的立面图呈现。避免四分之三视角、镜头畸变、透视缩短和带透视的地面。
+风格：按〈原图风格〉完成设计渲染。主体独立呈现，画面干净，便于作为建模参考。
+背景：整组采用同一种〈用于分离轮廓的纯色〉，默认为高饱和品红。若主体含大面积品红，改用与所有轮廓边缘在色相和明度上都有明显差异的颜色。各视图的背景色必须完全一致。
+约束：假设多个固定的正交相机围绕同一静止主体。各视图保持相同的关节角度或活动部件状态、部件数量、位置、比例关系、对称性、色块、连接方式和表面细节。主体完整轮廓与背景的分界须清晰。
+避免：背景颜色与主体接近、渐变、纹理、场景、地面或地平线、与轮廓融合的阴影、尺寸、网格单位、戏剧性的阴影、超出可选简短视图名称的标签、散文、标志、水印、剖面图、分解视图、裁剪的主体
 ```
 
-For a character, define one neutral modeling pose rather than merely asking for a “neutral pose.” State the limb angles or relationships, head/spine/pelvis state, hand and foot state, ground contact, and tail/wing/accessory state. Every panel must preserve that pose even when a limb becomes occluded. Preserve real left/right costume or anatomy differences. For an articulated prop or machine, similarly lock all movable parts. For an object whose front/back is ambiguous, define the chosen front in the inference record.
+<a id="pass-1b-asymmetric-six-view-renders"></a>
 
-For reusable character modeling, generate/review the neutral-pose source before Pass 1A/1B. If the original is seated or acting, prompt the conversion explicitly: “Use the original for character identity, proportions, markings and clay surface. Create a separate neutral construction reference in <specified A/T pose or balanced four-foot standing rest>. Keep limb volumes separate and joints readable; no sitting, crouching or action gesture. Hidden structure is inferred.” Review identity and attachments before expanding it to multiviews. Name both the downstream use and concrete joint state in the multiview prompt; “same pose in all panels” alone can reproduce the wrong construction pose consistently.
-
-## Pass 2: combined render and line-art sheet
-
-Keep the approved 2×3 render sheet immutable. Generate the matching line-art panels as separate outputs using it as reference, then assemble the approved render panels and line art into the 4×3 layout without regenerating the originals. If a combined generative edit is used, treat the following as a request to verify, not a guarantee of unchanged pixels:
+## 第 1B 轮：非对称六视图
 
 ```text
-Preserve the first two render rows exactly: same five or six rendered views, design, scale, alignment, colours, materials, component positions, asymmetry, and silhouettes.
-
-Expand the canvas into a clean 4-row by 3-column sheet. Add two line-art rows that repeat the exact same panel order as the render rows.
-
-For the symmetric five-view layout: render rows are FRONT/SIDE/BACK then TOP/BOTTOM/optional THREE-QUARTER or blank; line rows repeat that order.
-
-For the asymmetric six-view layout: render rows are FRONT/LEFT/RIGHT then BACK/TOP/BOTTOM; line rows repeat that order.
-
-Line-art requirements: crisp lines with strong contrast against the same solid isolation background used by the render rows; strong readable outer silhouette; major component contours, joints, panel boundaries, openings, and centerlines; restrained construction lines only where visually supported. Match every upper-row component one-for-one. If dark lines do not contrast sufficiently with the chosen isolation colour, use light lines instead.
-
-Do not invent dense polygon topology, hidden internals, dimensions, prose, extra perspective views, scenery, shadows, logos, or watermark. Keep every view centered, fully visible, equally scaled, evenly spaced, and aligned.
+用途类别：stylized-concept
+资产类型：建模参考/正交概念图
+主要需求：从提供的单视图参考中推断出一个连贯的、完整的六视图不对称设计
+输入图像：设计参考；保留可见的身份、轮廓语言、组件、调色板、材质和风格
+主题: 〈主体简述〉
+观察到的不变量：〈必须保留的可见特征〉
+推断的隐藏设计：〈仅填写已认可的假设〉
+已知的不对称性：〈某一侧独有的部件及其位置〉
+未知部分：采用简洁、合理的形状，注明属于推定，避免给人已实测的印象。
+规范方向：正面朝向观众；左侧和右侧指主体自身的侧面；顶部和底部指向〈朝向〉
+规范化状态：〈固定人物姿势或机械构型；只有完全刚性的主体才填 N/A〉
+对齐锚点：〈原点或地面接触点、中心线及稳定的特征点〉
+构图：简洁的2行3列渲染表格。第1行：前、左、右。第2行：后、上、下。每个控制视图中的设计相同，归一化状态也完全相同，采用统一的正交比例，居中显示，完全可见，按照指定的锚点对齐。
+投影：以严格正投影的立面图呈现。避免四分之三视角、镜头畸变、透视缩短和带透视的地面。
+风格：按〈原图风格〉完成设计渲染。主体独立呈现，画面干净，便于作为建模参考。
+背景：整组采用同一种〈用于分离轮廓的纯色〉，默认为高饱和品红。若主体含大面积品红，改用与所有轮廓边缘在色相和明度上都有明显差异的颜色。各视图的背景色必须完全一致。
+约束：假设多个固定的正交相机围绕同一静止主体。保留每个只出现在特定一侧的部件。各视图的关节角度或活动部件状态、共用结构、比例、色块、连接方式及表面表现须一致。主体完整轮廓与背景的分界须清晰。
+避免：背景颜色与主体接近、渐变、纹理、场景、地面或地平线过于相似、与轮廓融合的阴影、通过镜像处理消除的不对称、尺寸、网格单位、戏剧性的阴影、文字、标志、水印、剖面图、分解视图、裁剪后的主体
 ```
 
-If the edit changes either rendered row, restore the render-only sheet and retry with one correction rather than accumulating edits.
+为角色指定一个明确的中性建模姿势，描述肢体角度或相对位置、头部与脊柱和骨盆的关系、手脚状态、着地位置及尾巴、翅膀和配饰的状态。即使某个视角遮住肢体，也要保持姿势不变。保留真实存在的左右服装或身体结构差异。带关节的道具和机器同样需要锁定可动部件。主体前后难以区分时，在推定记录中注明选定的正面。
 
-## Targeted repair prompts
+为可复用角色建模时，先生成并审查中性姿势参考图，再进入第 1A 或 1B 轮。若原图为坐姿或动作姿势，应明确要求转换，例如：“依据原图保留角色身份、比例、标记和黏土表面。单独生成〈指定的 A/T 姿势，或平衡的四足静立姿势〉的建模参考。四肢的体积彼此分明，关节清楚可辨。排除坐姿、蹲姿及表演动作。隐藏结构属于推定。”扩展多视图前先核对角色特征和附属结构。提示词同时写明下游用途与具体关节状态。只要求“每张图姿势一致”可能让所有视图重复同一个错误姿势。
 
-Change one failure at a time:
+<a id="pass-2-combined-render-and-line-art-sheet"></a>
 
-- “Keep everything unchanged; make the side and top views point nose-left and tail-right.”
-- “Keep everything unchanged; restore the missing BOTTOM view as a true upward-looking orthographic elevation.”
-- “Keep all shared geometry unchanged; restore the left-only attachment in LEFT view and remove it from RIGHT view.”
-- “Keep all silhouettes unchanged; restore exactly two side thrusters in every applicable view.”
-- “Keep both render rows unchanged; increase only the line-art-row contrast.”
-- “Keep the subject, views, layout, lighting, and all design details unchanged; replace only the complete background with one uniform saturated magenta isolation colour, with a crisp boundary and no gradient, floor, horizon, or contact shadow.”
-- “Replace only the SIDE render with a true flat side elevation; remove visible top/front surfaces.”
-- “Keep the common orthographic scale unchanged; correct only the panel whose subject scale drifted, using the recorded root/origin and semantic landmarks.”
-- “Keep everything else unchanged; restore the exact same head, spine, pelvis, shoulder, elbow, wrist, hip, knee, and ankle state in every character view. Change only the camera direction.”
-- “Keep everything else unchanged; restore every hinge, wheel, door, control surface, and articulated attachment to the recorded neutral configuration in every view.”
-- “Keep the common orthographic scale unchanged; align the subject by the recorded ground/origin and semantic landmarks rather than fitting each panel to its own silhouette bounds.”
+## 第 2 轮：组合渲染图与线稿
 
-Avoid broad prompts such as “make it more consistent”; name the mismatched component and the controlling view.
+保持已批准的 2×3 渲染图不变。使用它作为参考，生成相应的线艺术面板作为单独的输出，然后将已批准的渲染面板和线艺术组装成 4×3 的布局，而无需重新生成原始文件。如果采用组合生成编辑方式，请将以下内容视为验证请求，而非保证像素不变的承诺：
 
-## Alternative interpretations
+```text
+保留前两行渲染信息：相同的五到六个渲染视图、设计、比例、对齐方式、颜色、材质、组件位置、不对称性和轮廓。
 
-When hidden structure materially affects the design, create separate complete sheets rather than mixing alternatives inside one sheet:
+将画布展开为一张干净的四行三列的画布。添加两行线稿，其面板顺序与渲染行完全一致。
 
-- Variant A: symmetric continuation;
-- Variant B: function-led alternative;
-- optional short note explaining the assumption changed.
+对称五视图排版：渲染图第一行放正视、标准侧视、后视；第二行放顶视、底视、可选的四分之三视图（也可留空）。线稿逐格对应同一顺序。
 
-Each variant must remain internally consistent. Do not use `n` variants as a substitute for distinct prompts when the hidden-design assumptions differ.
+非对称六视图排版：渲染图第一行放正视、左视、右视；第二行放后视、顶视、底视。线稿逐格对应同一顺序。
 
-## Accessory scope for character construction
+线条要求：线条清晰，与渲染行所使用的相同纯色背景形成强烈的对比；外部轮廓清晰可辨；主要部件轮廓、关节、面板边界、开口和中心线清晰可见；仅在视觉上需要的地方使用简洁的构造线条。每个上层部件都要与对应的部件一一对应。如果深色线条与所选的纯色背景对比不够明显，则使用浅色线条。
 
-Fill the item names from source observations and explicit requests. Apply the same clause to neutral-pose generation, all controlling views and subsequent corrections.
+请勿编造密集多边形拓扑结构、隐藏的内部构造、维度、冗长的文字描述、额外的透视视图、场景、阴影、标志或水印。确保所有视图都保持居中、完全可见、比例统一、间距均匀且对齐。
+```
 
-- **Character pass:** “Show the character alone in the agreed pose. Keep <integral items, count, side, observed length>. Leave <separately referenced items> out of every panel, including the back. Keep the hands and <named silhouette or joint landmarks> readable. Retain <visible tie or attachment point>. Add no other props or decorative extensions.” For a tied waist sash, describe the knot and the actual ends visible in the source.
-- **Item pass, when needed:** “Using <source crop>, show only <item> against the isolation background in <needed views>. Preserve its observed shape, colours and asymmetry. Exclude the figure, hands, mannequin and other items.” Record scale relative to a visible character landmark separately; framing an isolated object to fill its panel changes apparent scale.
-- **Targeted correction:** “In <panel>, remove the extra <item> crossing <landmark>. Preserve <approved garment feature>, the pose, joint locations, scale and other panels.” If intentional removal exposes an unseen surface, mark that region inferred in the handoff.
+如果编辑更改了渲染行，请恢复仅用于渲染的表格，并尝试进行一次修正，而不是累积多次编辑。
 
-For a directional feature, specify its attachment, distal landmark and tilt in the subject’s frame. Example: “Keep the bun tied at <head landmark>; relative to the tie its centre lies toward <anatomical side>, <observed height>, with <reviewed depth assumption>. Freeze the head and hair across views. Rotate only the camera.” Record screen-left or screen-right separately for each panel using the chosen camera convention.
+<a id="targeted-repair-prompts"></a>
+
+## 针对局部问题的修正提示词
+
+每次只更改一个故障：
+
+- “保持所有内容不变；将侧面和顶视图的指向调整为鼻部向左，尾部向右。”
+- “保持所有内容不变；恢复缺失的BOTTOM视图，使其呈现真正的向上观察的正投影视图。”
+- “保持所有共享几何图形的不变；在LEFT视图中恢复仅左侧的附件，并从RIGHT视图中移除它。”
+- “保持所有轮廓不变；在每个适用视图中，精确地恢复两个侧推器。”
+- “保持两行渲染结果不变；仅增加线稿行的对比度。”
+- “保持主题、视图、布局、照明以及所有设计细节不变；只需用一种均匀的饱和品红色隔离色替换整个背景，该颜色应具有清晰的边界，且不得有渐变、地面、地平线或接触阴影。”
+- “仅用真实的平面侧立面替换SIDE渲染；移除可见的顶部、正面表面。”
+- “保持常见的正交比例不变；仅修正那些比例发生偏差的面板，使用记录的根部、原点和语义标志来进行修正。”
+- “保持其他所有参数不变；在每个角色视图中恢复与原始相同的头部、脊柱、骨盆、肩膀、肘部、手腕、髋部、膝盖和脚踝状态。仅改变摄像机的方向。”
+- “保持其他所有部件不变；将每个铰链、轮子、门、控制面和关节式附件恢复到记录中的中立配置。”
+- “保持常见的正交比例不变；通过记录的地面、原点和语义标志来对齐主体，而不是让每个面板都适应其自身的轮廓边界。”
+
+避免使用像“使其更加一致”这样的宽泛提示；为不匹配的组件和相应的视图命名。
+
+<a id="alternative-interpretations"></a>
+
+## 不同的合理推定
+
+当隐藏的结构对设计产生实质性影响时，应创建独立的完整图纸，而不是将不同的选项混合在一张图纸中：
+
+- 变体 A：对称延续；
+- 变体B：以函数为主导的替代方案；
+- 解释假设的可选短条已更改。
+
+每个变体在内部必须保持一致。当隐藏设计假设不同时，不要使用 `n` 变体来替代不同的提示。
+
+<a id="accessory-scope-for-character-construction"></a>
+
+## 角色建模的配饰范围
+
+请根据源观测数据和明确请求来填写项目名称。对中性姿态生成、所有控制视图以及后续修正也应用相同的条款。
+
+- **角色呈现：** “以约定的姿势展示角色单独的形象。保持 〈一体式配饰的名称、数量、左右侧及可见长度〉 不变。将 〈有独立参考图的物件〉 从每个面板中移除，包括背部。保持双手和 〈指定的轮廓或关节特征点〉 清晰可见。保留 〈可见的系结或连接点〉。不要添加其他道具或装饰性延伸物。”对于系有腰带的情况，描述结的样式以及源代码中可见的实际末端。
+- **物品传递，在需要时：** “使用 〈原图局部〉，仅在 〈所需视图〉中的隔离背景下显示 〈物件名称〉。保留其观察到的形状、颜色和不对称性。排除人物、手、人体模型和其他物品。” 单独记录相对于可见角色标志物的比例；将孤立物体框起来以填充其面板会改变明显的比例。
+- **目标修正：** 在 〈视图格〉 中，移除多余的 〈物件名称〉 交叉部分 〈特征点〉。保留 〈已核准的服装特征〉、姿态、关节位置、比例以及其他面板。如果故意移除会导致暴露出未被看到的表面，请在转移时标记该区域。
+
+对于方向性特征，在主体框架中指定其附着点、远端标志点和倾斜角度。例如：“将发髻固定在 〈头部特征点〉 处；相对于发髻的中心位置朝向 〈解剖学上的左侧或右侧〉、 〈观察到的高度〉，同时朝向 〈经审查的深度假设〉。冻结头部和头发的视图。仅旋转摄像机。”使用所选的摄像机约定，分别记录每个面板的屏幕左侧或屏幕右侧。

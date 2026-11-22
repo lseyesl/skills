@@ -1,5 +1,7 @@
-# Continuity between generated frames
+<a id="continuity-between-generated-frames"></a>
 
-Keep one character identity, canvas size, camera view, crop, scale, ground line, background treatment, and image style for the sequence. Use the A.blend render for the corresponding frame's motion. Track anatomical left and right hands and feet through adjacent images; do not let limbs swap sides, disappear, or teleport.
+# 生成帧之间的连贯性
 
-For an in-place cycle, compare local foot travel against the Blender frames. For a translating action, compare body motion after aligning the character root, then inspect screen position separately. A repeating pose does not make a translating strip a seamless displayed loop. In a sprite sheet, retain fixed cell size and preserve the manifest's playback order; avoid scaling each character independently to fill its cell.
+保持序列中的字符身份、画布大小、摄像机视角、裁剪、缩放、地面线、背景处理以及图像风格。使用A.blend渲染来呈现对应帧的运动效果。通过相邻图像追踪左右手和脚的解剖结构；不要让肢体交换位置、消失或瞬移。
+
+对于原地循环，需要将局部脚部移动与 Blender 框架进行比较。对于平移动作，在对齐角色根部后，需要比较身体运动，然后单独检查屏幕位置。重复的姿势并不能使平移条带呈现出无缝的显示循环。在精灵图中，保持固定的单元格大小，并保留 manifest 的播放顺序；避免独立缩放每个角色以填充其单元格。

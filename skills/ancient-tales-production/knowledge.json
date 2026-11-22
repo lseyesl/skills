@@ -42,10 +42,10 @@
         "交接校验与环境检查"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -67,10 +67,10 @@
         "工作流 3D纸模角色"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -92,10 +92,10 @@
         "工作流 全流程总控"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -117,10 +117,10 @@
         "工作流 场景精灵动画"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -142,10 +142,10 @@
         "工作流 多语言本地化"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -167,10 +167,10 @@
         "工作流 导演"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -192,10 +192,10 @@
         "工作流 成片合成与质量检查"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -217,10 +217,10 @@
         "工作流 皮影角色视觉定义"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -242,10 +242,10 @@
         "工作流 神话调研"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -267,10 +267,10 @@
         "工作流 策划与制片"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -292,10 +292,10 @@
         "工作流 纸偶小剧场视觉定义"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -317,10 +317,10 @@
         "工作流 纸偶小剧场静态资产"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -342,10 +342,10 @@
         "工作流 编剧"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -367,10 +367,10 @@
         "工作流 美术设计与资产"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -394,10 +394,10 @@
         "素材动作闭环"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -419,10 +419,10 @@
         "工作流 跨仓库资产所有权"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -444,10 +444,10 @@
         "工作流 音频交付与导入"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -469,10 +469,10 @@
         "工作流 项目配置"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -494,10 +494,10 @@
         "技能协作与交付契约"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],

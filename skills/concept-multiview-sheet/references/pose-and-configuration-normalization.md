@@ -1,58 +1,68 @@
-# Pose and Configuration Normalization
+<a id="pose-and-configuration-normalization"></a>
 
-Use this contract when a generated sheet is intended to guide Blender blockout. The controlling views must behave like orthographic camera renders of one frozen subject, even though image generation cannot guarantee true geometric reconstruction.
+# 统一姿态与构型
 
-## Choose one subject state
+使用此合同时，生成的图纸应用于指导 Blender 的遮挡操作。控制视图必须表现得像一个固定对象的正交相机渲染效果，尽管图像生成无法保证真正的几何重建。
 
-Record the state before generation instead of accepting whichever pose each panel invents.
+<a id="choose-one-subject-state"></a>
 
-For characters:
+## 确定主体的唯一状态
 
-- establish whether the sheet serves a fixed-pose sculpture or a reusable/riggable model before generating it; default unspecified character-model work to a reusable neutral construction pose;
-- for a fixed-pose deliverable, use the requested pose; for a reusable character with a seated/action source, retain the source as appearance evidence and first generate/review a separate neutral-pose image, then expand that neutral design into consistent multiviews;
-- prefer relaxed modeling A-pose for humanoids, or T-pose when the downstream rig/retargeting convention needs it; keep arms clear of the torso, legs separated, hands readable and joints slightly bent where needed to define bend directions;
-- for quadrupeds, prefer balanced four-foot standing rest with a neutral back/head, readable shoulder/hip connections, modest joint bends and tail clear of the legs; do not copy a seated concept into every panel for a walking/rigging asset;
-- record head direction and tilt, spine and pelvis neutrality, arm elevation, elbow and wrist state, hand shape, leg spacing, knee state, ankle/foot direction, and ground contact;
-- record tail, wing, ear, hair, garment, handheld prop, and wearable-accessory state when they affect silhouette or attachment placement;
-- preserve observed anatomical or costume asymmetry without introducing pose asymmetry merely to reveal details.
+在生成之前记录状态，而不是接受每个面板所生成的任意姿势。
 
-For articulated props, vehicles, and machines:
+对于字符：
 
-- record steering, suspension, hinge, piston, wheel, door, hatch, control-surface, robot-joint, weapon, and deployable-tool state where applicable;
-- use the state requested or clearly observed; otherwise prefer a neutral closed or zero configuration suitable for blockout;
-- expose hidden construction in a separate non-controlling detail view, not by changing the configuration of one orthographic panel.
+- 在生成之前，确定该薄片是用于固定姿势的雕塑还是用于reusable/riggable模型；默认情况下，未指定的角色-模型工作采用可重复使用的中性构造姿势；
+- 对于固定姿势的可交付成果，请使用要求的姿势；对于可重复使用的角色，使用seated/action源文件，保留源文件作为外观证据，并首先generate/review先拍摄一个单独的中性姿势图片，然后将该中性姿势图片扩展为一致的多视角图像；
+- 更倾向于使用放松建模的A姿势对于类人机器人，或者在下游情况下使用T姿势。rig/retargeting按照惯例需要这样做；保持手臂远离躯干，双腿分开，双手清晰可见，关节在需要的地方稍微弯曲以定义弯曲方向；
+- 对于四足动物，建议采用平衡的四英尺站立姿势，保持中立的背面、头部姿态，连接部分应清晰可见shoulder/hip，关节弯曲程度适中，且尾巴要远离腿部；不要将坐姿概念复制到每一个部件中，以适用于walking/rigging资产。
+- 记录头部方向和倾斜、脊柱和骨盆的中性、手臂的抬高、肘部和手腕的状态、手的形状、腿部间距、膝盖的状态、踝部、脚方向以及地面接触情况；
+- 记录尾部、翅膀、耳朵、毛发、服装、手持道具以及可穿戴配件在影响轮廓或附件位置时的状态；
+- 在保留观察到的解剖学或服装不对称性时，不要仅仅为了展示细节而引入姿态不对称性。
 
-A truly rigid subject has no pose to normalize, but still needs coordinate, origin, scale, and alignment normalization.
+适用于关节式道具、交通工具和机器：
 
-## Lock the reference frame
+- 记录转向、悬挂、铰链、活塞、轮子、门、舱口、控制面、机器人关节、武器以及可部署工具的状态（在适用情况下）；
+- 使用所要求的状态或明确保持的状态；否则， prefer一个中性闭合或零配置，适用于遮挡。
+- 在单独的非控制细节视图中展示隐藏的构造，而不是通过更改某个正交面板的配置来实现。
 
-Record:
+一个真正刚性的物体没有需要标准化的姿态，但仍然需要坐标、原点、比例和对齐的标准化。
 
-- canonical forward, up, and subject-left/right directions;
-- a stable origin or ground-contact rule;
-- a centerline or root reference;
-- semantic landmarks that can be compared across views, such as foot sole, knee, pelvis, shoulder, eye line, wheel axle, hinge center, roof line, or attachment origin;
-- one common orthographic scale for every controlling panel.
+<a id="lock-the-reference-frame"></a>
 
-Treat every controlling panel as a camera change around that fixed state. Do not independently rotate the subject, bend parts, redistribute weight, change soft-part motion, or fit each panel to its own silhouette bounds.
+## 锁定参考坐标系
 
-## Source-pose conversion
+记录：
 
-When the source is dynamic, foreshortened, seated, partially occluded, or strongly perspective-distorted, a normalized modeling pose is inferred rather than observed. Preserve identity, anatomy, outfit construction, attachment locations, and proportions as far as the evidence supports, but record the pose conversion under **Inferred** and keep uncertain joint or hidden-body structure under **Unknown**.
+- 规范的正向、向上和subject-left/right方向；
+- 一个稳定的起源或接触地面规则；
+- 中心线或根部参考点；
+- 语义标志，可以在不同视图之间进行比较，例如脚底、膝盖、骨盆、肩膀、视线、车轮轴、铰链中心、屋顶线或连接点；
+- 每个控制面板的常见正交比例。
 
-Do not claim that normalization recovers exact joint centers, hidden anatomy, real depth, or measurements from a single image.
+将每个控制面板视为围绕固定状态的相机变换。不要单独旋转主体、弯曲部件、重新分配重量、改变软部分的运动，或将每个面板适配到其自身的轮廓限制内。
 
-## Readiness decision
+<a id="source-pose-conversion"></a>
 
-Label a sheet **Blender-blockout-ready** only when all controlling views agree on:
+## 转换原图姿态
 
-- the declared downstream purpose; reusable character construction uses its reviewed neutral pose, while a seated/action sheet may be ready only for its stated fixed-pose use;
-- the recorded pose or mechanical configuration;
-- root/origin, ground contact, centerline, and semantic landmarks;
-- canonical axes and left/right meaning;
-- common orthographic scale;
-- attachment origins and major rest silhouettes.
+当源数据具有动态性、透视变形、部分遮挡或严重透视失真时，会推断出一个标准化的建模姿势，而不是直接观察。在证据允许的范围内，保留身份、解剖结构、服装构造、附件位置以及比例等特征，但在记录姿势转换时，将不确定的关节或隐藏体结构标记为**未知**。
 
-If a mismatch would force a modeler to choose between contradictory joint centers, attachment positions, silhouettes, or volumes, label the sheet **preview-only**, list the conflict, and use it as design evidence rather than a tracing authority.
+请不要声称该软件能够恢复精确的关节中心、隐藏的解剖结构、真实深度或单张图片中的测量数据。
 
-Pose normalization does not certify topology, joint deformation or rig readiness. Preserve anatomically required occlusion in the locked pose; add supplemental joint views rather than moving hidden limbs in one controlling panel.
+<a id="readiness-decision"></a>
+
+## 判断能否开始建模
+
+仅在所有控制视图达成一致的情况下，将页面标记为 **Blender-blockout-ready**。
+
+- 所声明的下游用途；可重复使用的角色构建使用其经过审核的中性姿势，而seated/action该软件可能仅适用于其标明的固定姿势使用；
+- 记录的姿态或机械配置；
+- 根部、原点、接触地面、中心线以及语义标志；
+- 规范轴左侧、右侧含义；
+- 常见的正交缩放；
+- 附件来源及主要剩余轮廓。
+
+如果不匹配会导致建模者在矛盾的结合点中心、附件位置、轮廓或体积之间做出选择，请将图纸标记为**仅预览**，列出冲突点，并将其作为设计依据，而不是作为设计权威。
+
+姿态标准化并不能保证拓扑结构、关节变形或绑定准备的就绪。在锁定姿态中，应保留解剖学上所需的遮挡关系；添加辅助关节视图，而不是通过一个控制面板移动隐藏的肢体。

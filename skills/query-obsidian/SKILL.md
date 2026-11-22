@@ -1,116 +1,136 @@
 ---
 name: query-obsidian
-description: Search the user's Obsidian ai-wiki knowledge base and answer from the material already stored there. Use this skill whenever the user asks to “在我的知识库查找相关内容”, “查一下知识库 / ai-wiki / Obsidian”, “基于我的笔记回答”, “我以前保存过什么”, or otherwise wants retrieval from their personal knowledge base—even when they do not name this skill. Do not trigger for saving or distilling material into the knowledge base, ordinary repository search, general web research, or Obsidian editing without a retrieval request.
-compatibility: Requires filesystem search and read access. Obsidian CLI is optional; the workflow must work while Obsidian is closed.
+description: "从用户已有的 Obsidian ai-wiki 中检索并回答问题。用户说“在我的知识库查找相关内容”“查一下知识库 / ai-wiki / Obsidian”“基于我的笔记回答”或“我以前保存过什么”时均适用。写入或提炼知识、普通代码搜索、网页调研及无检索需求的笔记编辑另走相应流程。"
+compatibility: "需要文件系统搜索和读取权限。Obsidian CLI 为可选工具，关闭 Obsidian 后也应能执行检索。"
 ---
 
-# Query Obsidian
+<a id="query-obsidian"></a>
 
-Answer a question from the user's existing `ai-wiki` knowledge base. Treat the generated Wiki as the primary synthesis layer and the stored sources as evidence to consult only when the Wiki is insufficient.
+# 检索 Obsidian 笔记库
 
-## Core contract
+根据用户的现有 `ai-wiki` 知识库，回答一个问题。将生成的 Wiki 视为主要综合层，将存储的源资料仅用于 Wiki 不足时的参考。
 
-- Keep ordinary queries read-only. Do not create notes, update pages, append logs, or change vault metadata merely because the user asked a question.
-- Start from the Wiki's navigation and local rules instead of searching the entire vault indiscriminately.
-- Prefer a concise synthesized answer with links to the relevant notes over a raw dump of search results.
-- Distinguish what the Wiki says, what an underlying source establishes, and what remains uncertain.
-- Never guess a vault location or create a replacement vault when the configured target cannot be validated.
-- Do not expose secrets, personal data, or unrelated private material encountered during retrieval.
+<a id="core-contract"></a>
 
-## 1. Resolve the retrieval request
+## 基本约定
 
-Identify the topic or question the user wants answered. Expand it into a small set of useful search terms when appropriate:
+- 保持普通查询为只读模式。不要仅仅因为用户提出了问题，就创建笔记、更新页面、追加日志或更改存储库元数据。
+- 从 Wiki 的导航和本地规则开始，而不是无差别地搜索整个笔记库。
+- 更倾向于使用包含相关笔记链接的简洁合成答案，而不是简单的搜索结果列表。
+- 区分维基百科所记载的内容、原始资料所确立的内容，以及仍不确定部分。
+- 切勿猜测笔记库的位置，也不得创建替代的笔记库，除非配置的目标能够得到验证。
+- 请勿在检索过程中暴露秘密、个人数据或无关的私人材料。
 
-- Chinese and original-language terms;
-- aliases, abbreviations, project names, APIs, and code identifiers;
-- closely related concepts that are necessary to locate the owning page.
+<a id="1-resolve-the-retrieval-request"></a>
 
-Keep the expansion bounded by the user's question. A broad request such as “知识库里关于 Rust 有什么” calls for a domain overview, not an exhaustive dump of every matching line.
+## 1. 明确检索需求
 
-If the request combines retrieval with an explicit write-back request, complete the read-only query first, then use `distill-to-obsidian` for the authorized write portion. A request to save, extract, distill, or preserve current material without a retrieval goal belongs to `distill-to-obsidian`, not this workflow.
+先明确用户要查的主题或问题，再按需要选取少量检索词。
 
-## 2. Resolve and validate the vault
+- 中文名称及原文用词；
+- 别名、缩写、项目名称、应用程序接口和代码标识符；
+- 密切相关的概念，用于定位所属页面。
 
-If the user explicitly supplies a vault root for the current request, validate and use it only for this run. If a test or temporary task explicitly supplies a separate candidate-location file, use only that file and do not read the persistent device list.
+将扩展内容限定在用户的问题范围内。像“知识库里关于 Rust 有什么”这样的广泛请求需要领域概述，而不是对所有匹配项进行详尽的列举。
 
-Otherwise, use the shared device-level `AI_WIKI_VAULT_ROOT` when configured. Validate it before access. If it is unset, use [the device fallback](references/vault-locations.md). A candidate is valid only when `<vault-root>/ai-wiki/AGENTS.md` exists.
+如果请求同时包含检索和明确的写入请求，请先完成只读查询，然后使用 `distill-to-obsidian` 进行授权的写入操作。如果请求的目的是保存、提取、提炼或保留当前材料，而不涉及检索，则该请求属于 `distill-to-obsidian`，而非此工作流程。
 
-- One valid candidate: use it.
-- Several valid candidates: use the highest-priority candidate and mention the choice only when it could surprise the user.
-- No valid candidate: stop and ask for the vault root. Explain that a valid target must contain `ai-wiki/AGENTS.md`.
+<a id="2-resolve-and-validate-the-vault"></a>
 
-The knowledge workspace is `<vault-root>/ai-wiki/`. Do not search other vault directories unless the user explicitly expands the scope and the local rules permit it.
+## 2. 定位并验证笔记库
 
-## 3. Load the local query rules
+若用户在本次请求中明确给出笔记库根目录，验证后仅在本次使用。若测试或临时任务给出独立的候选路径文件，只使用该文件，不读取设备上的持久列表。
 
-Before searching for an answer:
+否则，使用已配置的共享设备级 `AI_WIKI_VAULT_ROOT`。在访问之前进行验证。如果未设置，则使用 [设备备用方案](references/vault-locations.md)。候选者只有在 `<vault-root>/ai-wiki/AGENTS.md` 存在时才有效。
 
-1. Read `<vault-root>/ai-wiki/AGENTS.md` completely.
-2. Read the Wiki entry point required by that file, normally `wiki/index.md`.
-3. Follow any domain routing, read boundaries, or query workflow declared there.
+- 一个有效的候选方案：使用它。
+- 几名有效的候选方案：使用优先级最高的方案，并且仅在可能让用户感到意外的情况下才提及该选择。
+- 没有有效的候选对象：停止并询问 vault 根目录。说明有效的目标必须包含 `ai-wiki/AGENTS.md`。
 
-The vault's `AGENTS.md` overrides this skill on directory ownership, privacy boundaries, navigation, and evidence handling. If its rules conflict with the requested access, explain the conflict and stop rather than bypassing it.
+知识工作区是 `<vault-root>/ai-wiki/`。除非用户明确扩展范围且当地规则允许，否则不要搜索其他笔记库。
 
-`obsidian-cli` may help with vault-aware search or navigation when Obsidian is running. It is optional: ordinary filesystem reads and literal `rg` searches are the reliable default, so the query must still work while Obsidian is closed.
+<a id="3-load-the-local-query-rules"></a>
 
-## 4. Search the generated Wiki first
+## 3. 读取本地检索规则
 
-Use `wiki/index.md` to identify likely domain, concept, project, overview, or shared pages. Then search only `wiki/` for the prepared terms, considering:
+在寻找答案之前：
 
-1. exact title, filename, alias, or technical identifier matches;
-2. index and domain-page links;
-3. headings and frontmatter such as `tags` or `domains`;
-4. body-text matches and nearby wikilinks. Break ties using direct evidence and coverage of the question. Cite the heading or source segment that supports the claim. Where dates or source changes affect the answer, surface the recorded version or uncertainty.
+1. 阅读 `<vault-root>/ai-wiki/AGENTS.md` 的内容。
+2. 阅读该文件所需的 Wiki 条目说明，通常表示为 `wiki/index.md`。
+3. 遵循任何领域路由规则，阅读边界信息，或查询在那里声明的工作流程。
 
-Use literal searches for user-provided terms so punctuation in APIs or identifiers is not interpreted as a regular expression. Read a small, relevant candidate set rather than every matching note. Prefer pages that own or synthesize the concept over pages that merely mention it.
+该存储库的 `AGENTS.md`规则在目录所有权、隐私边界、导航和证据处理方面覆盖了此技能。如果其规则与请求的访问权限发生冲突，请解释冲突情况并停止访问，而不是绕过规则。
 
-For a narrow question, normally inspect the strongest few candidates. For a broad domain request, read the domain entry plus its central linked pages and summarize the structure at a useful level.
+`obsidian-cli` 在 Obsidian 运行时，可能帮助 笔记库 - 了解搜索或导航。 这是可选的: 普通文件系统读取和字节`rg` 搜索是可靠的默认，因此在 Obsidian 关闭时，查询必须仍然有效 。
 
-## 5. Consult sources only when needed
+<a id="4-search-the-generated-wiki-first"></a>
 
-Search the read-only `sources/` layer only when at least one of these conditions applies:
+## 4. 优先检索已有 Wiki
 
-- the generated Wiki does not contain enough information to answer;
-- the question asks for evidence, provenance, exact wording, or source verification;
-- relevant Wiki pages mark a claim as uncertain, conflicting, stale, or needing review.
+使用 `wiki/index.md`来标识可能的领域、概念、项目、概述或共享页面。然后仅在 `wiki/`中搜索准备好的术语，考虑到：
 
-Keep source retrieval bounded to terms and source families related to the question. Do not edit, rename, normalize, or summarize source files in place. Do not search `personal/` unless the user explicitly names an allowed file and the vault rules authorize reading it.
+1. 与确切的标题、文件名、别名或技术标识符匹配；
+2. 索引和域名页面链接；
+3. 标题和前言部分，例如 `tags` 或 `domains`；
+4. 正文内容以及附近的维基链接。通过直接证据和问题涉及的内容来打破平局。引用支持该主张的标题或来源段落。当日期或来源的变化会影响答案时，应显示记录的版本或不确定性。
 
-If the Wiki and a source disagree, report the disagreement and favor neither silently. If neither layer answers the question, say so. Do not automatically turn a knowledge-base query into web research; browse externally only when the user separately requests current or external verification.
+使用字面搜索来查找用户提供的术语，这样API中的标点符号或标识符就不会被解释为正则表达式。阅读一小部分相关候选内容，而不是所有匹配的内容。优先选择那些直接描述或综合该概念的页面，而不是仅仅提及该概念的页面。
 
-## 6. Compose the answer
+对于狭窄的问题，通常要检查最有力的几个候选方案。对于广泛的领域请求，需要阅读相关领域的条目以及其核心链接页面，并总结出有用的结构。
 
-Use Chinese by default unless the user or vault rules require another language. Preserve project names, APIs, paths, commands, and established technical terms in their original form.
+<a id="5-consult-sources-only-when-needed"></a>
 
-Lead with the answer, then support it with inline links to the relevant Wiki notes. Use vault-relative wikilinks such as `[[wiki/concepts/页面名|页面标题]]` when appropriate. When the interface supports clickable local paths, a local file link may supplement the wikilink.
+## 5. 按需查阅原始来源
 
-Adapt the response to the request:
+仅在满足以下至少一个条件时，搜索只读的`sources/`层：
 
-- For a direct question, synthesize a direct answer and cite the supporting pages near the relevant claims.
-- For “查找相关内容” or a topic without a specific question, give a compact topic overview followed by the most relevant notes.
-- When `sources/` was needed, identify which claims were source-verified and cite those source notes or URLs separately.
-- When coverage is incomplete, end with a brief “知识库缺口” statement describing what was not found or remains uncertain.
-- When there is no meaningful match, state that clearly and mention the terms and Wiki areas searched at a high level; do not fabricate related content.
+- 生成的 Wiki 中信息不足，无法回答；
+- 该问题要求提供证据、来源、确切的措辞或来源验证；
+- 相关的维基页面将声明标记为不确定、冲突、过时或需要审查。
 
-Avoid long excerpts and unranked match lists. The goal is to help the user use what they already know, not to reproduce their vault.
+保持源检索与问题相关术语和源项的关联。 不要编辑、重命名、 规范化或汇总源文件。 不要搜索`personal/`, 除非用户明确指定一个允许的文件名称，而笔记库 规则授权读取它 。
 
-## 7. Preserve the read-only boundary
+如果维基和某个来源存在分歧，请报告该分歧，并选择不偏袒任何一方。如果两层信息都没有回答这个问题，请明确指出。不要将知识库查询自动转化为网络研究；只有在用户单独请求当前或外部验证时，才进行外部浏览。
 
-An ordinary query does not authorize writes. In particular, do not:
+<a id="6-compose-the-answer"></a>
 
-- append a query, ingest, or audit log;
-- create a cache, answer note, or temporary file inside the vault;
-- update stale pages while answering;
-- broaden the search into `personal/`, unrelated vault folders, or external services.
+## 6. 整理回答
 
-If the answer produces a durable synthesis that would improve the Wiki, you may briefly suggest the existing page where it could be integrated. Write it back only after the user explicitly asks, using `distill-to-obsidian` and the vault's write rules.
+默认使用中文，除非用户或存储库规则要求使用其他语言。保留项目名称、API、路径、命令以及已确立的技术术语的原始形式。
 
-## Completion check
+首先给出答案，然后通过内联链接指向相关的 Wiki 笔记来加以支持。在适当的情况下，使用与仓库相关的 Wiki 链接，例如 `[[wiki/concepts/页面名|页面标题]]`。当界面支持可点击的本地路径时，可以使用本地文件链接来补充 Wiki 链接。
 
-Before responding, confirm that:
+调整响应以符合请求：
 
-- the selected root was validated through `ai-wiki/AGENTS.md`;
-- `wiki/index.md` and the relevant generated pages were read first;
-- `sources/` was searched only if the Wiki needed supplementation or verification;
-- every substantive knowledge-base claim is traceable to a cited page or source;
-- no vault file was changed.
+- 对于直接的问题，直接给出答案，并将相关支持页面引用在相关声明附近。
+- 用户要求“查找相关内容”或只给出主题时，先简述该主题，再列出最相关的笔记。
+- 当`sources/`需要确定哪些声明是经过验证的，并分别引用这些来源说明或 URL。
+- 当覆盖范围不完整时，以一段简短的 “知识库缺口”声明结束，描述未能找到或仍不确定的内容。
+- 当没有有意义的匹配结果时，应明确说明，并提及在较高层次上搜索的术语和 Wiki 区域；不要编造相关的内容。
+
+请避免过长的内容摘录和未排序的匹配列表。我们的目标是帮助用户利用他们已有的知识，而不是复制他们的存储方式。
+
+<a id="7-preserve-the-read-only-boundary"></a>
+
+## 7. 遵守只读约定
+
+普通的查询并不授权写入。具体来说，请不要：
+
+- 添加查询、摄取或审计日志；
+- 在存储库内创建缓存、答案或临时文件；
+- 在回答问题时更新过期的页面；
+- 将搜索范围扩大到与 `personal/` 无关的存储库文件夹或外部服务。
+
+如果答案能够产生一种持久的合成结果，从而改善 Wiki，您可以简要地建议可以将该合成结果整合到现有的页面中。只有在用户明确请求后，才使用 `distill-to-obsidian` 和存储库的写入规则进行写入。
+
+<a id="completion-check"></a>
+
+## 完成检查
+
+在作出回应之前，请确认以下内容：
+
+- 所选的根节点已通过验证`ai-wiki/AGENTS.md`;
+- 首先阅读了`wiki/index.md`的相关生成页面；
+- `sources/` 仅在维基需要补充或验证时才会被搜索；
+- 每一个实质性的知识库主张都可以追溯到某个被引用的页面或来源；
+- 没有更改任何存储文件。

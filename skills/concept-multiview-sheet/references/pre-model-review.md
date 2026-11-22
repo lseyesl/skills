@@ -1,64 +1,74 @@
-# Pre-model multiview review
+<a id="pre-model-multiview-review"></a>
 
-Use before handing generated construction views to Blender. Inspect actual images before detailed geometry; neither successful generation, a completed JSON form, nor later model renders can retroactively certify this step.
+# 建模前的多视图审查
 
-For generated references, retain an independent [source-fidelity receipt](source-fidelity.md) binding original and generated hashes, observed invariants and regional comparisons. The appearance/structure checks below do not replace it. Do not approve a consistent generic redesign as a faithful reconstruction.
+将生成的建模参考交给 Blender 前，逐张查看实际图像，再开始制作细节几何。生图成功、填完 JSON 或事后渲染模型，都无法补做这一步审查。
 
-## Review in this order
+对生成的视图，单独保存[原图忠实度审查记录](source-fidelity.md)，用哈希标明原图与生成图，记录必须保持的可见特征和各部位的对比结果。下面的外观及结构检查也须执行。各视图即使彼此一致，若偏离原图，仍不能用于忠实重建。
 
-1. **Pose suitability:** intended use, head-to-spine orientation (a camera-facing head can contradict a neutral torso), shoulder/pelvis state, joint bends, limb separation and tail/wing clearance. Static sculptures retain their specified pose.
-2. **Axes and projection:** establish anatomical left/right, forward/up and camera directions from geometry, not labels. Check strict front/side/top/bottom projection and physically correct occlusion. Never re-pose a hidden limb merely to show it. For directional features, attach the [annotated root-to-tip checks](consistency-review.md#directional-landmarks) and record any region excluded for a conflicting or unresolved projection.
-3. **Scale and correspondence:** align ground/origin, centerline and shared scale. Compare joint centres, head/eye/nose heights, body length/depth, limb widths and attachments in the applicable views. Use regional overlays or a landmark table; choose tolerances appropriate to the design, not a universal pixel threshold. Record uniform scale corrections; do not warp panels to conceal pose or anatomy conflicts.
-4. **Identity, structure and colour:** repeated counts, asymmetry, connections, grey/white regions, ear fronts/backs, chest/belly, paw tops/soles and appendage tips. Prefer source evidence and coherent anatomy when resolving an AI error; retain inferred/unknown labels.
-5. **Line-art correspondence:** approve the rendered views first. Preserve those source panels as immutable assets; create line art separately and assemble the layout without regenerating approved render rows. If it drifts, keep it supplemental or derive actual contours from a reviewed blockout.
+<a id="review-in-this-order"></a>
 
-Review every generated panel, including rejected/supplemental views; record which regions and dimensions each trusted view controls. A few individually attractive panels do not establish one coherent 3D configuration.
+## 审查顺序
 
-## Decision and construction scope
+1. **姿态是否适用。** 根据模型用途，检查头部相对脊柱的朝向、肩与骨盆的位置、关节弯曲、四肢间距，以及尾巴或翅膀与身体的间隙。例如，头正对镜头可能与躯干的中立姿态矛盾。静态雕像应保留指定姿势。
+2. **轴向与投影。** 根据形体确定解剖学左右、前向、上向和相机方向，再核对标签。检查正、侧、顶、底视图是否为严格正投影，遮挡关系是否合理。不要为了显示被挡住的肢体而改变姿态。有方向性的特征须附[根部至末端的标注检查](consistency-review.md#directional-landmarks)，并注明哪些部位因投影冲突或尚未确认而排除。
+3. **比例与对应关系。** 对齐地面或原点、中心线及比例尺。在能看到相应部位的视图中，比较关节中心、头眼鼻高度、身长与厚度、肢体宽度及连接点。使用局部叠图或特征点表，按具体设计确定容差。记录统一缩放，不要通过拉伸单张图片来掩盖姿态或结构冲突。
+4. **角色特征、结构与颜色。** 检查重复部件数量、不对称特征、连接处、灰白分区、耳朵正反面、胸腹、爪背与脚掌，以及尾翼等附属结构的末端。纠正生成图错误时，以原图证据和合理的身体结构为依据；继续标明推定和未知部位。
+5. **线稿对应。** 先审查有明暗或材质的视图，将通过的视图保存为不可覆盖的源文件。单独制作线稿，再排版，避免重新生成已经通过的视图。线稿若偏离原视图，只作补充参考，也可从已审粗模提取实际轮廓。
 
-- **passed:** the declared construction scope is consistent and has usable controlling evidence.
-- **partial:** only explicit regions may be modeled. Name allowed and blocked regions, select trusted views, and disclose unresolved conflicts. A view that is merely supplemental must not become a dimensional guide silently.
-- **blocked:** an unresolved global pose/axis/projection conflict, or insufficient evidence for the requested region. Repair the source first. Independent, well-constrained work can continue only under a separate explicit partial scope.
+逐张审查，包括已否决或仅作补充的视图。记录每张可信视图能约束的部位和尺寸；逐张看起来合理，还须确认这些视图能同时描述同一个三维形体。
 
-Use hierarchical region names consistently, such as `head.skull`, `head.muzzle`, `body`, `tail`; allowing `head` also includes its children. Do not claim that a parent is approved while its muzzle remains blocked. When a conflict is resolved by choosing a controlling source, record the actual selected evidence, dimension authority and reasoning. Do not resolve an identity-changing ambiguity by relabeling it a harmless simplification; use the normal human-judgment policy when needed.
+<a id="decision-and-construction-scope"></a>
 
-When image edits repeatedly break previously valid panels, use a cheap diagnostic blockout and real orthographic cameras to test whether one anatomy/configuration can explain the views. Diagnostic geometry may investigate blocked regions, but it is not an accepted detailed build and cannot certify the original images. Revise/review the design constraints before promoting those regions to construction authority.
+## 审查结论与建模范围
 
-## Handoff receipt
+- **通过（passed）。** 声明的建模范围内，各视图相互一致，有可用证据确定形体。
+- **部分通过（partial）。** 只建模明确许可的部位。列出允许和阻塞的部位、采用的可信视图及尚未解决的冲突。补充视图不能直接用来确定尺寸。
+- **阻塞（blocked）。** 整体姿态、轴向或投影仍冲突，或目标部位缺乏足够证据。先修复参考。若要继续其他证据充分且相互独立的部位，须单独声明部分通过的范围。
 
-Keep `multiview-review.json` beside the project references. Minimum two-guide example below; a generated five/six-view set must list the other panels with their roles/findings too. Replace hashes and findings only after actual inspection:
+统一使用分层部位名称，如 `head.skull`、`head.muzzle`、`body` 和 `tail`。允许 `head` 即包含其子部位；口鼻部仍受阻时，不能批准整个头部。选择某一视图解决冲突时，记录实际采用的证据、它能确定的尺寸及选用依据。若歧义会改变角色特征，需要时遵循人工判断流程，不能将其改称为无害的简化。
+
+若修图反复破坏先前通过的视图，使用低成本诊断粗模和正交相机，验证同一套身体结构和姿态能否解释各视图。可以用诊断几何调查受阻部位，但该几何不计为通过细模审查，也不能为原图提供事后认证。先修订并审查设计约束，再将对应部位纳入正式建模。
+
+<a id="handoff-receipt"></a>
+
+## 建模交接记录
+
+将 `multiview-review.json` 与项目参考图一同保存。以下是两张控制视图的最小示例；若生成五或六视图，还须记录其他每张视图的用途和观察结果。实际审图后再填写哈希和结论。
 
 ```json
 {
   "schema_version": 1,
-  "purpose": "reusable quadruped for later rigging",
-  "pose": "four-foot balanced stand; head aligned with spine; slight elbow/hock bends; relaxed tail clear of back/legs",
+  "purpose": "供后续绑定的可复用四足角色",
+  "pose": "四足均衡站立，头与脊柱对齐，肘与跗关节微屈，尾部放松，与背部和腿部留有间隙",
   "readiness": "passed",
   "checks": {
-    "pose": {"status": "passed", "finding": "Record the observed joint/head state across views"},
-    "proportions": {"status": "passed", "finding": "Record common scale, ground and landmark comparisons"},
-    "projection": {"status": "passed", "finding": "Record actual camera direction and occlusion checks"},
-    "structure": {"status": "passed", "finding": "Record counts, attachments and inferred hidden anatomy"},
-    "appearance": {"status": "passed", "finding": "Record mask, ear-back, underside and asymmetry checks"},
-    "axes": {"status": "passed", "finding": "Forward -Y, up +Z; verified nose-left source is +X right view"}
+    "pose": {"status": "passed", "finding": "记录各视图实际可见的关节姿态及头部朝向"},
+    "proportions": {"status": "passed", "finding": "记录统一比例尺、地面和特征点对比"},
+    "projection": {"status": "passed", "finding": "记录实际相机方向与遮挡检查结果"},
+    "structure": {"status": "passed", "finding": "记录部件数量、连接点和不可见结构的推定"},
+    "appearance": {"status": "passed", "finding": "记录色块、耳背、腹侧及不对称特征的检查结果"},
+    "axes": {"status": "passed", "finding": "前向为 -Y，上向为 +Z；已确认鼻尖朝画面左方的原图是从 +X 观察的右视图"}
   },
   "allowed_regions": ["head", "body", "tail"],
   "blocked_regions": [],
   "conflicts": [],
   "views": {
-    "front": {"image": "reference/front.png", "sha256": "actual-file-sha256", "role": "controlling", "controls": ["head", "body"], "finding": "Record frontal landmark/shape observations"},
-    "right": {"image": "reference/right.png", "sha256": "actual-file-sha256", "role": "controlling", "controls": ["head", "body", "tail"], "finding": "Record sagittal profile and joints"}
+    "front": {"image": "reference/front.png", "sha256": "actual-file-sha256", "role": "controlling", "controls": ["head", "body"], "finding": "记录正面的特征点与形状"},
+    "right": {"image": "reference/right.png", "sha256": "actual-file-sha256", "role": "controlling", "controls": ["head", "body", "tail"], "finding": "记录侧面轮廓及关节位置"}
   },
   "review_artifacts": ["review/reference-landmarks.png"]
 }
 ```
 
-View roles are `controlling`, `supplemental`, or `rejected`. Each conflict records `severity` (`critical`/`local`), `status` (`resolved`/`unresolved`), `finding`, affected `regions`, and a `resolution` when resolved. For a partial review, `build_regions` in the Blender reference config must explicitly select an allowed subset. Critical unresolved regions must be blocked; global failures use `blocked` readiness.
+视图角色为 `controlling`（用于确定形体或尺寸）、`supplemental`（补充）或 `rejected`（否决）。每处冲突记录 `severity`（`critical` / `local`）、`status`（`resolved` / `unresolved`）、`finding` 和受影响的 `regions`；解决后填写 `resolution`。部分通过时，Blender 参考配置的 `build_regions` 必须显式选取获准范围内的部位。关键冲突仍未解决时，阻塞对应部位；全局失败则将就绪状态设为 `blocked`。
 
-Image/artifact paths above resolve relative to the review file. Guide paths resolve relative to the Blender config. With `blender-python-modeling` installed, `scripts/reference_review.py <reference-setup.json>` checks source hashes, evidence declarations, view roles and permitted scope. Its workspace helper applies this before importing multiple guides. The checker does not judge image contents, decide anatomy or prove that a builder used the declared scope honestly; inspect the actual reference and mesh.
+图像及审查文件的路径相对于本记录，参考视图路径相对于 Blender 配置文件。安装 `blender-python-modeling` 后，运行 `scripts/reference_review.py <reference-setup.json>` 检查源文件哈希、证据声明、视图用途和获准范围。工作区辅助工具会在导入多张视图前执行此检查。脚本无法判断图像内容、解剖结构或实际模型是否遵守声明范围，仍需审查参考图与网格。
 
-## Character and item handoff
+<a id="character-and-item-handoff"></a>
 
-In the existing structure finding, compare each actual panel with the accessory inventory and its assigned subject. Check item count, side and length, especially at the back, hands and garment edges. Inspect body landmarks with the whole panel visible. An invented item, a missing integral feature, or a prop covering a required landmark reopens the affected view and region. Correct that panel or generate the missing separate view, then repeat source and cross-view checks. Keep unaffected reviewed regions available.
+## 角色与配饰的交接
 
-For split deliveries, list the character views, each separate item reference, and the assembled source or placement crop with their controlling regions. Verify the item can be placed using the recorded side, attachment and relative scale. An intentionally absent detachable item is accounted for by this mapping; it must not silently disappear from the project inventory.
+在现有结构检查项中，把每张视图与配饰清单及其所属主体逐一核对。检查数量、左右侧和长度，重点查看背部、双手与衣缘。在全图可见时检查身体特征点。出现凭空增加的配饰、缺失的一体式结构或挡住必要特征点的道具时，重新审查受影响的视图和部位。修正该图或生成缺少的独立视图，再与原图和其他视图复核。已审且未受影响的部位仍可使用。
+
+角色与配饰分开交付时，列出角色视图、各物件的独立参考、组合原图或显示安装位置的局部图，以及各图能确定的部位。按记录的左右侧、连接点及相对尺寸验证物件能否装回。角色视图有意省略的可拆物件仍须在项目清单中有对应记录。

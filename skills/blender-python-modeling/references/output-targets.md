@@ -1,69 +1,85 @@
-# Output-Target Recipes
+<a id="output-target-recipes"></a>
 
-The destination determines modeling, topology, materials, transforms, and validation. Choose the target before finalizing the asset.
+# 按交付目标选择制作方法
 
-## Still image or product render
+目标决定了建模、拓扑、材质、变换以及验证。在最终确定资产之前，请先选择目标。
 
-- Optimize silhouette, shading, materials, camera, and light rather than unseen topology.
-- Keep procedural modifiers and high-resolution render settings separate from viewport settings.
-- Validate the actual render engine, colour management, transparency, displacement, denoising, and output format.
-- Deliver the source script, `.blend` when requested, and rendered files with resolution/colour-space notes.
+<a id="still-image-or-product-render"></a>
 
-## Animation
+## 静帧图像或产品渲染
 
-- Set FPS, frame range, handles, interpolation, loop boundary, motion blur, and simulation caches explicitly.
-- Use image sequences for long or expensive renders.
-- Check representative frames and temporal artifacts, not only a single hero frame.
-- Preserve editable rigs/actions and distinguish them from baked export actions.
+- 优化轮廓、阴影、材质、相机和灯光，而不是忽略看不见的拓扑结构。
+- 将程序化修饰符和高分辨率渲染设置与视窗设置分开。
+- 验证实际的渲染引擎、色彩管理、透明度、位移、去噪以及输出格式。
+- 发送源脚本，`.blend` 当请求时，用resolution/colour-space 注释提供文件 。
 
-## Real-time/game or GLB asset
+<a id="animation"></a>
 
-- Build at real-world scale with an intentional origin and forward/up-axis convention.
-- Budget evaluated triangles, materials, texture dimensions, skin influences, bones, shape keys, and animation clips.
-- Prefer Principled PBR with Base Color, Metallic, Roughness, Normal, Emission, and Alpha maps.
-- Apply or export modifiers deliberately; keep armature and shape-key requirements in mind.
-- Use instances during authoring but confirm how the exporter realizes or preserves them.
-- Test the exported asset in the target engine/viewer; Blender appearance alone is insufficient.
+## 动画
 
-Use `mcp__blender__export_scene` for GLB/FBX when its options cover the target. Verify the returned object list and bytes, then inspect the file in the consumer when possible.
+- 明确设置FPS、帧范围、手柄、插值、循环边界、运动模糊和模拟缓存。
+- 使用图像序列来处理长或昂贵的渲染任务。
+- 检查代表性帧和时间伪影，而不仅仅是单个英雄帧。
+- 保留可编辑的绑定、动作，并将它们与烘焙导出操作区分开来。
 
-Read [export-and-packaging.md](export-and-packaging.md) for executable export patterns, Blender 4.x operator names, texture packaging, LOD/collision delivery, and round-trip checks. Read [uv-and-texture-baking.md](uv-and-texture-baking.md) before exporting textured assets.
+<a id="real-timegame-or-glb-asset"></a>
 
-For production game meshes, also read [game-assets.md](game-assets.md). For skinned characters, read [character-delivery.md](character-delivery.md) before applying transforms, modifiers, or animation baking.
+## 实时、游戏或 GLB 资产
 
-## 3D printing
+- 以真实世界的规模进行构建，并遵循特定的起点和forward/up-axis惯例。
+- 预算评估了三角形、材质、纹理尺寸、皮肤影响、骨骼、形状键以及动画片段。
+- 建议使用基于原型的 PBR 模型，并搭配基础颜色、金属效果、粗糙度、法线、发射效果以及阿尔法图。
+- 有目的地应用或导出修改器；同时牢记骨架和形状关键的要求。
+- 在创作过程中使用实例，但要确认导出器是如何实现或保留这些实例的。
+- 在目标 引擎、查看器 中测试导出的资源；仅 Blender 的表现是不够的。
 
-- Use the requested physical units and dimensions.
-- Require a closed, consistently oriented manifold unless the printing process explicitly accepts surfaces.
-- Check wall thickness, clearance, unsupported overhangs, trapped volumes, tiny features, and disconnected shells.
-- Apply booleans and relevant modifiers in a copy or export stage, then re-run manifold and dimension checks.
-- Materials, lights, and camera are irrelevant to print validity; do not confuse a good render with printable geometry.
+使用 `mcp__blender__export_scene` 来处理 GLB/FBX，当其选项涵盖目标时。在可能的情况下，验证返回的对象列表和字节数，然后在消费者端检查文件。
 
-STL commonly carries no units, so communicate the assumed unit and confirm dimensions in the slicer. Prefer a unit-aware format when the downstream tool supports it.
+请阅读 [export-and-packaging.md](export-and-packaging.md)中关于可执行的导出模式、Blender 4.x 操作名称、纹理打包、 LOD/collision交付以及往返校验的内容。在导出带有纹理的资源之前，请阅读 [uv-and-texture-baking.md](uv-and-texture-baking.md)。
 
-## CAD-like or manufacturing reference
+对于生产用的游戏网格，请同时阅读[game-assets.md](game-assets.md)。对于带有皮肤的角色，在应用变换、修饰器或动画烘焙之前，请阅读[character-delivery.md](character-delivery.md)。
 
-Blender is a mesh modeler, not a parametric solid CAD system. It can create dimensioned visual or mesh prototypes, but do not claim STEP-like analytic surfaces, constraint history, or manufacturing tolerances. Keep dimensions as named parameters, validate them numerically, and recommend a CAD handoff when exact B-rep deliverables are required.
+<a id="3d-printing"></a>
 
-## Reusable Blender asset
+## 3D 打印
 
-- Use stable collection/object/material/node-group names and clean origins.
-- Keep modifiers editable and expose meaningful parameters.
-- Remove task-owned temporary data, unused material slots, and accidental duplicates.
-- Pack or document external textures and library links.
-- Include a clear preview camera/light setup only when it belongs to the asset package.
+- 使用所要求的物理单位和尺寸。
+- 除非打印过程明确允许使用曲面，否则需要一个封闭且方向一致的流形。
+- 检查墙体厚度、间隙、不支持的悬挑、被困体积、微小特征以及断开的壳结构。
+- 在复制或导出阶段应用布尔运算及相关修改器，然后重新运行流形和尺寸检查。
+- 材料、灯光和相机与打印效果无关；不要将优秀的渲染效果与可打印的几何形状混淆。
 
-Read [asset-libraries.md](asset-libraries.md) when the deliverable will be marked for Asset Browser use, linked across `.blend` files, appended as a local copy, or edited through a library override.
+STL通常不包含单位信息，因此请说明所假设的单位，并在切片工具中确认尺寸。如果下游工具支持单位感知格式，请优先选择这种格式。
 
-## Delivery checklist
+<a id="cad-like-or-manufacturing-reference"></a>
 
-For every target, report:
+## 类 CAD 模型或制造参考
 
-- Blender version used;
-- script and source paths;
-- scale, units, axes, and origin convention;
-- evaluated object/triangle/material/texture counts where relevant;
-- animation frame range and FPS where relevant;
-- render/export format, path, and file size;
-- checks performed in Blender and in any downstream consumer;
-- assumptions and known limitations.
+Blender是一种网格建模工具，并非参数化实体CAD系统。它可以创建具有尺寸的视觉或网格原型，但不声称具有类似STEP的分析曲面、约束历史或制造公差。将尺寸作为命名参数保存，通过数值验证来确保其准确性，并在需要精确B-rep交付成果时建议进行CAD转换。
+
+<a id="reusable-blender-asset"></a>
+
+## 可复用的 Blender 资产
+
+- 使用稳定的collection/object/material/node-group名称和清晰的来源。
+- 保持修改器的可编辑性，并展示有意义的参数。
+- 删除任务拥有的临时数据、未使用的材料槽位以及偶然产生的重复文件。
+- 打包或记录外部纹理和库链接。
+- 包含清晰的预览相机、灯光仅在属于资产包时执行 setup 操作。
+
+交付资产要用于资产浏览器、跨 `.blend` 文件链接、追加为本地副本，或通过库覆盖编辑时，查阅[资产库与复用](asset-libraries.md)。
+
+<a id="delivery-checklist"></a>
+
+## 交付检查表
+
+对于每个目标，报告：
+
+- 使用的 Blender 版本；
+- 脚本和源路径；
+- 缩放、单位、轴和原点约定；
+- 评估了相关的 object/triangle/material/texture 计数；
+- 动画帧范围和相关的人眼安全帧率；
+- 渲染、导出格式、路径和文件大小；
+- 在 Blender 以及任何下游用户中进行的检查；
+- 假设和已知限制。

@@ -121,6 +121,33 @@ def check_refinement(ledger, ledger_path, review_path, model_path):
     return digest
 
 
+def check_original_comparisons(bundle, base, originals, digest, modules):
+    """Require direct model comparisons for source images absent from fixed construction views."""
+    if not originals:
+        return
+    required = {(m["id"], feature) for m in modules
+                if m.get("required") and m.get("evidence") == "observed"
+                for feature in m.get("signature_features", [])}
+    reviewed = set()
+    seen = set()
+    for entry in bundle.get("original_comparisons", []):
+        source = _file(entry["source"], base)
+        if source not in originals or entry.get("model_sha256") != digest:
+            raise ValueError("Compare the current model directly with the original source")
+        seen.add(source)
+        if not str(entry.get("registration") or "").strip():
+            raise ValueError("Describe the source-view pose and camera registration")
+        images = [source] + [_file(entry[key], base) for key in ("clay", "final_render", "comparison")]
+        if len({sha for _, sha in images}) != len(images):
+            raise ValueError("Provide distinct original, clay, final render and comparison evidence")
+        for finding in entry["features"]:
+            if finding.get("status") != "matched" or not str(finding.get("finding") or "").strip():
+                raise ValueError("Reopen the original-source feature: " + str(finding.get("feature")))
+            reviewed.add((finding["module"], finding["feature"]))
+    if seen != originals or required - reviewed:
+        raise ValueError("Missing direct original-source comparisons or observed signature features")
+
+
 def check_delivery(ledger, ledger_path, review_path, model_path):
     if not review_path or not model_path:
         raise ValueError("Final delivery requires --review and --model")
@@ -169,6 +196,12 @@ def check_delivery(ledger, ledger_path, review_path, model_path):
         _file(view["comparison"], base)
     if covered != guides:
         raise ValueError("Final views must cover the reviewed construction guides")
+    if mode == "reference" and decision.get("facts", {}).get("scope", "whole_model") == "whole_model":
+        originals = {_file(item, prep.parent) for item in decision["source_images"]}
+        # A source already used in a fixed view has its own comparison above.
+        missing = originals - covered
+        check_original_comparisons(bundle, base, missing, digest,
+                                   ledger["modules"] if missing == originals else [])
     if len(guides) > 1:
         design, _ = _file(bundle["multiview_review"], base)
         require_design_review({"views": controlling, "multiview_review": design}, base)

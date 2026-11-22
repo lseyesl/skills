@@ -139,10 +139,10 @@
         "workflow and review"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -169,10 +169,10 @@
         "construction"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -199,10 +199,10 @@
         "materials and lighting"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -229,10 +229,10 @@
         "review and calibration"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -242,7 +242,7 @@
     },
     {
       "id": "blender-styles.reference.95318fc55895",
-      "title": "Clay animation and timing",
+      "title": "黏土动画与节奏",
       "entry": "styles/soft-clay/references/animation.md",
       "kind": "knowledge",
       "tasks": [
@@ -259,10 +259,10 @@
         "animation"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -272,7 +272,7 @@
     },
     {
       "id": "blender-styles.reference.d55813343336",
-      "title": "Miniature lighting and camera",
+      "title": "微缩场景的布光与镜头",
       "entry": "styles/soft-clay/references/lighting.md",
       "kind": "knowledge",
       "tasks": [
@@ -289,10 +289,10 @@
         "lighting"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -302,7 +302,7 @@
     },
     {
       "id": "blender-styles.reference.5b2e8ba96380",
-      "title": "Clay shader and palette",
+      "title": "黏土着色与配色",
       "entry": "styles/soft-clay/references/materials.md",
       "kind": "knowledge",
       "tasks": [
@@ -319,10 +319,10 @@
         "materials"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -332,7 +332,7 @@
     },
     {
       "id": "blender-styles.reference.55ff52762cb6",
-      "title": "Soft low-poly modeling",
+      "title": "柔和低多边形建模",
       "entry": "styles/soft-clay/references/modeling.md",
       "kind": "knowledge",
       "tasks": [
@@ -349,10 +349,10 @@
         "modeling"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -362,7 +362,7 @@
     },
     {
       "id": "blender-styles.reference.f3b5a28766c5",
-      "title": "Executable and visual acceptance",
+      "title": "脚本验证与视觉验收",
       "entry": "styles/soft-clay/references/quality-check.md",
       "kind": "knowledge",
       "tasks": [
@@ -379,10 +379,10 @@
         "quality check"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -392,7 +392,7 @@
     },
     {
       "id": "blender-styles.reference.641b45dea991",
-      "title": "Render configuration and batch delivery",
+      "title": "渲染配置与批量交付",
       "entry": "styles/soft-clay/references/rendering.md",
       "kind": "knowledge",
       "tasks": [
@@ -409,10 +409,10 @@
         "rendering"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],
@@ -422,7 +422,7 @@
     },
     {
       "id": "blender-styles.reference.45e1d2050869",
-      "title": "Minimal usage and cross-project application",
+      "title": "基础用法与跨项目复用",
       "entry": "styles/soft-clay/references/usage.md",
       "kind": "knowledge",
       "tasks": [
@@ -439,10 +439,10 @@
         "usage"
       ],
       "applies_when": [
-        "Read this guide when its documented task and prerequisites match the observed asset."
+        "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
       ],
       "exclude_when": [
-        "Do not infer unsupported capabilities from a lexical match."
+        "检索词命中后，仍须核实指南是否支持所需操作。"
       ],
       "required_facts": [],
       "requires": [],

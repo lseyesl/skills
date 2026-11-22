@@ -1,12 +1,16 @@
-# Fail-closed stages and selective rendering
+<a id="fail-closed-stages-and-selective-rendering"></a>
 
-Use a project-local entry point for work split across build, rig, verify, save and render calls. Reuse the existing fitter/worker when it already supplies equivalent checks; do not create a second orchestration system for a one-step edit.
+# 分阶段核验与按需渲染
 
-## Never infer success from transport status
+使用项目本地入口点来处理分布在构建、设置、验证、保存和渲染过程中的任务。当现有的 fitter/worker 已经提供了相应的检查功能时，可以复用它；不要为一步编辑操作创建第二个 orchestration 系统。
 
-MCP can return `isError: false` while its text reports `Error executing code`, a traceback or a communication failure. Inspect the actual result and require a fresh project stage receipt before dependent work. Clear old success markers before each attempt; a pre-existing file or `build_ok=True` from yesterday cannot authorize rendering a failed rebuild.
+<a id="never-infer-success-from-transport-status"></a>
 
-`scripts/stage_guard.py` provides standard-library helpers. In the project entry point, use one writer per receipt path:
+## 单独检查操作的执行结果
+
+MCP在文本报告中可能返回`isError: false`，同时出现`Error executing code`、回溯信息或通信失败。检查实际结果，并在进行依赖工作之前要求获得新的项目阶段收据。每次尝试之前，清除旧的成功标记；如果文件与昨天的`build_ok=True`相同，则无法授权重新构建操作。
+
+`scripts/stage_guard.py`提供了标准库的辅助功能。在项目入口点中，每个收据路径使用一个写入器：
 
 ```python
 from stage_guard import file_input, run_stage, require_stage
@@ -27,34 +31,40 @@ run_stage(render_receipt, "render", {"build_run": receipt["run_id"],
           work=render_affected_views, validate=validate_render_outputs)
 ```
 
-Callbacks above are project implementations, not bundled geometry/render functions. Do not catch a stage exception and continue dependent steps. A failed attempt records `failed`; an interrupted `running` receipt cannot pass. Include all actual dependencies in fingerprints: recipe/helper/config/source hashes, parameters, rig version, render settings and predecessor attempt. `BUILD_RECEIPT` in the task template enables the same build guard; set `BUILD_OUTPUTS` when its project builder saves files. A live-only receipt with no file outputs certifies that stage's checks, not subsequent scene freshness; compare current geometry/appearance signatures before using it across calls.
+上述回调是项目实现，并非捆绑在一起。geometry/render函数。不要捕获阶段异常并继续依赖步骤。失败的尝试会被记录下来。`failed`; 中断了`running`收据无法传递。请在指纹中包含所有实际依赖项：recipe/helper/config/source哈希值、参数、装备版本、渲染设置以及前代尝试。`BUILD_RECEIPT`在任务模板中启用相同的构建保护；设置`BUILD_OUTPUTS`当项目构建器保存文件时。仅包含收据的实时文件，没有文件输出，这证明了该阶段的检查，而不是后续场景的新鲜度；比较当前geometry/appearance在使用之前，请先签署。
 
-Record stage elapsed wall time (including failures) separately from generation calls, user waiting and total task duration. Report totals only when measured. Stage receipts establish execution and artifact freshness, not artistic or animation approval.
+记录每个阶段的耗时（包括失败情况），与生成调用、用户等待时间和总任务时长分开。仅在测量时报告总数。阶段记录用于确定执行情况和作品的新鲜度，与艺术性或动画审批无关。
 
-## Spend rendering effort where evidence changed
+<a id="spend-rendering-effort-where-evidence-changed"></a>
 
-- Before full delivery views, review one representative local sample in intended materials/light. Resolve head/muzzle/joint shape and signature relief before whole-scene polish.
-- After a local edit, rerender the affected crop and controlling views first; retain unchanged artifacts with provenance. Run the final common-scale multi-view sheet once the local checks pass.
-- Make the affected-view decision explicit. Head/pose/geometry changes affect relevant silhouettes; global palette, lighting, exposure or shared shader changes can affect every view. Do not skip a necessary rerender merely because only one parameter changed.
-- Check back/top/bottom early when projected regions can leak: ear fronts versus backs, throat/chest versus belly, paw tops versus soles, tail root versus tip.
-- Avoid regenerating an entire image sheet to repair a single view or to add line art. Preserve accepted source panels; a model-backed orthographic/contour sheet is preferable once a reviewed blockout exists.
+## 对受变更影响的部分重新渲染
 
-## Fresh visual comparisons
+- 在完全交付视图之前，请先查看一个代表性的本地样本。materials/light.解决头部、口鼻部、关节在整体润色之前，先对形状和签名进行润色。
+- 在进行了本地编辑之后，请先重新渲染受影响的裁剪和控制视图；保留具有来源信息的未更改的伪影。当本地检查通过之后，再运行最终的通用规模多视图渲染。
+- 明确做出受影响的视图决策。Head/pose/geometry这些更改会影响相关的轮廓；全局调色板、照明、曝光或共享着色器的更改可能会影响所有视图。不要仅仅因为只有一个参数发生了变化就跳过必要的重新渲染。
+- 检查背面、顶部、底部在早期阶段，投影区域可能会出现泄漏：耳朵的前部与后部。喉部、胸部与腹部相比，与爪尖相比；与脚底相比，与尾巴根部相比。
+- 避免重新生成整个图像页来修复单个视图或添加线条艺术。保留已认可的源面板；以模型为基准orthographic/contour一旦有了经过审核的遮挡信息，使用“sheet”方式更为理想。
 
-Keep geometry, appearance, and animation acceptance separate. `model_signature(objects)` tracks evaluated shape/transforms. `appearance_signature(scene, objects, extra=...)` additionally fingerprints materials and nested node groups, texture content/bindings, UV/custom attributes, other rendered geometry, lights/world, cameras, render/colour settings and compositor nodes. A comparison receipt needs both signatures. Changing either invalidates its prior visual findings even when the file still opens.
+<a id="fresh-visual-comparisons"></a>
 
-The built-in fingerprint is not a complete dependency scanner for external movies/UDIM tiles, simulation caches, custom render engines, sequence-editor content, viewport shading/environment overrides or every add-on node. Include those dependencies in `appearance_extra` and stage inputs, and inspect the rendered result. For externally animated/unstable inputs, capture the exact frames/caches used by the review. Old comparison JSON without an appearance signature must be inspected and renewed, not mechanically backfilled as passed.
+## 使用最新渲染做视觉对比
 
-After a change, preserve unrelated evidence and renew affected comparisons. Calibration/reference-design approval never substitutes for mesh fidelity; finite coordinates and weight sums never substitute for visible deformation/contact checks.
+保持几何，外观，动画验收 分开。 `model_signature(objects)` 轨迹评价shape/transforms.`appearance_signature(scene, objects, extra=...)` 额外指纹材料和嵌入式节点组，纹理content/bindings,UV/custom属性，其它制成的几何，灯光、世界环境, 相机，渲染、颜色 设置和混凝土节点。 比较验收记录 需要两个签名。 修改其中之一，即使文件仍然打开，也会使其先前的视觉发现无效 。
 
-## Scoped blockout prerequisite
+内置的指纹功能并非针对外部 movies/UDIM 瓦片、模拟缓存、自定义渲染引擎、序列编辑器内容、视口 shading/environment 覆盖或每个附加节点的完整依赖扫描工具。需要将这些依赖项包含在 `appearance_extra` 中，并作为输入进行阶段处理，然后检查渲染结果。对于外部 animated/unstable 输入，需要捕获评审过程中使用的确切 frames/caches 信息。没有外观签名的旧比较 JSON 必须被检查和更新，而不是机械地填充过去。
 
-Use blockout_gate.py with the existing stage_guard, rather than adding another general execution engine. Define module methods, objects, dependencies and checks in modeling-plan.json. Multiple semantic modules may share one continuous mesh; the default signature then conservatively tracks that whole mesh. Do not split a continuous surface merely to make the records independent.
+在发生变化后，保留无关证据并重新进行受影响的比较。Calibration/reference-design审批永远不能替代网格的逼真度；有限的坐标和权重总和永远不能替代可见性。deformation/contact检查。
 
-Create a pending review using `make_review_draft(plan, scope, state_provider, dependencies)` before inspection. It records inspection_signature and unknown checks. Save it as a new review file; inspect the actual evidence before filling reviewer/findings/status. `record_blockout_review` refuses a passed document whose inspection_signature differs from the current plan/state/dependencies; it does not silently rebind old approval to changed geometry.
+<a id="scoped-blockout-prerequisite"></a>
 
-Call `require_blockout_review` before a refinement callback. The production template separates blockout/review/refine and includes the source review in `refinement_inputs()`, so later `require_stage(refinement_receipt, 'refine', refinement_inputs)` also checks source freshness. Keep coarse sources immutable and refine copies; changes to detailed copies alone do not invalidate the coarse gate. Modifying the coarse source during a failed refinement is detected, not automatically rolled back; recover from the preserved project snapshot and renew evidence.
+## 粗模阶段的范围与前提
 
-Use a separate receipt per scope. depends_on extends the state to necessary neighboring modules; changing an independent module does not require unrelated review. The default recipe dependency is the whole project script, which is conservative. Separate coarse recipe files and declare all relevant BLOCKOUT_INPUT_FILES/parameters for narrower invalidation; do not omit real dependencies to make stale evidence pass. Use --stage or a runtime setting to switch phases, not file edits that alter the recipe hash.
+请使用 blockout_gate.py与现有的 stage_guard结合使用，而不是添加另一个通用的执行引擎。在 modeling-plan.json中定义模块方法、对象、依赖关系和检查。多个语义模块可以共享一个连续的网格；默认签名会保守地跟踪整个网格。不要为了使记录独立而分割一个连续的表面。
 
-Reviewers can be the inspecting Agent or a human. No blanket user approval is introduced. The gate verifies declared inspection, scope and freshness, not artistic judgment. For context-sensitive inspections, include relevant cameras, occluders, external caches and scene settings in project dependencies; the default source signature alone cannot discover all of them.
+在检查之前，使用 `make_review_draft(plan, scope, state_provider, dependencies)` 创建一份待审核文件。该文件会记录 inspection_signature 和未知的审核情况。将其保存为新的审核文件；在填写 reviewer/findings/status. `record_blockout_review` 之前，先检查实际证据，对于那些 inspection_signature 与当前 plan/state/dependencies 不同的通过文件，拒绝接受；同时，不要对更改后的几何图形进行旧的批准。
+
+在细化回调之前调用 `require_blockout_review`。生产模板将 blockout/review/refine 与 `refinement_inputs()` 分开处理，因此在 `require_stage(refinement_receipt, 'refine', refinement_inputs)` 中也会检查源代码的新鲜度。保持粗源不变，并细化副本；仅对详细副本进行更改不会使粗源失效。在细化失败期间修改粗源会被检测，但不会自动回滚；可以从保存的项目快照中恢复，并重新生成证据。
+
+每个范围使用单独的收据。depends_on将状态扩展到必要的相邻模块；更改独立模块不需要进行无关的审查。默认的配方依赖是整个项目脚本，这是比较保守的做法。使用单独的粗配方文件，并声明所有相关的BLOCKOUT_INPUT_FILES/parameters，以缩小无效范围；不要省略真实的依赖关系，以避免使证据过时。使用--stage或运行时设置来切换阶段，而不是通过文件编辑来改变配方哈希值。
+
+审核人员可以是检查代理，也可以是人类。没有引入统一的用户审批流程。门控环节会验证声明的检查内容、范围以及新鲜度，而不是艺术性判断。对于上下文敏感的检查，需要在项目依赖项中包含相关的摄像头、遮挡物、外部缓存以及场景设置；仅默认的源签名是无法发现所有这些元素的。

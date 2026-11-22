@@ -1,22 +1,26 @@
-# Game Asset Production
+<a id="game-asset-production"></a>
 
-Start from the destination engine contract. A visually correct Blender mesh can still fail because of scale, pivot, triangle count, materials, UVs, skin influences, LOD names, collision naming, or unsupported shader features.
+# 游戏资产制作
 
-## Budget before topology
+从目标引擎合同开始。一个视觉上正确的 Blender 网格仍然可能因为规模、旋转、三角形数量、材质、UV、皮肤影响、LOD 名称、碰撞命名或不支持的着色器特性而失败。
 
-Reconstruct and review the reference-faithful source before reducing a derived delivery copy. Final consumer triangle caps do not govern initial reconstruction; optional working-resource caps remain explicit. Freeze the source and check local losses against both it and the original images using [realtime optimization](procedures/delivery/realtime-optimization.md). If the source already meets the consumer limits, no reduction is required.
+<a id="budget-before-topology"></a>
 
-Record budgets per deliverable, not as universal numbers:
+## 先确定预算，再设计拓扑
 
-- evaluated triangles at each LOD;
-- material slots and draw-call implications;
-- texture sets, resolution, channel packing, and memory format;
-- UV sets and vertex-colour channels;
-- bones, deform influences per vertex, shape keys, and animation clips;
-- collision hull count and complexity;
-- instancing and batching constraints.
+在减少派生交付副本之前，先重建并审查与原始源文件一致的参考文件。下游使用方的限制条件并不决定初始重建过程；可选的工作资源限制仍然明确。冻结源文件，并使用[实时优化](procedures/delivery/realtime-optimization.md)来检查与原始文件相比的本地损失情况。如果源文件已经满足消费者的限制条件，则无需进行任何缩减操作。
 
-Measure evaluated geometry from the dependency graph. Source polygon counts do not include subdivision, Geometry Nodes, realized instances, curves, or export-time triangulation.
+记录每个交付成果的预算，而不是统一的数字：
+
+- 在每个LOD级别评估三角形；
+- 材料槽位和调用含义；
+- 纹理设置、分辨率、通道打包以及内存格式；
+- UV集和顶点颜色通道；
+- 骨骼、每个顶点的变形影响、形状键和动画片段；
+- 碰撞体的数量和复杂性；
+- 实例化与批处理约束。
+
+从依赖图中测量评估的几何图形。源多边形计数不包括细分、几何节点、实现的实例、曲线或导出时的三角剖分。
 
 ```python
 depsgraph = bpy.context.evaluated_depsgraph_get()
@@ -29,69 +33,81 @@ finally:
     evaluated.to_mesh_clear()
 ```
 
-## Retopology and shading
+<a id="retopology-and-shading"></a>
 
-- Preserve silhouette, deformation loops, hard-surface highlights, openings, and contact surfaces first.
-- Put loops where they control silhouette or deformation; remove invisible internal geometry unless gameplay requires it.
-- Retopologize deliberately for animated hero assets. Decimation is suitable for some static props and lower LODs, not a substitute for deformation topology.
-- Decide sharp edges, custom normals, UV seams, and triangulation together. A triangulation change after normal-map baking can alter tangent-space shading.
-- Test mirrored and negative-scale objects after transforms/export; avoid leaving negative determinant transforms in delivery assets.
+## 重拓扑与着色
 
-Keep a high/editable source and a separate task-owned game-ready mesh. Do not destructively collapse the only source merely to meet export requirements.
+- 首先保留轮廓、变形循环、硬表面高光、开口以及接触表面。
+- 将循环放置在能够控制轮廓或变形的位置；除非游戏玩法需要，否则移除不可见的内部几何结构。
+- 为了制作动画英雄素材，特意进行了重新拓扑处理。Decimation适用于一些静态道具和较低级别的LOD，但不能替代变形拓扑处理。
+- 需要共同决定锐利的边缘、自定义的法线、UV接缝以及三角剖分。在法线映射烘焙之后进行三角剖分的更改可能会改变切线空间的着色效果。
+- 在 transforms/export之后测试镜像和负比例的对象；避免在交付资源中保留负定的变换。
 
-## LODs
+保留一个 high/editable 源文件和一个由任务单独管理的、适用于游戏的网格。不要为了满足导出要求而破坏唯一的源文件。
 
-Define LOD thresholds in the destination engine, then create meshes that preserve the features visible at those thresholds.
+<a id="lods"></a>
 
-- Keep origin, scale, material ordering, skeleton binding, and naming consistent across LODs.
-- Reduce small silhouette details, internal faces, bevel segments, material complexity, and bone influences progressively.
-- Do not generate each LOD independently from a changing source; derive them from a frozen approved version.
-- Render or capture every LOD at its intended screen size. Triangle reduction alone is not acceptance evidence.
+## 细节层级（LOD）
 
-Use the engine's required naming or metadata only after it is known. Common suffixes such as `_LOD0` are conventions, not cross-engine standards.
+在目标引擎中定义 LOD 阈值，然后创建能够保留在这些阈值下可见特征的网格。
 
-## Collision meshes
+- 保持各LOD级别的原点、比例、材质排序、骨架绑定以及命名的一致性。
+- 逐步减少小轮廓细节、内表面、倒角段、材料复杂性和骨骼影响。
+- 不要从变化的源独立生成每个LOD；而是从固定的、已批准版本中派生它们。
+- 以预期的屏幕大小渲染或捕获每一个LOD。仅通过三角形减少并不能作为合格的证据。
 
-Choose the cheapest collision representation that satisfies gameplay:
+仅在使用引擎所需的命名或元数据之后才使用它们。常见的后缀如 `_LOD0` 只是约定俗成的做法，并非跨引擎的标准。
 
-- primitives for boxes, capsules, spheres, and simple blockers;
-- several convex hulls for compound shapes;
-- triangle mesh collision only for static geometry when the engine supports it;
-- separate trigger volumes for interaction logic.
+<a id="collision-meshes"></a>
 
-Collision objects should have intentional transforms, closed convex geometry when required, no render materials, and names required by the target importer. Validate containment and clearance visually. Never infer that a render mesh is an acceptable collision mesh.
+## 碰撞网格
 
-## Naming and hierarchy
+选择最便宜的碰撞表示方式，以满足游戏玩法需求：
 
-Use deterministic ASCII-safe names when the consumer has restrictions. Keep a stable root, predictable mesh/armature relationship, and unique names after case folding when targeting case-insensitive pipelines. Avoid `.001` suffixes, hidden duplicate meshes, accidental parents, and helper objects in the export selection.
+- 用于盒子、胶囊、球体以及简单阻挡体的基础元素；
+- 几种复合形状的凸包；
+- 仅适用于静态几何体的三角形网格碰撞，前提是引擎支持该功能；
+- 为交互逻辑分离触发体积。
 
-Document target-specific prefixes/suffixes for:
+碰撞对象应具有有意的变换、所需的封闭凸几何形状、没有渲染材质，并且名称需符合目标导入器的要求。需通过视觉方式验证其包容性和 clearance 情况。切勿认为渲染网格就是可接受的碰撞网格。
 
-- render meshes and skeleton roots;
-- LOD levels;
-- simple/convex/complex collisions;
-- sockets, locators, mount points, and effects anchors;
-- animation clips and morph targets.
+<a id="naming-and-hierarchy"></a>
 
-## Texture delivery
+## 命名与层级
 
-Use stable suffixes such as `_basecolor`, `_roughness`, `_metallic`, `_normal`, `_ao`, `_emissive`, `_opacity`, and `_height`, adjusted to the destination's naming rules. Record:
+在消费者有限制的情况下，使用确定性的、安全的 ASCII 名称。保持稳定的根目录，使其可预测。mesh/armature关系，以及在针对不区分大小写的管道时，将名称转换为小写后的唯一名称。避免`.001`在导出选择中，后缀、隐藏的重复网格、意外的父对象以及辅助对象。
 
-- dimensions, bit depth, alpha use, colour space, and file format;
-- normal-map tangent convention;
-- packed-channel layout, for example ORM = AO/Roughness/Metallic in RGB;
-- tiling, clamp behavior, UV set, and UDIM use;
-- compression performed by the engine versus precompressed source delivery.
+针对特定目标的 prefixes/suffixes文档：
 
-Base Color/Emission are usually colour textures; scalar maps, masks, normals, AO and height are non-colour data. Do not pack unrelated colour-space data into one texture without a documented consumer shader.
+- 渲染网格和骨架根节点；
+- LOD等级；
+- 简单、凸形、复杂 碰撞；
+- 插座、定位器、安装点以及效果锚点；
+- 动画片段和变形目标。
 
-## Game-asset validation
+<a id="texture-delivery"></a>
 
-Combine [uv-and-texture-baking.md](uv-and-texture-baking.md), [export-and-packaging.md](export-and-packaging.md), and these checks:
+## 贴图交付
 
-- evaluated bounds, triangles, materials, UVs, vertex colours and influences meet the budget;
-- LOD switching preserves position, silhouette, materials and skeleton;
-- collision objects are exported once and recognized by the consumer;
-- tangent normals match after final triangulation;
-- transparent materials sort and render acceptably in the destination;
-- a round-trip or engine import confirms scale, axes, pivots, hierarchy and texture paths.
+使用稳定的后缀，如 `_basecolor`、 `_roughness`、 `_metallic`、 `_normal`、 `_ao`、 `_emissive`、 `_opacity` 和 `_height`，并根据目标地的命名规则进行调整。记录：
+
+- 尺寸、位深、阿尔法使用、色彩空间和文件格式；
+- 正常映射切线约定；
+- 打包通道布局，例如 RGB 中的 ORM = AO/Roughness/Metallic；
+- 铺贴、夹紧行为、UV设置以及UDIM的使用；
+- 引擎执行的压缩与预压缩源文件传输的对比。
+
+基础Color/Emission通常，这些都是颜色纹理；标量映射、遮罩、法线、环境光和高度则属于非颜色数据。在没有有文档记录的消费者着色器的情况下，不要将无关的颜色空间数据打包到一个纹理中。
+
+<a id="game-asset-validation"></a>
+
+## 游戏资产验收
+
+结合 [uv-and-texture-baking.md](uv-and-texture-baking.md)、 [export-and-packaging.md](export-and-packaging.md)，以及这些检查：
+
+- 评估后的边界、三角形、材质、UV、顶点颜色以及影响因素都符合预算要求；
+- LOD切换保留了位置、轮廓、材质和骨架；
+- 碰撞对象会被导出一次，并由消费者进行识别；
+- 最终三角测量后，切线法线匹配正确；
+- 透明材质在目标文件中能够合理地进行排序和渲染；
+- 一次往返或引擎导入可以确认比例、轴、旋转点、层次结构以及纹理路径。

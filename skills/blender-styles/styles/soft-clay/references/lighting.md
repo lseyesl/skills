@@ -1,32 +1,40 @@
-# Miniature lighting and camera
+<a id="miniature-lighting-and-camera"></a>
 
-`setup_clay_lighting.py` generates scene-scoped key/fill/rim Area lights, a node World and an optional camera. It preserves the prior world/camera datablocks, but assigns its own active references. Use `with_camera=False` / `--keep-camera` when framing is already approved. Existing lights are preserved and still contribute: hide or tune only those explicitly within the user's scope.
+# 微缩场景的布光与镜头
 
-## Scale and softness
+`setup_clay_lighting.py` 生成场景范围的 key/fill/rim 区域灯光、一个节点世界以及可选的摄像机。它保留了之前的 世界环境、相机 数据块，但会分配自己的活动引用。在框架已经批准的情况下，使用 `with_camera=False` / `--keep-camera`。现有的灯光会被保留，并且仍然有贡献作用：隐藏或调整仅那些明确在用户范围内的灯光。
 
-`scale` is a reference-length multiplier in Blender coordinates, not a command to rescale arbitrary scene data or alter `scene.unit_settings`. Positions, light sizes and camera clipping are multiplied by it. Light power scales by `scale²`, compensating approximately for inverse-square falloff under uniform geometric scaling. World strength and camera focal length remain unchanged.
+<a id="scale-and-softness"></a>
 
-The default rig centers around `lighting.center`, with broad disk emitters:
+## 尺度与柔和度
 
-- key offset (−3,−4,5), size 4, energy 450;
-- fill offset (4,−1,3), size 5, 40% of key power;
-- rim offset (1,4,4), size 3, 55% of key power;
-- neutral World background, strength 0.3.
+`scale` 是Blender 坐标中的参考长度乘数，而不是命令重标任意场景数据或更改`scene.unit_settings` 。 位置、 光大小和相机剪接乘以它。 轻功率比值乘以`scale²`, 在统一的几何缩放下大约补偿反方位坠落 。 世界强度和相机焦距保持不变 。
 
-These are starting ratios in reference coordinates, not universal watt values. Set `center` for each composition. A large source relative to the asset softens shadows; a weak environment preserves modeling in the shadow side. Use a real floor and physically plausible object contact for grounding. Bright environment light cannot compensate for missing ground or floating geometry.
+默认情况下，装备中心位于`lighting.center`位置，带有宽型圆盘发射器：
 
-Cycles supplies physical indirect light. EEVEE can need scene-appropriate probes/ray tracing and sufficient samples depending on version and composition. Do not set old contact-shadow, AO or ray-tracing properties blindly; use RNA and a rendered comparison. The portable rig uses `use_shadow`, real geometry and area lights rather than obsolete global AO switches.
+- 关键偏移点 (−3,−4,5)，大小4，能量450；
+- 填充偏移量 (4,−1,3)，大小5，占关键功率的40%；
+- 边缘偏移 (1,4,4)，尺寸为3，占关键功率的55%；
+- 中立世界背景，强度0.3。
 
-## Camera and miniature cues
+这些是参考坐标中的起始比例，并非通用的瓦特值。为每种组合设置`center`。相对于资产而言，较大的光源会使阴影变柔和；较弱的环境则有助于在阴影侧保持建模效果。使用真实的地面和物理上合理的物体接触点来进行接地。明亮的环境光线无法弥补缺失的地面或漂浮的几何结构。
 
-Choose 45–85 mm perspective lenses to control distortion, or orthographic projection for diagrammatic/icon compositions. Avoid an automatic ultra-wide lens to fit the scene. The camera has explicit normalized position/target, lens, orthographic scale and clipping configuration; it is **not** an auto-framing algorithm.
+Cycles提供物理间接光照效果。EEVEE可能需要根据场景进行调整以适应不同的需求。probes/ray根据版本和构成进行追踪和采样。不要盲目设置旧的接触阴影、法线方向或光线追踪属性；使用RNA和渲染后的对比结果。便携式装备使用`use_shadow`采用真实的几何形状和区域灯光，而非过时的全局AO开关。
 
-Leave margins for the entire motion envelope and its shadow. A portrait output often needs a farther camera or different layout than landscape. Inspect evaluated bounding boxes at extreme frames and camera depth/clipping. The QA tool detects conservative bounding-box crop/clip; a cropped background can be tagged `obj["soft_clay_background"] = True`.
+<a id="camera-and-miniature-cues"></a>
 
-Depth of field is optional, off by default. When enabled, the focus distance targets `camera.target`, with configurable f-stop; start around f/5.6–8. Strong DOF can convey miniature scale, but unreadable faces, hands or contacts fail acceptance. Verify focus at moving extremities, not just frame 1. Production tracking focus can use a project-owned target and is outside the static rig's setup.
+## 镜头与微缩感
 
-## Repeatability
+选择 45–85 毫米的透视镜头以控制畸变，或者选择正交投影来制作diagrammatic/icon构图。避免使用自动超广角镜头来适应场景。该相机具有明确的标准化位置、目标、镜头、正交比例和裁剪配置；它**不是**自动取景算法。
 
-Run with the same scene name and owner to update the same lights/camera. Shared cross-scene rig objects, linked/overridden data, animation or constraints on rig objects produce errors rather than destroying authored motion. Use a distinct owner to create an independent setup. For moving lights/cameras, set up once then animate in a project recipe; do not rerun a static rig over authored animation.
+为整个运动包络及其阴影留出边缘。肖像输出通常需要与风景相比更远的相机或不同的布局。在极端帧数和相机情况下检查评估后的边界框。depth/clipping.QA工具检测到保守的边界框crop/clip; 裁剪后的背景可以被标记`obj["soft_clay_background"] = True`.
 
-Use one OCIO view transform, look, exposure and gamma across shots. `setup_render` configures these separately from the rig. A custom OCIO installation can lack AgX; choose a runtime-supported view transform or explicitly set `KEEP` and record the actual choice. See [rendering](rendering.md) and the [general scene reference](../../../../blender-python-modeling/references/scene-lighting-rendering.md).
+景深是可选的，默认是关闭状态。当启用时，焦点距离目标`camera.target`, 可配置光圈; 大约f/5.6–8. 强大的自由度确实能够传达微型尺度，但难以辨认的面孔、手或接触点则无法被接受。需要验证移动部位的焦点，而不仅仅是第一帧的焦点。制作跟踪焦点可以使用项目拥有的目标，这超出了静态骨架的设置范围。
+
+<a id="repeatability"></a>
+
+## 可重复性
+
+运行时，使用相同的场景名称和所有者来更新相同的 lights/camera.共享的跨场景骨骼对象、linked/overridden数据、动画或骨骼对象的约束，以避免产生错误，而不是破坏已创作的动画。使用不同的所有者来创建独立的设置。对于移动 lights/cameras，只需设置一次，然后在项目方案中进行动画制作；不要重新运行静态骨骼与已创作的动画。
+
+各镜头统一使用同一套 OCIO 视图变换、外观、曝光和伽马设置。`setup_render` 独立于灯光系统配置这些参数。自定义 OCIO 环境中可能没有 AgX，请选择运行版本支持的视图变换，或显式设为 `KEEP` 并记录实际使用的配置。见[渲染配置](rendering.md)与[场景、布光与渲染](../../../../blender-python-modeling/references/scene-lighting-rendering.md)。

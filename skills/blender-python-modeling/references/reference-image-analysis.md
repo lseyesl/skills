@@ -1,70 +1,78 @@
-# AI Reference Image Analysis
+<a id="ai-reference-image-analysis"></a>
 
-Before construction, record the [reference preparation route](reference-preparation.md). A single photograph does not silently bypass concept-multiview-sheet. Source fidelity and cross-view consistency require separate evidence.
+# AI 参考图分析
 
-Use reference images as evidence for a parametric model, not as proof of hidden geometry or real dimensions. AI-generated views frequently contain inconsistent proportions, topology, perspective, and details.
+在建造之前，记录[参考制备流程](reference-preparation.md)。单张照片并不能完全替代concept-multiview-sheet。源头的真实性和跨视角的一致性需要单独的证明。
 
-When only one design view exists and the user first needs inferred modeling artwork, use `concept-multiview-sheet` to generate the missing controlling views, or a full five- or six-view sheet when the task requires it. Treat its output as a design hypothesis: retain its observed/inferred/unknown ledger and run the consistency checks below before blockout.
+将参考图像用作参数模型的证据，而不是隐藏几何形状或实际尺寸的证明。AI生成的视图通常包含不一致的比例、拓扑结构、透视和细节。
 
-## Complete hidden structure
+当仅存在一个设计视图，且用户首先需要推断出建模作品时，使用 `concept-multiview-sheet` 来生成缺失的控制视图；如果任务需要，还可以生成完整的五视图或六视图。将其输出视为一个设计假设：保留其 observed/inferred/unknown 台账，并在进行遮挡处理之前运行以下一致性检查。
 
-Identify what disappears behind what, then follow the part in object space. Use the simplest construction consistent with the visible entry and exit points, the object's type and intended use. A relaxed hand keeps its finger order even when fingertips overlap in projection. A wrap crossing the chest follows the torso or ends at a plausible attachment. An axle hidden by its hub shares the wheel axis. Preserve visible asymmetry and stylization. Leave hidden decoration and irrelevant internal mechanisms unspecified.
+<a id="complete-hidden-structure"></a>
 
-Use ordinary construction as the default for routine gaps. Record consequential choices as inferred, then check them on the model. A user-specified exception takes precedence for the affected relation: a deliberately floating accessory may have a gap, or a stage flat may be designed for one camera. A request for likeness, a static pose or a single supplied photo still calls for a coherent 3D object unless the user specifies such an exception. Ask only when the remaining choice materially affects identity, fit or function and the source, intended use and ordinary construction cannot resolve it.
+## 补全不可见结构
 
-## Input priority
+识别出“什么”在“什么”后面消失的位置，然后在物体空间中遵循该部分。使用与可见入口和出口、物体类型及预期用途一致的最简单结构。放松的手即使在指尖在投影中重叠时也能保持手指的排列顺序。环绕胸部的包裹部分应跟随躯干，或在合理的连接点处结束。被轴毂隐藏的轴与车轮的轴共享。保留可见的不对称性和风格化效果。对于隐藏的装饰和无关的内部机制，不进行说明。
 
-The most useful package is:
+将普通结构作为常规间隙的默认选择。记录根据推断得出的相关选择，然后在模型中进行验证。用户指定的例外情况优先适用于受影响的关联：一个故意设计的浮动配件可能会有间隙，或者一个舞台平面可能只适用于一个摄像机。对于相似度、静态姿势或单张照片的要求，除非用户指定了例外情况，否则需要一个连贯的3D对象。只有在剩余选择对身份、适应性或功能有实质性影响时，才进行相关操作，同时需要考虑来源、预期用途和常规结构无法解决的問題。
 
-1. front, canonical side, back, top, and bottom views labeled explicitly for a symmetric model;
-2. both left and right views instead of one canonical side when the design is asymmetric;
-3. one three-quarter/perspective view for volume and style;
-4. close-ups for joints and surface details;
-5. any semantic scale anchor, even approximate, such as “tabletop object” or “about 20 cm tall.”
+<a id="input-priority"></a>
 
-For reusable characters, the controlling package must depict the selected neutral bind/rest pose, prepared before geometry. Keep seated/action beauty images as separate appearance references; do not use their silhouette as the sole construction target for a later walking rig. Select the anatomy-appropriate pose and record source-pose conversion as inference using [character-delivery.md](character-delivery.md#reference-and-rest-pose-before-modeling). Existing calibrated neutral references can be reused; explicitly fixed-pose sculptures retain their requested pose.
+## 输入优先级
 
-If no scale anchor exists, use normalized units with the longest inferred dimension equal to `1.0`. Do not silently choose metres, centimetres, or a category-average size.
+最实用的软件包是：
 
-## Establish the Blender reference workspace before geometry
+1. 前、正视图、后、顶视图和底视图，为对称模型明确标注；
+2. 当设计是不对称的时，采用左右两侧视图，而不是单一规范侧视图；
+3. 一个three-quarter/perspective用于查看体积和样式；
+4. 对关节和表面细节的特写拍摄；
+5. 任何语义级锚点，即使是近似的，例如“桌面对象”或“约20厘米高”。
 
-Seeing an image in the conversation is not the same as having a calibrated modeling reference. Before building reference-driven geometry:
+对于可重复使用的字符，控制包必须描绘所选的中性角色。bind/rest在几何图形准备之前进行姿势设置。保持不变seated/action将美观的图像作为单独的外观参考；不要将其轮廓作为后续行走模型的唯一构建目标。选择适合解剖学结构的姿势，并记录源姿势的转换作为推理过程。[character-delivery.md](character-delivery.md#reference-and-rest-pose-before-modeling)现有的校准过的中性参考物可以重复使用；明确固定姿势的雕塑可以保持其要求的姿势。
 
-First review multiple construction views using the [pre-model review](../../concept-multiview-sheet/references/pre-model-review.md). Save inspected findings, source hashes, view/region authorities and conflict decisions in `multiview-review.json`; name it as `multiview_review` in the setup config. The helper validates it before guide mutation. For `partial` readiness, specify `build_regions` within the allowed scope. Do not import rejected/supplemental panels as dimensional guides or silently build a blocked face/joint. Existing single-reference work does not need an artificial multiview receipt; generated image-then-model work still follows the required sheet preparation.
+如果不存在比例锚点，则使用标准化单位，其中推断出的最长尺寸等于 `1.0`。不要默默地选择米、厘米或类别平均尺寸。
 
-For generic procedural tasks, use [reference_workspace.py](../scripts/reference_workspace.py)
-and the [executable setup/build/review sequence](reference-workspace-tool.md).
-The task template calls its prerequisite before deleting/rebuilding old geometry.
-An imported Image Empty is a visual guide, not an automatic modeling constraint:
-builders must consume calibrated landmarks/profiles or use an equivalent measured
-fitting path, then compare actual geometry to those guides.
+<a id="establish-the-blender-reference-workspace-before-geometry"></a>
 
-1. **Prepare separate images.** Split a sheet into its real view regions, preserving complete silhouettes and useful landmarks. Do not assume the generator obeyed equal cell boundaries. Preserve originals and the crop/label mapping; do not stretch a distorted panel to make its geometry appear correct.
-2. **Choose axes and controlling evidence.** Record forward/up, anatomical left/right where relevant, pose, origin and scale. Identify which views or regions control width, height, depth and attachments. A weak perspective side image can help judge volume without being a dimensional authority. Missing or rejected views remain explicitly unresolved or inferred, not manufactured measurements.
-3. **Import into Blender.** Put Image Empty reference objects in a named task-owned collection. Orient each image plane to its corresponding orthographic view and choose its in-plane orientation so forward/up agree across views. Keep opposite views on distinguishable objects; confirm they are not accidentally mirrored.
-4. **Configure useful display.** Start opacity around 0.35–0.5 and adjust for legible comparison. Use the reference image's **Depth: Front** display mode to overlay the model; this is a draw-order setting, not a requirement to move the image arbitrarily toward a camera. Use front-side visibility and axis-aligned orthographic-only display when supported, hiding unrelated references through collections/local views otherwise. Hide perspective display by default so all planes do not obscure the model. Inspect the running Blender's properties/enums before scripting these settings.
-5. **Calibrate and protect.** Align centerline, ground/origin and trusted landmarks such as sole, knee, pelvis, shoulder, eye line and crown, or axles/hinges for mechanical subjects. Use uniform scaling per image and record any correction for generated panel scale drift. Do not independently squash width/depth or move a feature to hide disagreement. Lock reference transforms/selection after calibration, while leaving opacity and visibility adjustable.
-6. **Review before construction.** Inspect actual front and side orthographic viewport screenshots, with the references visible and axes/landmarks checked; include other controlling views where available. Save the calibration record and screenshots. Import success alone does not pass this gate. If the evidence cannot constrain a region, apply the interpretation policy below before shaping it.
+## 建模前建立 Blender 参考工作区
 
-Keep a compact project-local record (for example `reference-setup.json`): original/cropped image paths, view labels and reliability, object names, axis/rotation, uniform scale and offsets, image/world landmark correspondences, intended constraints, unresolved conflicts and chosen interpretations. Derive modeling parameters from this record; handwritten coordinates without a documented reference relationship do not establish a match. Pack the reference images into the derived `.blend` or include portable relative files, then verify that reopening retains them.
+在对话中看到图像并不等同于拥有经过校准的建模参考。在构建基于参考的几何形状之前：
 
-Image Empties are viewport guides and do not appear in normal final renders. Use viewport captures for their display settings, and separate matched-camera render/reference overlays for shape comparison. Do not silently substitute a rendered image plane for an imported modeling reference.
+首先，使用 [预模型审核](../../concept-multiview-sheet/references/pre-model-review.md) 查看多个构建视图。将检查结果、源哈希值、 view/region 权威信息和冲突决策保存在 `multiview-review.json` 中；在设置配置中将其命名为 `multiview_review`。辅助工具会在引导突变之前对其进行验证。对于 `partial` 的就绪性，请在允许的范围内指定 `build_regions`。不要将 否决、补充 面板作为尺寸引导导入，也不要默默地构建被阻塞的 face/joint.。现有的单一参考工作不需要人工的多视图记录；生成的图像-然后模型工作仍然遵循所需的图纸准备流程。
 
-## Interpret AI artifacts using evidence and structure
+对于通用的程序化任务，可以使用[reference_workspace.py](../scripts/reference_workspace.py)和[可执行文件setup/build/review序列](reference-workspace-tool.md)。任务模板会在deleting/rebuilding旧几何图形之前调用其前提条件。导入的Image Empty是一种视觉引导工具，并非自动建模约束。
+建筑工人必须使用经过校准的 landmarks/profiles 或采用等效的测量拟合路径，然后将实际几何形状与这些指导标准进行比较。
 
-AI panels can invent extra fingers, flatten a skull, distort a limb, move attachments, change pose, or expose a part that should be occluded. Do not copy every pixel or force one model to satisfy mutually incompatible panels.
+1. 请准备单独的图片。将纸张分割成实际的视图区域，保留完整的轮廓和有用的地标。不要假设生成器遵循相同的单元格边界。保留原始图片和crop/label映射；不要通过拉伸变形的面板来使几何形状看起来正确。
+2. 选择坐标轴和控制证据。记录forward/up解剖学上的左侧、右侧在相关的情况下，包括姿态、原点和比例。确定哪些视图或区域控制宽度、高度、深度和附件。一个较弱的侧面视角图像可以帮助判断体积，但不具有尺寸权威。缺失或被拒绝的视图仍然被明确保留为未解决或推断出来的，而不是人为制造的测量值。
+3. **导入到 Blender。** 将 Image Empty 参考对象放入一个命名任务拥有的集合中。将每个图像平面定向到其对应的正交视图，并选择其平面内的方向，以便forward/up在多个视图中保持一致。对于可区分的对象，保持相反的视图；确认它们没有被意外镜像。
+4. **配置有用的显示方式。** 初始的不透明度应设置在 0.35–0.5 左右，以便进行清晰的对比。使用参考图像的 **深度：正面** 显示模式来叠加模型；这是一种绘制顺序设置，并非必须将图像随意地朝向相机。在支持的情况下，使用正面可见性和轴向对齐的正视图显示方式，通过 collections/local 视图隐藏无关的参考元素。默认情况下，隐藏透视显示，以避免所有平面遮挡模型。在编写这些设置之前，先检查运行中的 Blender 的 properties/enums 状态。
+5. **校准和保护。** 对齐中心线、 地面、原点以及如脚掌、膝盖、骨盆、肩膀、眼线、头顶等可信的参照点，或 axles/hinges用于机械类对象。对每张图像进行统一缩放，并记录生成的面板比例漂移的修正值。不要单独挤压 宽度、深度或移动某个特征以掩盖不一致性。在校准后锁定参考 transforms/selection，同时保持不透明度和可见性的可调性。
+6. **施工前的审核。** 检查实际的前视图和侧视图正交视口截图，确保参考标识清晰可见，且 轴向、特征点标记正确；如有可能，还应包括其他控制视图。保存校准记录和截图。仅导入成功文件并不能通过此环节。如果证据无法限定一个区域，请在对其进行塑形之前应用以下解释策略。
 
-- Honor explicit user constraints and trusted measurements. For visible identity/design, prefer the original source and mutually consistent regions over an isolated generated variation.
-- Check anatomy, mechanical connectivity, volume, symmetry/asymmetry, occlusion and the possibility of one fixed three-dimensional configuration. Use these to identify likely depiction errors, without erasing intentional stylization or replacing the user's design with generic anatomy.
-- For a local, low-impact artifact whose intended construction is clear, make the smallest coherent correction, continue modeling and record the source evidence, rejected depiction, chosen interpretation and uncertainty. Use other reliable regions to constrain it. An inaccurate panel does not require stopping the whole task.
-- When two or more plausible interpretations remain and the choice materially changes identity, silhouette, attachment, motion, fit or function, request human judgment **before committing that affected geometry**. Show the conflicting crops or an annotated overlay, explain what cannot be inferred, and offer concrete options with a recommendation where justified. Continue unrelated, well-constrained work while waiting; elapsed time is not approval.
-- When a view is cropped or segmentation fails, use another trustworthy view or bounded manual landmark analysis if sufficient. Ask for help only if the remaining evidence cannot support the requested result. Do not claim measured accuracy from a guessed correction.
+保留一个紧凑的项目本地记录（例如 `reference-setup.json`）：包括 original/cropped 图像路径、视图标签和可靠性、对象名称、 axis/rotation、统一的缩放和偏移、 image/world 地标对应关系、预期的约束条件、未解决的冲突以及选定的解释。从这一记录中推导出建模参数；没有 documented reference relationship 的手写坐标无法建立匹配关系。将参考图像打包到衍生的 `.blend` 中，或者包含可移植的相对文件，然后验证重新打开时仍能保留这些文件。
 
-Record each consequential interpretation as observed / inferred / unresolved, and make any approved design changes traceable. After resolving a conflict, compare against the selected constraints rather than reporting the rejected AI pixels as unexplained modeling error.
+图像填充是视口引导线，不会出现在正常的最终渲染中。使用视口捕获来进行显示设置，并分离匹配的相机渲染、参考图用于形状比较的叠加层。不要默默地用渲染后的图像平面替代导入的建模参考。
 
-## Run the analyzer
+<a id="interpret-ai-artifacts-using-evidence-and-structure"></a>
 
-The host-side analyzer uses this skill's `pyproject.toml` and `uv.lock`; do not install OpenCV or NumPy into Blender's bundled Python or the user's global Python. From any working directory, run:
+## 依据证据和结构判断 AI 图像伪影
+
+AI面板可以创造额外的手指、使头骨变平、扭曲肢体、移动连接部件、改变姿势，或者暴露出本应被遮挡的部分。不要复制每一个像素，也不要为了满足那些不兼容的面板而强制使用一个模型。
+
+- 尊重明确的用户限制和可信的测量结果。对于可见的identity/design，优先选择原始来源和相互一致的区域，而不是孤立生成的变异。
+- 检查解剖结构、机械连接性、体积、symmetry/asymmetry、遮挡情况以及单一固定三维配置的可能性。利用这些信息进行可能的描绘错误识别，同时不要故意删除有意图的造型设计，也不要用通用的解剖结构来替代用户的设计。
+- 对于局部、影响较小的瑕疵，如果其构造意图明确，则进行最小的连贯修正，继续建模并记录原始证据，拒绝其他描述，选择相应的解释和不确定性。使用其他可靠的区域对其进行约束。不准确的面板不需要停止整个任务。
+- 当存在两种或更多种合理的解释，且选择这些解释会实质性地改变物体的身份、轮廓、连接、运动、适配或功能时，应在**对受影响的几何形状进行更改之前**，寻求人类的判断。展示相互矛盾的裁剪方式或带有注释的叠加图，解释哪些内容无法推断出来，并提供具体的选项，并在合理的情况下给出推荐。在等待的过程中，继续进行无关但受严格限制的工作；流逝的时间并不等同于批准。
+- 当视图裁剪或分割失败时，如果条件允许，请使用另一个可靠的视图或有限手动地标分析。只有在剩余证据无法支持所请求的结果时，才寻求帮助。不要声称通过猜测的校正可以取得精确的测量结果。
+
+将每个重要的解释记录为观察到的/推断出的/未解决的，并使任何批准的设计变更具有可追溯性。在解决冲突后，与选定的约束条件进行比较，而不是将被拒绝的AI像素报告为未解释的建模错误。
+
+<a id="run-the-analyzer"></a>
+
+## 运行分析工具
+
+主机端分析器使用此技能的`pyproject.toml`和`uv.lock`；不要在 Blender 自带的 Python 中安装 OpenCV 或 NumPy，也不要在用户的全局 Python 环境中安装。从任何工作目录中运行：
 
 ```bash
 uv run --project /absolute/path/to/blender-python-modeling \
@@ -76,76 +84,88 @@ uv run --project /absolute/path/to/blender-python-modeling \
   --debug-dir /absolute/reference-debug
 ```
 
-The first run creates `<skill-dir>/.venv`; the repository-root `.gitignore` must exclude `.venv/` directories from version control. Commit `uv.lock` with the skill so later runs resolve the same dependency versions.
+第一次运行会创建`<skill-dir>/.venv`；仓库根目录`.gitignore`必须排除`.venv/`目录，以避免将其纳入版本控制。提交`uv.lock`时，请确保后续的运行能够解决相同的依赖版本问题。
 
-Use `--candidate front=/absolute/render-front.png` after Blender produces a matching render. Candidate labels must match reference labels. Add `--known-largest-dimension <value>` only when the user supplies or approves a scale anchor.
+在 Blender 生成相应的渲染结果后，使用 `--candidate front=/absolute/render-front.png`。候选标签必须与参考标签相匹配。仅在用户提供或批准了比例锚点后，才添加 `--known-largest-dimension <value>`。
 
-The analyzer is deterministic and local. It does not call an AI service.
+该分析器是确定性的且局部性强的。它不会调用AI服务。
 
-## What it extracts
+<a id="what-it-extracts"></a>
 
-- foreground mask and bounding box;
-- normalized contour with centered, Y-up coordinates;
-- width/height aspect, occupancy, solidity, holes, and symmetry scores;
-- dominant line directions as perspective evidence;
-- a small foreground colour palette;
-- front/side/top dimension ratios when at least two labeled orthographic views exist;
-- a residual showing whether the three ratios agree;
-- render/reference silhouette IoU, shape distance, aspect error, and a combined score;
-- warnings and confidence values.
+## 提取的信息
 
-The script does not infer semantic parts or hidden surfaces. After reading its JSON, use visual reasoning to propose primitives and part relationships, marking each as observed, inferred, or unknown.
+- 前景遮罩和边界框；
+- 以 Y 轴向上方为基准的归一化轮廓；
+- 宽度、高度 方面、占用率、坚固性、孔洞以及对称性得分；
+- 主导线方向作为透视证据；
+- 一个小型的前景颜色调色板；
+- 当至少存在两个带有标签的正视图时，正面、侧面、顶部尺寸比例；
+- 一个残差，用于显示这三个比率是否一致；
+- 渲染、参考图 轮廓 IoU、形状距离、视角误差，以及综合得分；
+- 警告和置信度值。
 
-## Multi-view dimension fusion
+该脚本不会推断语义部件或隐藏表面。在读取其 JSON 数据后，使用视觉推理来提出基本元素和部件关系，并将每个元素标记为已观察到、已推断或未知。
 
-For labeled orthographic-like views, the analyzer uses scale-invariant ratios:
+<a id="multi-view-dimension-fusion"></a>
 
-- front: width / height;
-- side: depth / height;
-- top: width / depth.
+## 融合多视图尺寸
 
-It solves these ratios together and normalizes the largest dimension to `1.0`. Because ratios survive independent image crops, the views do not need identical pixel scale. A high residual means the AI views contradict one another; do not average the conflict silently.
+对于带有标签的正交视图，分析器使用尺度不变的比例：
 
-Perspective images are excluded from dimension fusion. Use them for curvature, occlusion, material, and style evidence only.
+- 前端：宽度/高度；
+- 侧面：深度/高度；
+- 顶部：宽度/深度。
 
-## Modeling from the analysis
+它将这些比例进行合并，并将最大维度归一化为`1.0`。由于比例在独立图像裁剪后仍然保持不变，因此各个视图不需要相同的像素比例。高残差意味着AI视图之间存在矛盾；不要对这种冲突进行无差别的平均处理。
 
-1. Treat the fused dimensions as a blockout envelope, not a finished surface.
-   Start from [assets/reference_blockout_template.py](../assets/reference_blockout_template.py) when a concrete normalized blockout and front/side/top cameras are useful.
-2. Map normalized contour points to the intended Blender axes for each view.
-3. Establish and inspect the calibrated Blender reference workspace above, then decompose the visible object into primitives, profiles, repeated parts, and negative spaces. Keep landmark-derived positions and cross-section profiles in the persistent recipe.
-4. Build primary forms first and render matching front/side/top cameras.
-5. Run the analyzer again with those renders as `--candidate` inputs.
-6. Inspect matched-camera overlays and fix the largest silhouette, aspect, landmark and local profile errors in the Python parameters. For characters, compare eye/brow/nose/mouth locations in head-relative coordinates, skull width/height/depth, and limb widths at several heights including joints. Distinguish intentional asymmetry from uncontrolled random variation. A plausible whole silhouette does not excuse incorrect facial placement or discontinuous limb thickness.
-7. Add secondary forms and material detail only after primary proportions converge.
+透视图像不纳入尺寸融合。仅将其用于曲率、遮挡、材质和风格证据方面。
 
-A high silhouette score does not prove correct depth, topology, back-side construction, or real-world scale.
+<a id="modeling-from-the-analysis"></a>
 
-## Interpreting confidence
+## 依据分析结果建模
 
-- Low segmentation confidence: inspect the debug overlay; background, shadow, or cropped subject may have contaminated the mask.
-- Low orthographic confidence: do not use that view for metric ratios.
-- High multi-view residual: preserve alternatives or choose one controlling view and report the conflict.
-- Low render comparison score: check camera matching before changing geometry.
-- Good front/side scores but uncertain perspective: hidden curvature remains underconstrained.
+1. 将融合后的尺寸视为一个封闭包络，而不是一个完成的表面。
+   从[assets/reference_blockout_template.py](../assets/reference_blockout_template.py)开始，当具体的标准化遮挡区域和正面、侧面、顶部摄像机变得有用时。
+2. 将标准化的轮廓点映射到每个视图所对应的 Blender 轴线上。
+3. 建立并检查上述校准后的 Blender 参考工作区，然后将可见对象分解为基本元素、轮廓、重复部分以及负空间。在持久性配方中保留由地标导出的位置和横截面轮廓。
+4. 首先构建主要形式，然后进行渲染匹配正面、侧面、顶部摄像机。
+5. 再次使用那些渲染结果运行分析器`--candidate`输入。
+6. 检查与匹配摄像机的叠加效果，并修复 Python 参数中最大的轮廓、视角、地标和局部轮廓错误。对于角色来说，进行比较。eye/brow/nose/mouth在头部相对坐标系中的位置，颅骨宽度、高度、深度以及多个高度下的肢体宽度，包括关节处的宽度。要区分有意的不对称与无控制的随机变化。一个看似合理的整体轮廓也不能成为面部位置错误或肢体厚度不连续的借口。
+7. 在主要比例确定之后，才添加次要形式和材料细节。
 
-## Human judgment and stopping the affected work
+较高的轮廓得分并不能证明深度、拓扑结构、背面构造或实际尺寸的正确性。
 
-First attempt the evidence-based interpretation policy above. Request human judgment when incompatible part counts, attachments, camera hypotheses or hidden constructions remain materially ambiguous; when no usable reference remains for a required region; or when a dimensionally accurate deliverable lacks the necessary measurements. Explain the specific uncertainty and which region is paused. Do not block unrelated work for a minor AI depiction error, and do not keep retrying image matching when the disputed pixels cannot describe a coherent object.
+<a id="interpreting-confidence"></a>
 
-## Interpret the reference before tracing or choosing geometry
+## 解读置信度
 
-Record the reasoning in [reference-interpretation-template.json](../assets/reference-interpretation-template.json), alongside the existing module plan and observed/inferred/unknown ledger. This supplements source-fidelity review; it does not grant approval by itself.
+- 低分割置信度：检查调试覆盖图；背景、阴影或裁剪后的对象可能会污染掩模。
+- 低正交置信度：不要使用该视图进行度量比率计算。
+- 高多视图残差：保留替代方案，或选择一个控制视图并报告冲突。
+- 低渲染比较分数：在更改几何形状之前，请先检查相机匹配。
+- 良好的正面、侧面评分，但前景不明：隐藏的曲率仍然缺乏约束。
 
-| Observed condition | Diagnosis / construction decision | Verification |
+<a id="human-judgment-and-stopping-the-affected-work"></a>
+
+## 人工判断与暂停受影响的部位
+
+请尝试上述基于证据的解释策略。当部分数量、附件、相机假设或隐藏结构仍然存在实质性歧义时；当某个所需区域没有可用的参考信息时；或者当尺寸准确的交付物缺乏必要的测量数据时，请请求人工判断。具体说明不确定性的原因以及哪个区域需要暂停处理。不要因为轻微的AI描绘错误而阻碍无关的工作，也不要在有争议的像素无法描述出一个连贯的对象时继续重复进行图像匹配。
+
+<a id="interpret-the-reference-before-tracing-or-choosing-geometry"></a>
+
+## 描摹或选择几何前先解读参考图
+
+记录 [reference-interpretation-template.json](../assets/reference-interpretation-template.json)中的推理过程，以及现有的模块计划和 observed/inferred/unknown台账。这补充了源代码的审查；但它本身并不具备审批权。
+
+| 觀察狀況 | 诊断/构建决策 | 验证 |
 | --- | --- | --- |
-| A dark patch or partial opening in a photograph | Distinguish an actual boundary from shadow, reflection, an occluding part and the interior/back wall. Trace only the supported boundary; keep the rest unknown. | Compare source-angle witness views, adjacent views and identifiable attachment/edge landmarks. Never extrude every dark pixel into a through-hole. |
-| Oblique circular/radial part | Identify the axis, projected ellipse, rotational phase and repeated groups. Rectification is an approximate camera interpretation, not a physical measurement. | Preserve the raw photo and calibration assumptions; check both the canonical construction and a separate source-angle render. |
-| Several apparently repeated sectors | When the design supports repetition, model one representative sector and repeat it. Preserve unique valves, fasteners, damage and markings separately. | Count actual groups and openings, compare each visible sector, and reject the assumption if observed asymmetry contradicts it. Hidden completion remains inferred. |
-| A hollow rotational vessel | Use an outer/inner section with a rolled rim and actual bottom; use a separate path/profile for the handle and accessory. | Check cavity, floor thickness, handle negative space, connections and intended-view silhouette. A torus/ellipsoid alone does not establish these features. |
-| A cast part dominated by broad negative spaces | Control opening contours, surface cross-sections, fillets and continuous connections; use a low-resolution sector/surface before expensive remeshing. | Inspect one representative region in section/clay/material views, then inspect the complete repeated structure and evaluated triangle budget. Rod counts alone do not match a cast web. |
-| Material highlights hide the underlying shape | Separate geometry from lighting/material response and inspect fixed-view clay as well as beauty. | Recheck local contour/concavity; do not sculpt a reflection into the mesh. |
+| 照片中的暗斑或局部曝光不足 | 区分实际的边界与阴影、反射、遮挡部分以及 interior/back 墙壁。仅追踪受支持的边界；其余部分保持未知。 | 比较源角度见证视图、相邻视图以及可识别的attachment/edge地标。切勿将每个暗色像素都挤入通孔中。 |
+| 斜向circular/radial部分 | 识别轴、投影椭圆、旋转相位和重复组。校正是一种近似的相机解释，并非物理测量。 | 保留原始照片和校准假设；同时检查规范构建和单独的源角度渲染结果。 |
+| 几个看似重复的部分 | 当设计需要重复时，先建模一个代表性的部分，然后重复该部分。要分别保留独特的阀门、紧固件、损坏情况和标记。 | 统计实际的组和开口数量，比较每个可见的部分，如果观察到的不对称与假设相矛盾，则拒绝该假设。隐藏的完成部分仍然被推断出来。 |
+| 一个中空的旋转容器 | 使用带有卷边和实底部分的outer/inner部分；将手柄和配件部分单独放在path/profile中。 | 检查腔体、地板厚度、处理负空间、连接处以及预期视图的轮廓。仅靠torus/ellipsoid是不足以确定这些特征的。 |
+| 以广阔的负空间为主的铸件部分 | 控制开口轮廓、表面横截面、圆角以及连续连接；在昂贵的重新网格化之前，使用低分辨率的sector/surface。 | 在 section/clay/material视图中检查一个代表性区域，然后检查完整的重复结构和评估后的三角形预算。仅通过杆数是无法确定铸造网络的。 |
+| 材质高光隐藏了底层形状 | 将几何形状与 光照、材质 响应分离出来，并检查固定视角的黏土以及其美观性。 | 重新检查局部contour/concavity；不要在网格中创建反射。 |
 
-For each uncertain region keep competing explanations, evidence that would distinguish them, the chosen representation, and a stop/uncertainty condition. Generated front A can organize constraints; it cannot replace the original reference as the authority on observed identity. Verify source → A before expanding views, then verify model → original source again. Do not force this generation route when existing calibrated references are adequate.
+对于每一个不确定的区域，保持竞争性的解释、能够区分它们的证据、所选的表示方式，以及stop/uncertaintycondition. 生成的front A可以组织约束条件；但它不能替代原始参考作为观察到的身份的权威。在展开视图之前，先验证source → A，然后再验证模型→原始来源。当现有的校准参考已经足够时，不要强制使用这种生成方式。
 
-Keep construction and acceptance evidence distinct. IoU against the same hand-traced mask used to build a model measures implementation agreement. Original-source fidelity needs a separately inspected original region/view; record reviewer, projection/occlusion uncertainty and material limitations. A high implementation IoU does not certify recovered depth or whole-model accuracy.
+将构建和验收证据区分开来。使用相同手工绘制的掩模来构建模型时，IoU指标可以衡量实现的一致性。原始来源的保真度需要单独检查原始region/view；记录评审员、projection/occlusion不确定性以及材料限制。较高的实现IoU并不能证明恢复的深度或整个模型的准确性。

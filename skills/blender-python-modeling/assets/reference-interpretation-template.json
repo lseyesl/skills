@@ -4,7 +4,7 @@
   "source_images": [{"path": "source.png", "sha256": null}],
   "regions": [{
     "id": "replace-me",
-    "source_region": "identify the actual photo region",
+    "source_region": "指明原始照片中的实际区域",
     "observed_boundary": null,
     "projection": "unknown",
     "occlusion_or_reflection": "unknown",
@@ -18,5 +18,5 @@
     "inferred_hidden_geometry": [],
     "stop_or_uncertainty_condition": null
   }],
-  "scope": "Analysis aid only; source fidelity, calibration, blockout and final acceptance remain separate"
+  "scope": "仅用于分析。原图忠实度、校准、粗模和最终交付分别验收。"
 }

@@ -1,136 +1,104 @@
-# Reference Fidelity and Completion Gates
+<a id="reference-fidelity-and-completion-gates"></a>
 
-Use this workflow for any model reconstructed from concept art, turnarounds,
-photos, diagrams, or AI-generated multi-view sheets. A silhouette match proves
-only the outer envelope. It does not prove that the visible design has been
-modeled at the requested level of detail.
+# 参考图还原度与完成条件
 
-## Source acceptance and optimized delivery are separate
+从概念图、角色转面图、照片、示意图或 AI 生成的多视图重建模型时，按此流程验收。剪影相符只能验证外轮廓；还须单独核对可见结构是否达到了要求的细节程度。
 
-First review the reconstructed source against the original images, local signature features and structural requirements. Final consumer polygon limits are not a reason to omit those features. Freeze the reviewed source, ledger and evidence with content hashes; optimization uses a separate copy and a separate ledger/review. Reuse this completion gate for each representation within its declared scope. A source can pass reconstruction yet remain unsuitable for budgeted delivery; an optimized copy can fit its budget yet fail fidelity preservation. Never transfer matched statuses to a decimated mesh without reinspection. Follow [realtime optimization](procedures/delivery/realtime-optimization.md).
+<a id="source-acceptance-and-optimized-delivery-are-separate"></a>
 
-## Module versus Blender object
+## 分别验收源资产与优化后的交付件
 
-A **module** is a semantic assembly that a reviewer can identify and judge,
-such as a viewport, manipulator arm, propulsion ring, hatch, seat, or sensor
-mast. A Blender object is only an implementation unit. One module may contain
-many objects, and a high object count says nothing about reference coverage.
+先用原图、局部辨识特征和结构要求审查重建的源模型。不能为了满足目标平台的面数预算而在源模型中省略这些特征。用内容哈希固定已审的源模型、台账及证据。在独立副本上做优化，另建台账和审查记录。每种版本都应按其声明范围验收：源模型可能通过还原度检查，但尚未满足交付预算；优化版可能满足预算，却丢失关键特征。减面后须重新检查，才能沿用匹配结论。见[实时资产优化](procedures/delivery/realtime-optimization.md)。
 
-Count modules before modeling. Split a coarse assembly into child modules when
-the reference gives them an independently readable silhouette, material,
-mechanical role, attachment, or repeated count. For example, do not record
-"submarine details" as one module when the sheet separately shows a mast,
-radome, antenna, service hatch, vents, lights, and sonar.
+<a id="module-versus-blender-object"></a>
 
-## Build a module ledger first
+## 模块与 Blender 对象的关系
 
-Copy [module-ledger-template.json](../assets/module-ledger-template.json) into
-the task output directory and populate it before detailed geometry. Record:
+**模块**是审查者能单独识别并判断的部件，例如观察窗、机械臂、推进环、舱盖、座椅或传感器桅杆。一个模块可由多个 Blender 对象组成，对象数量无法反映原图特征的覆盖程度。
 
-- stable module ID and human-readable name;
-- observed, inferred, or unknown evidence;
-- source views where it is visible;
-- primary, secondary, or tertiary priority;
-- expected repeated-instance count;
-- visible signature features that make the module recognizable;
-- the subset of signature features actually verified in rendered views;
-- current status and its Blender objects or collection;
-- whether the user explicitly approved a simplification.
+在建模前清点模块。只要某个子部件有独立可辨的轮廓、材质、机械作用、安装位置或重复数量，就应从总成中拆出。例如原图分别画出桅杆、雷达罩、天线、检修舱盖、通风口、灯和声呐时，应分别记录，不能笼统记为一个“潜艇细节”模块。
 
-Use these priority meanings:
+<a id="build-a-module-ledger-first"></a>
 
-- **Primary:** controls the overall silhouette, proportions, or identity.
-- **Secondary:** a separately recognizable assembly or large design feature.
-- **Tertiary:** panel seams, fasteners, small vents, labels, and micro-detail.
+## 先建立模块台账
 
-Repeated asymmetric parts need separate ledger entries. Symmetric repeated
-parts may share one entry only when `expected_instances` records the count and
-the implementation is genuinely shared.
+将[模块台账模板](../assets/module-ledger-template.json)复制到任务输出目录，开始细节建模前填写以下内容。
 
-## Do not silently coarsen the ledger
+- 稳定的模块 ID 和便于识别的名称。
+- 证据类别：原图可见、根据证据推定或未知。
+- 能看到该模块的原图视角。
+- 优先级。一级决定整体轮廓、比例或主体特征；二级是能独立辨识的总成或大型特征；三级包括面板接缝、紧固件、小通风口、标签和微小细节。
+- 应出现的实例数量。
+- 模块可辨识的外观特征，以及已通过实际渲染核验的特征。
+- 当前状态和对应的 Blender 对象或集合。
+- 用户是否明确同意了简化。
 
-Use the following test: if a reviewer could point to a visible item and say
-"this part is missing or wrong" without referring to the whole model, it needs
-its own module or signature feature.
+不对称的重复部件应分别登记。对称的重复部件只有在实际共用同一实现，且已用 `expected_instances` 记录数量时，才能共用一项。
 
-Before leaving reference analysis, inspect every supplied view at full
-resolution and account for:
+<a id="do-not-silently-coarsen-the-ledger"></a>
 
-- outer silhouette and negative spaces;
-- attachments and connection geometry;
-- repeated-part counts;
-- front/back/top/bottom-only equipment;
-- interiors visible through glass or openings;
-- material boundaries and large colour blocks;
-- service panels, vents, lights, sensors, rails, and handles;
-- deliberate asymmetry.
+## 保留台账的审查粒度
 
-## Completion stages
+使用以下测试：如果评审员能够指出一个可见的项目并说
+“这部分缺失或有误”，如果不涉及整个模型，就需要有独立的模块或特征来补充。
 
-### Evidence required for `matched`
+在离开参考分析之前，以全分辨率检查每个提供的视图，并考虑：
 
-An object being present, named correctly, or editable does not make its module
-matched. Before assigning that status, record the controlling view/region,
-comparison screenshot or overlay, relevant landmarks/proportions and local
-profiles, observed differences, and the reason those differences are acceptable
-for the requested target. Use the module's `notes` and a linked comparison record
-using structured `feature_reviews` records.
+- 外部轮廓与负空间；
+- 附件和连接几何结构；
+- 重复部分计数；
+- front/back/top/bottom-only设备；
+- 透过玻璃或开口可以看到内部空间；
+- 材料边界和较大的色彩块；
+- 服务面板、通风口、照明装置、传感器、导轨和把手；
+- 刻意的不对称。
 
-For each matched signature, add a `feature_reviews` entry with `feature` (the
-exact signature), `status: "matched"`, `reference` (source region), `candidate`
-(render/crop artifact), `view`, and `comparison` (observed agreement and remaining
-differences). A filename alone or "object exists" is insufficient comparison.
-Reuse one crop for several features only after checking each. For orientation,
-thickness and relief, follow [local-feature-review.md](local-feature-review.md).
+<a id="completion-stages"></a>
 
-At final, fill `final_review` with `status: "passed"`, `structural_report`,
-`contact_sheet`, `perspective_view`, and `unresolved_issues: []`, referring to
-reports/images actually inspected. Do not fill these at build time. The validator
-checks record completeness, not whether images look correct. Older ledgers stay
-readable but matched/final claims fail until evidence records are provided;
-do not backfill evidence for unreviewed assets.
+## 完成阶段
 
-After user correction, clear the affected match and set a concrete
-`review_invalidated` reason; reopen final review. Clear the reason only after
-repair and comparison evidence. User rejection overrides a previous agent pass.
+<a id="evidence-required-for-matched"></a>
 
-Include reference-specific shape and placement in signature features. Conditions
-such as "has two eyes", "round head" or "two thin legs" are insufficient when
-eye spacing, head depth or limb thickness is visible and defines the design.
-Compare those features explicitly; do not batch-copy every expected signature
-into `matched_signature_features` or infer matches from implemented counts.
-Known shape/placement errors keep a present module at `blockout` or an honestly
-explained `simplified` status until corrected or the tradeoff is authorized.
+### 标记为 `matched` 所需的证据
 
-For contradictory AI depictions, use the interpretation and human-judgment policy
-in [reference-image-analysis.md](reference-image-analysis.md). Record the selected
-constraint and why it overrides a panel. Do not invent measurement certainty or
-silently lower the target to turn a discrepancy into a pass.
+一个对象存在、命名正确且可编辑，并不意味着它的模块匹配。在赋予该状态之前，需要记录控制该对象的因素。view/region对比截图或叠加图，相关特征点、比例以及局部特征、观察到的差异，以及这些差异对于所要求的目标而言为何是可以接受的。使用该模块的`notes`以及使用结构化数据的关联比较记录`feature_reviews`记录。
 
-Use stage names literally. Never present an earlier stage as a finished model.
+对于每一个匹配的签名，添加一个`feature_reviews`包含`feature`（确切的签名）`status: "matched"`,`reference`(来源地区),`candidate`)渲染、裁切图(人工制品),`view`此外，`comparison`（观察到的一致性和剩余差异）。仅文件名或“对象存在”是不够的，无法进行有效的比较。在检查每个特征之后，才对同一个裁剪区域进行多次使用。对于方向、厚度和浮雕效果，请遵循[local-feature-review.md](local-feature-review.md).
 
-### Blockout
+最后，用 `status: "passed"`、`structural_report`、`contact_sheet`、`perspective_view`和`unresolved_issues: []`来填充 `final_review`，其中 reports/images指的是实际被检查的部分。在构建过程中不要填充这些部分。验证器检查的是记录的完整性，而不是图像是否看起来正确。较旧的账本仍然可以阅读，但在提供证据记录之前，matched/final的声明仍然无效；不要为未审核的资产填充证据。
 
-Purpose: validate axes, cameras, proportions, primary masses, and major
-attachments.
+在用户进行修正后，清除受影响的匹配项，并设定一个明确的`review_invalidated`理由；重新进行最终评审。只有在修复并提供了对比证据后，才清除该理由。用户的拒绝会覆盖之前代理的通过结果。
 
-Gate:
+在签名特征中包含特定于参考的形状和布局。当眼睛间距、头部深度或肢体厚度可见并定义设计时，像“有两只眼睛”、“圆头”或“两条细腿”这样的条件是不够的。明确比较这些特征；不要将每个预期的签名批量复制到同一个特征中。`matched_signature_features`或者根据已实现的计数来推断匹配项。已知形状、位置错误使一个当前模块保持状态`blockout`或者，一个经过诚实解释的`simplified`状态将持续到问题被纠正或相应的权衡得到批准为止。
 
-- every required primary module exists at least as `blockout`;
-- matching orthographic renders have been inspected;
-- the calibrated in-Blender reference workspace and front/side comparisons
-  have been inspected; known primary proportion failures are reported as
-  unresolved, not described as "primary proportions pass";
-- report missing secondary and tertiary modules explicitly.
+对于相互矛盾的AI描述，请使用 [reference-image-analysis.md](reference-image-analysis.md)中的解释和人工判断政策。记录所选约束条件以及为何它覆盖了某个面板。不要编造测量准确性，也不要暗中降低目标值以将差异转化为通过。
 
-Allowed report language: "blockout complete" or "primary proportions pass".
-Do not say "model complete".
+请严格按照阶段名称来使用。切勿将较早阶段的模型直接呈现为完成的模型。
 
-For complex creation, also require the scoped [blockout acceptance](acceptance/blockout.md). Record the selected modeling method and inspection evidence in the project modeling plan/review, and reference their paths in the existing task record or ledger notes. Do not change ledger schema or duplicate its module completion labels. A successful builder or object-presence count cannot authorize refinement. A built but unreviewed coarse model is reported as "blockout built, review pending".
+<a id="blockout"></a>
 
-A blockout inspection signature ties the reviewed scope to the actual source state and dependencies. After a relevant change, an unchanged old review cannot simply be recorded again. Retain a coarse snapshot/control state for continued refinement and invalidate affected detailed visual evidence separately. Existing reference-fitting snapshots can implement equivalent checks; a 2D threshold alone is not equivalent.
+### 粗模
 
-### Clay review before production texturing
+目的：验证轴、摄像机、比例、主要质量以及主要附件。
+
+大门：
+
+- 每个必需的主要模块至少存在`blockout`个；
+- 已检查了匹配的正交渲染；
+- 校准后的 Blender 参考工作区正面、侧面比较
+  已进行检查；已知的主要比例故障已报告为
+  未解决，未描述为“主要比例传递”；
+- 明确报告缺失的二级和三级模块。
+
+允许的报告语言为：“遮挡完成”或“主要比例通过”。不要说“模型完成”。
+
+对于复杂的创建过程，还需要使用“scoped [接受屏蔽](acceptance/blockout.md)”。在项目建模 计划、审查 中记录所选的建模方法和检查证据，并在现有的任务记录或台账笔记中引用它们的路径。不要更改台账模式或重复其模块完成标签。成功的构建者或对象存在计数不能授权细化。已构建但未审核的粗糙模型将被报告为“阻塞构建，待审核”。
+
+块排除检查签名将审核范围与实际源代码状态和依赖关系联系起来。在进行了相关更改之后，无法简单地再次记录未改变的旧审核结果。保留一个粗略的snapshot/control继续细化状态，并分别使受影响的详细视觉证据无效。现有的参考拟合快照可以实现类似的检查；仅使用2D阈值是不够的。
+
+<a id="clay-review-before-production-texturing"></a>
+
+### 正式制作贴图前审查白模
 
 新建参考整模按以下顺序执行。粗模剪影通过后，继续在白模上精修。早期可以规划 UV、材质分区和分辨率，并在单个代表性部位试验风格。全身图集的绘制、参考图投射、烘焙和正式挂图放在白模验收之后；构建脚本应将这些操作与几何生成分成可独立运行的步骤。
 
@@ -139,97 +107,96 @@ A blockout inspection signature ties the reviewed scope to the actual source sta
 3. 各项形体通过后保存独立白模快照。在现有项目审阅记录中登记快照路径、SHA-256、固定镜头图和通过结论，然后从该版本开始正式贴图。若交付范围经用户确认调整，记录具体部位和允许的简化。导出后补拍的白模只能说明导出时的形体，不能追认贴图前的审阅。
 4. 贴图后，在相同镜头、照明和裁框下对照白模与着色版。若白模也出现偏差，重开对应几何项；几何修改后更新快照与受影响的对比，检查 UV 拉伸、接缝和投射锚点，重新烘焙受影响的贴图。若差异仅见于着色版，则先检查材质、UV 和投影。
 
-### Feature-complete
+<a id="feature-complete"></a>
 
-Purpose: establish the complete recognizable design before micro-detail.
+### 特征完成阶段
 
-Gate:
+目的：在微观细节之前，建立完整且可识别的设计。
 
-- every required primary module is `matched`;
-- no required primary or secondary module is `missing`;
-- repeated instance counts match the reference;
-- each primary and secondary module includes its signature features or is
-  marked `simplified` with a concrete reason;
-- front, back, both sides for asymmetric designs, top, and bottom have been
-  visually reviewed where references exist.
+大门：
 
-Allowed report language: "feature-complete with N simplified and M missing
-tertiary modules". Do not collapse those counts into a single percentage.
+- 每个必需的主要模块都是 `matched`；
+- 没有需要的主模块或副模块是 `missing`；
+- 重复实例计数与参考值一致；
+- 每个主要和次要模块都包含其独特的特性或功能。
+  标记`simplified`有具体的理由；
+- 对于不对称设计，正面、背面、两侧都有；顶部和底部也有
+  在存在引用的情况下进行了可视化审查。
 
-### Final
+允许的报告语言为：“包含 N 个简化模块和 M 个缺失的第三级模块的功能完整”。不要将这些计数合并为单一的百分比。
 
-Purpose: deliver the user-requested finished asset.
+<a id="final"></a>
 
-Gate:
+### 最终阶段
 
-- every required module is `matched`; or a `simplified` module has explicit
-  user approval recorded in the ledger;
-- required repeated counts and signature features are present;
-- `missing == 0` and `unapproved_simplified == 0`;
-- structural, geometric, visual, render, save, and requested export checks
-  pass;
-- both a contact sheet and at least one perspective/hero view are inspected.
+目的：交付用户要求的成品资产。
 
-Only this gate authorizes unqualified language such as "finished" or
-"complete".
+大门：
 
-## Presence and fidelity are different metrics
+- 每个必需的模块都是 `matched`；或者有一个 `simplified` 模块是显式的
+  用户批准已记录在账本中；
+- 需要重复计数的特征和签名特征存在；
+- `missing == 0`和`unapproved_simplified == 0`；
+- 结构、几何、视觉、渲染、保存以及请求的导出检查
+  通过；成功；完成
+- 既检查了接触片，也检查了至少一個perspective/hero视图。
 
-Always report both:
+只有这个程序才允许使用诸如“完成”这样的无限制语言，或者
+“完成”。
+
+<a id="presence-and-fidelity-are-different-metrics"></a>
+
+## 分别衡量模块是否存在及其还原度
+
+请始终同时报告以下内容：
 
 - `presence_coverage = (matched + simplified + blockout) / required`;
 - `full_fidelity_coverage = matched / required`.
 
-These are ledger-label statistics, not measured image similarity or reconstruction
-accuracy. Identify them as such if included in a report; do not advertise a model
-as "94% matched" because 16 of 17 labels were set to `matched`. Unsupported labels
-invalidate the coverage conclusion even when the validator returns `ok: true`.
-Local failures such as wrong facial placement, head depth or limb width cannot be
-averaged away by many unrelated present modules. Retract affected matches and
-the claimed stage when review reveals them.
+这些统计数据是标签统计，并非衡量图像相似度或重建精度。如果报告中包含此类数据，请将其明确标注为标签统计；不要将模型宣传为“94%匹配”，因为17个标签中有16个被设置为`matched`。不支持的标签会导致覆盖结论无效，即使验证器返回`ok: true`也是如此。局部错误，如面部位置错误、头部深度或肢体宽度问题，无法通过许多无关的现有模块来平均消除。在审查中发现这些错误时，应撤回相关的匹配结果和所声称的匹配阶段。
 
-Also report absolute counts for `matched`, `simplified`, `blockout`, and
-`missing`. A model with 18 of 20 modules present but only 12 matched is not
-"90% complete"; it has 90% presence coverage and 60% full-fidelity coverage.
+另报告`matched`、`simplified`、`blockout`和`missing`的绝对数。一个带有20模块但只有12的18的模型没有匹配。
+“已完成 90%”；其存在覆盖率达到 90%，完整性覆盖率达到 60%。
 
-Silhouette or image-similarity scores are separate evidence. Never use them as
-a substitute for module and signature-feature coverage.
+轮廓或图像相似度得分是独立的证据。永远不要将它们用作模块和特征覆盖的替代手段。
 
-## Acceptable reasons for simplification
+<a id="acceptable-reasons-for-simplification"></a>
 
-Simplification must be visible in the ledger and final report. Acceptable
-reasons include:
+## 可接受的简化理由
 
-- the user requested a blockout, low-poly budget, distant background asset, or
-  another constrained output target;
-- supplied views contradict each other and the chosen interpretation is
-  recorded;
-- a hidden surface is genuinely unobservable and does not affect the requested
-  function;
-- the user explicitly approved the tradeoff.
+简化措施必须在账本和最终报告中得到体现。可接受的理由包括：
 
-The following are not sufficient reasons:
+- 用户请求了遮罩效果、低多边形预算、遥远的背景素材，或者
+  另一个受限的输出目标；
+- 提供的观点相互矛盾，而所选的解释是
+  录制；
+- 隐藏的曲面确实无法被观察到，因此不会影响所要求的结果。
+  函数；
+- 用户已明确同意这种权衡。
 
-- a primitive was easier to script;
-- the silhouette already looks close;
-- the object count is high;
-- the part is visible only in the top, bottom, or back view;
-- the render is attractive enough to conceal the omission.
+以下并非充分的理由：
 
-## Iteration policy
+- 原始模型更容易编写脚本；
+- 轮廓已经很接近了；
+- 对象数量较多；
+- 该部分仅在顶部、底部或背面视图中可见；
+- 该渲染效果足够吸引人，以至于可以掩盖其中的遗漏。
 
-After each render pass:
+<a id="iteration-policy"></a>
 
-1. Update module statuses from visual evidence, not from code intent.
-2. Find the largest primary or secondary fidelity gap.
-3. Fix that gap in the persistent script.
-4. Re-render every affected controlling view.
-5. Re-run the ledger validator.
+## 迭代规则
 
-Do not spend time on tertiary fasteners while a primary or secondary module is
-missing, incorrectly oriented, or represented by an unrelated primitive.
+在每次渲染之后：
 
-Run the deterministic ledger check with the skill environment:
+1. 根据可视化证据更新模块状态，而非根据代码意图。
+2. 找出最大的主要或次要的逼真度差距。
+3. 修复那个持续存在的脚本中的漏洞。
+4. 重新渲染所有受影响的控制视图。
+5. 重新运行账本验证工具。
+
+在缺少主要或次要模块、方向错误，或者由无关的原始素表示时，请不要花费时间处理第三级紧固件。
+
+在技能环境中运行确定性账本检查：
 
 ```bash
 uv run --project /absolute/path/to/blender-python-modeling \
@@ -239,11 +206,11 @@ uv run --project /absolute/path/to/blender-python-modeling \
   --output /absolute/task/module-coverage-report.json
 ```
 
-The validator checks bookkeeping and completion claims. It cannot decide
-whether a mesh visually matches the reference; that still requires rendered
-view inspection.
+该验证器会检查记账和完成请求。它无法判断网格在视觉上是否与参考模型匹配；这仍然需要查看渲染后的视图。
 
-## Fixed-camera refinement loop
+<a id="fixed-camera-refinement-loop"></a>
+
+## 固定镜头精修循环
 
 1. 粗模验收后，保存已组装的模型和与控制视图配准的镜头。在第一次精修前，按视图保存原图或已审参考、模型渲染和叠图，登记轮廓、比例、遮挡、接合与材质分区差异。锁定相机变换、投影、取景、分辨率和比较用光照。后续局部裁切取自同一套渲染；若校准有误，先修正校准并重渲基线。
 2. 从影响整体比例或遮挡关系最大的差异开始，每次记录目标部位、诊断、修改方法、受影响部位和修改前版本。图中看不清形状或连接时，携带原图、已审视图和具体疑点回到多视图技能补相应角度或特写。复审后标明原图可见与隐藏推定的界限；新证据触及已审部位时重新打开该项。
@@ -252,7 +219,9 @@ view inspection.
 5. 局部队列走完后，做整体精修，重新检查体量、重心、比例、剪影、连续性以及材质关系，对发现的问题重复上述循环。最后以同一模型版本重渲所有固定视图，检查整模和受影响的局部，并复核暂缓项。尚有可验证的改进就继续；尝试次数本身不能作为全局停止条件。
 6. 所有可执行项均已处理，且最终复核找不到有参考依据、能改善模型并保住已确认特征的下一步时，导出最佳已审版本，附固定镜头对比和剩余差异日志。有未匹配项时标明当前证据下的最佳结果，并保留原有完成门槛与导出回读检查。
 
-### Fixed-camera feature comparison
+<a id="fixed-camera-feature-comparison"></a>
+
+### 固定镜头特征对比
 
 参考角色需要精细还原五官或发型时，在粗模剪影通过后，以组装状态的模型做第一轮局部对比。优先使用原图可见的特征；补充角度沿用已审多视图，记录哪些深度或遮挡是推定。
 
@@ -261,17 +230,29 @@ view inspection.
 3. **把差异变成修改项。** 在现有部位记录里写明视角、特征、相对哪个锚点、偏向哪里、幅度与证据路径。距离可写为固定画幅像素或占同图脸宽的比例。例如外眼角已对齐而内眼角偏向鼻侧时，先检查眼裂内侧。边界模糊时注明可辨范围。若正面线条吻合但体积仍可疑，用同镜头灰模与材质图定位几何或贴图原因，再用侧面鼻唇颏轮廓或斜侧面的耳鬓遮挡复核。法线和深度图可辅助检查模型折面与起伏；单张彩色参考估出的深度只作线索。
 4. **复拍并复查相邻特征。** 保留同镜头的参考、修改前、候选版本及局部线叠图。修眼形时复查眉、鼻梁与另一眼；修鬓角时复查耳廓、后颈和领口。最后退回整头与整身检查。仍有可定位偏差时，更新该项诊断并继续精修；多角度下出现五官重影时，按下文的投影特征验收记录。
 
-### Final evidence file
+### 原图直比与阶段返修
 
-For reference-model delivery use the final command above on the actual exported file. Earlier stages can run without delivery arguments. Treat an export without a passing report as a preview or a disclosed best-reviewed version with residuals. Rerun the command after edits and compare the reported model digest with the file being handed off.
+建模前把原图与生成图分别登记。原图中可见的身份特征由原图控制，生成图补充侧厚、背面和遮挡关系。为每项最影响辨识度的特征写一个独立的 signature feature。例如笑脸角色拆为脸颊到下巴的收束、笑口宽高、刘海主要折线和腰结轮廓。用同一全图配准做局部裁切，记录对应位置、比例或轮廓差异。源图为透视或动作姿势时，单独设源视角比较相机或展示姿势，记录仍不可比的区域。
 
-In the review JSON, each file reference contains its path relative to this JSON and the SHA-256 of its bytes. Provide file references for `ledger`, `model`, `preparation`, `multiview_review` (multiple construction views), `structural_report`, `contact_sheet`, and `perspective_view`. The last three also correspond to the paths in the ledger's final review.
+粗模先核整身体量和主要轮廓，精修白模核所有几何特征，再将回读的着色模型核对原图里的表情、线条及色块。白模有可见且可修的偏差时保存原图、失败裁图与具体修法，修正后复拍，再开始正式贴图。颜色标记在白模阶段仅查定位所需的表面；颜色本身留到着色阶段核验。拿不到原图字节时继续依据可见附件返修，把可复核的差异列入日志，正式原图一致性保持未验证。
 
-- In `views`, use one record per controlling direction with its design-review `name`, `reference` file, exported `model_sha256`, `comparison` file, and `before` and `after` render records. Each render record contains an `image` file and the actual `camera` settings captured at render time: flattened 16-number `world_matrix`, flattened 16-number `projection_matrix`, and pixel `resolution` [width, height]. Keep the full frame when cropping detail comparisons.
-- In `regions`, key records by module ID. Each has a `local` comparison file, a wider `surroundings` comparison file, and a `state` of `reviewed` or `residual`. For residuals include the `attempt_log` file and a specific `reason`. Continue other regions. Supply `actionable_items` as a list after the whole-model review.
-- Archive the CLI report alongside the reviewed revision. A ledger-only API result reports `ledger_final_passed`; only the final CLI can set `ready_to_claim_complete`. The checks verify declared settings and artifact freshness; a reviewer still inspects the images.
+对整模，在 delivery-review.json 的 `original_comparisons` 为未进入固定控制视图的每张原图保存一条记录。字段为 `source`、`clay`、`final_render`、`comparison`（各含 path 和 sha256）、`model_sha256`、`registration`（相机与姿态配准说明）和 `features`。每项含 `module`、`feature`、`status`、`finding`，使用台账里的名字。原图全部独立于控制图时，这些记录合起来须覆盖必需的原图可见 signature features。原图已作为固定控制视图时沿用其直接对照证据。
 
-### Visible defect repair
+<a id="final-evidence-file"></a>
+
+### 正式验收证据文件
+
+用于参考模型交付的，请在实际导出的文件上使用上述最终命令。早期阶段可以无需交付参数即可运行。对于没有通过报告输出的导出结果，可以将其视为预览版本或带有残差的最佳评审版本。在编辑后重新运行该命令，并将报告的模型摘要与正在交付的文件进行比较。
+
+在评审JSON中，每个文件引用都包含相对于此JSON的路径以及其字节的SHA-256哈希值。为`ledger`、`model`、`preparation`、`multiview_review`（多个构造视图）、`structural_report`、`contact_sheet`和`perspective_view`提供文件引用。最后三个也对应账本最终评审中的路径。
+
+- 在 `views` 中，每个控制方向使用一个记录，包括其设计评审 `name`、 `reference` 文件、导出的 `model_sha256`、 `comparison` 文件和 `before` 以及 `after` 渲染记录。每个渲染记录包含一个 `image` 文件和在渲染时实际捕获的 `camera` 设置：扁平化的 16 位数字 `world_matrix`、扁平化的 16 位数字 `projection_matrix`，以及像素 `resolution` [宽度, 高度]。在裁剪细节进行比较时，保留完整的帧。
+- 在`regions`, 按模块 ID 进行关键记录。每个都有`local`比较文件，更宽`surroundings`比较文件，以及一个`state`的`reviewed`或`residual`. 对于残差，包括`attempt_log`文件和特定`reason`继续其他地区。供应`actionable_items`作为整个模型评审后的列表。
+- 将 CLI 报告与已审核的版本一起归档。仅 ledger 专用的 API 结果会报告 `ledger_final_passed`；只有最终的 CLI 可以设置 `ready_to_claim_complete`。检查会验证声明的设置和工件的新鲜度；审核人员仍然会检查图像。
+
+<a id="visible-defect-repair"></a>
+
+### 修复可见缺陷
 
 用户指出或在固定视图看到的可定位异常，立即登记到对应部位的 `visual_findings`，重新打开此前的验收结论。逐一放大检查各控制方向的高风险接合处，尤其是侧面的耳廓与鬓发、下颌与衣领、腕掌与指根。只有全身轮廓重合不足以关闭这些问题。
 
@@ -280,12 +261,16 @@ In the review JSON, each file reference contains its path relative to this JSON 
 - 每项记录 `symptom`、控制视图 `view`、`reference_status`、实际 `reference`、`change`、`result`、固定视图 `before` / `after`、最终复查的 `model_sha256` 和 `status`。文件沿用 path/sha256 格式。参考充足填 `existing_sufficient`，补图审查后填 `supplement_reviewed` 并引用 `generation_record`，其中 outputs 必须包含本次使用的补图。修好填 `fixed`；已用尽可检验方案填 `exhausted` 并写明 `reopen_when`，部位保留 residual、reason 和 attempt_log。没有发现异常的已审部位可沿用原记录。
 - 正式命令独立输出 `refinement_evidence_checked` 与 `ready_to_claim_complete`。缺原图哈希时保持来源问题开放，仍执行视觉返修检查。交付带剩余差异的最佳已审模型也须先通过返修证据检查。检查器核验证据和版本，审阅者负责从实际画面发现遗漏。
 
-### Projected feature evidence
+<a id="projected-feature-evidence"></a>
 
-For each ledger module with `projected_features` (a list of landmark names), supply `regions[id].projection_review` with the reviewed export's `model_sha256` and a `views` object keyed by `front`, `oblique`, and `profile`. Each angle has its own hashed `comparison` crop or panel and a `features` entry per landmark. Record `status` and a concrete `finding` about count, placement, and readability relative to the reference. For `occluded`, identify the visible occluder in `occluder`. A `residual` must link to an exhausted visual finding through the same `projected_feature` and `projection_angle`; any actionable regression stays open. Use the [projection diagnosis](uv-and-texture-baking.md#multi-view-projection-check) for capture and repair. These are reviewer declarations, not automated image measurements.
+### 投影特征的比对证据
 
-### Style sample
+台账中每个含 `projected_features`（特征点名称列表）的模块，都应在 `regions[id].projection_review` 中填写已审导出件的 `model_sha256`，并在 `views` 下分别记录 `front`、`oblique` 和 `profile`。每个角度都要有带哈希的 `comparison` 局部图或对比图，并在 `features` 中逐一列出特征点。填写 `status`，在 `finding` 中具体说明相对原图的数量、位置及辨识度。若为 `occluded`，在 `occluder` 写明实际可见的遮挡物。若为 `residual`，通过相同的 `projected_feature` 与 `projection_angle` 关联到已无可执行改进的视觉差异记录；仍可修复的回归问题必须保持打开。取证与返修见[多视图投影检查](uv-and-texture-baking.md#multi-view-projection-check)。这些记录来自人工审图，不能当作自动图像测量结果。
 
-Whole reference builds on the generated or existing-reviewed route record `style_selection` in the preparation file. Use the selected style index ID and a reason grounded in the current source. Record `region`, `shape_cue` and `surface_cue` before blockout. If no listed recipe applies, use `id: unlisted` and explain why. For older whole-model records, inspect the original reference and add this decision before rebuilding or re-certifying.
+<a id="style-sample"></a>
 
-For a selected style, inspect a representative patch early. On final export repeat the paired review at delivery scale. In the delivery bundle, `style_review` contains the same `id` and `region`, `model_sha256`, and hashed file references `reference_crop`, `clay`, and `material`. Render both passes from the reimported asset with matched camera, light, framing and color management; change only the material override. Compare each pass with its planned cue. Record separate `shape` and `surface` objects with `status` and specific `finding`. Reopen the failing channel if either fails; review unaffected regions while resolving it. File and status checks verify declarations; the visual judgment requires inspection.
+### 风格样件
+
+整个参考文件都是基于准备文件中生成的或已审核过的路线记录 `style_selection` 来构建的。使用选定的风格索引 ID，并基于当前源文件来记录 `region`、 `shape_cue` 和 `surface_cue`。在封锁之前，先记录 `id: unlisted`，并解释原因。对于较旧的整个模型记录，需要检查原始参考文件，并在重建或重新认证之前添加此决策。
+
+对于选定的风格，尽早检查一个具有代表性的样本。在最终导出时，以交付规模重复进行配对审查。在交付包中，`style_review`包含相同的`id`和`region`,`model_sha256`以及带有哈希值的文件引用`reference_crop`,`clay`此外，`material`使用匹配的场景、灯光、构图和色彩管理的重新导入资源进行两遍渲染；仅更改材质覆盖设置。将每一遍渲染结果与计划中的提示进行对比。分别记录`shape`和`surface`带有…的对象`status`以及特定的`finding`. 如果任一环节出现故障，请重新打开故障通道；在解决故障的同时，检查未受影响的区域。文件检查和状态检查用于验证声明；视觉判断则需要人工检查。

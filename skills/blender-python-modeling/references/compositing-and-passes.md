@@ -1,23 +1,29 @@
-# Compositing and Render Passes
+<a id="compositing-and-render-passes"></a>
 
-Build compositor graphs only when the deliverable needs denoising, grading, masks, pass output, glare, keying, or other post-processing. Keep raw render data available for high-value deliveries; destructive grading in a single flattened image limits later correction.
+# 合成与渲染通道
 
-## Plan passes before rendering
+仅在对交付成果进行去噪、分级、遮罩、输出、去眩光、关键帧处理或其他后处理操作时，才构建合成图。对于高价值的交付成果，应保持原始渲染数据；在单个扁平化图像中进行破坏性处理会限制后续修正。
 
-Choose passes from the actual composite or downstream workflow:
+<a id="plan-passes-before-rendering"></a>
 
-- Combined for the beauty image;
-- Denoising Normal/Albedo for Cycles denoise;
-- Z or Mist for depth effects, with camera clipping and value range verified;
-- Normal, Position, Vector, UV or Object Index only when the consumer uses them;
-- Diffuse/Glossy/Transmission/Emission components for relighting or grading;
-- Cryptomatte Object/Material/Asset for robust masks.
+## 渲染前规划通道
 
-Every pass increases memory, file size and render time. Do not enable all passes defensively.
+从实际的复合或下游工作流程中选择通道：
 
-## Script a stable compositor tree
+- 结合用于美妆形象的；
+- 去噪Normal/Albedo用于 Cycles 去噪；
+- Z或Mist用于深度效果，已验证相机裁剪和数值范围；
+- 仅在使用时设置正常、位置、向量、UV或对象索引；
+- Diffuse/Glossy/Transmission/Emission 用于重新照明或调色的组件；
+- 用于坚固面部的Cryptomatte Object/Material/Asset。
 
-Use exact node `bl_idname` values and retrieve sockets by runtime identifier/name after verifying the node schema:
+每个渲染步骤都会增加内存占用、文件大小以及渲染时间。不要出于防御目的而启用所有渲染步骤。
+
+<a id="script-a-stable-compositor-tree"></a>
+
+## 用脚本构建稳定的合成节点树
+
+使用精确节点`bl_idname`在运行时获取值和检索套接字identifier/name在确认节点架构之后：
 
 ```python
 scene.use_nodes = True
@@ -33,35 +39,43 @@ links.new(render_layers.outputs["Image"], denoise.inputs["Image"])
 links.new(denoise.outputs["Image"], composite.inputs["Image"])
 ```
 
-The example omits Denoising Normal/Albedo links until those passes are enabled and their sockets are confirmed. Blender node sockets and compositor execution changed across releases; use `describe_node_type` or inspect the created node rather than indexing Blender 5.x-only sockets blindly.
+该示例未包含去噪Normal/Albedo链接，因为这些功能在启用之前需要先确认其套接字。Blender节点的套接字和合成器的执行方式在版本更新中有所变化；请使用`describe_node_type`进行查询，或者检查所创建的节点，而不是盲目依赖Blender 5.x版本的套接字。
 
-Give task-owned nodes stable names and frames. When editing an existing compositor, preserve unowned nodes and connect into the requested branch rather than clearing the whole tree.
+为任务所属节点赋予稳定的名称和框架。在编辑现有的合成器时，保留无所有权的节点，并将其连接到所需分支，而不是清除整个树结构。
 
-## File outputs and colour
+<a id="file-outputs-and-colour"></a>
 
-- Use absolute base paths and deterministic slot names for File Output nodes.
-- Choose PNG/TIFF for display-referred images and OpenEXR for scene-linear/high-dynamic-range or multi-pass delivery.
-- Prefer multilayer OpenEXR when passes must remain synchronized; document compression and bit depth.
-- Do not apply display transforms twice. Clarify whether the output is scene-linear, view-transformed, or intended for a colour-managed application.
-- For animation, use frame-numbered sequences; do not rely on a video container as the only master render.
+## 文件输出与色彩
 
-## Cryptomatte and masks
+- 对于文件输出节点，请使用绝对基路径和确定性的槽名称。
+- 选择 PNG/TIFF 用于显示相关图像，而使用 OpenEXR 进行 scene-linear/high-dynamic-range 或多通道传输。
+- 在需要保持文件同步的情况下，建议使用多层 OpenEXR；同时，需要说明压缩方式和位深。
+- 请勿重复应用显示变换。明确输出是场景线性还是视图变换，或者是否适用于色彩管理应用。
+- 对于动画，使用带有帧编号的序列；不要仅依赖视频容器作为唯一的主渲染工具。
 
-Enable the matching view-layer Cryptomatte pass before creating Cryptomatte nodes. Preserve enough manifest data in the EXR when downstream selection is required. Validate masks on overlapping transparent, motion-blurred, instanced and hair/volume elements; a visible object does not guarantee a useful matte.
+<a id="cryptomatte-and-masks"></a>
 
-Use ID masks only when their integer assignment and anti-aliasing limitations are acceptable. Do not silently substitute object index for Cryptomatte.
+## Cryptomatte 与遮罩
 
-## Denoising and grading
+在创建 Cryptomatte 节点之前，启用匹配的视图层 Cryptomatte 通道。在需要下游选择时，保留足够的 EXR 中的清单数据。对重叠的透明、运动模糊、实例化以及 头发、体积 元素进行掩模验证；可见的对象并不保证具有有用的遮罩效果。
 
-- Denoise the beauty path with compatible guiding passes and inspect fine textures, hair, reflections, transparency and motion.
-- Grade after denoising unless the chosen workflow requires otherwise.
-- Keep exposure and white balance decisions consistent with scene colour management.
-- Clamp or glare only with explicit artistic intent; they can hide fireflies or destroy highlight information.
+仅在使用 ID 掩码时，如果其整数分配和抗锯齿限制是可以接受的，才应使用 ID 掩码。不要默默地用对象索引替代 Cryptomatte。
 
-## Composite validation
+<a id="denoising-and-grading"></a>
 
-- Render a representative frame using the actual engine and view layer.
-- Verify required sockets are populated, file outputs are written, and paths/extensions match settings.
-- Inspect raw Combined, each required pass, matte edges, denoised output and final Composite.
-- For animation, sample motion-heavy and transparent frames and verify Vector/Z/Mist temporal behavior.
-- Confirm a headless/background render produces the same required files as the interactive session.
+## 降噪与调色
+
+- 使用兼容的引导处理对美丽路径进行去噪，并检查精细纹理、头发、反射、透明度以及运动效果。
+- 去噪后的等级，除非所选工作流程另有要求。
+- 保持曝光和白平衡设置与场景色彩管理的一致性。
+- 仅出于明确的艺术意图才使用夹具或眩光效果；它们可能会隐藏萤火虫效果或破坏高光信息。
+
+<a id="composite-validation"></a>
+
+## 合成验证
+
+- 使用實際的引擎和視圖層渲染一個代表性的帧。
+- 确认所需的插槽已填充，文件输出已写入，并且paths/extensions匹配设置。
+- 检查原始合并后的结果，每个必需的步骤，哑光边缘，去噪后的输出以及最终的复合体。
+- 对于动画，需要选取运动量较大且透明的帧并进行验证。Vector/Z/Mist时间行为。
+- 确认 无界面、后台 渲染生成的文件与交互式会话生成的文件一致。

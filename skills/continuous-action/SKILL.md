@@ -1,29 +1,35 @@
 ---
 name: continuous-action
-description: Create consistent frame-by-frame character action images or sprite sequences from the bundled Blender action library A.blend. Use for continuous character motion, keyframe sheets, or repairing action image continuity. Read A.catalog.json for the actions currently available, render Blender keyframes on demand, then use each keyframe as the image generation reference. If the catalog has no relevant action, ask the user how to proceed.
+description: "使用随附的 Blender 动作库 A.blend 生成连续角色动作图、关键帧图或精灵图序列，或修复动作连贯性。先查 A.catalog.json 中实际可用的动作，再按需渲染关键帧，并把每一帧作为对应图像生成的参考。目录中没有合适动作时，询问用户如何处理。"
 ---
 
-# Continuous Action
+<a id="continuous-action"></a>
 
-`assets/A.blend` is the sole motion source. **Read [assets/A.catalog.json](assets/A.catalog.json) at task time** to discover available action IDs, frame ranges, loop hints, reviewed motion phases, and source metadata. Do not cache or enumerate action IDs in this skill. The source FBX files are needed only to rebuild A; ordinary generation uses the packaged blend file.
+# 连续角色动作
 
-## Workflow
+`assets/A.blend` 是唯一动作来源。**每次执行任务都要读取[动作目录](assets/A.catalog.json)**，取得可用动作 ID、帧范围、循环提示、已审查的动作阶段及来源元数据。不要在本文缓存或枚举动作 ID。仅重建 A 时才需要源 FBX 文件；日常生成直接使用随附的 blend 文件。
 
-1. Parse the requested action, frame count, view, character appearance, output format, and whether the clip should loop. Read `assets/A.catalog.json` and match the request to one of its `clips` entries. Choose the closest matching action only when its motion actually satisfies the request. If no relevant action exists, **ask the user whether to supply a new FBX, use an existing clip as an approximation, or stop**. Do not invent motion from text or another pose source before they decide.
-2. Use the selected clip's reviewed `phase_markers` in A.catalog.json to sample contact, support, swing, takeoff, apex, landing, and recovery as appropriate to that action. The renderer selects named phases; **never substitute equal time intervals**. Inspect the actual motion and refine a phase frame when it misses the event. For a one-off nearby correction use `--phase-frame PHASE=FRAME`; for a lasting correction update the source catalog, validate it, and explicitly update/install the new Skill version. Never edit a managed installed catalog. If phase markers are absent, stale, or too few for the requested frame count, review the action in the source library and add markers before rendering, then update the managed installation when applicable. **Render only when a real user request specifies the action and required view or angle.** Do not pre-render every action or angle for storage in the skill. Follow `loop_hint` to omit a repeated endpoint, then inspect the actual action before claiming a loop or a complete rest-to-rest performance.
-3. Render one PNG per selected timestamp into a fresh temporary task directory under the consuming project's `.tmp/continuous-action/` (or an explicit empty `--output` directory). Keep the `manifest.json` that maps image IDs to Blender frames. The catalog's base character meshes are the render target for its actions. Read [references/blender-action-library.md](references/blender-action-library.md) for commands and action-slot details.
-   For `left` or `right` side views, the action reference PNGs must make near and far limbs visually distinguishable. Keep near-side limbs at their original reference brightness and render far-side arms, hands, legs, and feet about 10%–20% darker (the renderer defaults to 15%), with a cool reference-only color cue. Record which anatomical side is near and far in the manifest.
-4. **Validate the reference images before using them for generation.** View the contact sheet and each full-size PNG. For every frame, trace the near and far arm from shoulder to hand and each leg from hip to foot; check their bend, swing direction, and foot contact. Record `pass` or the ambiguous frame IDs in task QA notes. If a visible limb cannot be assigned to near/far side or its pose cannot be read, re-render the affected sequence with stronger reference contrast, up to `--far-limb-dim 0.20 --far-limb-cool-strength 1.5`, then inspect again. Contrast cannot reveal a fully occluded limb: choose a nearby timestamp from A if that preserves the action, or mark the limb as occluded and do not claim it is visually verified. Do not pass ambiguous reference frames to image generation as if their four-limb pose were known.
-5. Send **each validated rendered PNG as an actual image reference** to the available image generation or image editing tool. Ask it to create the corresponding new image while preserving that frame's body pose, limb identities, facing, silhouette, framing, and contact or flight state. Give the same character/style description, canvas settings, and camera instruction on every frame. Use the original Blender PNG for frame-specific motion and the same character identity input for appearance. The darkened far limbs and cool accents are diagnostic markings in the motion reference; **restore the character's original colors in every final generated frame**. Save generated images under the same temporary task directory, with matching frame IDs and a source → output manifest. Do not rely on a text description of the rendered frame in place of passing the image.
-   When exact Blender pose correspondence matters with `sprite-gen`, run its image generator separately for each output frame, attaching the same character base and that frame's matching Blender PNG. Its component-row route generates one strip for a whole action and can be useful for a readable cycle, but does not guarantee exact one-to-one pose matching. Import and assemble the checked frame images with sprite-gen's supported tools; do not present a row generation as frame-accurate merely because it saw a contact sheet.
-6. Compare every new image to its Blender keyframe and adjacent generated frames. Check limb order, weight/contact or flight, facing, character identity, scale, and the loop boundary using [standards/validation.md](standards/validation.md) and [standards/continuity.md](standards/continuity.md). Regenerate only affected images using their original Blender keyframes. If the Blender clip itself lacks the needed motion, return to step 1 and ask the user how to handle the missing action.
-7. Deliver Blender keyframes, generated images, and the mapping manifest with source FPS, per-frame durations and any remaining continuity limits. Replay at the recorded durations before assessing contact timing or the loop seam. The renderer measures the time between selected phases and preserves the wrap interval for loops. Non-looping playback starts at the first selected pose.
+<a id="workflow"></a>
 
-If the user already has a compatible rig and wants a rendered clip, use that rig and the reviewed source motion directly when the project supports the adaptation. Use image generation for a requested sprite or a visual identity that the rig cannot render. When expanding the library, prioritize a missing high-value action from a real task and review its contact and recovery phases before adding it to the catalog.
+## 工作流程
 
-## Commands
+1. 明确所需的动作、帧数、视角、角色外观、输出格式及是否循环。在 `assets/A.catalog.json` 的 `clips` 中选择实际运动符合要求的片段。若无合适动作，**询问用户要提供新 FBX、接受现有片段近似，还是停止**。用户作决定前，不要根据文字或其他姿势来源自行编造动作。
+2. 根据该动作在 A.catalog.json 中已审的 `phase_markers` 采样，例如着地接触、支撑、摆动、起跳、腾空最高点、落地缓冲和恢复。渲染器按命名阶段选帧，**不能用等时间间隔替代**。检查实际运动，若标记错过动作事件，修正相应帧。一次性微调用 `--phase-frame PHASE=FRAME`；长期修正则更新并验证源码仓库中的目录，明确更新或安装新版技能。不要直接编辑受管理的已安装目录。如果阶段标记缺失、过期或不够覆盖所需帧数，先审查源动作、补充标记，再按需更新安装副本。**实际用户任务已指定动作及视角时才渲染。** 不要预渲染全部动作或角度存进技能目录。按 `loop_hint` 去除重复端点，并查看实际动作，再判断是否能循环或能否完整地从静止运动到静止。
+3. 在使用方项目的 `.tmp/continuous-action/` 下新建临时任务目录（或用 `--output` 指定空目录），为每个选定时刻渲染一张 PNG。保留记录图像 ID 与 Blender 帧号对应关系的 `manifest.json`。用目录中的基础角色网格渲染动作。命令与动作槽细节见[动作库说明](references/blender-action-library.md)。
+   对于 `left` 或 `right` 侧视图，必须能从 PNG 分辨近侧与远侧肢体。近侧维持原亮度；远侧的手臂、手、腿和脚压暗约 10%–20%（默认 15%），并增加仅用于参考图的冷色提示。在清单记录解剖学上的哪一侧靠近或远离镜头。
+4. **先验证参考帧，再生图。** 查看整组缩略图和每张原尺寸 PNG。逐帧从肩到手、从髋到脚追踪近侧和远侧的四肢，检查弯曲、摆动方向及脚部接触。在审查记录中写下 `pass` 或仍有歧义的帧 ID。可见肢体的归属或姿势不清时，提高对比度后重新渲染受影响的序列，最多使用 `--far-limb-dim 0.20 --far-limb-cool-strength 1.5`，再做目视检查。肢体完全被遮挡时，若不改变动作含义，可从 A 中取邻近帧；否则标记为遮挡。禁止将歧义帧当作四肢姿势已确认的参考传给生成器。
+5. **将每张已验证的 PNG 作为实际参考图传入**图像生成或编辑工具。逐帧要求保留身体动作、肢体归属、面向、剪影、构图及接触或腾空状态。每帧使用同一角色与风格描述、画布设置和相机要求。用对应的 Blender PNG 控制动作，用同一角色参考控制外观。远侧变暗和冷色仅用于诊断，**每张最终帧都应恢复角色原色**。在同一临时目录保存生成图，沿用帧 ID，记录源图与输出图的映射。不得仅以文字描述代替输入实际参考图。
+   使用 `sprite-gen` 且要求精确对齐 Blender 姿势时，逐帧调用生成器，传入相同的角色底图及该帧对应的 Blender PNG。组件行模式能一次生成整段动作条，适合表达连贯循环，但不能保证逐帧姿势精确。用 sprite-gen 支持的工具导入并组装已核验的独立帧。生成器看过整组缩略图本身不能证明逐帧准确。
+6. 将每张新图与对应的 Blender 关键帧、前后相邻的生成图对比。按[动作图验收](standards/validation.md)和[帧间连贯性](standards/continuity.md)检查肢体前后关系、承重与接触或腾空状态、面向、角色特征、尺度和循环接缝。仅使用原 Blender 关键帧重新生成受影响的图。若源片段本身缺少所需运动，回到步骤 1，询问用户如何处理。
+7. 交付 Blender 关键帧、生成图和映射清单，附源帧率、各帧时长及仍存在的连贯性问题。按记录的时长播放，再判断接触时机和循环接缝。渲染器按选定动作阶段之间的间隔计时，循环时保留从末帧回到首帧所需的时间。非循环序列从首个选定姿势开始播放。
 
-Use the actual Skill directory for resources and the consuming project for outputs. For a source checkout:
+如果用户已有兼容骨架且需要渲染动作片段，项目支持动作适配时，直接使用该骨架与已审源动作。用户要精灵图或骨架无法渲染所需外观时，再使用图像生成。扩充动作库时，优先处理真实任务缺少且复用价值高的动作，审查接触和恢复阶段后再入库。
+
+<a id="commands"></a>
+
+## 命令
+
+使用实际技能目录提供资源，输出写入使用方项目。以下命令适用于源码仓库。
 
 ```bash
 blender -b skills/continuous-action/assets/A.blend -t 2 \
@@ -31,10 +37,12 @@ blender -b skills/continuous-action/assets/A.blend -t 2 \
   --action ACTION_ID_FROM_CATALOG --count 8 --view front --project /absolute/production-project
 ```
 
-Replace `ACTION_ID_FROM_CATALOG` with a key from `assets/A.catalog.json` → `clips`. Views: `front`, `back`, `left`, `right`. The renderer outputs individual pose PNGs by default and prints the temporary `manifest.json` path; each entry names its motion phase. Use `--format sheet` only when a whole-action strip reference is suitable; it emits one ordered image with region metadata. Installed Skills use the same command with `/actual/installed/continuous-action/assets/A.blend` and `/actual/installed/continuous-action/scripts/render_keyframes.py`. `--project` selects the consuming project; standard `.agents/skills/` and `.claude/skills/` layouts infer its root automatically. `--output` selects any empty task directory outside Skill resources and installation containers, including a stable versioned project asset path. If the user wants a permanent deliverable, copy only the final selected images to the requested destination after review. Rebuild only in the source Skill checkout, never in a managed installation. To rebuild A after changing the catalog and source FBX files, run `blender -b -t 2 --python skills/continuous-action/scripts/build_action_library.py` and verify the revised catalog, phase markers, and renders.
+把 `ACTION_ID_FROM_CATALOG` 换成 `assets/A.catalog.json` 的 `clips` 中的键。视角支持 `front`、`back`、`left`、`right`。默认逐姿势输出 PNG 并打印临时 `manifest.json` 路径，清单的每一项均注明动作阶段。整段动作适合用一张横向帧条作参考时才使用 `--format sheet`，它输出一张有序图及区域元数据。已安装技能使用相同命令，将资源位置换为 `/actual/installed/continuous-action/assets/A.blend` 和 `/actual/installed/continuous-action/scripts/render_keyframes.py`。`--project` 指定使用方项目；标准 `.agents/skills/` 和 `.claude/skills/` 布局可自动推断项目根目录。`--output` 可指定技能资源及安装目录以外的任意空任务目录，包括项目中纳入版本管理的资产路径。需要永久交付时，审查后只复制最终选定图像到指定位置。只在技能源码仓库中重建。修改目录或源 FBX 后，运行 `blender -b -t 2 --python skills/continuous-action/scripts/build_action_library.py` 重建 A 并核验更新后的目录、阶段标记和渲染图。
 
-## Image generation contract
+<a id="image-generation-contract"></a>
 
-For image generation, pass one keyframe PNG per requested output frame as a referenced image. A suitable instruction is: “Create a new image of [same character or user-specified design] in [style]. Match the attached Blender frame's exact body action, anatomical left/right limb placement, camera view, and crop. Preserve costume, face, proportions, and background treatment across the sequence. The side-view reference darkens far-side limbs only to identify their depth; restore the character's original limb colors in this final frame. Do not add or remove limbs, reverse the action, or change the contact state.” Add a persistent character image only if the user supplies one; it controls appearance, while the A keyframe controls motion. Record any frame where the generator cannot retain the action.
+## 图像生成要求
 
-The A render is an action reference, not a promise that image generation will produce pixel-matched animation. Review the resulting images before calling a sequence complete.
+每张要生成的动作帧都附上对应的关键帧 PNG。提示词示例：“按[风格]绘制[同一角色或用户指定的设计]。严格对齐所附 Blender 帧的身体动作、角色自身左右肢体的位置、相机视角和裁切。整组保持服装、面部、比例及背景处理一致。侧视参考图压暗远侧肢体仅用于标明前后关系，请恢复肢体原色。保持肢体数量、动作方向和接触状态。”仅在用户提供了固定角色参考图时附加该图，用它控制外观，A 的关键帧控制动作。记录生成器未能保持动作的帧。
+
+A 的渲染图仅提供动作依据。生成图可能有偏差，宣告序列完成前必须审查实际输出。

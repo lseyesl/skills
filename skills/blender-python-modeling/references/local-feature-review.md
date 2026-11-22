@@ -1,117 +1,75 @@
-# Local shape, relief and render review
+<a id="local-shape-relief-and-render-review"></a>
 
-Use before expensive full renders of reference-driven models. Catch wrong
-geometry in the evaluated mesh and inspect surface detail at its intended scale.
+# 局部形体、浮雕与渲染审查
 
-## Iterate an existing asset
+在昂贵的、基于参考模型的完整渲染之前使用此工具。可以捕捉评估网格中的错误几何形状，并以预期的规模检查表面细节。
 
-Start from the last delivered editable scene. Freeze a baseline capture, the controlling reference and the region to protect. Choose the defect that the available view can resolve. For a silhouette, compare the projected boundary against the calibrated guide. For depth or contact, select a view that exposes the relationship. Record whether the guide was observed or inferred.
+<a id="iterate-an-existing-asset"></a>
 
-Repair a copy, then repeat the capture at the same pose, lens, scale, light and frame. Inspect both versions against the same guide and inspect affected neighbors. Use a material-free pass if print or shading hides the geometry. Keep the change when the target improves and protected regions pass. Otherwise revisit the diagnosis. For an exported deliverable, repeat the decisive check on the reimported asset. Record a scoped result before choosing another defect.
+## 迭代现有资产
 
-## Independent shape constraints
+从最后交付的可编辑场景开始。冻结一个基准捕获，作为控制参考和区域保护。选择可用视图能够解决的缺陷。对于轮廓，将投影边界与校准的引导线进行比较。对于深度或接触问题，选择一个能够揭示关系的视图。记录是否观察或推断出了引导线。
 
-Record each important part's long axis, broad surface normal, thickness direction,
-attachment and signature relief. A closed leaf-shaped volume can still be an
-upright paddle when its upper surface should face upward; a thick petal can lack
-its central concavity. Record tilt relative to subject axes, not the hero camera.
-Do not apply a leaf-specific numeric normal threshold to unrelated shapes.
+修复一个副本，然后在相同的姿势、镜头、比例、光线和帧数下重复捕获。对比两个版本，根据相同的指导标准进行检查，并查看受影响的邻近区域。如果打印或阴影遮挡了几何形状，则使用无材质的流程。当目标得到改善时，保留该更改，并让受保护的区域通过。否则，重新进行诊断。对于 exported 的 deliverable，在重新导入资产时重复进行决定性检查。在选择另一个缺陷之前，先记录一个范围化的结果。
 
-Check front/side/top blockouts before detail. Check attachments against actual
-stem, parent or joint positions; a correctly oriented floating part still fails.
-Keep the same pose across views instead of rotating parts for better visibility.
+<a id="independent-shape-constraints"></a>
 
-## Geometry and sampling
+## 分别约束各项形体特征
 
-Silhouette, cupping, folds, swollen margins and deep pressed grooves need geometry
-when they define the reference or must survive side views/exports. Fine grain
-may use bump/normal shading. A procedural shader does not replace missing form.
+记录每个重要部分的长轴、宽面法线、厚度方向、附着点以及特征浮雕。一个封闭的叶状体积在其上表面应朝向上方时，仍可以作为一个直立的桨叶；而一个厚实的花瓣可能缺乏中央凹陷。记录相对于主体轴的倾斜角度，而不是英雄摄像机的倾斜角度。不要对无关的形状应用特定的叶状数值法线阈值。
 
-For recessed veins, require a continuous main path, branching side paths that
-join it, tapering ends and clearance from the blade edge. Detached tubes,
-parallel marks or one blurred center trench do not restore branching venation.
-Generalize this check to seams, folds and engraved detail as appropriate.
+在详细检查之前，先检查 正面、侧面、顶部 块的位置。对照实际的茎、父部件或连接位置来检查附件；即使部件的方向正确，仍然可能出现问题。保持各个视图中的相同姿态，而不是旋转部件，这样可以提高可见性。
 
-Set sampling relative to the narrowest required feature and inspect the evaluated
-mesh after subdivision, bevel, remeshing or decimation. Nonzero displacement and
-manifold topology prove neither readable grooves nor adequate depth. Increase
-local sampling/support or revise the relief profile if modifiers erase it;
-avoid global polygon increases without evidence.
+<a id="geometry-and-sampling"></a>
 
-## Cheap-to-expensive review
+## 几何与采样
 
-1. Inspect one representative part from front/side/top in solid/clay lighting:
-   orientation, volume and connections first.
-   For characters, make the head/face and one shoulder-to-limb-to-paw chain the first samples: compare muzzle/jaw depth and section curvature, eye placement/surface fit, ear thickness/recess, joint width continuity and real sole contact. Trace cross-sections and local landmarks to trusted regions; extra primitives or grain cannot compensate for incorrect primary volume.
-2. Render a local crop at modest samples using intended material, light and color
-   management. Check grooves, branching, raised margins and dents individually.
-3. Inspect at intended presentation scale. A feature visible only in an enlarged
-   diagnostic image has not passed a main-shot readability requirement.
-4. Only then render the full common-scale multiview suite and final hero.
+在轮廓、杯状、褶皱、膨胀的边缘和深压的沟槽中，需要几何形状来定义参考，或者必须能够承受侧面views/exports.的影响。精细的纹理可能会使用bump/normal阴影效果。程序化着色器并不能替代缺失的形状。
 
-After corrections, rerender affected local crops and controlling views first. Refresh the whole suite when global lighting/material changes or final assembly make those views affected; retain unchanged evidence with provenance rather than rerendering every camera mechanically. Follow the stage/freshness rules in [staged-execution.md](staged-execution.md).
+对于嵌入式静脉，需要连续的主路径，分支路径与之相连，末端逐渐变细，并且与刀刃边缘保持一定距离。分离的管道、平行的标记或只有一个模糊的中心沟槽并不能恢复分支状的静脉结构。将这一检查规则推广到接缝、折叠和雕刻细节也是合适的。
 
-If a feature disappears, distinguish shallow geometry/undersampling from modifier
-smoothing, material contrast, light direction and occlusion. Change the cause,
-not every bump or the whole style. For a correction, compare before/after with
-the same camera, light and material. Label isolation renders and restore hidden
-parts; they supplement the assembly image and cannot prove attachment/occlusion.
+根据最窄的所需特征来设置采样，并在细分、倒角、重新网格化或缩减后检查评估的网格。非零位移和流形拓扑既不能产生可读的沟槽，也无法达到足够的深度。增加局部sampling/support或者，如果修改器删除了 Relief 轮廓，则对其进行修改；在没有证据的情况下，避免全局多边形增加。
 
-## Fixed-camera review for a local correction
+<a id="cheap-to-expensive-review"></a>
 
-Use [the Blender review renderer](../scripts/render_feature_review.py) on saved
-before/after snapshots in an isolated process. For each defect it writes a
-reference crop, before/after clay and before/after material images, and a
-manifest bound to the module ID and its ledger feature. Keep the attachment and
-its receiving part in the same crop. Use snapshots saved at the same pose. Both
-channels use a common orthographic camera, studio rig, and exposure. Clay overrides the materials to expose
-the shape. The material channel uses the snapshot's assigned shaders, or the
-same project-specific preview material setup for both snapshots.
+## 从低成本检查到完整审查
+
+1. 检查 正面、侧面、顶部 在 实体、白模 照明中的一個代表性部分：
+   首先考虑方向、体积和连接性。
+   对于角色来说，将head/face和一条从肩部到肢体再到爪子的链作为第一个样本：比较muzzle/jaw的深度和截面曲率、眼睛位置、表面的适应性、耳朵thickness/recess、关节宽度的连续性以及真实的足部接触。追踪横截面和局部地标到可信区域；额外的原始形状或纹理无法弥补不正确的主要体积。
+2. 使用指定的材质、光源和颜色，以适度的采样率渲染局部裁剪区域
+   管理。分别检查凹槽、分支、凸起的边缘和凹陷。
+3. 在预期的展示规模下进行检查。只有在放大后才能看到的特性
+   诊断图像未通过主要拍摄的可读性要求。
+4. 只有這樣才能渲染出完整的通用規模多視圖套件和最終的英雄角色。
+
+在修正之后，先重新渲染受影响的局部作物和控制视图。当全局情况稳定后，再更新整个套件。光照、材质更改或最终组装会影响到这些视图；保留有来源证明的未更改证据，而不是机械地重新渲染每个相机。遵循stage/freshness规则在[staged-execution.md](staged-execution.md).
+
+如果某个功能消失了，请区分是浅层geometry/undersampling问题还是修改器平滑、材质对比、光线方向和遮挡问题。需要改变的是原因，而不是每一个凸起或整个风格。为了进行修正，请使用相同的相机、光线和材质进行比较before/after。为隔离渲染标记并恢复隐藏的部分；它们可以补充装配图像，但不能证明attachment/occlusion.。
+
+<a id="fixed-camera-review-for-a-local-correction"></a>
+
+## 用固定镜头复查局部修改
+
+在隔离的进程中使用 [Blender渲染器评测](../scripts/render_feature_review.py)保存的 before/after快照。对于每个缺陷，它会生成一个参考裁剪、 before/after黏土和 before/after材料图像，以及一个与模块 ID 和其账本特征相关的清单。保持附件及其接收部分在同一裁剪中。使用在同一姿态下保存的快照。两个通道都使用相同的正交相机、工作室装备和曝光设置。黏土会覆盖材料以展现形状。材料通道使用快照分配的着色器，或者为两个快照使用相同的项目特定的预览材料设置。
 
 ```bash
 blender --background --factory-startup --disable-autoexec --python-exit-code 1 \
   --python scripts/render_feature_review.py -- review-config.json --out review
 ```
 
-The config uses schema version 1. Paths are relative to the config unless absolute.
-`snapshots` names `before` and `after` Blender files. Supply `ledger`, square
-`resolution`, Cycles `samples`, and `studio` with a world-space `center` and
-positive `scale` to size the lights. List any unpacked material textures in
-`material_files` so their contents participate in the run receipt.
-Each entry in `features` names an `id`,
-`module_id`, exact ledger `signature_feature`, `issue`, and `change`.
-Its `camera` specifies world-space `target`, viewing `direction` from the target
-to the camera, and square orthographic `span`. Its `reference` specifies `image`,
-`view`, and top-left, end-exclusive `box_px` as `[left, top, right, bottom]`.
-When comparing an orthographic guide, derive target and span from the calibrated
-crop. For a perspective photo without a solved camera, treat the crop as visual
-context and record the projection difference in the comparison.
+该配置使用模式版本1。路径相对于配置文件，除非是绝对路径。`snapshots`名称`before`和`after`Blender文件。供应`ledger`，正方形`resolution`, Cycles`samples`此外，`studio`使用世界空间`center`并且是积极的`scale`调整灯光的尺寸。列出任何已解包的材料纹理。`material_files`因此，它们的内容会参与到运行接收中。其中的每一项条目`features`命名`id`,`module_id`, 精确的账本`signature_feature`,`issue`此外，`change`. 它的`camera`指定世界空间`target`查看`direction`从目标到相机，采用正方形正交投影方式`span`. 它的`reference`指定`image`,`view`，并且位于左上角，仅限末尾使用`box_px`作为`[left, top, right, bottom]`在比较正交引导时，从校准后的裁剪区域中得出目标和跨度。对于没有解决相机问题的透视照片，将裁剪区域视为视觉上下文，并记录比较中的投影差异。
 
-Pass `--feature <id>` (repeatable) to rerender only the affected crops. A
-`receipt.json` binds each run's inputs and artifacts, and `feature.json` leaves
-visual review pending. Inspect the clay pair for shape and the material pair for
-surface readability, then record the observations in the ledger. The
-[lantern P1 replay](../examples/iron-lantern-p0/README.md#p1-fixed-camera-feature-and-material-review)
-shows a project wrapper, source map provenance, and three matched-camera crops.
+用 `--feature <id>` 指定受影响部位，仅重新渲染对应局部图；可多次传入此参数。每次运行的 `receipt.json` 将输入与产物绑定，`feature.json` 将视觉审查标为待完成。比较白模图判断形体，再比较材质图判断表面特征能否辨认，将观察结果写入台账。[灯笼 P1 复现示例](../examples/iron-lantern-p0/README.md#p1-fixed-camera-feature-and-material-review)包含项目调用脚本、贴图来源和三组同机位局部图。
 
-For a realistic surface, choose a sourced PBR set per reference material region
-and record its origin, creator, licence, files and intended usage. Compare base
-color under the fixed lighting, roughness by the size and strength of highlights,
-and wear by where exposed material appears on the form. Use the source map as
-supporting evidence for roughness and wear. A photo highlight cannot uniquely
-determine base color or roughness. Follow [material map routing](materials-and-nodes.md#texture-based-pbr).
+对于真实的表面，根据参考材料区域选择相应的 PBR 设置，并记录其来源、创建者、许可证、文件以及预期用途。比较固定照明下的基础颜色、通过高光的大小和强度决定的粗糙度，以及暴露材料在表面上的磨损情况。将源地图作为粗糙度和磨损的佐证。照片高光无法唯一确定基础颜色或粗糙度。遵循 [材质映射路由](materials-and-nodes.md#texture-based-pbr)。
 
-## Evidence and iteration cost
+<a id="evidence-and-iteration-cost"></a>
 
-Record source region, candidate artifact/view, observed difference and verdict
-per feature in `feature_reviews`. Parameters are implementation evidence, not
-visual comparison. Do not batch-copy expected labels into matched features.
+## 证据与迭代成本
 
-User feedback invalidates the affected match and prior final review. Keep failed
-evidence, reopen the feature, repair and re-review. Do not narrow its definition
-after a failure just to make the same mesh pass.
+记录源区域、候选artifact/view、观察到的差异以及每个特征的裁决结果，位于`feature_reviews`。参数是实现证据，而非视觉比较。不要将预期标签批量复制到匹配的特征中。
 
-Rerender affected crops/views first; reuse unchanged evidence with provenance.
-Record actual build/generation/render durations and retry reasons when available;
-file timestamps and user response delays do not measure active execution time.
-Do not generate images or rebuild models merely to verify prose-only skill edits.
+用户反馈使得受影响的匹配结果无效，需要重新进行最终审核。保留失败的证据，重新开启该功能，进行修复和重新审核。在失败之后不应缩小其定义范围，只是为了完成相同的网格处理。
+
+重新渲染首先影响了 局部特写、视图；重新使用未改变的、具有来源证明的证据。记录实际的 构建、生成、渲染 持续时间和重试原因（如果有的话）；文件时间戳和用户响应延迟并不衡量实际执行时间。不要仅仅为了验证纯文字的技能编辑而生成图像或重建模型。

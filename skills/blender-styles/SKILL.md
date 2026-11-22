@@ -1,11 +1,13 @@
 ---
 name: blender-styles
-description: Select and apply Blender art styles through a shared workflow and on-demand style index. Use for soft low-poly clay (柔和低多边形黏土风), rough naive handmade plasticine (稚拙手捏橡皮泥风), folded or layered papercraft (纸艺、立体书), or a requested combination of their geometry, surface, lighting and animation traits. Routes to only the relevant style rules and reuses shared material, lighting, timing, rendering and QA tools. Use blender-python-modeling for general modeling and reference alignment. Do not use for 2D-only image generation or physical clay simulation.
+description: "按风格索引选择柔和低多边形黏土、稚拙手捏橡皮泥、折叠或分层纸艺（含立体书），也可根据需求组合造型、表面、灯光和动画规则。按需加载对应规则，复用公共材质、布光、节奏、渲染和验收工具。通用建模及参考配准使用 blender-python-modeling。二维生图和实体黏土物理模拟另选相应工具。"
 metadata:
-  compatibility: Blender with bpy, bmesh and mathutils. Shared clay helpers were tested on Blender 4.5.12 LTS; other builds require capability checks. The handmade-plasticine style remains visually uncalibrated. Generic modeling/reference workflows require blender-python-modeling.
+  compatibility: "需要带 bpy、bmesh 和 mathutils 的 Blender。共用黏土工具已在 Blender 4.5.12 LTS 上测试，其他版本需检查可用功能。手捏橡皮泥风格仍待视觉校准。通用建模与参考图流程依赖 blender-python-modeling。"
 ---
 
-# Blender Styles
+<a id="blender-styles"></a>
+
+# Blender 美术风格
 
 用一个入口选择美术风格，按索引加载必要规则。通用建模、参考定位、绑定、保存和导出交给 [blender-python-modeling](../blender-python-modeling/SKILL.md)；本 Skill 负责造型语言、材质、灯光、动画节奏与风格校准。
 

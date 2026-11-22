@@ -1,13 +1,15 @@
-# Validate generated action images
+<a id="validate-generated-action-images"></a>
 
-Use the Blender PNG with the same frame ID as the expected motion for each generated image. Inspect images in playback order, then inspect the last-to-first transition for loops.
+# 核验生成的动作图
 
-Before generating character images from side-view references, inspect every Blender PNG at full size and the sequence contact sheet. For each frame, trace both arms (shoulder → hand) and both legs (hip → foot), and identify their near/far side, bend, swing, and foot contact. Record a `pass` or the ambiguous frame IDs in task QA notes. When visible limbs are still ambiguous, increase the far-side contrast within the renderer's permitted range and inspect the rerender. A fully occluded limb cannot be validated from contrast; choose another timestamp when possible or mark that limb unverified. Do not silently treat a four-limb pose as known when it is not visible.
+使用 Blender 生成的图像文件，其帧 ID 应与每个生成图像的预期运动相匹配。以播放顺序检查图像，然后检查从最后到第一的过渡过程中是否存在循环。
 
-1. **Frame match:** facing, head direction, named left/right limbs, stance/flight, hand and foot positions, body lean, and crop correspond to that Blender frame. Do not treat a visually attractive image as correct when it changes the action.
-2. **Contact and weight:** a foot planted in the Blender frame remains planted in the generated image; a jump's lift, apex, and landing do not become another movement. For walking and running, check contact alternation and both arms through the cycle.
-3. **Identity:** face, hair, clothes, colours, proportions, props, camera, and lighting stay stable across adjacent generated images unless the request intentionally changes them.
-   In side views, confirm the Blender reference makes the near/far arms and legs distinguishable (near side at normal brightness; far side about 10%–20% darker with a cool cue). Confirm final generated frames use the character's original limb colors rather than copying the reference's diagnostic shading.
-4. **Timing and seam:** image order follows `manifest.json`. For a cyclic clip, compare the final image with the next first image for body motion and root displacement. A duplicate pose can cause a pause; a root reset can cause a jump. Mark the loop unverified if either is unresolved.
+在从侧视图参考生成角色图像之前，请检查每个 Blender PNG 文件的完整尺寸以及序列接触图。对于每一帧，绘制双臂（肩部→手部）和双腿（臀部→脚部），并识别它们near/far侧身、弯曲、摆动以及脚部接触。记录下`pass`或者任务QA注释中的模糊帧ID。当可见的肢体仍然模糊时，将渲染器允许范围内的远侧对比度提高，并重新渲染。完全被遮挡的肢体无法通过对比度进行验证；尽可能选择另一个时间戳，或者将该肢体标记为未验证。当四肢姿态不可见时，不要将其视为已知姿态。
 
-Record a failure with its frame ID, the matching Blender PNG, the observed difference, and the correction attempted. Regenerate the affected image with its Blender PNG as the image reference and the same appearance instructions. If a defect comes from the source clip or a missing action, ask the user how to proceed instead of inventing a new motion source.
+1. **帧匹配：** 朝向、头部方向、命名左侧、右侧肢体，stance/flight手和脚的位置、身体的倾斜角度以及裁剪与那个 Blender 帧相对应。不要因为图像看起来很吸引人就认为它是正确的，尤其是在改变动作的情况下。
+2. **接触与重量：** 在 Blender 框架中，一个脚固定在某个位置，该位置会在生成的图像中保持不变；跳跃时的起跳、顶点和着陆并不会转化为另一种动作。对于行走和跑步，需要检查接触交替以及双臂在整个过程中的变化。
+3. **不变性：** 面部、发型、服装、颜色、比例、道具、摄像机和灯光在相邻生成的图像中保持稳定，除非用户有意为之而对其进行更改。
+   在侧面视图中，确认 Blender 的参考模型能够使得 near/far 的胳膊和腿清晰可辨（近侧采用正常亮度；远侧则暗约 10%–20%，并带有冷色调）。确认最终生成的帧使用的是角色原有的肢体颜色，而不是复制参考模型中的诊断性阴影。
+4. **时间顺序与衔接：** 图像的排列顺序遵循 `manifest.json` 的顺序。对于循环剪辑，需比较最终图像与下一个首映图像在身体运动及根位移方面的差异。重复的姿势可能会导致停顿；根位移的重置则可能导致跳跃。如果上述问题未能解决，请标记为“未验证”。
+
+记录故障的帧ID、匹配的Blender PNG文件、观察到的差异以及尝试进行的修正。使用该Blender PNG文件作为图像参考，并采用相同的外观指令，重新生成受影响的图像。如果缺陷来自源片段或缺失的动作，请询问用户该如何处理，而不是发明一个新的动作来源。

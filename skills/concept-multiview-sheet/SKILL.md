@@ -1,118 +1,102 @@
 ---
 name: concept-multiview-sheet
-description: Turn a single-view concept image, sketch, product design, vehicle, prop, or character reference into scoped orthographic construction views or a full inferred five- or six-view concept sheet with matching line art. Use when hidden views must be designed consistently for later modeling or visualization. Do not use to claim measured geometry, recover real dimensions, edit an existing 3D model, or produce a true topology wireframe.
+description: "依据单张概念图、草图、产品、车辆、道具或角色参考图，补充建模所需的正交视图，或制作完整的五／六视图设计稿和对应线稿。适用于后续建模或可视化需要一致的隐藏面设计时。隐藏结构属于推定。实测尺寸、现有模型编辑和真实网格拓扑线框需要相应的测量或建模工具。"
 ---
 
-# Concept Multiview Sheet
+<a id="concept-multiview-sheet"></a>
 
-Expand one visible design into a coherent inferred design sheet. Preserve observed evidence, make hidden-view assumptions explicit, and never present generated geometry or dimensions as recovered facts.
+# 概念图转建模多视图
 
-For reconstruction from a photograph or existing design, use the [source-fidelity workflow](references/source-fidelity.md) first. Faithful preservation of observed identity is the default; design exploration is a separate user-selected goal. Source fidelity and cross-view consistency are independent gates: either can fail while the other looks convincing.
+从单张参考图补出相互一致的设计视图。保留原图可观察到的特征，明确标记隐藏结构的推定和未决之处。从照片或现有设计制作模型时，先按[原图忠实度流程](references/source-fidelity.md)核对主体身份。除非用户明确要求重新设计，否则以忠实还原为目标。原图忠实度与跨视图一致性分别验收。
 
-## Boundaries
+<a id="boundaries"></a>
 
-- This is generative design completion, not photogrammetry or geometric reconstruction.
-- A single image underdetermines depth, back-side construction, attachments, symmetry, and scale. Label these as inferred or unknown.
-- Keep the evidence labels explicit: **Observed** comes from the source, **Inferred** completes hidden design, and **Unknown** remains unresolved.
-- “Line art” means clean design/technical contours and panel lines. A true topology wireframe must come from a 3D model; hand that request to `blender-python-modeling`.
-- If the user needs manufacturing, assembly, fit, or dimensionally accurate views, require measurements/CAD/multiple calibrated views instead of inventing them.
-- Use the built-in image generation tool by default. Use a CLI/API fallback only when the user explicitly requests or confirms it.
+## 适用边界
 
-## Choose the requested deliverable
+- 本流程用于补全设计。单图无法确定深度、背面结构、附件、对称性和实际尺度。
+- 在记录中区分**已观察**（来自原图）、**推定**（对隐藏设计的解释）和**未知**（证据仍不充分）。
+- 线稿用于表达设计轮廓、面板边线和结构。要求真实拓扑线框时，交给 `blender-python-modeling` 从三维模型生成。
+- 制造、装配、配合或精确尺寸需要实测、CAD 或经过校准的多视图。
+- 默认使用内置图像生成工具。只有用户明确要求或确认时才使用 CLI 或 API 替代。
 
-For a construction handoff, first identify which view would change an actual modeling decision. Reuse source views that already constrain the region, generate only the missing controlling views, and review the selected set for source fidelity and cross-view consistency. Hand off separate views, anchors and explicit allowed regions. Make presentation line art only when requested or needed to clarify a constraint. If an existing coherent blockout can explain hidden geometry, use its orthographic renders as model-derived evidence and keep their provenance distinct from the source.
+<a id="choose-the-requested-deliverable"></a>
 
-### Character accessories in construction views
+## 根据用途选择交付内容
 
-Apply this decision to the first neutral-pose image and carry it through all later views, detail crops and line art. Inventory accessories visible in the source or explicitly requested. Record count, side, attachment and which body landmarks each covers. Character role, style or an unseen back is insufficient evidence to invent equipment. With no evidenced or requested prop, generate the character alone.
+用于建模时，先明确哪张视图会影响实际建模决策。复用能约束目标区域的原图，只补缺少的控制方向，逐一审查原图忠实度和跨视图一致性。交付独立视图、锚点和允许建模的范围。只有用户需要展示线稿或线稿有助于解释约束时才制作。已有一致的粗模可用于解释隐藏关系时，可使用其正交渲染，但应标明其模型来源。
 
-- Keep integral costume features and unobtrusive identity details in place, including a tied sash, its observed short ends and a hair tie. Preserve their observed length and number. An unclear rear attachment does not justify extra trailing ribbons.
-- For a detachable item that hides the hands, face, neck, torso outline or limb gaps in any controlling view, use a character-only construction set and, when the item belongs in the deliverable, generate its own isolated reference from the original or an identified crop. Keep the same item configuration in every panel of each set. Preserve the assembled source or an assembly detail with the side, relative scale, overlap and attachment landmarks needed to position it later. Label newly exposed body surfaces as inferred.
-- If a defining garment is integral, or the requested pose specifically shows the item worn or held, retain the assembled view. Add a scoped unobstructed body or attachment detail only where modeling needs it. Label the subject and allowed regions of each file; an item sheet controls the item, and an assembled reference controls placement.
+<a id="character-accessories-in-construction-views"></a>
 
-Use the [accessory prompt clauses](references/prompt-recipes.md#accessory-scope-for-character-construction) and review the actual panels for additions, omissions and occlusion [before modeling](references/pre-model-review.md).
+### 人物施工图中的配饰
 
-### Follow-up from Blender
+从第一张中立姿势图到后续多视图、特写与线稿，都应沿用同一配饰清单。登记原图可见或用户指定的物品、数量、佩戴侧、连接点及遮挡的特征。仅凭角色职业、风格或不可见背面不能推断出额外装备。无依据且未要求的道具不添加。
 
-When modeling or refinement reveals an unclear region, accept the original image, approved views, region and specific question (for example, where a strap attaches behind the shoulder). Generate the missing direction or detail crop at the established pose, orientation and anchors. Return the actual image and its generation record with hashed outputs so the specific Blender finding can be reopened and tested. Preserve approved panels. Compare the supplement with the original and adjoining regions, label hidden construction as inferred, and return its view, crop, provenance and reviewed scope. Blender resumes the affected region and refreshes its comparisons. Independent regions may proceed while the supplement is unresolved.
+- 保留一体服装和能识别角色的细节，包括腰结、原图中可见的短带尾和发绳。数量、长度按原图；背部连接不清不能作为增加飘带的依据。
+- 可拆物品若在控制视图中遮住脸、手、颈、躯干轮廓或四肢间隙，生成人物独立施工图。物品属于交付范围时，以原图或已标识的局部为依据另生成物品图。每套图内保持同一构型，另留穿戴原图或装配特写，记录侧别、相对尺度、遮挡和连接点。去掉物品后露出的身体表面属于推定。
+- 若服装是角色的标志性一体结构，或用户明确要求持物／穿戴姿势，保留整体视图。仅在建模需要时补无遮挡的身体或连接特写。标明每份文件的主体及控制范围；物品图约束物品，装配图约束位置。
 
-## Default deliverable for a full design sheet
+按[配饰提示词](references/prompt-recipes.md#accessory-scope-for-character-construction)生成，并在[建模前](references/pre-model-review.md)查看实际图片，排查增添、遗漏和遮挡。
 
-Choose view count from symmetry before generation:
+<a id="follow-up-from-blender"></a>
 
-- For a bilaterally symmetric design, create five controlling views: front, one canonical side, back, top, and bottom.
-- For an asymmetric or uncertain design, create six controlling views: front, back, left, right, top, and bottom.
-- Add a three-quarter volume reference only when requested or materially useful. It is not a controlling dimensional view.
+### Blender 精修过程中补图
 
-Use a 4-row by 3-column layout rather than a very wide ten- or twelve-column strip.
+建模或精修发现局部不清时，接收原图、已通过的视图、目标部位和具体问题，例如肩带在肩后连到哪里。沿用已定姿态、方向和锚点，只补缺少的方向或局部，保留已通过面板。将补图与原图及邻区对照，标明隐藏结构的推定。返回图片、生成记录、输出哈希、视角、裁框、来源及已审范围。Blender 据此重开受影响的检查并复拍；其他独立区域可继续。
 
-Symmetric five-view layout:
+<a id="default-deliverable-for-a-full-design-sheet"></a>
 
-| | Column 1 | Column 2 | Column 3 |
+## 完整设计稿的默认布局
+
+先依据对称性确定视图数。左右对称有依据时采用五视图：正面、标准侧面、背面、顶面、底面。不对称或对称性未知时采用六视图，分别提供左右侧。仅按请求或在有助于理解体积时加四分之三视图，尺寸仍以控制视图为准。完整稿采用四行三列。
+
+| 对称设计 | 第一列 | 第二列 | 第三列 |
 |---|---|---|---|
-| Render row 1 | front | canonical side | back |
-| Render row 2 | top | bottom | optional three-quarter or blank |
-| Line row 1 | front | canonical side | back |
-| Line row 2 | top | bottom | optional matching three-quarter or blank |
+| 渲染第一行 | 正面 | 标准侧面 | 背面 |
+| 渲染第二行 | 顶面 | 底面 | 可选四分之三视图或留空 |
+| 线稿第一行 | 正面 | 标准侧面 | 背面 |
+| 线稿第二行 | 顶面 | 底面 | 对应斜视线稿或留空 |
 
-Asymmetric six-view layout:
-
-| | Column 1 | Column 2 | Column 3 |
+| 不对称设计 | 第一列 | 第二列 | 第三列 |
 |---|---|---|---|
-| Render row 1 | front | left | right |
-| Render row 2 | back | top | bottom |
-| Line row 1 | front | left | right |
-| Line row 2 | back | top | bottom |
+| 渲染第一行 | 正面 | 左侧 | 右侧 |
+| 渲染第二行 | 背面 | 顶面 | 底面 |
+| 线稿第一行 | 正面 | 左侧 | 右侧 |
+| 线稿第二行 | 背面 | 顶面 | 底面 |
 
-Keep the subject centered, fully visible, at one common orthographic scale, and aligned by stable semantic anchors across panels. Do not normalize each panel independently to its own bounding box when an appendage, weapon, tail, or other movable part changes the extent. Use a uniform solid isolation background that clearly contrasts with the subject: default to saturated magenta, but choose another high-contrast chroma colour when magenta appears prominently in the model. The background must remain distinct from every outer-edge colour and material so the silhouette is easy to identify or mask. Use orthographic-looking projection, subdued studio lighting on renders, and high-contrast line art below. Omit dimensions, branding, watermarks, decorative scenery, and prose unless requested.
+主体完整入画、居中，各面板共用正交比例和稳定锚点。尾巴、道具等改变包围框时保留共享尺度，避免分别缩放各张图。采用与主体全部外缘颜色和材质有足够区分度的纯色背景，默认高饱和洋红；主体含洋红时另选明度和色相都易区分的背景。渲染使用近似正交投影及柔和棚灯，线稿保持高对比度。仅按要求添加尺寸、商标、水印、场景或说明文字。
 
-For a directional subject, establish one canonical orientation before generation, for example “side and top views point nose-left, tail-right.” For a character or articulated object, read [references/pose-and-configuration-normalization.md](references/pose-and-configuration-normalization.md) and lock one modeling pose or mechanical configuration before generation. Every controlling view must depict that same state as if only the orthographic camera moved; never re-pose a limb, joint, tail, wing, control surface, door, or tool to improve visibility in one panel.
+为有朝向的主体先确定基准方向，例如“侧面和顶面均头朝画面左、尾朝右”。有活动部件或关节时，按[姿态与构型规范](references/pose-and-configuration-normalization.md)锁定姿态。移动正交相机取得各面，不因某张图遮挡而移动四肢、关节、尾、翼、操纵面、门或工具。
 
-Choose the pose for its downstream use, not merely for cross-view consistency. For reusable/riggable character modeling (including unspecified character-model requests), first prepare and review a neutral bind-pose design image, then generate its multiviews. Use humanoid A/T pose or quadruped four-foot standing rest as anatomy requires. Preserve a seated/action original separately as appearance evidence; a perfectly consistent seated sheet still does not serve as the neutral construction sheet. Honor explicitly fixed-pose/static deliverables without forcing a second pose.
+可复用、需要绑定或用途未指定的角色，先审阅中立绑定姿势，再生成同姿态视图。人形选 A/T 姿势，四足动物用自然站立姿势，按解剖结构调整。坐姿或动作原图另作外观和表演依据。用户指定静态或固定姿势时保留该姿势。
 
-Before detailed modeling, apply the [pre-model review](references/pre-model-review.md) to the actual generated panels and record `passed`, `partial`, or `blocked` with source hashes, controlling regions and conflicts. A partial set authorizes only its explicit allowed regions; repair critical conflicts before shaping affected geometry. A later model render cannot certify an omitted pre-model review.
+精模开始前，对实际生成图执行[建模前审阅](references/pre-model-review.md)，连同源哈希、区域、冲突和状态 `passed`、`partial` 或 `blocked` 一起记录。部分通过只授权明确列出的区域。事后渲染模型不能补证建模前的审阅。
 
-Treat normalization readiness explicitly:
+- **仅供预览**：披露后可保留轻微姿态、构型、比例或锚点漂移。
+- **可用于 Blender 粗模**：姿态和构型、轴向、地面或原点、语义锚点和正交尺度均须通过一致性检查。未通过时仅作设计参考。
 
-- **Preview-only:** small pose, configuration, scale, or anchor drift may remain if disclosed.
-- **Blender-blockout-ready:** pose/configuration, axes, ground or origin, semantic anchors, and orthographic scale must pass the consistency review. If they do not, deliver the sheet only as design evidence.
+<a id="workflow"></a>
 
-## Workflow
+## 工作流程
 
-1. **Inspect the input.** Treat the source as a reference image, not an edit target. If it exists only as a local file, load it with `view_image` before generation. Record whether it is front, side, rear, top, or three-quarter/perspective.
-2. **Separate evidence from invention.** Read [references/inference-contract.md](references/inference-contract.md) and [source fidelity](references/source-fidelity.md). Record the original hashes and critical observed identity/shape/count/attachment invariants before generation. Distinguish reconstruction from deliberate redesign; never silently substitute a generic subject.
-3. **Choose view count and fidelity.** For construction, choose the smallest set that constrains the required regions. For a full sheet, use five views only when bilateral symmetry is supported or explicitly chosen. Use six for other full sheets. Default to one coherent interpretation. Generate alternatives only when hidden structure has multiple materially different plausible solutions or the user asks for variants.
-4. **Generate the rendered view set.** Use the input image as a design reference. Before prompting, inspect the subject palette and choose a single solid isolation-background colour. Prefer saturated magenta; if it overlaps the subject palette, choose a strongly separated colour in both hue and value. Keep controlling views coherent. For a full sheet, generate the five or six views together in a 2×3 render sheet. For construction, generate the missing views against the trusted anchors and camera conventions. Apply [references/prompt-recipes.md](references/prompt-recipes.md).
+1. **检查输入。** 将原图作为设计依据。若仅有本地文件，生成前用 `view_image` 查看。记录原图是正面、侧面、背面、顶面还是四分之三／透视视图。
+2. **登记依据。** 阅读[推定规则](references/inference-contract.md)与[原图忠实度](references/source-fidelity.md)。生成前登记原图哈希和识别主体所需的形状、数量、连接等可见特征。区分忠实还原与用户主动选择的重新设计。
+3. **决定视图数和目标。** 建模只补能约束目标部位的方向。完整图集在有依据或用户选定左右对称时用五视图，其他情况用六视图。默认采用一种一致的解释；隐藏结构有实质不同的合理方案，或用户要求变体时，再提供其他方案。
+4. **生成渲染视图。** 以输入图为依据，先看主体配色，再确定整套的纯色分离背景。完整稿在同一张两行三列图中生成五或六个渲染面板。建模图根据可信锚点和相机约定补面。参见[提示词配方](references/prompt-recipes.md)。在精模之前明确投影预期，例如竖直的花盘、车轮和盾牌从上、下方看应以薄边为主，朝上的宽面从顶面看应宽、侧面看应缩短。仅标记 TOP 不足以证明投影正确，生成线稿前须审查。
+5. **出线稿前审图。** 发髻等朝向敏感的部件应在实际视图上标出特征点，执行[方向校验](references/consistency-review.md#directional-landmarks)。将生成区域与原图对照，填写[原图忠实度记录](assets/source-fidelity-review-template.json)。再独立检查跨视图的数量、位置、轮廓、比例、色块、对称性、方向、姿态、构型、锚点、尺度和投影。控制视图存在冲突时重新生成或做一次有明确目标的修改。
+6. **按需合成图集。** 固定已通过的渲染图，分别生成匹配线稿，再组合成四行三列。线稿漂移时降为补充证据，或从已审粗模提取轮廓；避免生成伪拓扑网格。
+7. **验收。** 按[跨视图一致性审阅](references/consistency-review.md)逐项检查，按[建模前审阅](references/pre-model-review.md)交接。每次只纠正一个明确问题。继续编辑若使其他部件漂移且无法改善，应停止该轮图像修改。
+8. **交付。** 预览任务可直接展示图像。项目任务保存原图、生成图、生成记录、原图忠实度及多视图审阅。进入建模时提供独立完整视图或准确裁框、标签、共用尺度和原点、锚点及每个区域的可靠性与冲突。分别报告原图忠实度、一致性和校准状态。由 Blender 技能建立参考工作区并实际核查导入后的配准。
 
-   For an image-then-model task, do this before detailed geometry; later model renders are verification, not a substitute for omitted design references. State projection expectations explicitly: a vertical flower disk, wheel or shield reads edge-on from top/bottom; broad upward-facing surfaces read broadly from above and foreshorten from the side. Labeling a panel TOP does not make it a top projection. Review these constraints before generating line art.
-5. **Review before line art.** For direction-sensitive features such as a tilted hair bun, annotate the actual panels and apply the [directional landmark check](references/consistency-review.md#directional-landmarks) before approving their modeling scope. First compare actual generated regions with the original source and fill the [source-fidelity receipt](assets/source-fidelity-review-template.json). Then separately check part count, placement, silhouette, proportions, colour blocking, symmetry, orientation, pose/configuration, anchor alignment, scale and projection across views. A coherent redesign is not a fidelity pass; a faithful-looking front is not a whole-sheet pass. Regenerate or make one targeted edit if a controlling inconsistency remains.
-6. **Create the combined sheet if requested.** Preserve approved render panels as immutable sources. Generate matching line art separately and assemble the 4×3 layout without regenerating the accepted render rows. If line art drifts, keep it supplemental or derive contours from a reviewed blockout. Do not ask for a dense fake topology mesh.
-7. **Validate.** Apply the applicable checks in [references/consistency-review.md](references/consistency-review.md) and use [pre-model review](references/pre-model-review.md) for the construction handoff. Iterate with one explicit correction at a time; stop when further image edits cause component drift rather than improvement.
-8. **Deliver and hand off.** For preview-only work, display the result inline. For project work, preserve original/generated images, generation-record, source-fidelity review and multiview review. When modeling follows, provide separate uncropped views (or exact crop regions), labels, shared scale/origin, anchors, per-region reliability and conflicts. Report source fidelity separately from consistency and calibration. The Blender Skill establishes and visually checks its imported workspace before geometry; a generated sheet alone is not a calibrated setup.
+<a id="escalate-to-a-model-backed-sheet"></a>
 
-## Escalate to a model-backed sheet
+## 转入基于实际模型的视图制作
 
-Use `blender-python-modeling` after this Skill when the user needs:
+需要严格的跨视图剪影、真实拓扑线框、可控尺寸、可动画网格、多轮无漂移修改，或 `.blend`、GLB、FBX、OBJ、STL 时，交给 `blender-python-modeling`。把生成图作为推定依据，制作规范姿态粗模，渲染真实正交相机，比较剪影，再用模型轮廓或线框替换生成线稿。
 
-- strict cross-view silhouette consistency;
-- a real topology wireframe;
-- controllable dimensions or animation-ready geometry;
-- repeated revisions without visual drift;
-- exportable `.blend`, GLB, FBX, OBJ, or STL output.
+向 `blender-python-modeling` 交接时注明已观察、推定、未知和相互矛盾的区域。针对孤立的 AI 描绘错误，依据原图及一致的解剖或机械关系做最小修正。证据不足且不同选择会实质影响设计时，请用户判断。
 
-In that handoff, treat the generated sheet as inferred design evidence. Build a normalized blockout, render actual orthographic cameras, compare silhouettes, and replace image-generated line art with contours or wireframe derived from the same model.
+<a id="completion-report"></a>
 
-Do not force a model to reproduce an isolated AI depiction error. Pass observed/inferred/unknown distinctions and contradictory regions to `blender-python-modeling`, where source evidence and coherent anatomy/mechanics guide local corrections. If materially different plausible designs cannot be distinguished, request human judgment on that choice; otherwise record the smallest reasoned correction and continue.
+## 完成报告
 
-## Completion report
-
-Report:
-
-- source-view classification;
-- final sheet and render-only paths when saved;
-- canonical orientation and symmetry assumption;
-- normalized pose or mechanical configuration, coordinate convention, and alignment anchors;
-- which views control which regions and which side is canonical;
-- the most consequential inferred features and unresolved unknowns;
-- whether the line art is image-generated or model-derived;
-- whether the result is preview-only or Blender-blockout-ready, including any normalization conflicts that prevent the latter label.
+报告原图视角、最终图集与单独渲染图路径、标准朝向和对称性假设、姿态或构型、坐标约定及锚点。说明各视图控制的区域、采用哪个侧面、关键推定与未知项、线稿来源，以及图集仅供预览还是可进入 Blender 粗模。若不能用于粗模，列出具体冲突。

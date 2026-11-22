@@ -56,3 +56,9 @@ Keep `multiview-review.json` beside the project references. Minimum two-guide ex
 View roles are `controlling`, `supplemental`, or `rejected`. Each conflict records `severity` (`critical`/`local`), `status` (`resolved`/`unresolved`), `finding`, affected `regions`, and a `resolution` when resolved. For a partial review, `build_regions` in the Blender reference config must explicitly select an allowed subset. Critical unresolved regions must be blocked; global failures use `blocked` readiness.
 
 Image/artifact paths above resolve relative to the review file. Guide paths resolve relative to the Blender config. With `blender-python-modeling` installed, `scripts/reference_review.py <reference-setup.json>` checks source hashes, evidence declarations, view roles and permitted scope. Its workspace helper applies this before importing multiple guides. The checker does not judge image contents, decide anatomy or prove that a builder used the declared scope honestly; inspect the actual reference and mesh.
+
+## Character and item handoff
+
+In the existing structure finding, compare each actual panel with the accessory inventory and its assigned subject. Check item count, side and length, especially at the back, hands and garment edges. Inspect body landmarks with the whole panel visible. An invented item, a missing integral feature, or a prop covering a required landmark reopens the affected view and region. Correct that panel or generate the missing separate view, then repeat source and cross-view checks. Keep unaffected reviewed regions available.
+
+For split deliveries, list the character views, each separate item reference, and the assembled source or placement crop with their controlling regions. Verify the item can be placed using the recorded side, attachment and relative scale. An intentionally absent detachable item is accounted for by this mapping; it must not silently disappear from the project inventory.

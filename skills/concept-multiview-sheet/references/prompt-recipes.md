@@ -101,3 +101,11 @@ When hidden structure materially affects the design, create separate complete sh
 - optional short note explaining the assumption changed.
 
 Each variant must remain internally consistent. Do not use `n` variants as a substitute for distinct prompts when the hidden-design assumptions differ.
+
+## Accessory scope for character construction
+
+Fill the item names from source observations and explicit requests. Apply the same clause to neutral-pose generation, all controlling views and subsequent corrections.
+
+- **Character pass:** “Show the character alone in the agreed pose. Keep <integral items, count, side, observed length>. Leave <separately referenced items> out of every panel, including the back. Keep the hands and <named silhouette or joint landmarks> readable. Retain <visible tie or attachment point>. Add no other props or decorative extensions.” For a tied waist sash, describe the knot and the actual ends visible in the source.
+- **Item pass, when needed:** “Using <source crop>, show only <item> against the isolation background in <needed views>. Preserve its observed shape, colours and asymmetry. Exclude the figure, hands, mannequin and other items.” Record scale relative to a visible character landmark separately; framing an isolated object to fill its panel changes apparent scale.
+- **Targeted correction:** “In <panel>, remove the extra <item> crossing <landmark>. Preserve <approved garment feature>, the pose, joint locations, scale and other panels.” If intentional removal exposes an unseen surface, mark that region inferred in the handoff.

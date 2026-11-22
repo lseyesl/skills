@@ -22,6 +22,16 @@ For reconstruction from a photograph or existing design, use the [source-fidelit
 
 For a construction handoff, first identify which view would change an actual modeling decision. Reuse source views that already constrain the region, generate only the missing controlling views, and review the selected set for source fidelity and cross-view consistency. Hand off separate views, anchors and explicit allowed regions. Make presentation line art only when requested or needed to clarify a constraint. If an existing coherent blockout can explain hidden geometry, use its orthographic renders as model-derived evidence and keep their provenance distinct from the source.
 
+### Character accessories in construction views
+
+Apply this decision to the first neutral-pose image and carry it through all later views, detail crops and line art. Inventory accessories visible in the source or explicitly requested. Record count, side, attachment and which body landmarks each covers. Character role, style or an unseen back is insufficient evidence to invent equipment. With no evidenced or requested prop, generate the character alone.
+
+- Keep integral costume features and unobtrusive identity details in place, including a tied sash, its observed short ends and a hair tie. Preserve their observed length and number. An unclear rear attachment does not justify extra trailing ribbons.
+- For a detachable item that hides the hands, face, neck, torso outline or limb gaps in any controlling view, use a character-only construction set and, when the item belongs in the deliverable, generate its own isolated reference from the original or an identified crop. Keep the same item configuration in every panel of each set. Preserve the assembled source or an assembly detail with the side, relative scale, overlap and attachment landmarks needed to position it later. Label newly exposed body surfaces as inferred.
+- If a defining garment is integral, or the requested pose specifically shows the item worn or held, retain the assembled view. Add a scoped unobstructed body or attachment detail only where modeling needs it. Label the subject and allowed regions of each file; an item sheet controls the item, and an assembled reference controls placement.
+
+Use the [accessory prompt clauses](references/prompt-recipes.md#accessory-scope-for-character-construction) and review the actual panels for additions, omissions and occlusion [before modeling](references/pre-model-review.md).
+
 ### Follow-up from Blender
 
 When modeling or refinement reveals an unclear region, accept the original image, approved views, region and specific question (for example, where a strap attaches behind the shoulder). Generate the missing direction or detail crop at the established pose, orientation and anchors. Return the actual image and its generation record with hashed outputs so the specific Blender finding can be reopened and tested. Preserve approved panels. Compare the supplement with the original and adjoining regions, label hidden construction as inferred, and return its view, crop, provenance and reviewed scope. Blender resumes the affected region and refreshes its comparisons. Independent regions may proceed while the supplement is unresolved.

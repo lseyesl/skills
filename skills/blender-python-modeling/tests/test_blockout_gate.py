@@ -48,6 +48,34 @@ class BlockoutTests(unittest.TestCase):
         with self.assertRaises((ValueError, RuntimeError)):
             self.require()
 
+    def test_shoe_baseline_and_count_do_not_cover_local_shape(self):
+        module = self.plan['modules'][0]
+        module['reference_parts'] = {'footwear': ['front', 'right']}
+        module['checks'][0].update(view='front', criterion='Both shoes touch ground')
+        module['checks'].append(dict(id='count', kind='visual', view='right', criterion='Count shoes'))
+        with self.assertRaisesRegex(ValueError, 'footwear/front, footwear/right'):
+            validate_plan(self.plan)
+        module['checks'].append(dict(id='toe', kind='visual', view='front', local_shape='footwear',
+                                     criterion='Inspect toe width and instep opening'))
+        with self.assertRaisesRegex(ValueError, 'footwear/right'):
+            validate_plan(self.plan)
+        module['checks'].append(dict(id='heel', kind='visual', view='right', local_shape='footwear',
+                                     criterion='Compare heel height and sole thickness'))
+        validate_plan(self.plan)
+
+    def test_local_shape_requires_comparison_evidence(self):
+        module = self.plan['modules'][0]
+        module['reference_parts'] = {'footwear': ['front']}
+        module['checks'][0].update(view='front', local_shape='footwear', criterion='Inspect toe width')
+        self.sign()
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'crop comparison'):
+            self.record()
+        self.data['modules']['body']['checks']['silhouette']['evidence'][0]['role'] = 'local_comparison'
+        self.save()
+        self.record()
+        self.require()
+
     def test_draft_is_not_an_approval(self):
         self.data=make_review_draft(self.plan,['body'],self.state);self.save()
         with self.assertRaises(ValueError):self.record()

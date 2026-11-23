@@ -13,7 +13,10 @@
       ],
       "depends_on": [],
       "connections": "写明各部分是连续表面、独立部件还是附着件，并说明原因",
-      "control_views": ["front", "right"],
+      "control_views": [
+        "front",
+        "right"
+      ],
       "checks": [
         {
           "id": "proportions",
@@ -31,8 +34,28 @@
           "view": "right",
           "kind": "visual",
           "criterion": "填写参考图中前后两个部件、应露出的边界及可见范围；使用固定侧面镜头和分件纯色图复核"
+        },
+        {
+          "id": "footwear-front",
+          "kind": "visual",
+          "view": "front",
+          "local_shape": "footwear",
+          "criterion": "在同尺度正面裁图中比较鞋头宽高、左右鞋间隙、鞋口露脚背的范围和薄底贴合边。"
+        },
+        {
+          "id": "footwear-right",
+          "kind": "visual",
+          "view": "right",
+          "local_shape": "footwear",
+          "criterion": "在同尺度侧面裁图中从鞋尖追踪鞋面至鞋口，再看后跟高度与鞋底厚度；记录最明显偏差及其位置。"
         }
-      ]
+      ],
+      "reference_parts": {
+        "footwear": [
+          "front",
+          "right"
+        ]
+      }
     }
   ],
   "resource_budget": {

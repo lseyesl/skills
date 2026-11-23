@@ -17,7 +17,7 @@ description: "通过可复现的 Python（`bpy`）脚本和本地 `mcp-for-blend
 
 在项目的 `task-analysis.json` 或等效记录里写明事实、假设、方法、需保留的数据、基线和验收标准。共用输入只保存一份，各阶段引用相同的源哈希和证据。修复前先重现问题，再用相同镜头、比例和照明拍摄修改前后的局部。优化前先测基线，明确收益与允许的退化范围。局部动画编辑或已有兼容绑定可复用已有资产与参考。新建整模按下文准备参考。
 
-保留原图可见设计，根据对象、材质及姿态的常规结构补全遮挡部位。用户指定的例外只适用于其声明范围。粗模阶段应从能揭示遮挡关系的角度检查实际几何。见 [隐藏结构的解读](references/reference-image-analysis.md#complete-hidden-structure)。
+保留原图可见设计，根据对象、材质及姿态的常规结构补全遮挡部位。用户指定的例外只适用于其声明范围。完整着装角色在粗模清单中逐侧登记袖内与裙内的肢体支撑链，隐藏外衣检查肩到手、髋到脚的实际连接；源模型和交付文件均需保留已验收结构。按[衣下肢体检查](references/acceptance/blockout.md#covered-limbs)执行。见 [隐藏结构的解读](references/reference-image-analysis.md#complete-hidden-structure)。
 
 创建参考模型前先完成 [参考准备](references/reference-preparation.md)。单图新建整模时，从粗模开始前就要备齐并审阅多视图；复用合适的已审视图，用原图实际调用 `concept-multiview-sheet` 补足缺失方向。单视图准备适用于限定范围的局部编辑。无参考、用户豁免或仅诊断均须如实登记；缺少必要准备时保留未通过状态。
 
@@ -73,7 +73,7 @@ description: "通过可复现的 Python（`bpy`）脚本和本地 `mcp-for-blend
 4. **检查 Blender。** MCP 工具缺失时按 [上游安装步骤](references/mcp-workflow.md#missing-mcp-install-the-upstream-integration-then-verify) 为实际客户端配置服务端和插件，核验连接后继续原阶段。依次调用 `get_addon_status`、`get_scene_info`，必要时用 `get_object_info` 查具体对象。连接失败按 [MCP工作流程](references/mcp-workflow.md) 有限重试，先检查进程，必要时用正常界面启动 Blender（可最小化），重试后才请求用户手动启动。不要用 `--background` 或 `-b` 恢复 MCP。若用户只需要脚本，可交付脚本并标明未执行。
 5. **初始化工作区。** 新建时激活任务专属空场景，按 Asset、Coarse、References、Studio 区分对象，移除默认启动对象。编辑时明确已有场景并检查，保留原有数据。确定归属、单位、轴向、范围，保存重开后核对活动场景。见 [制作工作区](references/production-workspace.md)。
 6. **建立参考工作区。** 将各视图导入专属集合，作为朝向对应正交轴的图像空物体。透明度可从 0.35–0.5 起调，设置前置显示和按面／轴可见性。校准中线、地面、原点、比例和特征点后锁定选择与变换。可靠性不足的视图只作补充。实际查看可见参考的正面和侧面截图，并保留打包的图像及校准、解读记录。仅在无视觉参考或用户明确豁免时跳过；无法运行 Blender 时如实标记未执行。
-7. **规划建模。** 按模块记录表示方法、选型依据、关联对象、连接、依赖及检查项。参考驱动任务在粗模前根据已审视图生成[逐视角清单](references/acceptance/blockout.md#reference-checklist)，登记部位、可见边界、遮挡关系和验收依据。用固定控制镜头复核所有关键项；发现偏差就修正几何并复拍受影响的视图，再进入精修。有配色目标时提前圈选材质样区，在材质试渲染时比较。完成诊断并按下表选择流程后，再设计层级、建模方法、修改器／节点、材质、灯光和输出约束。写明本轮目标阶段，不因实现困难擅自降低标准。
+7. **规划建模。** 按模块记录表示方法、选型依据、关联对象、连接、依赖及检查项。参考驱动任务在粗模前根据已审视图生成[逐视角清单](references/acceptance/blockout.md#reference-checklist)，先逐图盘点可辨部件，再把台账逐项对应到计划的模块、控制视角和可判断对错的局部形状条件。小部件登记同尺度特写，逐项核对轮廓、开口、厚度与相邻部件的连接或遮挡。用固定控制镜头复核所有关键项；发现偏差就修正几何并复拍受影响的视图，再进入精修。有配色目标时提前圈选材质样区，在材质试渲染时比较。完成诊断并按下表选择流程后，再设计层级、建模方法、修改器／节点、材质、灯光和输出约束。写明本轮目标阶段，不因实现困难擅自降低标准。
 8. **编写脚本。** 可从 [任务模板](assets/blender_task_template.py) 开始，拆分 `build_*`、`update_*`、`validate_*` 和按需使用的 `export_*`。按 [Python建模](references/python-modeling.md) 使用可靠的 `bpy` 写法，依据校准的特征点和轮廓确定坐标与比例。
 9. **分阶段执行。** 参考角色进入精模前，在已组装粗模上完成 [剪影对比](references/acceptance/blockout.md#参考角色的粗模剪影)。每个适用控制视角分别检查整身、脸型、颈部和躯干，保存叠图与粗模快照。构建、视觉审阅和精修分开运行，修改前将精修绑定到当前范围的审阅。按对象增加 [连接与空腔检查](references/procedures/modeling/containers-and-connections.md)。失败时诊断、局部修复、重新审阅，保留尝试并使旧证据失效。实际渲染预检后锁定比较设置。用简短的 `execute_blender_code` 引导代码加载脚本；大型任务按构建、绑定、验证、渲染分阶段检查前序版本和 MCP 原始错误。见 [分阶段执行](references/staged-execution.md) 和 [MCP工作流程](references/mcp-workflow.md)。
 10. **对照参考迭代。** 按 [固定镜头精修](references/fidelity-and-completion.md#fixed-camera-refinement-loop) 先审 组装后的整模，再选局部修改；扩大到相邻区域，最后整体精修。保留参考可见的视口截图，检查图像叠加、头部比例和肢体厚度。五官与发型使用 [固定镜头特征对比](references/fidelity-and-completion.md#fixed-camera-feature-comparison)，候选修改后再复拍。分析工具只作辅助。粗模、贴图前白模和最终导出都要在原图对应姿势和镜头下直接核查可见特征。生成正视图可辅助施工，原图可见特征仍须对照上传原图。新建整模在正式绘制、投射或烘焙贴图前先完成并冻结 [已审白模](references/fidelity-and-completion.md#clay-review-before-production-texturing)；早期风格试验限于局部。贴图后用相同镜头比较白模和材质渲染。按证据处理 AI 伪影；重大歧义需用户判断。根据实查更新模块状态和脚本。

@@ -32,6 +32,31 @@ def resource_limits(plan,stage):
         'require_closed':closed if stage!='blockout' else False,'min_triangle_area':area}
 
 
+def _check_local_shapes(module):
+    parts = module.get('reference_parts', {})
+    if not isinstance(parts, dict) or ('reference_parts' in module and not parts):
+        raise ValueError('reference_parts must map named parts to their control views')
+    required = set()
+    for part, views in parts.items():
+        if not isinstance(part, str) or not part.strip() or not isinstance(views, list) or not views:
+            raise ValueError('Each reference part needs a name and shape views')
+        for view in views:
+            if not isinstance(view, str) or not view.strip():
+                raise ValueError('Invalid shape view for ' + part)
+            required.add((part, view))
+    covered = set()
+    for check in module['checks']:
+        if 'local_shape' in check:
+            part = check['local_shape']
+            view = check.get('view')
+            if not isinstance(part, str) or check['kind'] != 'visual' or (part, view) not in required:
+                raise ValueError('Local shape check needs a declared part and view: ' + check['id'])
+            covered.add((part, view))
+    if required - covered:
+        missing = ', '.join(part + '/' + view for part, view in sorted(required - covered))
+        raise ValueError('Missing local shape check: ' + missing)
+
+
 def validate_plan(plan):
     plan=plan() if callable(plan) else plan
     if plan.get('schema_version')!=1 or not isinstance(plan.get('task_id'),str) or not plan['task_id'].strip():raise ValueError('Plan needs schema_version=1 and task_id')
@@ -66,6 +91,7 @@ def validate_plan(plan):
             missing = set(views) - covered
             if missing:
                 raise ValueError('Missing planned visual check for: ' + ', '.join(sorted(missing)))
+        _check_local_shapes(module)
         if 'world_dimensions' in module:
             dimensions=module['world_dimensions'];tolerance=module.get('dimension_tolerance')
             if not isinstance(dimensions,list) or len(dimensions)!=3 or any(type(v) not in (int,float) or not math.isfinite(v) or v<0 for v in dimensions):raise ValueError('Invalid expected world dimensions')
@@ -125,6 +151,8 @@ def _check_review(plan,scope,review,expected_signature):
                 raise ValueError('Review view differs from planned view: '+key)
             evidence=check.get('evidence')
             if not isinstance(evidence,list) or not evidence:raise ValueError('Actual evidence required: '+key)
+            if 'local_shape' in expected[key] and not any(ref.get('role') == 'local_comparison' for ref in evidence):
+                raise ValueError('Local shape needs a reference/model crop comparison: ' + key)
             for ref in evidence:
                 path=(review.parent/ref['path']).resolve()
                 if not path.is_relative_to(review.parent):raise ValueError('Evidence must stay within review artifact root')
@@ -140,7 +168,7 @@ def make_review_draft(plan,scope,state,dependencies=None):
     return {'schema_version':1,'task_id':plan['task_id'],'status':'pending','reviewer':None,
             'inspection_signature':review_signature(plan,scope,state,dependencies),
             'modules':{ident:{'unresolved_issues':['Not inspected yet'],'checks':{
-                c['id']:{'criterion':c['criterion'],'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
+                c['id']:{**({'local_shape': c['local_shape']} if 'local_shape' in c else {}),'criterion':c['criterion'],'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
                 for c in modules[ident]['checks']}} for ident in scope}}
 
 

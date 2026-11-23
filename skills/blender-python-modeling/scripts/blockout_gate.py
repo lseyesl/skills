@@ -58,6 +58,14 @@ def validate_plan(plan):
                 raise ValueError('A planned view needs a visual check and a named view')
             if check.get('kind') not in CHECK_KINDS or not isinstance(check.get('criterion'),str) or not check['criterion'].strip():raise ValueError('Check kind and criterion required')
         if not any(c['kind']=='visual' for c in checks):raise ValueError('A blockout needs actual visual inspection: '+ident)
+        if 'control_views' in module:
+            views = module['control_views']
+            if not isinstance(views, list) or not views or any(not isinstance(v, str) or not v.strip() for v in views):
+                raise ValueError('Declare the calibrated control views for module: ' + ident)
+            covered = {check.get('view') for check in checks if check['kind'] == 'visual'}
+            missing = set(views) - covered
+            if missing:
+                raise ValueError('Missing planned visual check for: ' + ', '.join(sorted(missing)))
         if 'world_dimensions' in module:
             dimensions=module['world_dimensions'];tolerance=module.get('dimension_tolerance')
             if not isinstance(dimensions,list) or len(dimensions)!=3 or any(type(v) not in (int,float) or not math.isfinite(v) or v<0 for v in dimensions):raise ValueError('Invalid expected world dimensions')
@@ -132,7 +140,7 @@ def make_review_draft(plan,scope,state,dependencies=None):
     return {'schema_version':1,'task_id':plan['task_id'],'status':'pending','reviewer':None,
             'inspection_signature':review_signature(plan,scope,state,dependencies),
             'modules':{ident:{'unresolved_issues':['Not inspected yet'],'checks':{
-                c['id']:{'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
+                c['id']:{'criterion':c['criterion'],'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
                 for c in modules[ident]['checks']}} for ident in scope}}
 
 

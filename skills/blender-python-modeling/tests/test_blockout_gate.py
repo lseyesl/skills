@@ -29,6 +29,25 @@ class BlockoutTests(unittest.TestCase):
         self.data['modules']['body']['checks']['silhouette']['view']='right'
         self.save();self.record();self.require()
 
+    def test_front_pass_cannot_clear_missing_or_failed_side_overlap(self):
+        module = self.plan['modules'][0]
+        module['control_views'] = ['front', 'right']
+        module['checks'][0]['view'] = 'front'
+        with self.assertRaisesRegex(ValueError, 'right'):
+            validate_plan(self.plan)
+        criterion = 'The sash knot and hanging end remain visible beyond the sleeve.'
+        module['checks'].append({'id': 'knot', 'kind': 'visual', 'view': 'right', 'criterion': criterion})
+        draft = make_review_draft(self.plan, ['body'], self.state)
+        self.assertEqual(draft['modules']['body']['checks']['knot']['criterion'], criterion)
+        self.sign()
+        checks = self.data['modules']['body']['checks']
+        checks['knot'] = dict(checks['silhouette'], view='right', status='failed', finding='Sleeve hides knot')
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'knot'):
+            self.record()
+        with self.assertRaises((ValueError, RuntimeError)):
+            self.require()
+
     def test_draft_is_not_an_approval(self):
         self.data=make_review_draft(self.plan,['body'],self.state);self.save()
         with self.assertRaises(ValueError):self.record()

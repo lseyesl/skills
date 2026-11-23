@@ -13,6 +13,7 @@
       ],
       "depends_on": [],
       "connections": "写明各部分是连续表面、独立部件还是附着件，并说明原因",
+      "control_views": ["front", "right"],
       "checks": [
         {
           "id": "proportions",
@@ -20,14 +21,16 @@
           "criterion": "填写实测尺寸或特征点，以及依据用途确定的容差"
         },
         {
-          "id": "silhouette",
+          "id": "silhouette-front",
+          "view": "front",
           "kind": "visual",
           "criterion": "按目标尺度检查控制视图、厚度和负空间"
         },
         {
-          "id": "connections",
+          "id": "overlap-right",
+          "view": "right",
           "kind": "visual",
-          "criterion": "检查连接和连续性；确属独立部件时，在 finding 中说明不适用的原因"
+          "criterion": "填写参考图中前后两个部件、应露出的边界及可见范围；使用固定侧面镜头和分件纯色图复核"
         }
       ]
     }

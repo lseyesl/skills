@@ -1776,7 +1776,8 @@
       ],
       "aliases": [
         "基础形体验收",
-        "blockout acceptance"
+        "blockout acceptance",
+        "逐视角定位与遮挡清单"
       ],
       "applies_when": [
         "选定模块进入细化前检查"

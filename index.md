@@ -22,7 +22,7 @@
 
 | 技能 | 适用场景与交付 |
 |---|---|
-| [concept-multiview-sheet](skills/concept-multiview-sheet/SKILL.md) | 从单视图补足建模所需的控制视图，或生成完整五／六视图设计稿；先独立验收原图忠实度，再检查跨视图一致性，合格后制作线稿；隐藏视图属于设计推测，不代表实测几何或真实拓扑。 |
+| [concept-multiview-sheet](skills/concept-multiview-sheet/SKILL.md) | 从参考图生成同一对象的建模多视图；类人主体采用 A pose，遮挡结构的配件可拆分出图，建模中可单独补局部多视图。分别检查原图忠实度与跨视图一致性，标注隐藏面的推定。 |
 | [shadow-puppet-image](skills/shadow-puppet-image/SKILL.md) | 生成或修正皮影角色概念图，约束平面分件、搭接与遮挡；交付静态参考，不替代独立组件制作、绑定或活动验证。 |
 | [shadow-puppet-part-splitter](skills/shadow-puppet-part-splitter/SKILL.md) | 从参考图经局部标注／编译制作镜头所需的最少二维素材，装配动作和单点道具挂接、逐帧连续预览并局部返修；支持装配诊断和已有素材确定性处理，按需绑定与补全。 |
 

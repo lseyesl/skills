@@ -3,6 +3,33 @@
   "note": "Curated seed cases; test split is held aside by convention, not an independently collected blind benchmark.",
   "queries": [
     {
+      "id": "multiview-humanoid-pose",
+      "query": "类人 A pose",
+      "task": "create",
+      "expected": [
+        "concept-multiview-sheet.reference.688bc77c5aba"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "multiview-local-structure",
+      "query": "局部结构多视图",
+      "task": "create",
+      "expected": [
+        "concept-multiview-sheet.overview"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "multiview-separate-accessory",
+      "query": "大型配件独立多视图",
+      "task": "create",
+      "expected": [
+        "concept-multiview-sheet.overview"
+      ],
+      "split": "dev"
+    },
+    {
       "id": "hand-zh",
       "query": "握拳塌陷",
       "task": "repair",

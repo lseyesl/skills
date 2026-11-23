@@ -17,7 +17,9 @@
         "局部控制视图",
         "建模中补图",
         "人物配饰分图",
-        "独立道具参考"
+        "独立道具参考",
+        "大型配件独立多视图",
+        "局部结构多视图"
       ],
       "applies_when": [
         "用户目标符合本 Skill 的入口描述"
@@ -96,7 +98,10 @@
       "subjects": [],
       "aliases": [
         "Pose and Configuration Normalization",
-        "pose and configuration normalization"
+        "pose and configuration normalization",
+        "类人 A pose",
+        "非人形建模构型",
+        "机械正投影"
       ],
       "applies_when": [
         "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
@@ -122,7 +127,12 @@
       "subjects": [],
       "aliases": [
         "Pre-model multiview review",
-        "pre model review"
+        "pre model review",
+        "拆件跨视图比例",
+        "肩带侧面间隙",
+        "掌心朝向",
+        "贴背面双肩带漏画",
+        "三视图深度配准"
       ],
       "applies_when": [
         "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"

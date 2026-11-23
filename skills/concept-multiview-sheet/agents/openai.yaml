@@ -1,4 +1,4 @@
 interface:
   display_name: "概念多视图"
   short_description: "从单张概念图补充建模视角，或生成五／六视图"
-  default_prompt: "使用 $concept-multiview-sheet 保留参考图中可观察的主体特征并补充正交视图。分别审阅原图忠实度和跨视图一致性，两项均通过后再生成对应线稿。"
+  default_prompt: "使用 $concept-multiview-sheet 把原图中的同一对象转成建模多视图，保留比例、材质和标志性细节。类人主体采用 A pose，根据遮挡拆出配件，结构不清时补局部多视图。"

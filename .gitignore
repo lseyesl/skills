@@ -1,10 +1,16 @@
+.DS_Store
+.planning/
 .tmp/
 .venv/
 __pycache__/
+output/
 outputs/
 
 # Local evaluation runs and generated artifacts (keep reusable tests/fixtures tracked).
 /evals/runs/
+# Legacy local symlink to the fox run. Keep a real assets directory trackable.
+/assets
+!/assets/
 /evals/generated-guide-modeling-v1/
 /evals/image-to-3d-round2/
 /evals/reference-routing-and-fidelity-v1/

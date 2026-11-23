@@ -48,6 +48,8 @@ def require_design_review(config, base):
     readiness = review.get('readiness')
     if readiness not in {'passed', 'partial', 'blocked'}:
         raise ValueError('Readiness must be passed, partial, or blocked')
+    if readiness != 'passed':
+        raise RuntimeError(f'Reference set {readiness}; finish whole-set review before Blender import')
     statuses = []
     for key in CHECKS:
         item = review.get('checks', {}).get(key, {})
@@ -55,9 +57,9 @@ def require_design_review(config, base):
         if status not in {'passed', 'partial', 'blocked'} or not _text(item.get('finding')):
             raise ValueError(key + ': missing inspected finding/status')
         statuses.append(status)
-    if readiness == 'blocked' or 'blocked' in statuses:
-        raise RuntimeError('Reference set blocked; repair or use diagnostic-only blockout outside this build gate')
-    if readiness == 'passed' and any(x != 'passed' for x in statuses):
+    if 'blocked' in statuses:
+        raise RuntimeError('Reference set blocked; repair the reference set before import')
+    if any(x != 'passed' for x in statuses):
         raise ValueError('Passed review cannot conceal partial checks')
     allowed = _regions(review.get('allowed_regions'), 'allowed_regions')
     blocked = review.get('blocked_regions', [])
@@ -76,30 +78,25 @@ def require_design_review(config, base):
         if conflict['status'] == 'resolved':
             if not _text(conflict.get('resolution')):
                 raise ValueError('Resolved conflict needs the selected evidence and rationale')
-        elif conflict['severity'] == 'critical':
-            regions = _regions(conflict.get('regions'), 'critical conflict regions')
-            if readiness != 'partial' or not all(
-                    any(x == y or x.startswith(y + '.') for y in blocked) for x in regions):
-                raise ValueError('Critical unresolved regions must be explicitly blocked in a partial review')
-    if readiness == 'passed' and blocked:
+        else:
+            raise ValueError('Passed review cannot have unresolved construction conflicts')
+    if blocked:
         raise ValueError('Passed review cannot have blocked regions')
-    if any(_overlap(a, b) for a in allowed for b in blocked):
-        raise ValueError('Allowed scope overlaps a blocked region, including parent/child scope')
     requested = config.get('build_regions')
-    if readiness == 'partial':
-        requested = _regions(requested, 'build_regions for a partial review')
-    elif requested is not None:
-        requested = _regions(requested, 'build_regions')
-    else:
-        requested = allowed
+    requested = allowed if requested is None else _regions(requested, 'build_regions')
     for region in requested:
-        if any(_overlap(region, x) for x in blocked):
-            raise RuntimeError('Build touches blocked region: ' + region)
         if not any(region == a or region.startswith(a + '.') for a in allowed):
             raise RuntimeError('Build exceeds reviewed scope: ' + region)
     review_views = review.get('views', {})
     if not isinstance(review_views, dict):
         raise ValueError('Review views must be an object')
+    required = review.get('required_views', list(views))
+    if not isinstance(required, list) or not required or not all(_text(name) for name in required):
+        raise ValueError('required_views must list the planned construction views')
+    for name in required:
+        item = review_views.get(name)
+        if not isinstance(item, dict) or item.get('role') != 'controlling':
+            raise RuntimeError('Missing approved required view: ' + name)
     for name, item in review_views.items():
         if not isinstance(item, dict) or item.get('role') not in {'controlling', 'supplemental', 'rejected'}:
             raise ValueError(name + ': explicit view role required')

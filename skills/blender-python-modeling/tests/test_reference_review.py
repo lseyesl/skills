@@ -42,35 +42,22 @@ class DesignReviewTests(unittest.TestCase):
     def test_single_ordinary_reference_does_not_need_multiview_receipt(self):
         self.assertIsNone(require_design_review({'views': {'front': {}}}, self.root))
 
-    def test_partial_can_continue_independent_body(self):
+    def test_partial_blocks_even_independent_build_region(self):
         self.review.update(readiness='partial', allowed_regions=['body'], blocked_regions=['head'])
-        self.review['checks']['proportions']['status'] = 'partial'
-        self.review['conflicts'] = [{'severity': 'critical', 'status': 'unresolved',
-                                    'regions': ['head'], 'finding': 'Nose heights conflict'}]
         self.config['build_regions'] = ['body']
-        self.assertEqual(self.run_review()['build_regions'], ['body'])
-        self.config['build_regions'] = ['head.muzzle']
-        with self.assertRaises(RuntimeError): self.run_review()
+        with self.assertRaisesRegex(RuntimeError, 'partial'):
+            self.run_review()
 
-    def test_parent_scope_cannot_bypass_blocked_child(self):
-        self.review.update(readiness='partial', allowed_regions=['head.skull'], blocked_regions=['head.muzzle'])
-        self.config['build_regions'] = ['head']
-        with self.assertRaises(RuntimeError): self.run_review()
+    def test_required_view_missing_even_when_omitted_from_import(self):
+        self.review['required_views'] = ['front', 'right', 'back']
+        with self.assertRaisesRegex(RuntimeError, 'back'):
+            self.run_review()
 
-    def test_allowed_parent_cannot_hide_blocked_child(self):
-        self.review.update(readiness='partial', blocked_regions=['head.muzzle'])
-        self.config['build_regions'] = ['body']
-        with self.assertRaises(ValueError): self.run_review()
-
-    def test_critical_parent_conflict_requires_parent_block(self):
-        self.review.update(readiness='partial', allowed_regions=['head.skull'], blocked_regions=['head.muzzle'])
-        self.review['conflicts']=[{'severity':'critical','status':'unresolved','regions':['head'], 'finding':'Head pose is inconsistent'}]
-        self.config['build_regions']=['head.skull']
-        with self.assertRaises(ValueError): self.run_review()
-
-    def test_partial_requires_explicit_build_scope(self):
-        self.review['readiness'] = 'partial'
-        with self.assertRaises(ValueError): self.run_review()
+    def test_passed_set_with_local_conflict_is_rejected(self):
+        self.review['conflicts'] = [{'severity': 'local', 'status': 'unresolved',
+                                    'finding': 'Skirt front edge still exceeds tolerance'}]
+        with self.assertRaises(ValueError):
+            self.run_review()
 
     def test_critical_conflict_cannot_claim_pass(self):
         self.review['conflicts'] = [{'severity': 'critical', 'status': 'unresolved',

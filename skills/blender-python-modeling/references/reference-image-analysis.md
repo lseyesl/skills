@@ -38,7 +38,7 @@
 
 在对话中看到图像并不等同于拥有经过校准的建模参考。在构建基于参考的几何形状之前：
 
-首先，使用 [预模型审核](../../concept-multiview-sheet/references/pre-model-review.md) 查看多个构建视图。将检查结果、源哈希值、 view/region 权威信息和冲突决策保存在 `multiview-review.json` 中；在设置配置中将其命名为 `multiview_review`。辅助工具会在引导突变之前对其进行验证。对于 `partial` 的就绪性，请在允许的范围内指定 `build_regions`。不要将 否决、补充 面板作为尺寸引导导入，也不要默默地构建被阻塞的 face/joint.。现有的单一参考工作不需要人工的多视图记录；生成的图像-然后模型工作仍然遵循所需的图纸准备流程。
+首先，使用 [预模型审核](../../concept-multiview-sheet/references/pre-model-review.md) 查看多个构建视图。将检查结果、源哈希值、 view/region 权威信息和冲突决策保存在 `multiview-review.json` 中；在设置配置中将其命名为 `multiview_review`。辅助工具会在引导突变之前对其进行验证。遇到 `partial` 时退回多视图流程，整套通过后再导入。不要将 否决、补充 面板作为尺寸引导导入，也不要默默地构建被阻塞的 face/joint.。现有的单一参考工作不需要人工的多视图记录；生成的图像-然后模型工作仍然遵循所需的图纸准备流程。
 
 对于通用的程序化任务，可以使用[reference_workspace.py](../scripts/reference_workspace.py)和[可执行文件setup/build/review序列](reference-workspace-tool.md)。任务模板会在deleting/rebuilding旧几何图形之前调用其前提条件。导入的Image Empty是一种视觉引导工具，并非自动建模约束。
 建筑工人必须使用经过校准的 landmarks/profiles 或采用等效的测量拟合路径，然后将实际几何形状与这些指导标准进行比较。

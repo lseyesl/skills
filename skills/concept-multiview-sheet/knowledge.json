@@ -72,7 +72,9 @@
       "subjects": [],
       "aliases": [
         "Single-View Inference Contract",
-        "inference contract"
+        "inference contract",
+        "不对称清单",
+        "是否保留左右侧视图"
       ],
       "applies_when": [
         "当实际资产符合指南描述的任务和前提条件时，查阅本指南。"
@@ -134,6 +136,7 @@
         "贴背面双肩带漏画",
         "三视图深度配准",
         "轮廓标注修图",
+        "整套多视图验收交接",
         "裙摆前后缘偏差"
       ],
       "applies_when": [

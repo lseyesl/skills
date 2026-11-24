@@ -103,6 +103,20 @@ def validate_plan(plan):
             missing = set(views) - covered
             if missing:
                 raise ValueError('Missing silhouette check for: ' + ', '.join(sorted(missing)))
+        if 'build_steps' in module:
+            steps = module['build_steps']
+            if not isinstance(steps, list) or not steps:
+                raise ValueError('build_steps needs an ordered list of construction steps')
+            scheduled = set()
+            for step in steps:
+                if not isinstance(step, dict) or not isinstance(step.get('action'), str) or not step['action'].strip():
+                    raise ValueError('Construction step needs an action: ' + ident)
+                refs = step.get('check_ids')
+                if not isinstance(refs, list) or not refs or any(not isinstance(ref, str) or ref not in check_ids for ref in refs):
+                    raise ValueError('Construction step needs existing check IDs: ' + ident)
+                scheduled.update(refs)
+            if scheduled != check_ids:
+                raise ValueError('Unscheduled construction checks: ' + ', '.join(sorted(check_ids - scheduled)))
         _check_local_shapes(module)
         if 'world_dimensions' in module:
             dimensions=module['world_dimensions'];tolerance=module.get('dimension_tolerance')

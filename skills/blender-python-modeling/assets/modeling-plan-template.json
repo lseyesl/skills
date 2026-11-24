@@ -132,6 +132,27 @@
           "view": "back",
           "local_shape": "footwear",
           "criterion": "在脚跟高度作背面裁图，比较袜口、后跟宽度与转折、浅底收边；侧面另核鞋口前低后高和露脚背轮廓。"
+        },
+        {
+          "id": "crossed-collar-front",
+          "kind": "visual",
+          "view": "front",
+          "local_shape": "crossed-collar",
+          "criterion": "标出两侧颈根与胸前交点，对照开口深度、其中可见的皮肤或内衣，沿上襟追到下襟边缘消失处。"
+        },
+        {
+          "id": "crossed-collar-right",
+          "kind": "visual",
+          "view": "right",
+          "local_shape": "crossed-collar",
+          "criterion": "在参考可见段从后颈经肩前追踪近侧领面的内外缘，比较颈根与肩前的投影宽度，核对领面转入胸前的位置。"
+        },
+        {
+          "id": "neck-opening-front",
+          "kind": "visual",
+          "view": "front",
+          "local_shape": "crossed-collar",
+          "criterion": "加领片前用正面纯色图对齐颈根与开口底点，确认两点之间露出的皮肤或内衣与参考相符。"
         }
       ],
       "reference_parts": {
@@ -155,8 +176,68 @@
         ],
         "upper-back": [
           "back"
+        ],
+        "crossed-collar": [
+          "front",
+          "right"
         ]
-      }
+      },
+      "build_steps": [
+        {
+          "action": "建立头身、颈肩和衣下肢体，按整身基线检查支撑与比例。",
+          "check_ids": [
+            "proportions"
+          ]
+        },
+        {
+          "action": "裁出上衣开口，在裸露颈肩与前衣片组装状态下核对开口。",
+          "check_ids": [
+            "neck-opening-front"
+          ]
+        },
+        {
+          "action": "铺内外襟，组装腰带、袖口与手，复核交点、肩背及遮挡。",
+          "check_ids": [
+            "crossed-collar-front",
+            "crossed-collar-right",
+            "upper-back-back",
+            "overlap-right",
+            "hand-left-front",
+            "hand-left-palm-side",
+            "hand-right-front",
+            "hand-right-palm-side"
+          ]
+        },
+        {
+          "action": "在头坯上组装发层，复查脸侧与后颈露出范围。",
+          "check_ids": [
+            "hair-front",
+            "hair-right",
+            "hair-back"
+          ]
+        },
+        {
+          "action": "用脚和鞋共用的截面调整足部，再穿上鞋检查各向轮廓。",
+          "check_ids": [
+            "foot-sock-shoe-fit",
+            "footwear-front",
+            "footwear-right",
+            "footwear-back"
+          ]
+        },
+        {
+          "action": "合回整身，用固定相机复核剪影并重查衣襟、手和鞋受邻件遮挡的范围。",
+          "check_ids": [
+            "silhouette-front",
+            "silhouette-right",
+            "silhouette-back",
+            "crossed-collar-front",
+            "crossed-collar-right",
+            "overlap-right",
+            "footwear-front"
+          ]
+        }
+      ]
     }
   ],
   "resource_budget": {

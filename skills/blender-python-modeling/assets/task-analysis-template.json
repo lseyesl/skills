@@ -30,7 +30,12 @@
     "path": null,
     "scope": [],
     "review_receipt": null,
-    "reuse_reason": null
+    "reuse_reason": null,
+    "project_brief": {
+      "reference_inputs": [],
+      "style_target": null,
+      "milestones": []
+    }
   },
   "scene": {
     "mode": null,

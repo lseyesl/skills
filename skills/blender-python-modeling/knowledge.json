@@ -35,7 +35,7 @@
     },
     {
       "id": "blender.hand-construction",
-      "title": "静态与可变形人手制作、静止堆指修正",
+      "title": "静态与可变形人手制作、蓝本风格化与静止堆指修正",
       "entry": "references/procedures/characters/hand-construction.md",
       "kind": "procedure",
       "tasks": [

@@ -21,7 +21,7 @@ description: "通过可复现的 Python（`bpy`）脚本和本地 `mcp-for-blend
 
 创建参考模型前先完成 [参考准备](references/reference-preparation.md)。单图新建整模时，从粗模开始前就要备齐并审阅多视图；复用合适的已审视图，用原图实际调用 `concept-multiview-sheet` 补足缺失方向。单视图准备适用于限定范围的局部编辑。无参考、用户豁免或仅诊断均须如实登记；缺少必要准备时保留未通过状态。
 
-选择有代表性的局部试验，使用已有的分阶段校验流程执行，独立验收并回归检查其他能力。失败时回查与结果相矛盾的诊断。专项流程包括 [手部建模](references/procedures/characters/hand-construction.md)、[手部形变](references/procedures/characters/hand-deformation.md)、[车轮建模](references/procedures/vehicles/wheel-construction.md)、[车轮运动](references/procedures/vehicles/wheel-motion.md) 和 [骨骼绑定与蒙皮](references/procedures/characters/rigging-and-skinning.md)。逐指建模的角色应在粗模阶段分别检查双手及摆姿后的手指体积，静态角色也适用。这些流程的适用范围仍需实际任务和视觉证据验证。
+选择有代表性的局部试验，使用已有的分阶段校验流程执行，独立验收并回归检查其他能力。失败时回查与结果相矛盾的诊断。专项流程包括 [手部建模](references/procedures/characters/hand-construction.md)、[手部形变](references/procedures/characters/hand-deformation.md)、[车轮建模](references/procedures/vehicles/wheel-construction.md)、[车轮运动](references/procedures/vehicles/wheel-motion.md) 和 [骨骼绑定与蒙皮](references/procedures/characters/rigging-and-skinning.md)。新建人形角色手部默认以 [v10 右手蓝本](assets/hands/Hand-R-v10.blend) 参考结构和动作，再按角色设计调整比例、造型与材质。逐指建模的角色应在粗模阶段分别检查双手及摆姿后的手指体积，静态角色也适用。这些流程的适用范围仍需实际任务和视觉证据验证。
 
 <a id="blockout-before-refinement"></a>
 

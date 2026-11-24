@@ -32,15 +32,21 @@ class BlockoutTests(unittest.TestCase):
     def test_front_pass_cannot_clear_missing_or_failed_side_overlap(self):
         module = self.plan['modules'][0]
         module['control_views'] = ['front', 'right']
-        module['checks'][0]['view'] = 'front'
+        module['checks'][0].update(view='front', silhouette=True)
         with self.assertRaisesRegex(ValueError, 'right'):
             validate_plan(self.plan)
         criterion = 'The sash knot and hanging end remain visible beyond the sleeve.'
         module['checks'].append({'id': 'knot', 'kind': 'visual', 'view': 'right', 'criterion': criterion})
+        with self.assertRaisesRegex(ValueError, 'Missing silhouette check for: right'):
+            validate_plan(self.plan)
+        module['checks'].append(dict(id='profile', kind='visual', view='right', silhouette=True,
+                                     criterion='Trace the chin and heel in profile'))
         draft = make_review_draft(self.plan, ['body'], self.state)
         self.assertEqual(draft['modules']['body']['checks']['knot']['criterion'], criterion)
         self.sign()
         checks = self.data['modules']['body']['checks']
+        checks['silhouette']['evidence'][0]['role'] = 'silhouette_overlay'
+        checks['profile'] = dict(checks['silhouette'], view='right', finding='The heel aligns in profile')
         checks['knot'] = dict(checks['silhouette'], view='right', status='failed', finding='Sleeve hides knot')
         self.save()
         with self.assertRaisesRegex(ValueError, 'knot'):
@@ -62,6 +68,33 @@ class BlockoutTests(unittest.TestCase):
         module['checks'].append(dict(id='heel', kind='visual', view='right', local_shape='footwear',
                                      criterion='Compare heel height and sole thickness'))
         validate_plan(self.plan)
+
+    def test_profile_cannot_reuse_front_criterion_or_finding(self):
+        module = self.plan['modules'][0]
+        module['reference_parts'] = {'fans': ['front', 'right']}
+        front = module['checks'][0]
+        front.update(local_shape='fans', view='front', criterion='Fan folds are visible')
+        side = dict(front, id='side', view='right')
+        module['checks'].append(side)
+        with self.assertRaisesRegex(ValueError, 'Repeated criterion'):
+            validate_plan(self.plan)
+        side['criterion'] = 'Near fan exposes radial folds while the bun hides the far fan'
+        checks = self.data['modules']['body']['checks']
+        checks['silhouette']['evidence'][0]['role'] = 'local_comparison'
+        checks['side'] = dict(checks['silhouette'], view='right')
+        self.sign(); self.save()
+        with self.assertRaisesRegex(ValueError, 'Repeated finding'):
+            self.record()
+        checks['side']['finding'] = 'Near fan folds extend past bun edge in profile'
+        self.save(); self.record(); self.require()
+
+    def test_silhouette_requires_overlay_evidence(self):
+        self.plan['modules'][0]['checks'][0].update(view='front', silhouette=True)
+        self.sign(); self.save()
+        with self.assertRaisesRegex(ValueError, 'contour overlay'):
+            self.record()
+        self.data['modules']['body']['checks']['silhouette']['evidence'][0]['role'] = 'silhouette_overlay'
+        self.save(); self.record(); self.require()
 
     def test_local_shape_requires_comparison_evidence(self):
         module = self.plan['modules'][0]

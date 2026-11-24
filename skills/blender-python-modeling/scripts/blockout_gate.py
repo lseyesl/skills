@@ -32,6 +32,13 @@ def resource_limits(plan,stage):
         'require_closed':closed if stage!='blockout' else False,'min_triangle_area':area}
 
 
+def _remember_view_text(seen, part, view, text, field):
+    key = (part, ' '.join(text.split()).casefold())
+    previous = seen.setdefault(key, view)
+    if previous != view:
+        raise ValueError(f'Repeated {field} for {part} across {previous} and {view}')
+
+
 def _check_local_shapes(module):
     parts = module.get('reference_parts', {})
     if not isinstance(parts, dict) or ('reference_parts' in module and not parts):
@@ -44,6 +51,7 @@ def _check_local_shapes(module):
             if not isinstance(view, str) or not view.strip():
                 raise ValueError('Invalid shape view for ' + part)
             required.add((part, view))
+    criteria = {}
     covered = set()
     for check in module['checks']:
         if 'local_shape' in check:
@@ -51,6 +59,7 @@ def _check_local_shapes(module):
             view = check.get('view')
             if not isinstance(part, str) or check['kind'] != 'visual' or (part, view) not in required:
                 raise ValueError('Local shape check needs a declared part and view: ' + check['id'])
+            _remember_view_text(criteria, part, view, check['criterion'], 'criterion')
             covered.add((part, view))
     if required - covered:
         missing = ', '.join(part + '/' + view for part, view in sorted(required - covered))
@@ -79,6 +88,9 @@ def validate_plan(plan):
         for check in checks:
             if not isinstance(check.get('id'),str) or not check['id'].strip() or check['id'] in check_ids:raise ValueError('Missing/duplicate check ID')
             check_ids.add(check['id'])
+            if 'silhouette' in check and (check['silhouette'] is not True or check.get('kind') != 'visual'
+                                          or not check.get('view') or 'local_shape' in check):
+                raise ValueError('Silhouette needs a dedicated visual check with a view')
             if 'view' in check and (check.get('kind') != 'visual' or not isinstance(check['view'], str) or not check['view'].strip()):
                 raise ValueError('A planned view needs a visual check and a named view')
             if check.get('kind') not in CHECK_KINDS or not isinstance(check.get('criterion'),str) or not check['criterion'].strip():raise ValueError('Check kind and criterion required')
@@ -87,10 +99,10 @@ def validate_plan(plan):
             views = module['control_views']
             if not isinstance(views, list) or not views or any(not isinstance(v, str) or not v.strip() for v in views):
                 raise ValueError('Declare the calibrated control views for module: ' + ident)
-            covered = {check.get('view') for check in checks if check['kind'] == 'visual'}
+            covered = {check['view'] for check in checks if check.get('silhouette')}
             missing = set(views) - covered
             if missing:
-                raise ValueError('Missing planned visual check for: ' + ', '.join(sorted(missing)))
+                raise ValueError('Missing silhouette check for: ' + ', '.join(sorted(missing)))
         _check_local_shapes(module)
         if 'world_dimensions' in module:
             dimensions=module['world_dimensions'];tolerance=module.get('dimension_tolerance')
@@ -144,6 +156,7 @@ def _check_review(plan,scope,review,expected_signature):
         if result.get('unresolved_issues')!=[]:raise ValueError('Unresolved/undeclared issues: '+ident)
         expected={c['id']:c for c in modules[ident]['checks']};actual=result.get('checks',{})
         if set(actual)!=set(expected):raise ValueError('Missing/extra required checks: '+ident)
+        findings = {}
         for key,check in actual.items():
             if check.get('status')!='passed' or not isinstance(check.get('finding'),str) or not check['finding'].strip():raise ValueError('Unreviewed/failed check: '+key)
             if expected[key]['kind']=='visual' and not check.get('view'):raise ValueError('Visual check needs view identification')
@@ -151,6 +164,11 @@ def _check_review(plan,scope,review,expected_signature):
                 raise ValueError('Review view differs from planned view: '+key)
             evidence=check.get('evidence')
             if not isinstance(evidence,list) or not evidence:raise ValueError('Actual evidence required: '+key)
+            if expected[key].get('silhouette') and not any(ref.get('role') == 'silhouette_overlay' for ref in evidence):
+                raise ValueError('Silhouette needs a registered contour overlay: ' + key)
+            if 'local_shape' in expected[key] or expected[key].get('silhouette'):
+                part = ('part', expected[key]['local_shape']) if 'local_shape' in expected[key] else ('silhouette', ident)
+                _remember_view_text(findings, part, check['view'], check['finding'], 'finding')
             if 'local_shape' in expected[key] and not any(ref.get('role') == 'local_comparison' for ref in evidence):
                 raise ValueError('Local shape needs a reference/model crop comparison: ' + key)
             for ref in evidence:
@@ -168,7 +186,7 @@ def make_review_draft(plan,scope,state,dependencies=None):
     return {'schema_version':1,'task_id':plan['task_id'],'status':'pending','reviewer':None,
             'inspection_signature':review_signature(plan,scope,state,dependencies),
             'modules':{ident:{'unresolved_issues':['Not inspected yet'],'checks':{
-                c['id']:{**({'local_shape': c['local_shape']} if 'local_shape' in c else {}),'criterion':c['criterion'],'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
+                c['id']:{**({'silhouette': True} if c.get('silhouette') else {}),**({'local_shape': c['local_shape']} if 'local_shape' in c else {}),'criterion':c['criterion'],'status':'unknown','finding':'','evidence':[],**({'view':c.get('view','')} if c['kind']=='visual' else {})}
                 for c in modules[ident]['checks']}} for ident in scope}}
 
 

@@ -15,7 +15,8 @@
       "connections": "写明各部分是连续表面、独立部件还是附着件，并说明原因",
       "control_views": [
         "front",
-        "right"
+        "right",
+        "back"
       ],
       "checks": [
         {
@@ -27,7 +28,22 @@
           "id": "silhouette-front",
           "view": "front",
           "kind": "visual",
-          "criterion": "按目标尺度检查控制视图、厚度和负空间"
+          "criterion": "在正面整身双色叠图检查肩宽、袖缘、两脚间隙和左右裙摆最宽点。",
+          "silhouette": true
+        },
+        {
+          "id": "silhouette-right",
+          "view": "right",
+          "kind": "visual",
+          "silhouette": true,
+          "criterion": "沿额鼻、下颌、后脑到肩背追踪侧面轮廓，再核裙摆前后缘与鞋尖突出量。"
+        },
+        {
+          "id": "silhouette-back",
+          "view": "back",
+          "kind": "visual",
+          "silhouette": true,
+          "criterion": "从发髻外缘到肩斜、袖底、裙摆及两侧后跟追踪背面外轮廓。"
         },
         {
           "id": "overlap-right",
@@ -95,16 +111,39 @@
           "id": "foot-sock-shoe-fit",
           "kind": "structural",
           "criterion": "逐侧用脚与鞋的共用截面检查脚跟落位、足底支承、前掌宽厚、趾端余量及袜口接合，保存剖视或透明叠图；按结果共同调整脚与鞋。"
+        },
+        {
+          "id": "hair-back",
+          "kind": "visual",
+          "view": "back",
+          "local_shape": "hair",
+          "criterion": "按背面参考从冠顶追踪中轴和分叉到颈上收边，逐条比对构成主要折面的走向与交点；轮廓相符时仍检查内部折面。"
+        },
+        {
+          "id": "upper-back-back",
+          "kind": "visual",
+          "view": "back",
+          "local_shape": "upper-back",
+          "criterion": "从左右后领端追到肩根，再从肩到腰带上缘，观察接合缝、意外透底及内收转折。"
+        },
+        {
+          "id": "footwear-back",
+          "kind": "visual",
+          "view": "back",
+          "local_shape": "footwear",
+          "criterion": "在脚跟高度作背面裁图，比较袜口、后跟宽度与转折、浅底收边；侧面另核鞋口前低后高和露脚背轮廓。"
         }
       ],
       "reference_parts": {
         "footwear": [
           "front",
-          "right"
+          "right",
+          "back"
         ],
         "hair": [
           "front",
-          "right"
+          "right",
+          "back"
         ],
         "hand-left": [
           "front",
@@ -113,6 +152,9 @@
         "hand-right": [
           "front",
           "palm-side"
+        ],
+        "upper-back": [
+          "back"
         ]
       }
     }

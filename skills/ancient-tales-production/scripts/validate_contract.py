@@ -4,6 +4,7 @@ import importlib.util
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -71,11 +72,38 @@ def validate_review(review):
 
 def preflight(root, route, contract):
     runtime = load_module('handoff_runtime', PIPELINE / 'runtime.py')
-    runtime.skills(SimpleNamespace(project=str(root), action='check', source=None))
     lock = runtime.read(root / 'skills.lock.json')
-    locked = {entry['name'] for entry in lock['skills']}
-    if not set(route['skills']).issubset(locked):
-        raise ValueError('Selected route Skills are not installed and locked')
+    if set(lock) == {'source_repository'}:
+        repository = 'https://github.com/lseyesl/skills'
+        if lock['source_repository'] != repository:
+            raise ValueError('Unexpected floating Skills repository')
+        link = root / '.agents/skills'
+        skill_root = link.resolve()
+        if link.parent.is_symlink() or not link.is_symlink() or skill_root != SKILL.parent:
+            raise ValueError('Run the validator from the project linked Skills checkout')
+        source = skill_root.parent
+        try:
+            checkout = runtime.git_bytes(source, 'rev-parse', '--show-toplevel').decode('utf-8').strip()
+            origin = runtime.git_bytes(source, 'remote', 'get-url', 'origin').decode('utf-8').strip()
+        except subprocess.CalledProcessError as exc:
+            raise ValueError('Floating Skills link must point to a Git checkout with an origin') from exc
+        if Path(checkout).resolve() != source or skill_root.name != 'skills':
+            raise ValueError('Floating Skills link must point to the checkout skills directory')
+        if origin.rstrip('/').removesuffix('.git') not in (
+            repository, 'git@github.com:lseyesl/skills', 'ssh://git@github.com/lseyesl/skills',
+        ):
+            raise ValueError('Unexpected floating Skills origin')
+        registry = runtime.safe(source, 'skills.json')
+        catalog = runtime.dependencies.validate_registry(runtime.read(registry))
+        for name in runtime.dependencies.resolve(['ancient-tales-production', *route['skills']], catalog):
+            entry = runtime.safe(skill_root, f'{name}/SKILL.md')
+            if not entry.is_file() or not entry.read_text(encoding='utf-8').strip():
+                raise ValueError('Missing or empty route Skill: ' + name)
+    else:
+        runtime.skills(SimpleNamespace(project=str(root), action='check', source=None))
+        locked = {entry['name'] for entry in lock['skills']}
+        if not set(route['skills']).issubset(locked):
+            raise ValueError('Selected route Skills are not installed and locked')
     capabilities = contract.get('capabilities', {})
     if not isinstance(capabilities, dict):
         raise ValueError('Capabilities must be an object')

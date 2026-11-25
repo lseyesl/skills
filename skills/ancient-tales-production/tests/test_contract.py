@@ -2,8 +2,10 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('validate_contract', Path(__file__).resolve().parents[1] / 'scripts/validate_contract.py')
 validator = importlib.util.module_from_spec(spec); spec.loader.exec_module(validator)
@@ -119,6 +121,46 @@ class ContractTests(unittest.TestCase):
         validator.validate_contract(self.root, self.contract, True)
         (folder / 'SKILL.md').write_text('locally edited')
         with self.assertRaisesRegex(ValueError, 'modified'): validator.validate_contract(self.root, self.contract, True)
+
+    def test_preflight_checks_floating_route_and_its_dependencies(self):
+        source = self.root / 'checkout'
+        skill_root = source / 'skills'
+        dependency = skill_root / 'helper/SKILL.md'
+        provider = skill_root / 'query-obsidian/SKILL.md'
+        production = skill_root / 'ancient-tales-production/SKILL.md'
+        for entry in (dependency, provider, production):
+            entry.parent.mkdir(parents=True)
+            entry.write_text('Skill entry', encoding='utf-8')
+        self.proof('checkout/skills.json', {'schema_version': 1, 'skills': {
+            'ancient-tales-production': {'directory': 'skills/ancient-tales-production'},
+            'helper': {'directory': 'skills/helper'},
+            'query-obsidian': {'directory': 'skills/query-obsidian', 'requires': ['helper']},
+        }})
+        repository = 'https://github.com/lseyesl/skills'
+        self.proof('skills.lock.json', {'source_repository': repository})
+        git = ['git', '-C', str(source)]
+        subprocess.run([*git, 'init', '-q'], check=True)
+        subprocess.run([*git, 'remote', 'add', 'origin', repository], check=True)
+        link = self.root / '.agents/skills'
+        link.parent.mkdir()
+        try:
+            link.symlink_to(skill_root, target_is_directory=True)
+        except OSError as exc:
+            self.skipTest(f'Cannot create a directory symlink: {exc}')
+        self.contract.update(route_id='knowledge-query', asset_unit='source-evidence')
+        with (
+            patch.object(validator, 'routes', return_value=validator.routes()),
+            patch.object(validator, 'SKILL', production.parent.resolve()),
+        ):
+            result = validator.validate_contract(self.root, self.contract, True)
+            self.assertTrue(result['environment_checked'])
+            self.assertFalse(result['approval_granted'])
+            dependency.unlink()
+            with self.assertRaisesRegex(ValueError, 'route Skill: helper'):
+                validator.validate_contract(self.root, self.contract, True)
+            subprocess.run([*git, 'remote', 'set-url', 'origin', 'https://example.com/skills'], check=True)
+            with self.assertRaisesRegex(ValueError, 'Unexpected floating Skills origin'):
+                validator.validate_contract(self.root, self.contract, True)
 
 
 if __name__ == '__main__':

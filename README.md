@@ -16,6 +16,8 @@
 
 ## 安装到项目
 
+以下命令适用于固定版本安装。使用浮动检出的项目（例如 Ancient Tales Blender）按项目自己的 `AGENTS.md` 和 `tools/manage.py skills setup/check` 接入。
+
 需要 Python 3.10+ 和 Git。先把本库克隆到独立的源码目录，而不是把整个仓库嵌套进某个客户端的单个 Skill 目录：
 
 ```powershell

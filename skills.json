@@ -17,10 +17,16 @@
       "optional": [],
       "external": [{"name": "hf", "kind": "tool", "when": "仅用于明确启用 HF 传输的制作仓库"}]
     },
+    "animation-principles": {
+      "directory": "skills/animation-principles",
+      "requires": [],
+      "optional": [],
+      "external": []
+    },
     "blender-python-modeling": {
       "directory": "skills/blender-python-modeling",
       "requires": [],
-      "optional": ["concept-multiview-sheet", "blender-styles"],
+      "optional": ["animation-principles", "concept-multiview-sheet", "blender-styles"],
       "external": [
         {"name": "Blender >=4.5", "kind": "tool", "when": "操作或渲染 Blender 场景"},
         {"name": "mcp-for-blender", "kind": "tool", "when": "建模流程需要实时控制 Blender 时"},
@@ -44,7 +50,7 @@
     "continuous-action": {
       "directory": "skills/continuous-action",
       "requires": [],
-      "optional": ["blender-python-modeling"],
+      "optional": ["animation-principles", "blender-python-modeling"],
       "external": [
         {"name": "Blender", "kind": "tool", "when": "从随附的 A.blend 渲染动作关键帧"},
         {"name": "image generation", "kind": "tool", "when": "依据已核验的关键帧参考生成角色动作帧"},
@@ -54,7 +60,7 @@
     "shadow-puppet-animation": {
       "directory": "skills/shadow-puppet-animation",
       "requires": [],
-      "optional": ["shadow-puppet-image", "shadow-puppet-part-splitter", "blender-python-modeling", "ancient-tales-production"],
+      "optional": ["animation-principles", "shadow-puppet-image", "shadow-puppet-part-splitter", "blender-python-modeling", "ancient-tales-production"],
       "external": [
         {"name": "image generation", "kind": "tool", "when": "生成或编辑角色、场景、道具及不同状态的概念图"},
         {"name": "FFmpeg", "kind": "tool", "when": "提取参考帧，检查媒体或进行编码"},

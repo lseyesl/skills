@@ -37,6 +37,7 @@
 
 | 技能 | 适用场景与交付 |
 |---|---|
+| [animation-principles](skills/animation-principles/SKILL.md) | 审查关键姿势、节奏、轨迹与跟随动作，按帧定位偏差并复核调整结果。 |
 | [continuous-action](skills/continuous-action/SKILL.md) | 基于内置 Blender 动作库生成连贯角色动作图或精灵序列，交付参考帧、生成帧、映射与连续性检查。可用动作以运行时目录为准；不静默替换缺失动作。 |
 
 这些能力可独立使用，也可按制作契约协作。工具技术通过只作为验收证据，不直接推进影片 Gate 或批准资产。

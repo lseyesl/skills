@@ -4,6 +4,10 @@
 
 <a id="direct-keyframes"></a>
 
+制作或修复动画时，可按[节奏与帧间距](../../animation-principles/references/motion-review.md#timing)及[运动弧线](../../animation-principles/references/motion-review.md#paths)定位异常帧，再检查对应控制器、关键帧与 F-Curve。
+
+有接触约束和柔性附属件的镜头可按[关键姿势与逐帧推进](../../animation-principles/references/motion-review.md#pose-workflow)先排主体动作，再处理自由部件。蒙皮或缩放导致轮廓跳变时，按[跨帧体积检查](../../animation-principles/references/motion-review.md#volume)核对相邻姿势。
+
 ## 直接插入关键帧
 
 对于对象变换和标量属性，直接插入关键帧比使用用户界面操作更为稳定：

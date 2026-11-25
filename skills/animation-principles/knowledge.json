@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "animation-principles.overview",
+      "title": "动画原则与动作审查",
+      "entry": "SKILL.md",
+      "kind": "overview",
+      "tasks": [
+        "animate",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "动画原则",
+        "审片"
+      ],
+      "applies_when": [
+        "需挑选或审阅动作姿势、节拍或轨迹"
+      ],
+      "exclude_when": [
+        "仅制作静态资产"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    },
+    {
+      "id": "animation-principles.motion-review",
+      "title": "按帧诊断动作与节奏",
+      "entry": "references/motion-review.md",
+      "kind": "knowledge",
+      "tasks": [
+        "animate",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "预备动作",
+        "跟随动作",
+        "帧间距",
+        "运动弧线",
+        "镜头焦点",
+        "关键姿势与逐帧推进",
+        "次要表演的删减测试",
+        "跨帧体积",
+        "材质形变",
+        "表演夸张",
+        "单变量表演对照",
+        "动作表现角色性格",
+        "接触缓冲",
+        "分部位缓入缓出",
+        "挤压与拉伸",
+        "轮廓相切"
+      ],
+      "applies_when": [
+        "需挑选或审阅动作姿势、节拍或轨迹"
+      ],
+      "exclude_when": [
+        "仅制作静态资产"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
+    }
+  ],
+  "excluded_paths": {}
+}

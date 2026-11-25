@@ -66,6 +66,10 @@ description: 基于参考片制作和审阅中国皮影风格的二维／2.5D动
 
 固定二维镜头优先用实际角色做短排练。把递物或衔取写成“接近 → 夹持 → 移动 → 释放”四段，执行 [道具挂接与接触检查](references/contact-audit.md#从关键帧到道具挂接)。单一握点用拆件工具的 `pins` 驱动独立道具的平移，随后用渲染实际消费的姿态做量测。需要双手约束、转轴跟随或动态遮挡时才交由目标后端求解。换正式资产后重放同一时间范围。
 
+排演转身、甩袖等镜头时，可按[跟随与重叠](../animation-principles/references/motion-review.md#overlap)标记主动作和随动件的起止帧，再用皮影的支点与搭接范围检验调整。
+
+递物、对视等表演在交付尺寸下做[镜头焦点检查](../animation-principles/references/motion-review.md#staging)。眼神或手势与主要事件同时发生时，可做[次要表演的删减测试](../animation-principles/references/motion-review.md#secondary-action)。
+
 ## 5. 场景、镜头、声音与合成
 
 在正式镜头内复核轮廓、视线、活动区域、遮挡、水线／地面和字幕安全区。二维舞台感不排斥层次与景别变化；相机运动必须帮助说明行动或关系。

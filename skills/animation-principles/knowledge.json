@@ -66,6 +66,38 @@
       "verification": [],
       "conditions": {},
       "status": "experimental"
+    },
+    {
+      "id": "animation-principles.shot-review",
+      "title": "镜头编排与成片诊断",
+      "entry": "references/shot-review.md",
+      "kind": "knowledge",
+      "tasks": [
+        "animate",
+        "inspect"
+      ],
+      "subjects": [],
+      "aliases": [
+        "空间层次",
+        "相机运动",
+        "画面转场",
+        "多动作编排",
+        "持续循环",
+        "情绪设计",
+        "按症状排查",
+        "运动不适"
+      ],
+      "applies_when": [
+        "多主体、运镜或剪辑影响事件可读性，或需定位情绪与节奏偏差"
+      ],
+      "exclude_when": [
+        "仅制作静态资产"
+      ],
+      "required_facts": [],
+      "requires": [],
+      "verification": [],
+      "conditions": {},
+      "status": "experimental"
     }
   ],
   "excluded_paths": {}

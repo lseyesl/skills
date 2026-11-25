@@ -11,6 +11,8 @@ description: 审查角色动作的姿势可读性、预备与收势、节奏与�
 
 角色动作趋同时，用[同一动作的性格对照](references/motion-review.md#personality)比较伸手、接触和收势的节拍。动作正确却读不清意图时，按[表演夸张的单变量对照](references/motion-review.md#exaggeration)单独试验停顿或姿势幅度。
 
+多角色交接、相机运动、转场和循环按[整段镜头指南](references/shot-review.md)排演。情绪读错或观看不适时从[成片症状](references/shot-review.md#diagnosis)定位原因。
+
 记录镜头、帧段、所见现象、预期意图和具体调整。修改后按相同镜头与速度回放，核对原问题、相邻接触和循环接缝（如适用）。刻意的突停、机械直线和皮影顿挫按表演设计判断。
 
 原则选题参考 Dylan Tarre 的 [Animation Principles](https://github.com/dylantarre/animation-principles/tree/83597134ba8ff59838270f94d7ac7282ffa3b54d/skills/11-by-principle-focus)。[上游 MIT 许可](LICENSE-upstream)

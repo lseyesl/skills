@@ -8,6 +8,8 @@
 
 有接触约束和柔性附属件的镜头可按[关键姿势与逐帧推进](../../animation-principles/references/motion-review.md#pose-workflow)先排主体动作，再处理自由部件。蒙皮或缩放导致轮廓跳变时，按[跨帧体积检查](../../animation-principles/references/motion-review.md#volume)核对相邻姿势。
 
+运镜或切镜影响动作辨读时，按[空间层次与转场](../../animation-principles/references/shot-review.md#space)对照固定机位与交付镜头。
+
 ## 直接插入关键帧
 
 对于对象变换和标量属性，直接插入关键帧比使用用户界面操作更为稳定：

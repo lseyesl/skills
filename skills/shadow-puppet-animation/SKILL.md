@@ -70,6 +70,8 @@ description: 基于参考片制作和审阅中国皮影风格的二维／2.5D动
 
 递物、对视等表演在交付尺寸下做[镜头焦点检查](../animation-principles/references/motion-review.md#staging)。眼神或手势与主要事件同时发生时，可做[次要表演的删减测试](../animation-principles/references/motion-review.md#secondary-action)。
 
+双人或群戏按[多动作编排](../animation-principles/references/shot-review.md#sequence)定道具归属与焦点交接，按[情绪排演](../animation-principles/references/shot-review.md#emotion)核对动机变化。
+
 ## 5. 场景、镜头、声音与合成
 
 在正式镜头内复核轮廓、视线、活动区域、遮挡、水线／地面和字幕安全区。二维舞台感不排斥层次与景别变化；相机运动必须帮助说明行动或关系。

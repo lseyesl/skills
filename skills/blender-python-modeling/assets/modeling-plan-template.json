@@ -138,7 +138,7 @@
           "kind": "visual",
           "view": "front",
           "local_shape": "crossed-collar",
-          "criterion": "标出两侧颈根与胸前交点，对照开口深度、其中可见的皮肤或内衣，沿上襟追到下襟边缘消失处。"
+          "criterion": "逐件单显追踪两襟和本层交点，检查领缘连续；同机位合穿核对开口深度、内领露出段与遮挡者，再隐藏外衣确认被遮段在内衣上接续。"
         },
         {
           "id": "crossed-collar-right",
@@ -190,13 +190,13 @@
           ]
         },
         {
-          "action": "裁出上衣开口，在裸露颈肩与前衣片组装状态下核对开口。",
+          "action": "按参考盘点衣件，双层交领由内到外逐件裁出开口，沿各自完整领口铺设领面。",
           "check_ids": [
             "neck-opening-front"
           ]
         },
         {
-          "action": "铺内外襟，组装腰带、袖口与手，复核交点、肩背及遮挡。",
+          "action": "单显各件衣检查本层左右襟，再合穿并组装腰带、袖口与手，复核层间遮挡。",
           "check_ids": [
             "crossed-collar-front",
             "crossed-collar-right",

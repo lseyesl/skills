@@ -259,6 +259,33 @@
         "blender.realtime-optimization"
       ],
       "split": "dev"
+    },
+    {
+      "id": "shot-transfer",
+      "query": "双人递信时看不清信交给了谁",
+      "task": "animate",
+      "expected": [
+        "animation-principles.shot-review"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "shot-orchestration",
+      "query": "多动作编排",
+      "task": "produce",
+      "expected": [
+        "animation-principles.shot-review"
+      ],
+      "split": "dev"
+    },
+    {
+      "id": "shot-cut",
+      "query": "切镜后认不出道具归属",
+      "task": "repair",
+      "expected": [
+        "animation-principles.shot-review"
+      ],
+      "split": "dev"
     }
   ]
 }

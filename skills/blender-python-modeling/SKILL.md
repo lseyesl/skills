@@ -48,7 +48,7 @@ description: "通过可复现的 Python（`bpy`）脚本和本地 `mcp-for-blend
 - Blender 4.5.12 LTS 是已测试基线。使用依赖版本的功能前查阅 [版本兼容性](references/compatibility.md)，并核实当前 4.x 或 5.x 环境。
 - 宿主侧参考图工具使用本技能的 uv 项目（`uv run --project <skill-dir> ...`）。不要向 Blender 自带或用户全局 Python 安装 OpenCV、NumPy。
 - 先生成设计图再建模时，主动用 `concept-multiview-sheet` 补控制视图并审查姿态、投影。需要完整图集时使用五或六视图。单张照片新建整模应在粗模前补方向；简单编辑或用户明确豁免时可跳过。生成的隐藏面标记为推定。存在问题的图集仅供预览，事后模型渲染不能补证建模前的审阅。
-- 第一张建模参考图生成前确定角色用途和绑定／静止姿势。可复用角色或用途未指定时，默认采用解剖结构适合的中立姿态，如人体 A/T 姿势、四足站姿，四肢分开、连接处清晰。坐姿或动作图保留为外观及表演参考，另生成并审查中立姿态的多视图。明确要求固定姿势或静态雕塑时保留该姿势。见 [角色交付](references/character-delivery.md#reference-and-rest-pose-before-modeling)；仍须实际检查绑定条件。
+- 第一张建模参考图生成前确定角色用途和绑定／静止姿势。可复用角色或用途未指定时，默认采用解剖结构适合的中立姿态，如人体 A/T 姿势、四足站姿，四肢分开、连接处清晰。坐姿或动作图保留为外观及表演参考，另生成并审查中立姿态的多视图。交给多视图技能时一并传递角色用途与选定姿势。明确要求固定姿势或静态雕塑时，从首图、侧面到粗模均保留该姿势。见 [角色交付](references/character-delivery.md#reference-and-rest-pose-before-modeling)；仍须实际检查绑定条件。
 - 建模前在 Blender 中搭建参考工作区。各图分别以沿对应轴摆放的图像空物体导入，校准比例和原点，设置透明度、前置显示和按轴可见性。在正面和侧面核查真实叠图；图像分析 JSON 或导入数量不足以证明校准。见 [参考图分析](references/reference-image-analysis.md)。
 - 导入多张施工视图前检查项目的 `multiview_review`，其中包含源哈希、姿态、比例、投影、结构、外观、轴向，以及 `passed`、`partial` 或 `blocked` 状态。整套 `passed` 后才导入冻结的干净控制图，部分通过时退回多视图流程。工作区工具检查范围和源文件版本，视觉一致性需要审图。见 [建模前审阅](../concept-multiview-sheet/references/pre-model-review.md)。
 - 根据参考图局部改形时（包括独立 Blender 脚本），先确定要修改的轮廓和相邻接触点。修改前在 `required_landmarks` 声明控制视角与锚点，为本次修改重新设置参考并使用映射坐标驱动形变。交付前在同一叠图核对目标与相邻接触。缺方向时先补参考，生成的遮挡面标为推定。

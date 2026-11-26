@@ -14,7 +14,7 @@
 
 ```bash
 blender -b skills/continuous-action/assets/A.blend -t 2 \
-  --python skills/continuous-action/scripts/render_keyframes.py -- \
+  --python-exit-code 1 --python skills/continuous-action/scripts/render_keyframes.py -- \
   --action ACTION_ID_FROM_CATALOG --count 8 --view front --project /absolute/production-project
 ```
 

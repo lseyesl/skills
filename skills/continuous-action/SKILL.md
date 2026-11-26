@@ -32,11 +32,11 @@ description: "使用随附的 Blender 动作库 A.blend 生成连续角色动作
 
 ## 命令
 
-使用实际技能目录提供资源，输出写入使用方项目。以下命令适用于源码仓库。
+使用 Blender 4.5 或更新版本。调用方检查进程成功退出，再读取本次输出目录中的 manifest.json，核对请求帧数及每个 image 或整张 reference_image 文件后交接。使用实际技能目录提供资源，输出写入使用方项目。以下命令适用于源码仓库。
 
 ```bash
 blender -b skills/continuous-action/assets/A.blend -t 2 \
-  --python skills/continuous-action/scripts/render_keyframes.py -- \
+  --python-exit-code 1 --python skills/continuous-action/scripts/render_keyframes.py -- \
   --action ACTION_ID_FROM_CATALOG --count 8 --view front --project /absolute/production-project
 ```
 

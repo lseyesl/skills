@@ -986,6 +986,32 @@
           "criterion": "在同一模型的斜后方或剖面追踪肩带。普通穿戴的部件连续绕身或合理固定，显式悬浮版本只在指定段留隙；隐藏形态标为推定。"
         }
       ]
+    },
+    {
+      "id": "character.fixed-seated-sculpture",
+      "split": "dev",
+      "prompt": "按提供的坐姿汉服女孩设计制作固定姿势雕塑的正侧面建模参考及粗模。",
+      "setup": "使用有清晰座面、骨盆和脚部支点的坐姿角色图，固定机位尺度并保留首图。",
+      "checks": [
+        {
+          "id": "baseline",
+          "kind": "visual",
+          "required": true,
+          "criterion": "首图保留指定坐姿和原图可见的支撑关系。"
+        },
+        {
+          "id": "side",
+          "kind": "visual",
+          "required": true,
+          "criterion": "正侧图的骨盆高度、座面与脚部接触关系一致。"
+        },
+        {
+          "id": "blockout",
+          "kind": "visual",
+          "required": true,
+          "criterion": "从相同正侧机位查看粗模，核对首图与侧图的坐姿支点。"
+        }
+      ]
     }
   ]
 }

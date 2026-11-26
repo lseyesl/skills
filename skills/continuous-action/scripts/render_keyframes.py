@@ -1,6 +1,6 @@
 """Render individual action pose references from A.blend, or an optional sheet.
 
-Run: blender -b assets/A.blend -t 2 --python scripts/render_keyframes.py -- \
+Run: blender -b assets/A.blend -t 2 --python-exit-code 1 --python scripts/render_keyframes.py -- \
   --action ACTION_ID_FROM_CATALOG --count 8 --view front
 
 Without --output, a fresh directory is created under the consuming project's
@@ -13,6 +13,7 @@ import json
 import math
 import sys
 import tempfile
+import traceback
 from pathlib import Path
 
 import bpy
@@ -167,6 +168,8 @@ def compose_reference_sheet(frame_paths, sheet_path, columns):
 
 
 def main():
+    if bpy.app.version < (4, 5, 0):
+        raise RuntimeError(f"A.blend requires Blender >=4.5; running {bpy.app.version_string}")
     skill_dir = Path(__file__).resolve().parents[1]
     paths_spec = importlib.util.spec_from_file_location('action_runtime_paths', skill_dir / 'scripts/runtime_paths.py')
     paths = importlib.util.module_from_spec(paths_spec)
@@ -255,7 +258,9 @@ def main():
                 camera.location = camera_start + camera_right * (hips_now - hips_start).dot(camera_right)
             image_path = target / f"{index:02d}_{options.action}_f{frame:03d}.png"
             scene.render.filepath = str(image_path)
-            bpy.ops.render.render(write_still=True)
+            result = bpy.ops.render.render(write_still=True)
+            if "FINISHED" not in result or not image_path.is_file() or not image_path.stat().st_size:
+                raise RuntimeError(f"Missing rendered frame {frame}: {image_path}")
             paths.append(image_path)
         return paths
 
@@ -273,6 +278,10 @@ def main():
         for index, (marker, region) in enumerate(zip(selected_markers, regions), 1):
             manifest["frames"].append({"id": f"{index:02d}", "source_frame": marker["frame"],
                                        "phase": marker["phase"], "region": region})
+    if options.format == "sheet":
+        sheet = Path(manifest["reference_image"])
+        if not sheet.is_file() or not sheet.stat().st_size:
+            raise RuntimeError(f"Missing rendered sheet: {sheet}")
     fps = scene.render.fps / scene.render.fps_base
     final_frame = clip['frame_end']
     if clip['loop_hint']:
@@ -291,4 +300,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        # Blender otherwise exits successfully for older callers without --python-exit-code.
+        traceback.print_exc()
+        raise SystemExit(1)

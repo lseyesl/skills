@@ -4,7 +4,7 @@
     "ancient-tales-production": {
       "directory": "skills/ancient-tales-production",
       "requires": ["ancient-tales-pipeline"],
-      "optional": ["blender-python-modeling", "blender-styles", "shadow-puppet-animation", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action", "concept-multiview-sheet", "query-obsidian"],
+      "optional": ["animation-principles", "blender-python-modeling", "blender-styles", "shadow-puppet-animation", "shadow-puppet-image", "shadow-puppet-part-splitter", "continuous-action", "concept-multiview-sheet", "query-obsidian"],
       "external": [
         {"name": "sprite-gen", "kind": "skill", "when": "选择精灵图生成或后处理方案时使用；现有集成按 2.1.0 编写，使用前核查已安装版本的接口"},
         {"name": "image generation", "kind": "tool", "when": "生成分镜、视觉概念图或角色帧"},
@@ -52,7 +52,7 @@
       "requires": [],
       "optional": ["animation-principles", "blender-python-modeling"],
       "external": [
-        {"name": "Blender", "kind": "tool", "when": "从随附的 A.blend 渲染动作关键帧"},
+        {"name": "Blender >=4.5", "kind": "tool", "when": "从随附的 A.blend 渲染动作关键帧"},
         {"name": "image generation", "kind": "tool", "when": "依据已核验的关键帧参考生成角色动作帧"},
         {"name": "sprite-gen", "kind": "skill", "when": "选用精灵图组装或导出流程时"}
       ]

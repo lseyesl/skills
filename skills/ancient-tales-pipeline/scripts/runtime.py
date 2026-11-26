@@ -54,9 +54,10 @@ def read(path):
 def write(path, data):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(path.name + '.partial')
-    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    os.replace(tmp, path)
+    with tempfile.TemporaryDirectory(dir=path.parent) as temp:
+        tmp = Path(temp) / 'manifest'
+        tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        os.replace(tmp, path)
 
 def run(*args):
     subprocess.run([str(x) for x in args], check=True)
@@ -119,9 +120,10 @@ def asset_transfer(root, lock, mode):
                 if p.exists():
                     continue
                 p.parent.mkdir(parents=True, exist_ok=True)
-                partial = p.with_name(p.name + '.partial')
-                shutil.copyfile(verified[a['uri']], partial)
-                os.replace(partial, p)
+                with tempfile.TemporaryDirectory(dir=p.parent) as temp_dir:
+                    partial = Path(temp_dir) / 'download'
+                    shutil.copyfile(verified[a['uri']], partial)
+                    os.replace(partial, p)
     print(f"ASSETS_{mode.upper()}_OK {len(lock['assets'])}")
 
 def assets(args):
@@ -146,6 +148,11 @@ def assets(args):
         asset_contract.validate_manifest(lock, root=root, expected_project=policy.get('project_id'))
         return lock
 
+    def editing_lock():
+        active = checked_lock(path) if path.exists() else {'assets': []}
+        candidate = root / 'assets.pending.json'
+        return checked_lock(candidate) if candidate.exists() else active
+
     def selected_lock():
         lock = checked_lock(path)
         if not selected:
@@ -159,7 +166,7 @@ def assets(args):
     if args.action == 'index':
         if args.repository_id != policy['repository_id'] or args.bucket != policy['bucket']:
             raise ValueError('Repository/bucket differs from assets.config.json')
-        previous = checked_lock(path) if path.exists() else {'assets': []}
+        previous = editing_lock()
         old = {a['path']: a for a in previous['assets']}
         missing = [p for p in old if not safe(root, p).is_file()]
         if missing:
@@ -167,13 +174,17 @@ def assets(args):
         excluded = previous.get('excluded_roots', [])
         # Scanning a partial checkout or changing filters must never erase an
         # existing record. Only the explicit forget operation removes records.
+        removed = set(previous.get('removed_paths', []))
         result = dict(old)
         for p in files(root):
             if p.relative_to(root).parts[0] in excluded:
                 continue
             if p.suffix.lower() not in MEDIA:
                 continue
-            rel, sha = p.relative_to(root).as_posix(), digest(p)
+            rel = p.relative_to(root).as_posix()
+            if rel in removed:
+                continue
+            sha = digest(p)
             before = old.get(rel, {})
             if before.get('sha256') == sha:
                 # A rescan discovers bytes, not a new business version or approval.
@@ -188,14 +199,15 @@ def assets(args):
         write(root / 'assets.pending.json', pending)
         print('ASSETS_INDEX_PENDING', len(result))
     elif args.action == 'forget':
-        lock = checked_lock(path)
+        lock = editing_lock()
         paths = set(getattr(args, 'path', None) or [])
         known = {a['path']: a for a in lock['assets']}
-        if not paths or not paths.issubset(known):
+        removed = set(lock.get('removed_paths', []))
+        if not paths or not paths.issubset(known.keys() | removed):
             raise ValueError('forget requires explicit existing --path values')
-        if not getattr(args, 'allow_locked', False) and any(known[p].get('status') in {'approved', 'locked'} for p in paths):
+        if not getattr(args, 'allow_locked', False) and any(known[p].get('status') in {'approved', 'locked'} for p in paths & known.keys()):
             raise ValueError('Removing approved/locked records requires --allow-locked')
-        write(root / 'assets.pending.json', {**lock, 'removed_paths': sorted(paths), 'assets': [a for a in lock['assets'] if a['path'] not in paths]})
+        write(root / 'assets.pending.json', {**lock, 'removed_paths': sorted(paths | removed), 'assets': [a for a in lock['assets'] if a['path'] not in paths]})
         print('ASSETS_FORGET_PENDING', len(paths), '(remote objects and local files unchanged)')
     elif args.action == 'push':
         pending = root / 'assets.pending.json'
@@ -340,6 +352,17 @@ def skills(args):
     install_root = safe(root, lock.get('install_directory', '.agents/skills'))
     receipts_path = install_root.parent / (install_root.name + '-receipts.json')
     receipts = read(receipts_path) if receipts_path.exists() else {}
+    stale = sorted(receipts.keys() - {entry['name'] for entry in lock['skills']})
+    for name in stale:
+        if not name or Path(name).name != name or name in {'.', '..'}:
+            raise ValueError('Invalid installed skill name: ' + name)
+        dest = install_root / name
+        if dest.is_symlink() or (dest.exists() and (not dest.is_dir() or tree(dest) != receipts[name])):
+            raise ValueError('Locally modified installed skill: ' + name)
+        if dest.exists() and any(p.is_symlink() or p.name in SKIP for p in dest.rglob('*')):
+            raise ValueError('Unmanaged content in obsolete skill: ' + name)
+        if args.action == 'check':
+            raise ValueError('Obsolete installed skill receipt: ' + name)
     for entry in lock['skills']:
         dest = safe(install_root, entry['name'])
         if dest.exists() and tree(dest) != receipts.get(entry['name']):
@@ -373,6 +396,13 @@ def skills(args):
             install_root.mkdir(exist_ok=True)
             backups, installed = [], []
             try:
+                for name in stale:
+                    dest = install_root / name
+                    if dest.exists():
+                        backup = backup_root / name
+                        os.replace(dest, backup)
+                        backups.append((dest, backup))
+                    del receipts[name]
                 for entry in lock['skills']:
                     dest = safe(install_root, entry['name'])
                     if dest.exists():

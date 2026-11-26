@@ -28,9 +28,9 @@ class ContractTests(unittest.TestCase):
         path.write_text(json.dumps(data))
         return {'path': name, 'sha256': validator.assets.file_sha(path)}
 
-    def gate_contract(self, gate='gate-4'):
+    def gate_contract(self, gate='gate-4', sample_indices=(0, 1, 2)):
         master = [{'shot_id': f'S{i:03}', 'frames': 24} for i in range(1, 7)]
-        selected = master[:3] if gate == 'gate-4' else master
+        selected = [master[i] for i in sample_indices] if gate == 'gate-4' else master
         self.contract['backend'] = {'entrypoint': 'scripts/build.py', 'validation_evidence': self.proof('audit/backend.json', {'pass': True})}
         self.proof('scripts/build.py', {'fixture': 'not executed'})
         asset_path = 'projects/p/a.png'; asset_ref = self.proof(asset_path, 'synthetic asset')
@@ -92,6 +92,11 @@ class ContractTests(unittest.TestCase):
         validator.validate_contract(self.root, contract)
         contract['review']['timeline'] = contract['review']['timeline'][:3]
         with self.assertRaisesRegex(ValueError, 'all shots'): validator.validate_contract(self.root, contract)
+
+    def test_sample_preserves_relative_order_even_with_matching_receipt(self):
+        validator.validate_contract(self.root, self.gate_contract(sample_indices=(0, 2, 4)))
+        with self.assertRaisesRegex(ValueError, 'locked master order'):
+            validator.validate_contract(self.root, self.gate_contract(sample_indices=(2, 0, 4)))
 
     def test_gate5_receipt_cannot_be_reused_for_another_locale(self):
         contract = self.gate_contract('gate-5')

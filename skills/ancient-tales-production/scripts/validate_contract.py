@@ -63,6 +63,8 @@ def validate_review(review):
         raise ValueError('Full-film review must cover all shots in master order')
     if any(shot not in expected or frames != expected[shot] for shot, frames in rendered.items()):
         raise ValueError('Shot identity/duration differs from locked master')
+    if scope == 'sample' and list(rendered) != [shot for shot in expected if shot in rendered]:
+        raise ValueError('Sample shots must follow locked master order')
     if type(review.get('total_frames')) is not int or review['total_frames'] != sum(rendered.values()):
         raise ValueError('Review total_frames differs from timeline')
     for field in ('director_review_status', 'director_taste_review_status'):

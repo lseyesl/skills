@@ -136,6 +136,17 @@ class PipelineTests(unittest.TestCase):
                 r.asset_transfer(self.root, lock, 'pull')
         self.assertFalse(r.safe(self.root, lock['assets'][0]['path']).exists())
 
+    def test_pull_preserves_partial_sibling(self):
+        lock = self.lock()
+        target = self.root / lock['assets'][0]['path']
+        target.parent.mkdir(parents=True)
+        sibling = target.with_suffix('.png.partial')
+        sibling.write_bytes(b'work in progress')
+        with patch.object(r, 'run', side_effect=lambda *args: Path(args[4]).write_bytes(b'good')):
+            r.asset_transfer(self.root, lock, 'pull')
+        self.assertEqual(target.read_bytes(), b'good')
+        self.assertEqual(sibling.read_bytes(), b'work in progress')
+
     def test_verified_download_install(self):
         lock = self.lock()
         def fake(*args): Path(args[4]).write_bytes(b'good')
@@ -235,7 +246,7 @@ class PipelineTests(unittest.TestCase):
     def test_missing_locked_asset_does_not_erase_formal_or_pending_lock(self):
         lock = self.lock(status='locked')
         r.write(self.root / 'assets.lock.json', lock)
-        pending = {'previous': 'candidate'}
+        pending = {**lock, 'previous': 'candidate'}
         r.write(self.root / 'assets.pending.json', pending)
         with self.assertRaisesRegex(ValueError, 'missing'):
             r.assets(self.args('index', bucket='owner/bucket', repository_id='test'))
@@ -261,6 +272,24 @@ class PipelineTests(unittest.TestCase):
             run.assert_not_called()
         self.assertEqual(p.read_bytes(), b'good')
         self.assertEqual(r.read(self.root / 'assets.lock.json')['assets'], [])
+
+    def test_index_and_repeated_forget_accumulate_until_push(self):
+        lock = self.lock()
+        second = self.lock(path='projects/p/b.png')
+        self.materialize(lock)
+        self.materialize(second)
+        lock['assets'].extend(second['assets'])
+        r.write(self.root / 'assets.lock.json', lock)
+        added = self.materialize(self.lock(path='projects/p/c.png'))
+        index = self.args('index', bucket='owner/bucket', repository_id='test')
+        r.assets(index)
+        for entry in lock['assets']:
+            r.assets(self.args('forget', path=[entry['path']]))
+        r.assets(index)
+        with patch.object(r, 'asset_transfer'):
+            r.assets(self.args('push'))
+        result = r.read(self.root / 'assets.lock.json')
+        self.assertEqual([a['path'] for a in result['assets']], [added.relative_to(self.root).as_posix()])
 
     def test_pending_lock_cannot_silently_drop_records(self):
         lock = self.lock(); r.write(self.root / 'assets.lock.json', lock)
@@ -362,6 +391,41 @@ class PipelineTests(unittest.TestCase):
         with patch.object(r.shutil, 'copytree', side_effect=mutate):
             with self.assertRaisesRegex(ValueError, 'Staged Skill differs'): r.skills(args)
         self.assertFalse((self.root / '.agents/skills/example').exists())
+
+    def test_reduced_lock_reconciles_only_unmodified_managed_skills(self):
+        source, args = self.setup_skills(['base'])
+        old = self.install(args)
+        original = old.read_bytes()
+        unmanaged = old.parents[1] / 'private'
+        unmanaged.mkdir()
+        args.skill = ['base']
+        args.action = 'update'
+        r.skills(args)
+        args.action = 'check'
+        with self.assertRaisesRegex(ValueError, 'Obsolete'):
+            r.skills(args)
+        args.action = 'install'
+        old.write_bytes(b'user changes')
+        with self.assertRaisesRegex(ValueError, 'Locally modified'):
+            r.skills(args)
+        self.assertEqual(old.read_bytes(), b'user changes')
+        old.write_bytes(original)
+        private = old.parent / '.tmp'
+        private.mkdir()
+        with self.assertRaisesRegex(ValueError, 'Unmanaged content'):
+            r.skills(args)
+        self.assertTrue(private.is_dir())
+        private.rmdir()
+        with patch.object(r, 'write', side_effect=OSError('receipt failure')):
+            with self.assertRaises(OSError):
+                r.skills(args)
+        self.assertEqual(old.read_bytes(), original)
+        r.skills(args)
+        args.action = 'check'
+        r.skills(args)
+        self.assertFalse(old.parent.exists())
+        self.assertTrue(unmanaged.is_dir())
+        self.assertEqual(set(r.read(self.root / '.agents/skills-receipts.json')), {'base'})
 
     def test_skill_local_edit_is_preserved(self):
         source, args = self.setup_skills(); dest = self.install(args)

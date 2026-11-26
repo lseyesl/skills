@@ -19,14 +19,16 @@ python <skill-dir>/scripts/runtime.py skills install --project <project> --sourc
 python <skill-dir>/scripts/runtime.py skills check --project <project>
 ```
 
-- `update` 只更新锁；`install` 检查本地冲突、暂存全部技能并核对暂存内容后才激活。失败保持旧安装。
+- `update` 只更新锁；`install` 检查本地冲突、暂存全部技能并核对暂存内容后才激活。锁中移除的受管技能随安装一并清理，本地修改冲突会中止安装，独立安装的技能保留。失败保持旧安装。
 - 正式锁读取指定 commit 的 Git blob 字节，不受检出换行或公共源码当前 HEAD 影响。旧锁可显式 update 升级到 schema 2。
-- `check` 验证安装、哈希和必需依赖完整性，不要求源库或网络。
+- `check` 验证安装、哈希、过期安装回执和必需依赖完整性，不要求源库或网络。
 - 默认安装到项目 `.agents/skills/`。首次 update 可用 `--install-dir .claude/skills` 选择另一项目目录；不改客户端全局配置。
 - 只有显式 `--allow-working-tree` 才锁定未提交开发内容。此类锁标为 `working-tree`，只能依赖完全匹配的本地快照。
 - Skill 库的图片、动作库和其他媒体完整保留在自身 Git；Obsidian 也仅使用自身 Git。二者禁止纳入 HF 同步。
 
 ## 制作资产
+
+同一次 push 前，index 与 forget 在已有待推送清单上累积。再次 index 会跳过本轮已明确移除的路径。
 
 仅在制作仓库存在启用的 `assets.config.json` 时使用，配置与清单的仓库及 bucket 身份必须一致：
 

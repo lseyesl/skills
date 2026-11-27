@@ -23,6 +23,8 @@ concept-multiview-sheet 在安装依赖中是 optional，不代表选中生成�
 
 项目从 [路线模板](../assets/reference-preparation-template.json) 建立记录。source_images 是实际原图；construction_images 是实际导入的独立视图。记录投影、是否需要隐藏结构/姿态补全、用途和理由，不能按想走的路线反过来编造事实。
 
+类人角色的辅助 T pose 正背图随项目参考单列，注明姿势、方向、哈希及可解释的区域。用它们追踪腋下、袖底和腰侧的连接；拟合主姿势轮廓时只向 construction_images 提交该姿势的控制图。若既定控制姿势本身就是 T pose，沿用已审正背控制图。
+
 generated 路线还需要：
 
 1. generation_record 文件引用：tool 为 builtin-image-generation，reference_images 为原图列表，prompt 为实际提示词文件，outputs 为输出列表。每项使用 path/sha256。记录来自实际调用，不是在模型做完后补计划。

@@ -76,8 +76,11 @@ def optimize(c,initial_metrics,initial_scene,out,run):
             if choice['accepted'] and (best is None or choice['target_gain']>best[0]):best=(choice['target_gain'],proposed,m,target,record)
         if best:
             _,current,metrics,target,record=best;scene=target/'scene.blend';record['selected']=True;accepted+=1
+            attempted.clear()  # Coupled parameters can behave differently on the new accepted scene.
         # Rollback is retaining the last accepted immutable scene/config. Rejected
         # mesh edits never touch the accepted file; next candidate reopens it.
         (round_dir/'accepted-state.json').write_text(json.dumps({'scene':str(scene),'config':current,'accepted_iterations':accepted},indent=2))
+    if converged(metrics, current):
+        stop = 'thresholds_met'
     result={'stop_reason':stop,'accepted_iterations':accepted,'history':history,'scene':str(scene.resolve()),'config':current,'metrics':metrics,'scope':'Front-view bounded parameter search; 3D checks are separate. No learned semantic reconstruction.'}
     (folder/'optimization.json').write_text(json.dumps(result,indent=2));(folder/'final-config.json').write_text(json.dumps(current,indent=2));return result

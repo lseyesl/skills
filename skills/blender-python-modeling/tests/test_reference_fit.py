@@ -99,6 +99,45 @@ class RefinementTests(unittest.TestCase):
   self.c['validation']['max_iterations']=0
   with tempfile.TemporaryDirectory() as d:
    r=optimize(self.c,self.m,Path(d)/'original.blend',d,lambda *a:self.fail());self.assertEqual(r['stop_reason'],'iteration_limit');self.assertEqual(r['accepted_iterations'],0)
+ def test_partial_gain_reenters_edit_loop_until_verified(self):
+  self.c['validation']['max_iterations'] = 2
+  with tempfile.TemporaryDirectory() as d:
+   original = Path(d)/'original.blend'
+   sources = []
+   def render(config, source, affected, folder):
+    sources.append(source)
+    return metrics(.8 if source == original else .95), True
+   result = optimize(self.c, self.m, original, d, render)
+   self.assertEqual(result['accepted_iterations'], 2)
+   self.assertEqual(result['stop_reason'], 'thresholds_met')
+   self.assertTrue(converged(result['metrics'], self.c))
+   self.assertEqual(sources[2], Path(d)/'round-00/minus/scene.blend')
+
+ def test_cli_rechecks_final_render_even_after_search_passes(self):
+  from unittest.mock import patch
+  import fit_character
+  with tempfile.TemporaryDirectory() as directory:
+   root = Path(directory)
+   source = root/'source.blend'
+   source.write_bytes(b'fixture')
+   config = copy.deepcopy(self.c)
+   config['reference'].update(image=str(source), annotation=str(source))
+   def worker(command, log, timeout):
+    log.parent.joinpath('worker-result.json').write_text('{}')
+    log.parent.joinpath('structure.json').write_text('{"ok":true}')
+    log.parent.joinpath('scene.blend').write_bytes(b'candidate')
+   args = ['fit_character', 'optimize', '--config', str(CASE), '--source', str(source),
+           '--iterations', '0', '--output', str(root/'run')]
+   with patch.object(sys, 'argv', args), patch.object(fit_character, 'load', return_value=(config, root)), patch.object(fit_character, 'run_logged', worker), patch.object(fit_character, 'evaluate', side_effect=[metrics(.95), metrics(.75)]):
+    with self.assertRaises(SystemExit) as exit_status:
+     fit_character.main()
+   self.assertEqual(exit_status.exception.code, 2)
+   result = json.loads((root/'run/result.json').read_text())
+   self.assertEqual(result['stop_reason'], 'thresholds_met')
+   self.assertFalse(result['fit_thresholds_met'])
+   self.assertEqual(result['next_action'], 'continue_repair')
+   self.assertTrue(Path(result['resume_config']).is_file())
+
  def test_failed_render(self):
   self.c['validation']['max_iterations']=1
   def fail(*a):raise RuntimeError('Render failed')

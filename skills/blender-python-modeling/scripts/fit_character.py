@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse,json,subprocess,sys,shutil,hashlib
 from reference_fit.config import load,validate
 from reference_fit.evaluation import evaluate,read,annotations,reference_masks,sampled_colors
-from reference_fit.refiner import optimize,defects
+from reference_fit.refiner import optimize,defects,converged
 from reference_fit.process import run_logged
 
 SCRIPT=Path(__file__).resolve().parent
@@ -51,6 +51,7 @@ def main():
         run_logged(cmd,folder/'blender.log',args.timeout)
         if not (folder/'worker-result.json').is_file():raise RuntimeError('Blender produced no completion record')
         return json.loads((folder/'structure.json').read_text())
+    ok = True
     if args.command=='analyze':
         import cv2
         image=read(c['reference']['image']);a=annotations(c['reference']['annotation'],image)
@@ -75,11 +76,24 @@ def main():
         result=optimize(c,m,initial/'scene.blend',out/'iterations',run)
         final=out/'final';qa=worker(result['config'],final,Path(result['scene']),quick=False,render_only=True)
         if not qa['ok']:raise RuntimeError('Final structural checks failed: '+str(final/'structure.json'))
-        measure(final)
-        (out/'result.json').write_text(json.dumps({'final_scene':str(final/'scene.blend'),'optimization':'iterations/optimization.json','stop_reason':result['stop_reason'],'accepted_iterations':result['accepted_iterations']},indent=2))
+        final_metrics = measure(final)
+        ok = converged(final_metrics, result['config'])
+        summary = {
+            'fit_thresholds_met': ok,
+            'next_action': 'review_multiview' if ok else 'continue_repair',
+            'final_scene': str(final/'scene.blend'),
+            'resume_config': str(out/'iterations/final-config.json'),
+            'final_metrics': 'final/evaluation/metrics.json',
+            'optimization': 'iterations/optimization.json',
+            'stop_reason': result['stop_reason'],
+            'accepted_iterations': result['accepted_iterations'],
+        }
+        (out/'result.json').write_text(json.dumps(summary, indent=2))
     if args.source:
         if hashlib.sha256(args.source.read_bytes()).hexdigest()!=source_hash:raise RuntimeError('Source file changed unexpectedly')
         (out/'source-preservation.json').write_text(json.dumps({'source':str(args.source.resolve()),'sha256':source_hash,'unchanged':True},indent=2))
-    print(json.dumps({'ok':True,'command':args.command,'output':str(out)}))
+    print(json.dumps({'ok':ok,'command':args.command,'output':str(out)}))
+    if not ok:
+        raise SystemExit(2)
 
 if __name__=='__main__':main()

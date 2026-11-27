@@ -232,6 +232,7 @@ def main() -> None:
             report["errors"].append(f"Final delivery evidence: {exc}")
         report["ok"] = not report["errors"]
         report["ready_to_claim_complete"] = report["ok"]
+        report["next_action"] = "deliver_after_visual_review" if report["ok"] else "continue_repair_or_resolve_evidence"
     rendered = json.dumps(report, indent=2, ensure_ascii=False)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

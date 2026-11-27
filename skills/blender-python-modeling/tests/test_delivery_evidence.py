@@ -1,5 +1,6 @@
 """Exercise the actual final command with synthetic evidence files."""
 import hashlib
+import math
 import json
 from pathlib import Path
 import subprocess
@@ -59,6 +60,26 @@ class FinalDeliveryTests(unittest.TestCase):
                 return report["ready_to_claim_complete"]
 
             args = ["--model", "model.glb", "--review", "review.json"]
+            def camera_matrix(yaw):
+                a = math.radians(yaw)
+                return [math.cos(a), 0, math.sin(a), 0, math.sin(a), 0, -math.cos(a), 0,
+                        0, 1, 0, 0, 0, 0, 0, 1]
+
+            self.assertFalse(run(*args))  # Orthographic comparisons alone miss diagonal defects.
+            diagonals = {"front_world_matrix": camera_matrix(0), "model_sha256": bundle["model"]["sha256"]}
+            bundle["diagonal_review"] = diagonals
+            for name, angle in (("front_left_45", -45), ("front_right_45", 45)):
+                self.assertFalse(run(*args))
+                diagonals[name] = dict(world_matrix=camera_matrix(angle), status="passed", finding="Hull edge continuous",
+                                       clay=write(name + "-clay.png", name + " clay"),
+                                       material=write(name + "-material.png", name + " material"))
+            right = diagonals["front_right_45"]
+            right["status"] = "open"
+            self.assertFalse(run(*args))
+            right["status"] = "passed"
+            right["world_matrix"] = camera_matrix(-45)
+            self.assertFalse(run(*args))
+            right["world_matrix"] = camera_matrix(45)
             self.assertFalse(run())
             self.assertTrue(run(*args))
             original = write("uploaded.png", "user original")

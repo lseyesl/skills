@@ -23,7 +23,7 @@ def main():
   cv2.imwrite(str(out/name),sheet)
  board('model-comparison.png',[('REFERENCE',Path(new['reference'])),('ORIGINAL V5 / FIXED ENV',a.baseline/'beauty_front.png'),('PARAMETRIC + LOCAL FIT',a.delivery/'beauty_front.png')])
  board('iteration-comparison.png',[('PARAMETRIC INITIAL',a.run/'initial/beauty_front.png'),('AFTER 4 LOCAL UPDATES',a.delivery/'beauty_front.png'),('FINAL DIFFERENCE',a.delivery/'evaluation/difference_heatmap.png')])
- board('multiview.png',[(v.upper(),a.delivery/('beauty_'+v+'.png')) for v in ['front','side','back','three_quarter']])
+ board('multiview.png',[(v.upper(),a.delivery/('beauty_'+v+'.png')) for v in ['front_left_45','front','front_right_45','side','back','three_quarter']])
  board('material-diagnostics.png',[('REFERENCE',Path(new['reference'])),('UNLIT BASE COLOR',a.delivery/'albedo_front.png'),('NEUTRAL CLAY',a.delivery/'clay_front.png'),('FIXED BEAUTY',a.delivery/'beauty_front.png')])
  metrics={'global':{'old':old['global'],'initial':initial['global'],'final':new['global']},'components':{},'landmarks':{'old':old['landmarks'],'initial':initial['landmarks'],'final':new['landmarks']},'accepted_iterations':opt['accepted_iterations'],'stop_reason':opt['stop_reason'],'scope':'2D visible evidence only; no overall model accuracy percent'}
  rows=[];colors=[]

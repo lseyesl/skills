@@ -1,5 +1,6 @@
 """Check the final review bundle against the exported file and its fixed-view records."""
 import json
+import math
 from pathlib import Path
 
 from reference_review import require_design_review
@@ -86,7 +87,8 @@ def check_refinement(ledger, ledger_path, review_path, model_path):
             for key in ("symptom", "view", "change", "result"):
                 if not isinstance(finding.get(key), str) or not finding[key].strip():
                     raise ValueError("Missing " + key + " for " + name)
-            if finding["view"] not in {v.get("name") for v in bundle["views"]}:
+            if finding["view"] not in {v.get("name") for v in bundle["views"]} and not (
+                    finding["view"] in ("front_left_45", "front_right_45") and finding["view"] in bundle.get("diagonal_review", {})):
                 raise ValueError("Missing controlling comparison view for " + name)
             if finding.get("model_sha256") != digest:
                 raise ValueError("Recheck " + name + " against the current model")
@@ -148,6 +150,37 @@ def check_original_comparisons(bundle, base, originals, digest, modules):
         raise ValueError("Missing direct original-source comparisons or observed signature features")
 
 
+def check_diagonal_views(bundle, base, digest):
+    review = bundle.get("diagonal_review", {})
+    if review.get("model_sha256") != digest:
+        raise ValueError("Review both 45-degree views of the current model")
+
+    def azimuth(matrix):
+        # Blender camera local +Z points from the target toward the camera.
+        if not isinstance(matrix, list) or len(matrix) != 16 or not all(
+                type(v) in (int, float) and math.isfinite(v) for v in matrix):
+            raise ValueError("Missing recorded camera world matrix")
+        x, y, z = matrix[2], matrix[6], matrix[10]
+        if math.hypot(x, y) == 0 or abs(math.degrees(math.atan2(z, math.hypot(x, y)))) > 1:
+            raise ValueError("Use level cameras for diagonal inspections")
+        return math.degrees(math.atan2(y, x))
+
+    front = azimuth(review.get("front_world_matrix"))
+    captures = set()
+    for name, expected in (("front_left_45", -45), ("front_right_45", 45)):
+        shot = review.get(name, {})
+        yaw = (azimuth(shot.get("world_matrix")) - front + 180) % 360 - 180
+        if abs(yaw - expected) > 1:
+            raise ValueError("Incorrect camera direction: " + name)
+        for channel in ("clay", "material"):
+            path, _ = _file(shot.get(channel), base)
+            if path in captures:
+                raise ValueError("Use separate rendered captures for each view and pass")
+            captures.add(path)
+        if shot.get("status") != "passed" or not isinstance(shot.get("finding"), str) or not shot["finding"].strip():
+            raise ValueError("Continue diagonal visual review: " + name)
+
+
 def check_delivery(ledger, ledger_path, review_path, model_path):
     if not review_path or not model_path:
         raise ValueError("Final delivery requires --review and --model")
@@ -164,6 +197,8 @@ def check_delivery(ledger, ledger_path, review_path, model_path):
     require_preparation(prep, ledger["task_id"], mode=mode)
     if mode == "original" and any(m.get("evidence") == "observed" for m in ledger["modules"]):
         raise ValueError("Observed reference modules require reference preparation")
+    if decision.get("facts", {}).get("scope", "whole_model") == "whole_model":
+        check_diagonal_views(bundle, base, digest)
     guides = {_file(item, prep.parent) for item in decision["construction_images"]}
     controlling = {}
     covered = set()

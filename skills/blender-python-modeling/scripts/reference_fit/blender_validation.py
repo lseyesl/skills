@@ -68,6 +68,9 @@ def setup(scene,c):
     w,h=ref['image_size'];ppu=ref['pixels_per_unit'];cx,ground=ref['center_px']
     x=(w/2-cx)/ppu;z=(ground-h/2)/ppu
     views={'front':((x,-3,z),(x,0,z),h/ppu),'side':((3,0,.5),(0,0,.5),1.12),'back':((0,3,.5),(0,0,.5),1.12),'three_quarter':((1.8,-3,1.15),(0,0,.5),1.15)}
+    offset = 3 / math.sqrt(2)
+    for name, sign in [('front_left_45', -1), ('front_right_45', 1)]:
+        views[name] = ((x + sign * offset, -offset, z), (x, 0, z), h / ppu)
     for name,(position,target,scale) in views.items():
         data=bpy.data.cameras.new(owner+'::camera::'+name);data.type='ORTHO';data.ortho_scale=scale;data.clip_start=.001
         ob=bpy.data.objects.new(data.name,data);scene.collection.objects.link(ob);ob['fit_studio']=owner;ob['fit_view']=name
@@ -100,7 +103,9 @@ def render_channels(scene,c,folder,quick=False):
         scene.camera=cameras[view];scene.render.filepath=str(path);bpy.context.view_layer.update()
         bpy.ops.render.render(write_still=True,scene=scene.name)
     try:
-        for view in ['front'] if quick else ['front','side','back','three_quarter']:capture('beauty',view)
+        diagonals = ('front_left_45', 'front_right_45')
+        for view in ('front', *diagonals) if quick else ('front','side','back','three_quarter', *diagonals):
+            capture('beauty', view)
         for channel in ['silhouette','labels','albedo','clay']:
             scene.view_settings.view_transform='Standard';scene.view_settings.exposure=0
             if scene.render.engine=='CYCLES':
@@ -123,6 +128,9 @@ def render_channels(scene,c,folder,quick=False):
                     cache[key]=mat;temporary.append(mat)
                 ob.data.materials.clear();ob.data.materials.append(cache[key])
             capture(channel,'front')
+            if channel == 'clay':
+                for view in diagonals:
+                    capture(channel, view)
         scene.camera=cameras['front'];w,h=c['reference']['image_size'];landmarks={}
         for key,p in c['shape'].items():
             for name,anchor in p.get('landmarks',{}).items():
@@ -134,6 +142,8 @@ def render_channels(scene,c,folder,quick=False):
                 if anchor['selector']=='max_z':position.z=max(v.z for v in points)
                 q=world_to_camera_view(scene,scene.camera,position);landmarks[name]=[q.x*w,(1-q.y)*h]
         record={'blender':bpy.app.version_string,'engine':scene.render.engine,'resolution':[w,h],'view_transform_beauty':c['render']['view_transform'],'exposure_beauty':c['render']['exposure'],'metric_pass_transform':'Standard exposure=0 gamma=1','part_colors':colors,'landmarks_px':landmarks,'camera':{'type':'ORTHO','position':list(scene.camera.location),'ortho_scale':scene.camera.data.ortho_scale},'scope':'visible semantic parts; albedo is unlit base color, no reference relighting','quick':quick,'render_preflight':json.loads(scene.get('render_preflight','{}'))}
+        record['review_world_matrices'] = {view: [float(n) for row in cameras[view].matrix_world for n in row]
+                                           for view in ('front', *diagonals)}
         (folder/'render-record.json').write_text(json.dumps(record,indent=2));return record
     finally:
         for ob in meshes:ob.data.materials.clear();[ob.data.materials.append(m) for m in saved[ob.name]]

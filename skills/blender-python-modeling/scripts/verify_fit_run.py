@@ -22,6 +22,13 @@ def verify(run,baseline):
             path=folder/(name+'.png');a=cv2.imread(str(path),cv2.IMREAD_UNCHANGED)
             images.append(a is not None and list(a.shape[1::-1])==final['render_record']['resolution'])
     check('24_real_required_images_decode',all(images) and len(images)==24)
+    diagonal_images = []
+    for folder in (run/'initial', run/'final'):
+        for side in ('front_left_45', 'front_right_45'):
+            for channel in ('beauty', 'clay'):
+                img = cv2.imread(str(folder / f'{channel}_{side}.png'), cv2.IMREAD_UNCHANGED)
+                diagonal_images.append(img is not None and list(img.shape[1::-1]) == final['render_record']['resolution'])
+    check('bilateral_45_images_decode', all(diagonal_images))
     check('at_least_one_accepted_local_change',optimization['accepted_iterations']>0)
     check('at_least_one_rejected_candidate',any(not r['accepted'] for r in optimization['history']))
     check('measured_global_improvement',final['global']['iou']>initial['global']['iou'])
